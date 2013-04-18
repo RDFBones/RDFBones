@@ -1,5 +1,5 @@
 #VIVO project template
-This is a git repository template for working with and customizing [VIVO](http://vivoweb.org/).  It uses the [three tired build approach](https://wiki.duraspace.org/display/VIVO/Building+VIVO+in+3+tiers) documented by the VIVO project.  The project source files (VIVO and Vitro) are tracked using [Git Submodules](http://git-scm.com/book/en/Git-Tools-Submodules).
+This is a git repository template for working with and customizing [VIVO](http://vivoweb.org/).  It uses the [three tiered build approach](https://wiki.duraspace.org/display/VIVO/Building+VIVO+in+3+tiers) documented by the VIVO project.  The project source files (VIVO and Vitro) are tracked using [Git Submodules](http://git-scm.com/book/en/Git-Tools-Submodules).
 
 For a more detailed explanation of setting up the VIVO environment, consult the [VIVO version 1.5 installation instructions](http://sourceforge.net/projects/vivo/files/Project%20Documentation/VIVO_Release_V1.5_Installation_Guide.pdf/download).
 
