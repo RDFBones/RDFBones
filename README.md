@@ -22,7 +22,7 @@ $ ant all
 
 ##Benefits to this approach
  * local changes are separated from core code making upgrades easier.
- * using Git you can checkout any tag release, build it with your local changes, and test it out.
+ * using Git you can checkout any tagged release, build it with your local changes, and test it out.
  * using the steps above, you can quickly deploy VIVO to another machine.
  * using the power of Git, you can use tools, like [cherry-pick](http://www.vogella.com/articles/Git/article.html#cherrypick), to select bug fixes or enhancements that are not yet in a VIVO release and incorporate them into your implementation.
  * even if you plan on making few modifications, this can be a convenient and efficient way to manage your custom theme. 
