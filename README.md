@@ -14,6 +14,8 @@ $cd VIVO
 $git checkout maint-rel-1.5
 $cd ../Vitro
 $git checkout maint-rel-1.5
+#Change back to vivo main directory
+$cd ..
 #Copy default deploy.properties and edit
 $cp default.deploy.properties deploy.properties
 #Adjust deploy.properties
