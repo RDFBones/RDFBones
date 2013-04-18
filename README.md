@@ -29,5 +29,5 @@ $ ant all
  * using the power of Git, you can use tools, like [cherry-pick](http://www.vogella.com/articles/Git/article.html#cherrypick), to select bug fixes or enhancements that are not yet in a VIVO release and incorporate them into your implementation.
  * even if you plan on making few modifications, this can be a convenient and efficient way to manage your custom theme. 
 
- ##Questions or comments
- Contact lawlesst at gmail.com 
+##Questions or comments
+Contact lawlesst at gmail.com 
