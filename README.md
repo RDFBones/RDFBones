@@ -19,7 +19,7 @@ $cd ..
 #Copy default deploy.properties and edit
 $cp default.deploy.properties deploy.properties
 #Adjust deploy.properties
-#...
+#Create the data directory specified in deploy.properties if it doesn't exist.  
 #Build and deploy VIVO
 $ ant all
 ~~~~
