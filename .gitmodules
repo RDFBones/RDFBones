@@ -1,0 +1,6 @@
+[submodule "VIVO"]
+	path = VIVO
+	url = https://github.com/vivo-project/VIVO.git
+[submodule "Vitro"]
+	path = Vitro
+	url = https://github.com/vivo-project/Vitro.git
