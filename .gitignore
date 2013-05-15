@@ -1,5 +1,7 @@
 #Config
 deploy.properties
+build.properties
+runtime.properties
 
 #Build dir
 .build/
