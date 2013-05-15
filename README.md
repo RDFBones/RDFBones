@@ -4,6 +4,7 @@ This is a git repository template for working with and customizing [VIVO](http:/
 For a more detailed explanation of setting up the VIVO environment, consult the [VIVO version 1.5 installation instructions](http://sourceforge.net/projects/vivo/files/Project%20Documentation/VIVO_Release_V1.5_Installation_Guide.pdf/download).
 
 ##Checking out the project and building VIVO in three tiers
+###VIVO 1.5 or earlier
 ~~~~
 $ git clone https://github.com/lawlesst/vivo-project-template.git vivo
 $ cd vivo
@@ -24,6 +25,30 @@ $cp default.deploy.properties deploy.properties
 #Build and deploy VIVO
 $ ant all
 ~~~~
+###VIVO development or 1.6 +
+~~~
+$ git clone https://github.com/lawlesst/vivo-project-template.git@.1.6 vivo
+$ cd vivo
+$ git submodule init
+#Pull in VIVO and Vitro.  This will take a few minutes.  
+$ git submodule update
+#Check out specific versions of VIVO and Vitro
+$cd VIVO
+$git checkout develop
+$cd ../Vitro
+$git checkout develop
+#Change back to vivo main directory
+$cd ..
+#Copy default deploy.properties and edit
+$cp default.build.properties build.properties
+$cp default.runtime.properties runtime.properties
+#Adjust build and runtime properties
+#Create the data directory specified in build.properties if it doesn't exist.
+#E.g. $mkdir -p /usr/local/vivo/data
+$cp runtime.properties /usr/local/vivo/data
+#Build and deploy VIVO
+$ ant all
+~~~
 
 ##Benefits to this approach
  * local changes are separated from core code making upgrades easier.
