@@ -84,6 +84,7 @@
 			<include name="config/*.txt" />
 			<include name="config/solr/*" />
 			<include name="context.xml" />
+ 		        <include name="languages/**/*" />
 		</patternset>
 
 		<copy todir="${appbase.dir}" includeemptydirs="true">
