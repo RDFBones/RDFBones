@@ -84,4 +84,4 @@ $ ant all
  * even if you plan on making few modifications, this can be a convenient and efficient way to manage your custom theme. 
 
 ##Questions or comments
-Contact lawlesst at gmail.com 
+[Open an issue](https://github.com/lawlesst/vivo-project-template/issues) via the issue tracker.  
