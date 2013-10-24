@@ -76,16 +76,18 @@
 		</copy>
 
 		<patternset id="appbase.patterns">
-			<include name="src/**/*" />
-			<include name="lib/**/*" />
-			<include name="test/**/*" />
-			<include name="themes/**/*" />
-			<include name="config/*.properties" />
-			<include name="config/*.txt" />
-			<include name="config/solr/*" />
-			<include name="context.xml" />
- 		        <include name="languages/**/*" />
-		</patternset>
+                        <include name="src/**/*" />
+                        <include name="lib/**/*" />
+                        <include name="rdf/**/*" />
+                        <include name="test/**/*" />
+                        <include name="themes/**/*" />
+                        <include name="languages/**/*" />
+                        <include name="config/*.properties" />
+                        <include name="config/*.txt" />
+                        <include name="config/jarlist/*.txt" />
+                        <include name="config/solr/*" />
+                        <include name="context.xml" />
+                </patternset>
 
 		<copy todir="${appbase.dir}" includeemptydirs="true">
 			<fileset dir="${corebase.dir}">
