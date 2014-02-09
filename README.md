@@ -28,7 +28,7 @@ $ ant all
 
 ###VIVO 1.6
 ~~~
-$ git clone https://github.com/lawlesst/vivo-project-template.git@1.6 vivo
+$ git clone https://github.com/lawlesst/vivo-project-template.git vivo
 $ cd vivo
 $ git submodule init
 #Pull in VIVO and Vitro.  This will take a few minutes.  
@@ -53,7 +53,7 @@ $ ant all
 
 ###VIVO development
 ~~~
-$ git clone https://github.com/lawlesst/vivo-project-template.git@1.6 vivo
+$ git clone https://github.com/lawlesst/vivo-project-template.git vivo
 $ cd vivo
 $ git submodule init
 #Pull in VIVO and Vitro.  This will take a few minutes.  
