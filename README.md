@@ -5,7 +5,7 @@ For a more detailed explanation of setting up the VIVO environment, consult the 
 
 ##Checking out the project and building VIVO in three tiers
 
-###VIVO 1.6
+###VIVO 1.7
 ~~~
 $ git clone https://github.com/lawlesst/vivo-project-template.git vivo
 $ cd vivo
@@ -14,9 +14,9 @@ $ git submodule init
 $ git submodule update
 #Check out specific versions of VIVO and Vitro
 $cd VIVO
-$git checkout maint-rel-1.6
+$git checkout maint-rel-1.7
 $cd ../Vitro
-$git checkout maint-rel-1.6
+$git checkout maint-rel-1.7
 #Change back to vivo main directory
 $cd ..
 #Copy default deploy.properties and edit
