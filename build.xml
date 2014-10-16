@@ -45,7 +45,7 @@
 	================================= -->
 	<copy todir="${vitro.core.dir}/solr" overwrite="true">
         	<fileset dir="solr"/>
-  	</copy
+  	</copy>
 
         <!--
 		Base it all on the core build file. 
