@@ -39,7 +39,15 @@
 	<fail unless="nihvivo.dir"
 	      message="${build.properties.file} must contain a value for nihvivo.dir" />
 
-	<!--
+	
+        <!-- ================================= 
+		Copy Solr modifications to Vitro solr/
+	================================= -->
+	<copy todir="${vitro.core.dir}/solr" overwrite="true">
+        	<fileset dir="solr"/>
+  	</copy
+
+        <!--
 		Base it all on the core build file. 
 	-->
 	<import file="${vitro.core.dir}/webapp/build.xml" />
