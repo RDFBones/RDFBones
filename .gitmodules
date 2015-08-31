@@ -1,6 +1,8 @@
 [submodule "VIVO"]
+	branch = maint-rel-1.8
 	path = VIVO
 	url = https://github.com/vivo-project/VIVO.git
 [submodule "Vitro"]
+	branch = maint-rel-1.8
 	path = Vitro
 	url = https://github.com/vivo-project/Vitro.git
