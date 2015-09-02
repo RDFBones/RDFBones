@@ -4,8 +4,8 @@ build.properties
 runtime.properties
 
 #Vivo and Vitro directories
-.VIVO/
-.Vitro/
+VIVO/
+Vitro/
 
 
 #Build dir
