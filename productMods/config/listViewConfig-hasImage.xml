@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $This file is distributed under the terms of the license in /doc/license.txt$ -->
+
+<!-- See guidelines in vitro/doc/list_view_configuration_guidelines.txt -->
+
+<list-view-config>
+    <query-select>    
+    	PREFIX vitro-public: &lt;http://vitro.mannlib.cornell.edu/ns/vitro/public#&gt;
+    	
+		SELECT DISTINCT ?image ?downloadLoc ?downloadUrl
+		WHERE
+		{
+		     ?subject ?property ?image .
+		     ?image vitro-public:downloadLocation ?downloadLoc .
+		     ?downloadLoc vitro-public:directDownloadUrl ?downloadUrl
+		}
+
+  </query-select>
+  <!--
+  <query-construct>
+        PREFIX vitro-public: &lt;http://vitro.mannlib.cornell.edu/ns/vitro/public#&gt;
+           
+        CONSTRUCT {
+             ?subject ?property ?object .
+		     ?object vitro-public:downloadLocation ?downloadLoc .
+		       ?downloadLoc vitro-public:directDownloadUrl ?downloadUrl .
+		     
+        } WHERE {
+        	{
+            	 ?subject ?property ?object .
+            	 
+		    } UNION {
+		    	?subject ?property ?object .
+		    	?image vitro-public:downloadLocation ?downloadLoc .
+		    
+		    } UNION {
+		    	?subject ?property ?object .
+		    	?image vitro-public:downloadLocation ?downloadLoc .
+		    	?downloadLoc vitro-public:directDownloadUrl ?downloadUrl .
+		    }
+        }
+    </query-construct>  
+    -->        
+    <template>hasImageTest.ftl</template>
+</list-view-config>

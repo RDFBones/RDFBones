@@ -1,0 +1,16 @@
+# $This file is distributed under the terms of the license in /doc/license.txt$ 
+
+
+<http://files.org#hasImage>
+<http://vitro.mannlib.cornell.edu/ontologies/display/1.1#listViewConfigFile>
+"listViewConfig-hasImage.xml" .
+
+
+
+#local:hasReviewerRoleContext a :ConfigContext ;
+#    :hasConfiguration local:hasImageConfig ;
+#    :configContextFor <http://files.org#hasImage> ;
+#    :qualifiedByDomain  <http://xmlns.com/foaf/0.1/Person>  ;
+
+#local:hasImageConfig a :ObjectPropertyDisplayConfig ;
+#    :listViewConfigFile "listViewConfig-hasImage.xml"^^xsd:string.

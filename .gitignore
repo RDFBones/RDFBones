@@ -1,12 +1,13 @@
 #Config
 deploy.properties
-build.properties
-runtime.properties
+
 
 #Vivo and Vitro directories
 VIVO/
 Vitro/
 
+#Data directory
+vivo3TierData/
 
 #Build dir
 .build/
