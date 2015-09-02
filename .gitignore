@@ -3,6 +3,11 @@ deploy.properties
 build.properties
 runtime.properties
 
+#Vivo and Vitro directories
+.VIVO
+.Vitro
+
+
 #Build dir
 .build/
 
@@ -17,3 +22,4 @@ revisionInfo
 .classpath
 .project
 .settings
+/bin/
