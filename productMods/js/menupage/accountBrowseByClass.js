@@ -1,7 +1,19 @@
 /* $This file is distributed under the terms of the license in /doc/license.txt$ */
 
+var assignedToAccount = false;
+
 var browseByVClass = {
     // Initial page setup
+		
+	/*
+	 * This function will be called from the loaded individuals
+	 */	
+	
+	addInidividualToAccount : function(individualURI){
+		
+		 
+	}
+		
     onLoad: function() {
         this.mergeFromTemplate();
         this.initObjects();
@@ -17,60 +29,28 @@ var browseByVClass = {
     
     // Create references to frequently used elements for convenience
     initObjects: function() {
-        this.vgraphVClasses = $('#vgraph-classes');
-        this.vgraphVClassLinks = $('#vgraph-classes li a');
-        this.browseVClasses = $('#browse-classes');
-        this.browseVClassLinks = $('#browse-classes li a');
-        this.alphaIndex = $('#alpha-browse-individuals');
-        this.alphaIndexLinks = $('#alpha-browse-individuals li a');
-        this.individualsInVClass = $('#individuals-in-class ul');
-        this.individualsContainer = $('#individuals-in-class');
+        
+    	this.classSelector = $('#vgraph-classes');
+    	this.individuals = $('#individuals');
+        
+    	this.individualsContainer = $('#individuals-in-class');
     },
     
     // Event listeners. Called on page load
     bindEventListeners: function() {
         // Listeners for vClass switching
-        this.vgraphVClassLinks.click(function() {
-            var uri = $(this).attr('data-uri');
-            browseByVClass.getIndividuals(uri);
+        this.classSelector.change(function() {
+            var uri = $(this).find('option:selected').text();
+            
         });
-        
+		
+
         this.browseVClassLinks.click(function() {
             var uri = $(this).attr('data-uri');
             browseByVClass.getIndividuals(uri);
             return false;
         });
-        
-        // Listener for alpha switching
-        this.alphaIndexLinks.click(function() {
-            var uri = $('#browse-classes li a.selected').attr('data-uri');
-            var alpha = $(this).attr('data-alpha');
-            browseByVClass.getIndividuals(uri, alpha);
-            return false;
-        });
-        
-        // save the selected vclass in location hash so we can reset the selection
-        // if the user navigates with the back button
-        this.browseVClasses.children('li').each( function() {
-           $(this).find('a').click(function () {
-                // the extra space is needed to prevent odd scrolling behavior
-                location.hash = $(this).attr('data-uri') + ' ';
-           }); 
-        });
-
-        // Call the pagination listener
-        this.paginationListener();
-    },
-    
-    // Listener for page switching -- separate from the rest because it needs to be callable
-     Listener: function() {
-        $('.pagination li a').click(function() {
-            var uri = $('#browse-classes li a.selected').attr('data-uri');
-            var alpha = $('#alpha-browse-individuals li a.selected').attr('data-alpha');
-            var page = $(this).attr('data-page');
-            browseByVClass.getIndividuals(uri, alpha, page);
-            return false;
-        });
+  
     },
     
     // Load individuals for default class as specified by menupage template
@@ -156,53 +136,8 @@ var browseByVClass = {
         });
     },
     
-    // getPageScroll() by quirksmode.org
-    getPageScroll: function() {
-        var xScroll, yScroll;
-        if (self.pageYOffset) {
-          yScroll = self.pageYOffset;
-          xScroll = self.pageXOffset;
-        } else if (document.documentElement && document.documentElement.scrollTop) {
-          yScroll = document.documentElement.scrollTop;
-          xScroll = document.documentElement.scrollLeft;
-        } else if (document.body) {// all other Explorers
-          yScroll = document.body.scrollTop;
-          xScroll = document.body.scrollLeft;
-        }
-        return new Array(xScroll,yScroll)
-    },
+   
     
-    // Print out the pagination nav if called
-    pagination: function(pages, page) {
-        var pagination = '<div class="pagination menupage">';
-        pagination += '<h3>' + browseByVClass.pageString + '</h3>';
-        pagination += '<ul>';
-        $.each(pages, function(i, item) {
-            var anchorOpen = '<a class="round" href="#" title="' + browseByVClass.viewPageString + ' ' 
-            + pages[i].text + ' '
-            + browseByVClass.ofTheResults + ' " data-page="'+ pages[i].index +'">';
-            var anchorClose = '</a>';
-            
-            pagination += '<li class="round';
-            // Test for active page
-            if ( pages[i].text == page) {
-                pagination += ' selected';
-                anchorOpen = "";
-                anchorClose = "";
-            }
-            pagination += '" role="listitem">';
-            pagination += anchorOpen;
-            pagination += pages[i].text;
-            pagination += anchorClose;
-            pagination += '</li>';
-        })
-        pagination += '</ul>';
-        
-        // Add the pagination above and below the list of individuals and call the listener
-        browseByVClass.individualsContainer.prepend(pagination);
-        browseByVClass.individualsContainer.append(pagination);
-        browseByVClass.paginationListener();
-    },
     
     // Toggle the active class so it's clear which is selected
     selectedVClass: function(vclassUri) {
@@ -214,19 +149,6 @@ var browseByVClass = {
     },
 
     // Toggle the active letter so it's clear which is selected
-    selectedAlpha: function(alpha) {
-        // if no alpha argument sent, assume all
-        if ( alpha == null ) {
-            alpha = "all";
-        }
-        // Remove active class on all letters
-        $('#alpha-browse-individuals li a.selected').removeClass('selected');
-        
-        // Add active class for requested alpha
-        $('#alpha-browse-individuals li a[data-alpha="'+ alpha +'"]').addClass('selected');
-        
-        return alpha;
-    },
     
     // Wipe the currently displayed individuals, no-content message, and existing pagination
     wipeSlate: function() {

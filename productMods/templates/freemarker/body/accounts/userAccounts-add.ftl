@@ -37,8 +37,11 @@
 
 
 <div>
-
-	<div id="addNew"> Add new individual </div> 
+	<div id="assingAccToInd">Assign account to an existing individual</div>
+	<div id="addNew"> Add new account </div> 
+	<div id="assignForm" style="display">
+		
+	</div>
 	<div id="addForm" style="display:none;">
 		<div id="backButton"> Back </div>
 		<section id="add-account" role="region">
