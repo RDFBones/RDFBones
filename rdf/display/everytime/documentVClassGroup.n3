@@ -18,6 +18,15 @@ display:Documents
     display:hasDataGetter display:documentDataGetter .
     
     
+display:DocumentsMenuItem
+    a display:NavigationElement ;
+    display:menuPosition "6";
+    display:linkText "Documents";
+    display:toPage display:Documents .    
+    
+display:DefaultMenu 
+	display:hasElement display:DocumentsMenuItem .
+    
 display:documentDataGetter
       a <java:edu.cornell.mannlib.vitro.webapp.utils.dataGetter.ClassGroupPageData>;
       display:forClassGroup

@@ -64,6 +64,7 @@ public class ContentModelSetup extends JenaDataSourceSetupBase
 		} else {
         	checkForNamespaceMismatch( applicationMetadataModel, ctx );
 		}
+		
 		RDFFilesLoader.loadEveryTimeFiles("applicationMetadata", (OntModel) applicationMetadataModel);
         
 			
