@@ -1,0 +1,29 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix display: <http://vitro.mannlib.cornell.edu/ontologies/display/1.1#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix action: <java:edu.cornell.mannlib.vitro.webapp.auth.permissions.SimplePermission#> .
+@prefix vivoweb: <http://vivoweb.org/ontology#> .
+@prefix vitro:   <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+
+display:Documents
+    a display:Page ;    
+    a display:ClassGroupPage;
+    display:forClassGroup vivoweb:vitroClassGroupdocuments ;
+    display:title "Documents" ;
+    display:urlMapping "/documents" ;
+    display:hasDataGetter display:documentDataGetter .
+    
+    
+display:documentDataGetter
+      a <java:edu.cornell.mannlib.vitro.webapp.utils.dataGetter.ClassGroupPageData>;
+      display:forClassGroup
+              vivoweb:vitroClassGroupdocuments .
+              
+              
+<http://purl.org/ontology/bibo/Image>
+   vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupdocuments> .
+              

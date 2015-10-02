@@ -6,6 +6,17 @@ runtime.properties
 #Build dir
 .build/
 
+#Vivo and Vitro directories
+./VIVO/*
+./Vitro/*
+
+#Scripts
+*.sh
+tomcat_shutdown
+
+#The datadirectory
+vivo3TierData/
+
 #Release files
 vivo-rel-1.5.1
 vitro-data
@@ -17,3 +28,4 @@ revisionInfo
 .classpath
 .project
 .settings
+/bin/
