@@ -13,7 +13,7 @@
 <h2>Document</h2>
        
 <h2>Fileitem</h2>
-<#--
+
 <#if dg?has_content>
  	<#list dg as result>
 		<a  href="/vivo${result["downloadLocation"]}" download> 
@@ -29,7 +29,7 @@
 	</form>
 </#if>
 
--->
+
 
 <#assign nameForOtherGroup = "${i18n().other}"> 
 
