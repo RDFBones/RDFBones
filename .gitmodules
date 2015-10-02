@@ -8,4 +8,4 @@
 	url = https://github.com/vivo-project/Vitro.git
 [submodule "rdf/tbox/filegraph"]
 	path = rdf/tbox/filegraph
-	url = git@github.com:RDFBones/RDFBones-O.git
+	url = https://github.com/RDFBones/RDFBones-O.git
