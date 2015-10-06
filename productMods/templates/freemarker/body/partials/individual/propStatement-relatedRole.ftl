@@ -49,5 +49,5 @@
         </#if>
     </#local>
 
-    ${linkedIndividual}&nbsp;${roleLabel!}&nbsp;<@dt.yearIntervalSpan "${statement.dateTimeStart!}" "${statement.dateTimeEnd!}" />
+    ${linkedIndividual}&nbsp;${roleLabel!}&nbsp;<@dt.dayIntervalSpan "${statement.dateTimeStart!}" "${statement.dateTimeEnd!}" />
 </#macro>
