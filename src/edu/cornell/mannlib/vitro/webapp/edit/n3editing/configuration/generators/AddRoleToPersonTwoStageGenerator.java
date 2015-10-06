@@ -885,12 +885,12 @@ public abstract class AddRoleToPersonTwoStageGenerator extends BaseEditConfigura
 	private final String N3_PREFIX = "@prefix core: <http://vivoweb.org/ontology/core#> .";
 	
 	protected String getStartDatePrecision() {
-	    String precision = VitroVocabulary.Precision.YEAR.uri();
+	    String precision = VitroVocabulary.Precision.DAY.uri();
 		return precision;
 	}
 
 	protected String getEndDatePrecision() {
-	    String precision = VitroVocabulary.Precision.YEAR.uri();
+	    String precision = VitroVocabulary.Precision.DAY.uri();
 		return precision;
 	}
 	
