@@ -128,7 +128,31 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     <p>
         <label for="dept">${i18n().researcher_role} ${requiredHint}</label>
         <input  size="50"  type="text" id="roleLabel" name="roleLabel" value="${roleLabelValue}" />
-    </p>    
+    </p>
+        
+    <#if !numDateFields?has_content>
+		<#assign numDateFields = 2 />
+	</#if>
+    
+    <#if numDateFields == 1 >
+       <#--Generated html is a map with key name mapping to html string-->
+       <#if htmlForElements?keys?seq_contains("startField")>
+        	<label class="dateTimeLabel" for="startField">${i18n().start_year}</label>
+       		${htmlForElements["startField"]} ${yearHint}
+       </#if>
+    <#else>
+        <h4 class="label">${i18n().years_participating} </h4>
+        <#if htmlForElements?keys?seq_contains("startField")>
+        	    <label class="dateTime" for="startField">${i18n().start_capitalized}</label>
+       		    ${htmlForElements["startField"]} ${yearHint}
+       </#if>
+       <p></p>
+       <#if htmlForElements?keys?seq_contains("endField")>
+       		    <label class="dateTime" for="endField">${i18n().end_capitalized}</label>
+       		    ${htmlForElements["endField"]} ${yearHint}
+       </#if>
+    </#if>
+    
                                     
   	<#--End draw elements-->
     <input type="hidden" id="editKey" name="editKey" value="${editKey}"/>
