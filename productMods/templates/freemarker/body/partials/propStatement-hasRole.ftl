@@ -33,7 +33,7 @@
     </#local>
     
     <#local dateTime>
-        <@dt.yearIntervalSpan "${statement.dateTimeStart!}" "${statement.dateTimeEnd!}" />
+        <@dt.dayIntervalSpan "${statement.dateTimeStart!}" "${statement.dateTimeEnd!}" />
     </#local>
     
     ${linkedIndividual} ${statement.roleLabel!} ${dateTime!} 

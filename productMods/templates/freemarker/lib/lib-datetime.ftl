@@ -23,6 +23,20 @@
     </#if>  
 </#macro>
 
+<#macro dayIntervalSpan startDateTime="" endDateTime="" endYearAsRange=true>
+
+    <#local dayInterval = dayInterval(startDateTime, endDateTime, endYearAsRange)>
+    <#if dayInterval?has_content>
+        <@dateTimeSpan>${dayInterval}</@dateTimeSpan>
+    </#if>  
+</#macro>
+
+
+<#function dayInterval dateTimeStart="" dateTimeEnd="" endYearAsRange=true>
+    <#local precision = "yearMonthDayPrecision">
+    <#return dateTimeIntervalShort(dateTimeStart, precision, dateTimeEnd, precision, endYearAsRange)>
+</#function>
+
 
 <#-- Display the datetime value or interval in a classed span appropriate for 
      a property statement list -->
