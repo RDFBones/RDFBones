@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.XSD;
 
 import org.apache.commons.logging.Log;
@@ -33,6 +34,17 @@ public class ProjectHasParticipantGenerator  extends VivoBaseGenerator implement
     //TODO: can we get rid of the session and get it form the vreq?
     public static Log log = LogFactory.getLog(EditRequestDispatchController.class);
 
+    
+    private final String VIVO_NS="http://vivoweb.org/ontology/core#";
+    
+	private final String RoleToIntervalURI =  VIVO_NS + "dateTimeInterval";	
+	private final String IntervalTypeURI =    VIVO_NS + "DateTimeInterval";		
+	private final String IntervalToStartURI = VIVO_NS + "start";		
+	private final String IntervalToEndURI =   VIVO_NS + "end";	
+	private final String DateTimeValueTypeURI=VIVO_NS + "DateTimeValue";	
+	private final String DateTimePrecisionURI=VIVO_NS + "dateTimePrecision";	
+	private final String DateTimeValueURI =   VIVO_NS + "dateTime";	
+	
 	
     public EditConfigurationVTwo getEditConfiguration(VitroRequest vreq, HttpSession session) throws Exception {
  
@@ -49,12 +61,17 @@ public class ProjectHasParticipantGenerator  extends VivoBaseGenerator implement
         conf.setVarNameForObject("projectRole");
                 
         conf.setN3Required( Arrays.asList( n3ForNewProjectRole ) );
-        conf.setN3Optional(Arrays.asList( n3ForNewPerson, n3ForExistingPerson, firstNameAssertion, lastNameAssertion ) );
+        conf.setN3Optional(Arrays.asList( n3ForNewPerson, n3ForExistingPerson, firstNameAssertion, lastNameAssertion , N3ForStart , N3ForEnd) );
         
         conf.addNewResource("projectRole", DEFAULT_NS_FOR_NEW_RESOURCE);
         conf.addNewResource("newPerson",DEFAULT_NS_FOR_NEW_RESOURCE);
         conf.addNewResource("vcardPerson", DEFAULT_NS_FOR_NEW_RESOURCE);
         conf.addNewResource("vcardName", DEFAULT_NS_FOR_NEW_RESOURCE);
+        
+        conf.addNewResource("startNode", DEFAULT_NS_FOR_NEW_RESOURCE);
+        conf.addNewResource("endNode", DEFAULT_NS_FOR_NEW_RESOURCE);
+        conf.addNewResource("intervalNode", DEFAULT_NS_FOR_NEW_RESOURCE);
+        
         
         //uris in scope: none   
         //literals in scope: none
@@ -65,9 +82,12 @@ public class ProjectHasParticipantGenerator  extends VivoBaseGenerator implement
 
         conf.addSparqlForExistingLiteral("personLabel", personLabelQuery);
         conf.addSparqlForExistingLiteral("roleLabel", roleLabelQuery);
-
+        					
         conf.addSparqlForExistingUris("existingPerson", existingPersonQuery);
                         
+        //conf.addSparqlForExistingUris("startNode", startTimeQuery);
+        //conf.addSparqlForExistingUris("endNode", endTimeQuery);
+        
         conf.addField( new FieldVTwo().
                 setName("existingPerson")
                 //options will be added in browser by auto complete JS  
@@ -138,6 +158,19 @@ public class ProjectHasParticipantGenerator  extends VivoBaseGenerator implement
     }
     
     /* N3 assertions for working with educational training */
+    final static String startTimeQuery = "SELECT ?existingDateStart WHERE { "
+    		+	"?role <http://vivoweb.org/ontology/core#dateTimeInterval> ?intervalNode . "
+    		+	"?intervalNode <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://vivoweb.org/ontology/core#DateTimeInterval> . "
+    		+	"?intervalNode <http://vivoweb.org/ontology/core#start> ?startNode . "
+    		+	"?startNode <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://vivoweb.org/ontology/core#DateTimeValue> ."
+    		+	"?startNode <http://vivoweb.org/ontology/core#dateTime> ?existingDateStart . } "	;
+    
+    final static String endTimeQuery = "SELECT ?existingEndDate WHERE { "
+    		+	"?role <http://vivoweb.org/ontology/core#dateTimeInterval> ?intervalNode . "
+    		+	"?intervalNode <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://vivoweb.org/ontology/core#DateTimeInterval> . "
+    		+	"?intervalNode <http://vivoweb.org/ontology/core#end> ?endNode . "
+    		+	"?endNode <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://vivoweb.org/ontology/core#DateTimeValue> ."
+    		+	"?endNode <http://vivoweb.org/ontology/core#dateTime> ?existingEndDate . } "	;
     
     final static String n3ForNewProjectRole =       
         "@prefix core: <"+ vivoCore +"> .\n" +
@@ -147,6 +180,19 @@ public class ProjectHasParticipantGenerator  extends VivoBaseGenerator implement
         "?projectRole <http://purl.obolibrary.org/obo/BFO_0000054> ?project . \n" +
         "?projectRole <"+ label +"> ?roleLabel . \n" ;
 
+    final static String n3ForInterval = " ?projectRole  <http://vivoweb.org/ontology/core#dateTimeInterval> ?intervalNode . \n "
+    		+ "?intervalNode  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://vivoweb.org/ontology/core#DateTimeInterval> . \n"
+    		+ "?intervalNode <http://vivoweb.org/ontology/core#start> ?startNode .  \n"
+    		+ "?startNode  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://vivoweb.org/ontology/core#DateTimeValue> . \n"
+    		+ "?startNode  <http://vivoweb.org/ontology/core#dateTime> ?startField-value .  \n "
+    		+ "?startNode  <http://vivoweb.org/ontology/core#dateTimePrecision> ?startField-precision . "
+    		+ "?intervalNode <http://vivoweb.org/ontology/core#end> ?endNode . \n"
+    		+ "?endNode  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://vivoweb.org/ontology/core#DateTimeValue> . \n"
+    		+ "?endNode  <http://vivoweb.org/ontology/core#dateTime> ?endField-value . \n"
+    		+ "?endNode  <http://vivoweb.org/ontology/core#dateTimePrecision> ?endField-precision . ";
+    		
+    		
+    
     final static String n3ForNewPerson  =      
         "?projectRole <http://purl.obolibrary.org/obo/RO_0000052> ?newPerson . \n" +
         "?newPerson <http://purl.obolibrary.org/obo/RO_0000053> ?projectRole . \n" +
@@ -199,6 +245,20 @@ public class ProjectHasParticipantGenerator  extends VivoBaseGenerator implement
         "?existingPerson a <http://xmlns.com/foaf/0.1/Person> . \n " +
         " }";
 
+    private String N3ForStart = "?projectRole  <" + RoleToIntervalURI + "> ?intervalNode ." +     
+			    "?intervalNode  <" + RDF.type.getURI() + "> <" + IntervalTypeURI + "> ." + 
+			    "?intervalNode <" + IntervalToStartURI + "> ?startNode ." +     
+			    "?startNode  <" + RDF.type.getURI() + "> <" + DateTimeValueTypeURI + "> ." + 
+			    "?startNode  <" + DateTimeValueURI + "> ?startField-value ." + 
+			    "?startNode  <" + DateTimePrecisionURI + "> ?startField-precision .";
+    
+    private String N3ForEnd = "?projectRole      <" + RoleToIntervalURI + "> ?intervalNode .  " +   
+			    "?intervalNode  <" + RDF.type.getURI() + "> <" + IntervalTypeURI + "> ." + 
+			    "?intervalNode <" + IntervalToEndURI + "> ?endNode ." + 
+			    "?endNode  <" + RDF.type.getURI() + "> <" + DateTimeValueTypeURI + "> ." + 
+			    "?endNode  <" + DateTimeValueURI + "> ?endField-value ." + 
+			    "?endNode  <" + DateTimePrecisionURI+ "> ?endField-precision .";
+	
     
   //Adding form specific data such as edit mode
 	public void addFormSpecificData(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
