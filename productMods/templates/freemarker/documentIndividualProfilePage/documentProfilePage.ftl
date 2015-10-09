@@ -33,6 +33,8 @@
 
 <#assign nameForOtherGroup = "${i18n().other}"> 
 
+<#-- <#include "individual-fileUpload.ftl">  -->
+
 
 <#include "individual-property-group-tabs.ftl">
 

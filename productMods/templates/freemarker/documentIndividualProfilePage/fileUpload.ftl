@@ -19,4 +19,5 @@ ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/uploadImages.cs
 		
 		<input type="hidden" name = "editKey" value="${editKey}"/>
 		<input type="submit" value="submit">
+		<span class="or"> ${i18n.or} <a class="cancel"  href="${cancelUrl}" title="${i18n.cancel_title}">${i18n.cancel_link}</a></span>
 	</form>
