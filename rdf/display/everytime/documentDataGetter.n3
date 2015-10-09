@@ -1,0 +1,22 @@
+@prefix display: <http://vitro.mannlib.cornell.edu/ontologies/display/1.1#> .
+@prefix bibo:    <http://purl.org/ontology/bibo/> .
+
+
+bibo:Document display:hasDataGetter display:documentsDataGetter.
+display:documentsDataGetter a <java:edu.cornell.mannlib.vitro.webapp.utils.dataGetter.SparqlQueryDataGetter>;                       
+    display:saveToVar "dg" ;
+    display:query """
+    PREFIX display: <http://vitro.mannlib.cornell.edu/ontologies/display/1.1#> 
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX vitro-public: <http://vitro.mannlib.cornell.edu/ns/vitro/public#> 
+    SELECT (str(?downloadLoc) AS ?downloadLocation) ?mimeType ?filename
+    WHERE { 
+        
+        ?individualURI <http://vivo.mydomain.edu/individual/hasFile>  ?fileIndividual .
+        ?fileIndividual vitro-public:filename ?filename .
+        ?fileIndividual vitro-public:mimeType ?mimeType .
+        ?fileIndividual vitro-public:downloadLocation ?byteStreamIndividual .
+        ?byteStreamIndividual vitro-public:directDownloadUrl ?downloadLoc . 
+     }        
+     
+     """ .
