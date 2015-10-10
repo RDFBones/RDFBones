@@ -6,7 +6,7 @@
 
 
 <http://vivo.mydomain.edu/individual/hasFile> rdf:type owl:ObjectProperty ;
-											rdfs:range bibo:Document.
+											rdfs:domain bibo:Document.
 
 <http://vivo.mydomain.edu/individual/hasFile>
 	vitro:customEntryFormAnnot 

@@ -138,6 +138,8 @@ public class ProcessRdfForm {
             MultiValueEditSubmission submission) throws Exception {                
         log.debug("in createNewStatements()" );        
         
+       
+        
         //getN3Required and getN3Optional will return copies of the 
         //N3 String Lists so that this code will not modify the originals.
         List<String> requiredN3 = configuration.getN3Required();
@@ -178,6 +180,11 @@ public class ProcessRdfForm {
 
         log.debug("editing an existing resource: " + editConfig.getObject() );        
 
+        
+        if( submission.isFile()){
+        	
+        	deleteFile(editConfig);
+        }
         //getN3Required and getN3Optional will return copies of the 
         //N3 String Lists so that this code will not modify the originals.
         List<String> N3RequiredAssert = editConfig.getN3Required();        
@@ -194,6 +201,76 @@ public class ProcessRdfForm {
                 N3RequiredRetract, N3OptionalRetract);        
     }    
     
+    
+    public void deleteFile(EditConfigurationVTwo editConfig){
+    	
+    	try{
+    		FileStorage fileStorage = ApplicationUtils.instance().getFileStorage();
+    		List<String> byteStreamToDelete = editConfig.getUrisInScope().get("byteStreamIndividual");
+    		log.info("byteStreamToDelete : " + byteStreamToDelete.toString());
+    		fileStorage.deleteFile(byteStreamToDelete.get(0));
+        
+	    } catch (IOException e) {
+			
+			throw new IllegalStateException("Can't create the new image file.",e);
+		}
+    }	
+    
+    public void saveFile(MultiValueEditSubmission submission, Map<String,String> urisForNewResources){
+    	
+    	Map<String, List<FileItem>> map = this.vreq.getFiles();
+		log.info("map file : " + map.toString());
+    	List<FileItem> list = map.get("datafile");
+	
+    	FileItem fileItem = list.get(0);
+		
+		FileStorage fileStorage = ApplicationUtils.instance().getFileStorage();
+		
+		String fileName = fileItem.getName();
+		String filename = FilenameUtils.getName(fileName);
+		
+		int periodHere = filename.lastIndexOf('.');
+		String mimeType = filename.substring(periodHere);
+		
+		log.info("Filename : " + filename);
+		log.info("Mimetype : " + mimeType);
+		
+		try{
+
+			InputStream inputStream = fileItem.getInputStream();
+
+    		String downloadLocation = FileServingHelper.getBytestreamAliasUrl(urisForNewResources.get("byteStreamIndividual"), filename, vreq.getSession().getServletContext());
+    		
+    		fileStorage.createFile(urisForNewResources.get("byteStreamIndividual"), filename, inputStream);
+    		
+    		Map <String,List<Literal>> litOnFor = new HashMap<String, List<Literal>>();
+        	
+    		List<Literal> literalsArray1 = new ArrayList<Literal>();
+        	Literal a = ResourceFactory.createPlainLiteral(fileName);
+        	literalsArray1.add(a);
+    		
+    		List<Literal> literalsArray2 = new ArrayList<Literal>();
+        	Literal b = ResourceFactory.createPlainLiteral(downloadLocation);
+        	literalsArray2.add(b);
+    		
+    		List<Literal> literalsArray3 = new ArrayList<Literal>();
+        	Literal c = ResourceFactory.createPlainLiteral(mimeType);
+        	literalsArray3.add(c);
+        	
+    		litOnFor.put("fileName", literalsArray1);
+        	litOnFor.put("downloadUrl", literalsArray2);
+    		litOnFor.put("mimeType", literalsArray3);
+    		
+    		submission.setLiteralsFromForm(litOnFor);
+    		
+		} catch (IOException e) {
+			
+			throw new IllegalStateException("Can't create the new image file.",e);
+		}
+    	
+    }
+    	
+    	
     @SuppressWarnings("unchecked")
     protected void subInValuesToN3(
             EditConfigurationVTwo editConfig, MultiValueEditSubmission submission, 
@@ -206,64 +283,11 @@ public class ProcessRdfForm {
         /* *********** Check if new resource needs to be forcibly created ******** */
         urisForNewResources = URIsForNewRsources(editConfig, newURIMaker);
         
+        	
         if( submission.isFile()){
         	
-        	Map<String, List<FileItem>> map = this.vreq.getFiles();
-    		log.info("map file : " + map.toString());
-        	List<FileItem> list = map.get("datafile");
-    		
-    		//log.info("list files " + list.toString());
-    		//filesFromForm.put("file", list);
-        	
-        	//Map <String,List<FileItem>> list = submission.getFilesFromForm();
-        	//List<FileItem> list1 =list.get("file");
-        	
-        	FileItem fileItem = list.get(0);
-    		
-    		FileStorage fileStorage = ApplicationUtils.instance().getFileStorage();
-    		
-    		String fileName = fileItem.getName();
-    		String filename = FilenameUtils.getName(fileName);
-    		
-    		int periodHere = filename.lastIndexOf('.');
-    		String mimeType = filename.substring(periodHere);
-    		
-    		log.info("Filename : " + filename);
-    		log.info("Mimetype : " + mimeType);
-    		
-    		try{
-
-    			InputStream inputStream = fileItem.getInputStream();
-
-        		String downloadLocation = FileServingHelper.getBytestreamAliasUrl(urisForNewResources.get("byteStreamIndividual"), filename, vreq.getSession().getServletContext());
-        		
-        		fileStorage.createFile(urisForNewResources.get("byteStreamIndividual"), filename, inputStream);
-        		
-        		Map <String,List<Literal>> litOnFor = new HashMap<String, List<Literal>>();
-            	
-        		List<Literal> literalsArray1 = new ArrayList<Literal>();
-            	Literal a = ResourceFactory.createPlainLiteral(fileName);
-            	literalsArray1.add(a);
-        		
-        		List<Literal> literalsArray2 = new ArrayList<Literal>();
-            	Literal b = ResourceFactory.createPlainLiteral(downloadLocation);
-            	literalsArray2.add(b);
-        		
-        		List<Literal> literalsArray3 = new ArrayList<Literal>();
-            	Literal c = ResourceFactory.createPlainLiteral(mimeType);
-            	literalsArray3.add(c);
-            	
-        		litOnFor.put("fileName", literalsArray1);
-            	litOnFor.put("downloadLocation", literalsArray2);
-        		litOnFor.put("mimeType", literalsArray3);
-        		
-        		submission.setLiteralsFromForm(litOnFor);
-        		
-    		} catch (IOException e) {
-    			
-    			throw new IllegalStateException("Can't create the new image file.",e);
-    		}
-    	}
+        	saveFile(submission, urisForNewResources);
+        }
         
         substituteInForcedNewURIs(urisForNewResources, submission.getUrisFromForm(), requiredAsserts, optionalAsserts, URLToReturnTo);
         logSubstitue( "Added form URIs that required new URIs", requiredAsserts, optionalAsserts, requiredRetracts, optionalRetracts);

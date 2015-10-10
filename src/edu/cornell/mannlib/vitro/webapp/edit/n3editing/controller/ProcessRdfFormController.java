@@ -66,6 +66,7 @@ public class ProcessRdfFormController extends FreemarkerHttpServlet{
         MultiValueEditSubmission submission = new MultiValueEditSubmission(vreq.getParameterMap(), configuration);        	
         EditSubmissionUtils.putEditSubmissionInSession(vreq.getSession(), submission);
        
+        log.info("submission : " + submission.toString());
         //if errors, return error response
 		ResponseValues errorResponse = doValidationErrors(vreq, configuration, submission);
 		if( errorResponse != null )

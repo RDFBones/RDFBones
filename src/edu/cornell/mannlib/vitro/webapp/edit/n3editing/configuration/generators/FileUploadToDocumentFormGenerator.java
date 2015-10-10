@@ -17,6 +17,8 @@ import org.apache.commons.logging.LogFactory;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.Literal;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ResourceFactory;
 
 import edu.cornell.mannlib.vitro.webapp.application.ApplicationUtils;
 import edu.cornell.mannlib.vitro.webapp.beans.Individual;
@@ -51,7 +53,7 @@ import edu.cornell.mannlib.vitro.webapp.utils.FrontEndEditingUtils.EditMode;
  * found in the range is too large, the the auto complete setup and
  * template will be used instead.
  */
-public class FileUploadToDocumentFormGenerator implements EditConfigurationGenerator {
+public class FileUploadToDocumentFormGenerator extends BaseEditConfigurationGenerator implements EditConfigurationGenerator {
 
 	private Log log = LogFactory.getLog(DefaultObjectPropertyFormGenerator.class);	
 	private String subjectUri = null;
@@ -126,6 +128,7 @@ public class FileUploadToDocumentFormGenerator implements EditConfigurationGener
     	
     	conf.setVarNameForSubject("document");
     	conf.setVarNameForPredicate("hasFile");
+    	conf.setVarNameForObject("fileIndividual");
     	FieldVTwo field1 = new FieldVTwo();
     	field1.setName("dataFile");
     	
@@ -138,8 +141,8 @@ public class FileUploadToDocumentFormGenerator implements EditConfigurationGener
     	/*
     	 * This is for the file!
     	 */
-    	conf.setLiteralsOnForm("dataFile"); // "downloadUrl", "mimeType", "downloadLoaction");
-    	
+    	conf.setLiteralsOnForm("dataFile"); //"downloadUrl", "mimeType", "fileName");
+    	conf.setUrisOnForm("byteStreamIndividual");
     	
     	List<String> validators = new ArrayList<String>();
     	field1.setValidators(validators);    	    	    
@@ -160,15 +163,52 @@ public class FileUploadToDocumentFormGenerator implements EditConfigurationGener
     	String triple5 = " ?fileIndividual vitro-public:filename ?fileName .";
     	String triple6 = " ?fileIndividual vitro-public:mimeType ?mimeType .";
     	String triple7 = " ?byteStreamIndividual a vitro-public:FileByteStream ."; 
-    	String triple8 = " ?byteStreamIndividual vitro-public:directDownloadUrl ?downloadLocation .";
+    	String triple8 = " ?byteStreamIndividual vitro-public:directDownloadUrl ?downloadUrl .";
     	
     	String a = triple1 + triple2 + triple3 + triple4 + triple5 + triple6 + triple7 + triple8;
-    	
     	conf.setN3Required(a);
     	
-    	/*
-    	 * Two new resources
-    	 */
+    	Map<String,String> uriQueries = new HashMap<String,String>();
+    	
+    	uriQueries.put("byteStreamIndividual",""
+    			+ "PREFIX vitro-public: <http://vitro.mannlib.cornell.edu/ns/vitro/public#> "
+    			+ "SELECT ?byteStreamIndividual "
+    			+ "WHERE {"
+    			+ "?fileIndividual vitro-public:downloadLocation ?byteStreamIndividual ."
+    			+ "}");
+    	
+    	
+    	conf.setSparqlForExistingUris(uriQueries);
+    	
+    	
+    	Map<String,String> literalQueries = new HashMap<String,String>();
+    	
+    
+    	literalQueries.put("fileName",""
+    			+ "PREFIX vitro-public: <http://vitro.mannlib.cornell.edu/ns/vitro/public#> "
+    			+ "SELECT ?fileName "
+    			+ "WHERE {"
+    			+ "?fileIndividual  vitro-public:filename ?fileName ."
+    			+ "}");
+    	
+    	literalQueries.put("mimeType",""
+    			+ "PREFIX vitro-public: <http://vitro.mannlib.cornell.edu/ns/vitro/public#> "
+    			+ "SELECT ?mimeType "
+    			+ "WHERE {"
+    			+ "?fileIndividual  vitro-public:mimeType ?mimeType ."
+    			+ "}");
+    	
+    	literalQueries.put("downloadUrl",""
+    			+ "PREFIX vitro-public: <http://vitro.mannlib.cornell.edu/ns/vitro/public#> "
+    			+ "SELECT ?downloadUrl "
+    			+ "WHERE { "
+    			+ "?fileIndividual vitro-public:downloadLocation ?byteStreamIndividual . "
+    			+ "?byteStreamIndividual vitro-public:directDownloadUrl ?downloadUrl . "
+    			+ "}");
+    	
+    	conf.setSparqlForExistingLiterals(literalQueries);
+    	
+    	
     	Map<String,String> newResources = new HashMap<String,String>();
     	newResources.put("fileIndividual", null);
     	newResources.put("byteStreamIndividual", null);
@@ -178,9 +218,9 @@ public class FileUploadToDocumentFormGenerator implements EditConfigurationGener
     	urisOnForm.put("fileItem", subjectUri);
     	
     	conf.setTemplate(objectPropertyTemplate);
-    	
-    	log.info("EditConfigurationVTwo : " + conf);
-    			
+
+    	prepare(vreq, conf);
+
     	return conf;
     }
 	
