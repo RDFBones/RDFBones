@@ -2,6 +2,7 @@
 
 package edu.cornell.mannlib.vitro.webapp.controller.freemarker;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import edu.cornell.mannlib.vitro.webapp.application.ApplicationUtils;
 import edu.cornell.mannlib.vitro.webapp.auth.permissions.SimplePermission;
 import edu.cornell.mannlib.vitro.webapp.auth.requestedAction.AuthorizationRequest;
 import edu.cornell.mannlib.vitro.webapp.beans.DataProperty;
@@ -19,10 +21,13 @@ import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.controller.freemarker.responsevalues.RedirectResponseValues;
 import edu.cornell.mannlib.vitro.webapp.controller.freemarker.responsevalues.ResponseValues;
 import edu.cornell.mannlib.vitro.webapp.controller.freemarker.responsevalues.TemplateResponseValues;
+import edu.cornell.mannlib.vitro.webapp.dao.IndividualDao;
+import edu.cornell.mannlib.vitro.webapp.dao.VitroVocabulary;
 import edu.cornell.mannlib.vitro.webapp.dao.WebappDaoFactory;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationUtils;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.N3EditUtils;
 import edu.cornell.mannlib.vitro.webapp.modelaccess.ModelAccess;
+import edu.cornell.mannlib.vitro.webapp.modules.fileStorage.FileStorage;
 import edu.cornell.mannlib.vitro.webapp.web.URLEncoder;
 /*
  * Custom deletion controller to which deletion requests from default property form are sent. May be replaced 
@@ -179,6 +184,23 @@ public class DeletePropertyController extends FreemarkerHttpServlet {
     	}
     	
     	if(!hasDeleteObjectUri(vreq)) {
+    		
+    		String rangeUri = EditConfigurationUtils.getRangeUri(vreq);
+        	if(rangeUri.equals("http://vitro.mannlib.cornell.edu/ns/vitro/public#File")){
+        		
+        		try {
+        			IndividualDao indao = vreq.getWebappDaoFactory().getIndividualDao();
+        			Individual file = indao.getIndividualByURI(EditConfigurationUtils.getObjectUri(vreq));
+        			String byteStreamUri = file.getDataValue(VitroVocabulary.FS_DOWNLOAD_LOCATION);
+            		
+        			FileStorage fileStorage = ApplicationUtils.instance().getFileStorage();
+            		fileStorage.deleteFile(byteStreamUri);
+                }	catch (IOException e) {
+        			
+        			throw new IllegalStateException("Can't delete file! .",e);
+        		}
+        	}
+    		
     		deleteObjectPropertyStatement(vreq);
     	}
 		

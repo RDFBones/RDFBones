@@ -3,10 +3,13 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix bibo:    <http://purl.org/ontology/bibo/> .
+@prefix vitro-public:  <http://vitro.mannlib.cornell.edu/ns/vitro/public#> .
 
 
 <http://vivo.mydomain.edu/individual/hasFile> rdf:type owl:ObjectProperty ;
-											rdfs:domain bibo:Document.
+											rdfs:domain bibo:Document;
+											rdfs:range vitro-public:File . 
+
 
 <http://vivo.mydomain.edu/individual/hasFile>
 	vitro:customEntryFormAnnot 

@@ -95,6 +95,7 @@ public class ProcessRdfForm {
      * @throws Exception May throw an exception if Required N3 does not
      * parse correctly.
      */
+    
     public AdditionsAndRetractions  process(
             EditConfigurationVTwo configuration,
             MultiValueEditSubmission submission,
@@ -212,7 +213,7 @@ public class ProcessRdfForm {
         
 	    } catch (IOException e) {
 			
-			throw new IllegalStateException("Can't create the new image file.",e);
+			throw new IllegalStateException("Can't delete file.",e);
 		}
     }	
     
