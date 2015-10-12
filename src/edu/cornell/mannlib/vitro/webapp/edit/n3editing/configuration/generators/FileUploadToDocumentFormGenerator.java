@@ -114,6 +114,7 @@ public class FileUploadToDocumentFormGenerator extends BaseEditConfigurationGene
     	EditConfigurationVTwo conf = new EditConfigurationVTwo();
     	
     	
+        initBasics(conf, vreq);
     	//conf.setN3Required("?document ?hasDescription ?desc . ");
   
     	List<String> literals = new ArrayList<String>();

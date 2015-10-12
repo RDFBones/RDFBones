@@ -63,7 +63,7 @@ public class ProcessRdfFormController extends FreemarkerHttpServlet{
             return handleMissingConfiguration(vreq);
 
         //get the EditSubmission
-        MultiValueEditSubmission submission = new MultiValueEditSubmission(vreq.getParameterMap(), configuration);        	
+        MultiValueEditSubmission submission = new MultiValueEditSubmission(vreq, configuration);        	
         EditSubmissionUtils.putEditSubmissionInSession(vreq.getSession(), submission);
        
         log.info("submission : " + submission.toString());
@@ -166,6 +166,7 @@ public class ProcessRdfFormController extends FreemarkerHttpServlet{
 		Map<String, String> errors = submission.getValidationErrors();
 		
 		if(errors != null && !errors.isEmpty()){
+			log.info("itt");
 			String form = editConfiguration.getFormUrl();
 			vreq.setAttribute("formUrl", form);
 			vreq.setAttribute("view", vreq.getParameter("view"));	

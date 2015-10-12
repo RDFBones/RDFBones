@@ -2,6 +2,9 @@
 
 package edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo;
 
+import static edu.cornell.mannlib.vitro.webapp.controller.MultipartRequestWrapper.ATTRIBUTE_FILE_ITEM_MAP;
+import static edu.cornell.mannlib.vitro.webapp.controller.freemarker.ImageUploadController.PARAMETER_UPLOADED_FILE;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -27,8 +30,16 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.vocabulary.XSD;
 
+import edu.cornell.mannlib.vitro.webapp.controller.MultipartRequestWrapper;
+import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.edit.EditLiteral;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.FieldVTwo;
+
+
+
+
+
+
 
 //import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import javax.servlet.ServletContext;
@@ -77,6 +88,28 @@ public class MultiValueEditSubmission {
         literalCreationModel = ModelFactory.createDefaultModel();
     }
     
+    @SuppressWarnings("unchecked")
+	public MultiValueEditSubmission(VitroRequest vreq ,  EditConfigurationVTwo editConfig){
+    	
+    	this(vreq.getParameterMap(), editConfig);
+    	if(this.isFile){
+    		
+    		
+			Map<String, List<FileItem>> map = vreq.getFiles();
+			List<FileItem> list = map.get(PARAMETER_UPLOADED_FILE);
+			FileItem file = list.get(0);
+			
+			if (file.getSize() == 0) {
+				
+				Map <String,String> fileError = new HashMap<String,String>();
+				fileError.put("fileError", "Please select a file!");
+				this.validationErrors.putAll(fileError);
+	    	
+	    	}	
+    			
+    	}
+    }
+   
     public MultiValueEditSubmission(Map<String,String[]> queryParameters ,  EditConfigurationVTwo editConfig){
         
     	
@@ -138,8 +171,9 @@ public class MultiValueEditSubmission {
         errors.putAll(basicValidation.validateLiterals( literalsFromForm ));
         if( errors != null ) {
             validationErrors.putAll( errors);
-        }              
+        }  
         
+
         if(editConfig.getValidators() != null ){
             for( N3ValidatorVTwo validator : editConfig.getValidators()){
                 if( validator != null ){     

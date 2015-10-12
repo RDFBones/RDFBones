@@ -46,5 +46,5 @@
         }
     </query-construct>  
     -->        
-    <template>hasFileTest.ftl</template>
+    <template>hasFile.ftl</template>
 </list-view-config>

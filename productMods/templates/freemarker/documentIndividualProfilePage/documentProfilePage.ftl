@@ -10,29 +10,28 @@
 
 <#include "individual-adminPanel.ftl">
 
-<h2>Document</h2>
-       
-<h2>Fileitem</h2>
-<#--
-<#if dg?has_content>
- 	<#list dg as result>
-		<a  href="/vivo${result["downloadLocation"]}" download> 
-			<div> Download : ${result["filename"]}</div> 			
-		</a>
- 	</#list>
-<#else>
-	<div>There is no file uploaded yet</div>
-	<form action="/vivo/editRequestDispatch">
-		<input type="hidden" name="predicateUri" value="http://vivo.mydomain.edu/individual/hasFile">
-		<input type="hidden" name="subjectUri" value="${individualURI}">
-		<input type="submit" value="Add file">
-	</form>
+<#if !labelCount??>
+    <#assign labelCount = 0 >
+</#if>       
+<#if !localesCount??>
+	<#assign localesCount = 1>
 </#if>
 
--->
-
 <#assign nameForOtherGroup = "${i18n().other}"> 
+<section itemscope itemtype="http://schema.org/Person" id="individual-intro" class="vcard person" role="region">
+	<section id="individual-info" ${infoClass!} role="region"> 
+		<header>
+			<h1 class="vcard foaf-person">
+			    <#-- Label -->
+			    <span itemprop="name" class="fn"><@p.label individual editable labelCount localesCount/></span>
+			    <@p.mostSpecificTypes individual />
+			 </h1>
+		</header>
+		<#include "individual-webpage.ftl">
+	</section>
+</section>
 
+<#assign hideMainImage = propertyGroups.pullProperty("http://vitro.mannlib.cornell.edu/ns/vitro/public#mainImage")!>
 <#include "individual-fileUpload.ftl">
 
 

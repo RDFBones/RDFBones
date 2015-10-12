@@ -7,6 +7,26 @@ ${scripts.add('<script type="text/javascript" src="${urls.base}/js/jquery.js"></
 
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/uploadImages.css" />')}
 
+<#if editSubmission?has_content && editSubmission.submissionExists = true && editSubmission.validationErrors?has_content>
+    <#assign submissionErrors = editSubmission.validationErrors/>
+</#if>
+
+
+<h2>${editConfiguration.formTitle}</h2>
+
+<#--Display error messages if any-->
+<#if submissionErrors?has_content>
+    <section id="error-alert" role="alert">
+        <img src="${urls.images}/iconAlert.png" width="24" height="24" alt="${i18n().error_alert_icon}" />
+        <p>
+        
+        <#list submissionErrors?keys as errorFieldName>
+            ${submissionErrors[errorFieldName]}
+        </#list>
+                        
+        </p>
+    </section>
+</#if>
 
 <#assign i18n = i18n() >
 <#assign typesList = editConfiguration.offerTypesCreateNew />
