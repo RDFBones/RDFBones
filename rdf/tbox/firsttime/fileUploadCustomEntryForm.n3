@@ -10,6 +10,11 @@
 											rdfs:domain bibo:Document;
 											rdfs:range vitro-public:File . 
 
+<http://vivo.mydomain.edu/individual/documentDescription> rdf:type owl:DatatypeProperty ;
+															rdfs:domain bibo:Document;
+				vitro:inPropertyGroupAnnot
+						<http://vivoweb.org/ontology#vitroPropertyGroupFile> .
+
 
 <http://vivo.mydomain.edu/individual/hasFile>
 	vitro:customEntryFormAnnot 
