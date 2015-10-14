@@ -19,6 +19,7 @@ import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
+import com.hp.hpl.jena.vocabulary.XSD;
 
 import edu.cornell.mannlib.vitro.webapp.application.ApplicationUtils;
 import edu.cornell.mannlib.vitro.webapp.beans.Individual;
@@ -142,7 +143,7 @@ public class FileUploadToDocumentFormGenerator extends BaseEditConfigurationGene
     	/*
     	 * This is for the file!
     	 */
-    	conf.setLiteralsOnForm("dataFile"); //"downloadUrl", "mimeType", "fileName");
+    	conf.setLiteralsOnForm("dataFile", "fileDescription"); //"downloadUrl", "mimeType", "fileName");
     	conf.setUrisOnForm("byteStreamIndividual");
     	
     	List<String> validators = new ArrayList<String>();
@@ -152,6 +153,8 @@ public class FileUploadToDocumentFormGenerator extends BaseEditConfigurationGene
     	Map<String, FieldVTwo> fields = new HashMap<String, FieldVTwo>();
     	fields.put(field1.getName(), field1);	
     	//fields.put(field2.getName(), field2);
+    	fields.put("fileDescription", new FieldVTwo().setName("fileDescription").setRangeDatatypeUri(XSD.xstring.toString()));
+    	
     	
     	conf.setFields(fields);
     	
@@ -169,6 +172,9 @@ public class FileUploadToDocumentFormGenerator extends BaseEditConfigurationGene
     	String a = triple1 + triple2 + triple3 + triple4 + triple5 + triple6 + triple7 + triple8;
     	conf.setN3Required(a);
     	
+    	String optional = "?fileIndividual <http://vivo.mydomain.edu/individual/fileDescription> ?fileDescription .";
+    	conf.setN3Optional(optional);
+    	
     	Map<String,String> uriQueries = new HashMap<String,String>();
     	
     	uriQueries.put("byteStreamIndividual",""
@@ -184,6 +190,12 @@ public class FileUploadToDocumentFormGenerator extends BaseEditConfigurationGene
     	
     	Map<String,String> literalQueries = new HashMap<String,String>();
     	
+    	literalQueries.put("fileDescription", ""
+    			+ "SELECT ?fileDescription "
+    			+ "WHERE {"
+    			+ "?fileIndividual  <http://vivo.mydomain.edu/individual/fileDescription> ?fileDescription ."
+    			+ "}");
+    			
     
     	literalQueries.put("fileName",""
     			+ "PREFIX vitro-public: <http://vitro.mannlib.cornell.edu/ns/vitro/public#> "
@@ -210,6 +222,7 @@ public class FileUploadToDocumentFormGenerator extends BaseEditConfigurationGene
     	conf.setSparqlForExistingLiterals(literalQueries);
     	
     	
+    			
     	Map<String,String> newResources = new HashMap<String,String>();
     	newResources.put("fileIndividual", null);
     	newResources.put("byteStreamIndividual", null);

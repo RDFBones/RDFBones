@@ -41,6 +41,8 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.FieldVTwo;
 
 
 
+import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.FileUploadToDocumentFormGenerator;
+
 //import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import javax.servlet.ServletContext;
 //import edu.cornell.mannlib.vitro.webapp.application.ApplicationUtils;
@@ -92,23 +94,36 @@ public class MultiValueEditSubmission {
 	public MultiValueEditSubmission(VitroRequest vreq ,  EditConfigurationVTwo editConfig){
     	
     	this(vreq.getParameterMap(), editConfig);
-    	if(this.isFile){
-    		
-    		
-			Map<String, List<FileItem>> map = vreq.getFiles();
-			List<FileItem> list = map.get(PARAMETER_UPLOADED_FILE);
-			FileItem file = list.get(0);
+    	
+    	
+    	/*
+    	Map<String, List<FileItem>> map = vreq.getFiles();
+		List<FileItem> list = map.get(PARAMETER_UPLOADED_FILE);
+		FileItem file = list.get(0);
+		
+		Map <String,List<FileItem>> files = new HashMap<String,List<FileItem>>();
+		files.put("files", list);
+		this.setFilesFromForm(files);
+		
+		if (file.getSize() == 0) {
 			
-			if (file.getSize() == 0) {
-				
-				Map <String,String> fileError = new HashMap<String,String>();
-				fileError.put("fileError", "Please select a file!");
-				this.validationErrors.putAll(fileError);
-	    	
-	    	}	
-    			
-    	}
-    }
+			//The request was sent from file upload form
+			if(editConfig.literalsOnForm.contains("dataFile")){
+				//If it is just an edit
+				if(editConfig.urisInScope.get("fileIndividual") == null ){
+		    		
+					//Validation error
+		    		Map <String,String> fileError = new HashMap<String,String>();
+		    		fileError.put("fileError", "Please select a file!");
+					this.validationErrors.putAll(fileError);
+			    }
+			}
+		} else {
+			this.isFile = true;
+		}
+		
+		*/
+	}
    
     public MultiValueEditSubmission(Map<String,String[]> queryParameters ,  EditConfigurationVTwo editConfig){
         
@@ -133,23 +148,18 @@ public class MultiValueEditSubmission {
         this.literalsFromForm =new HashMap<String,List<Literal>>();        
         for(String var: editConfig.getLiteralsOnForm() ){            
 	            
-        	if(var.equals("dataFile")){
-        		
-        		isFile = true;
-        		
-        	} else {
         	
-        		FieldVTwo field = editConfig.getField(var);
-	            if( field == null ) {
-	                log.error("could not find field " + var + " in EditConfiguration" );
-	                continue;   
-	            } else if( field.getEditElement() != null ){                
-	                log.debug("skipping field with edit element, it should not be in literals on form list");
-	            }else{
-	               String[] valuesArray = queryParameters.get(var); 
-	               addLiteralToForm(editConfig, field, var, valuesArray);
-	            }
-        	}
+    		FieldVTwo field = editConfig.getField(var);
+            if( field == null ) {
+                log.error("could not find field " + var + " in EditConfiguration" );
+                continue;   
+            } else if( field.getEditElement() != null ){                
+                log.debug("skipping field with edit element, it should not be in literals on form list");
+            }else{
+               String[] valuesArray = queryParameters.get(var); 
+               addLiteralToForm(editConfig, field, var, valuesArray);
+            }
+    	
         }
         log.info("literalsFromForm : " + literalsFromForm.toString());
         

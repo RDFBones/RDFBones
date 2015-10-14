@@ -2,6 +2,8 @@
 
 <#-- Upload a replacement main image for an Individual. -->
 
+<#import "lib-vitro-form.ftl" as lvf>
+
 ${scripts.add('<script type="text/javascript" src="${urls.base}/js/jquery.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/imageUpload/imageUploadUtils.js"></script>')}
 
@@ -28,16 +30,23 @@ ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/uploadImages.cs
     </section>
 </#if>
 
+
+<#assign fileDescription = lvf.getFormFieldValue(editSubmission, editConfiguration, "fileDescription") />
+
 <#assign i18n = i18n() >
 <#assign typesList = editConfiguration.offerTypesCreateNew />
 
 	<h3> Please upload a file </h3>
-	<form 	action="${submitUrl}" enctype="multipart/form-data" method="post">
+	<form id="form"	action="${submitUrl}" enctype="multipart/form-data" method="post" >
 	
-		
 		<input id="datafile" type="file" name="datafile" size="30" />    
 		
+		<h3> Add description </h3>
+		<textarea id="form" rows="4" cols="50" name="fileDescription" />${fileDescription}</textarea>
+		
 		<input type="hidden" name = "editKey" value="${editKey}"/>
-		<input type="submit" value="submit">
-		<span class="or"> ${i18n.or} <a class="cancel"  href="${cancelUrl}" title="${i18n.cancel_title}">${i18n.cancel_link}</a></span>
+		<div>
+			<input type="submit" value="submit" class="submit">
+			<span class="or"> ${i18n.or} <a class="cancel"  href="${cancelUrl}" title="${i18n.cancel_title}">${i18n.cancel_link}</a></span>
+		</div>	
 	</form>

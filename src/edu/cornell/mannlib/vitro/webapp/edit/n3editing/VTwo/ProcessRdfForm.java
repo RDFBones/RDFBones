@@ -137,10 +137,7 @@ public class ProcessRdfForm {
     private AdditionsAndRetractions createNewStatements(
             EditConfigurationVTwo configuration, 
             MultiValueEditSubmission submission) throws Exception {                
-        log.debug("in createNewStatements()" );        
-        
        
-        
         //getN3Required and getN3Optional will return copies of the 
         //N3 String Lists so that this code will not modify the originals.
         List<String> requiredN3 = configuration.getN3Required();
@@ -181,8 +178,9 @@ public class ProcessRdfForm {
 
         log.debug("editing an existing resource: " + editConfig.getObject() );        
 
+        log.info("submission : " + submission.toString());
         
-        if( submission.isFile()){
+        if(submission.getFilesFromForm() != null){
         	
         	deleteFile(editConfig);
         }
@@ -219,11 +217,8 @@ public class ProcessRdfForm {
     
     public void saveFile(MultiValueEditSubmission submission, Map<String,String> urisForNewResources){
     	
-    	Map<String, List<FileItem>> map = this.vreq.getFiles();
-		log.info("map file : " + map.toString());
-    	List<FileItem> list = map.get("datafile");
-	
-    	FileItem fileItem = list.get(0);
+    	
+    	FileItem fileItem = submission.getFilesFromForm().get("files").get(0);
 		
 		FileStorage fileStorage = ApplicationUtils.instance().getFileStorage();
 		
@@ -233,9 +228,6 @@ public class ProcessRdfForm {
 		int periodHere = filename.lastIndexOf('.');
 		String mimeType = filename.substring(periodHere);
 		
-		log.info("Filename : " + filename);
-		log.info("Mimetype : " + mimeType);
-		
 		try{
 
 			InputStream inputStream = fileItem.getInputStream();
@@ -244,7 +236,7 @@ public class ProcessRdfForm {
     		
     		fileStorage.createFile(urisForNewResources.get("byteStreamIndividual"), filename, inputStream);
     		
-    		Map <String,List<Literal>> litOnFor = new HashMap<String, List<Literal>>();
+    		Map <String,List<Literal>> litOnFor = submission.getLiteralsFromForm();
         	
     		List<Literal> literalsArray1 = new ArrayList<Literal>();
         	Literal a = ResourceFactory.createPlainLiteral(fileName);
@@ -261,7 +253,7 @@ public class ProcessRdfForm {
     		litOnFor.put("fileName", literalsArray1);
         	litOnFor.put("downloadUrl", literalsArray2);
     		litOnFor.put("mimeType", literalsArray3);
-    		
+    	
     		submission.setLiteralsFromForm(litOnFor);
     		
 		} catch (IOException e) {
@@ -285,7 +277,7 @@ public class ProcessRdfForm {
         urisForNewResources = URIsForNewRsources(editConfig, newURIMaker);
         
         	
-        if( submission.isFile()){
+        if(submission.getFilesFromForm() != null){
         	
         	saveFile(submission, urisForNewResources);
         }
@@ -372,7 +364,7 @@ public class ProcessRdfForm {
             List<String> requiredAdds, List<String> optionalAdds,
             List<String> requiredDels, List<String> optionalDels) throws Exception{
         
-        List<Model> adds = parseN3ToRDF(requiredAdds, REQUIRED);
+    	List<Model> adds = parseN3ToRDF(requiredAdds, REQUIRED);
         adds.addAll( parseN3ToRDF(optionalAdds, OPTIONAL));
         
         List<Model> retracts = new ArrayList<Model>();
@@ -448,7 +440,7 @@ public class ProcessRdfForm {
         for( String str : n3 ){
             out += "    " + str + "\n";
         }                      
-        log.debug(out);
+        log.info(out);
     }
     
 	private static Map<String, String> getSubPedObjVarMap(
@@ -541,9 +533,9 @@ public class ProcessRdfForm {
    private void substituteInMultiLiterals(
            Map<String, List<Literal>> literalsFromForm,
            List<String> ... n3StrLists) {
-       
-       for( List<String> n3s : n3StrLists){
-           populator.subInMultiLiterals(literalsFromForm, n3s);
+
+	   for( List<String> n3s : n3StrLists){
+    	   populator.subInMultiLiterals(literalsFromForm, n3s);
        }
    }
 

@@ -1,4 +1,23 @@
 
+<style>
+	  table {
+  width: 700px;
+}
+	table tr td {
+  		height: auto;
+	}
+	
+	tr.border_bottom td {
+	  border-bottom:1pt solid black;
+	  padding: 3px 5px;
+	}
+	
+	tr.spaceOver > td
+	{
+	  padding: 3px 5px;
+	}
+	
+</style>
 
 <section class="vcard person" id="individual-intro">
 	<#assign fileUpload = propertyGroups.pullProperty("http://vivo.mydomain.edu/individual/hasFile")!> 
@@ -10,7 +29,36 @@
 	    </h2> 
 	    
 	   	<ul role="list" >
-	        <@p.objectProperty fileUpload editable />
+	   		<table>	
+	   			<#if fileUpload.statements?has_content>
+	   				<tr class="border_bottom ">
+	   					<td>Filename</td>
+	   					<td>Description</td>
+	   					<td></td>
+	   					<td></td>
+	   				</tr>
+	   				<tr style="height:10px;"><tr>
+	   			</#if>
+				<#list fileUpload.statements as statement>
+					<@tablePropertyList fileUpload statement editable><#include "${fileUpload.template}"></@tablePropertyList>	
+				</#list>	
+	        </table>
 	    </ul>
 	</#if>   
 </section>
+
+<#macro tablePropertyList property statement editable>
+    <#if property.rangeUri?? >
+        <#local rangeUri = property.rangeUri /> 
+    <#else>
+        <#local rangeUri = "" /> 
+    </#if>
+    <li role="listitem">    
+	    <tr class="spaceOver"> 
+	        <#nested>       
+	        <td style="width: 80px;">
+	        	<@p.editingLinks "${property.localName}" "${property.name}" statement editable rangeUri/>
+	        </td>
+	     </tr>   	
+    </li>
+</#macro>

@@ -32,7 +32,6 @@
 </section>
 
 <#assign hideMainImage = propertyGroups.pullProperty("http://vitro.mannlib.cornell.edu/ns/vitro/public#mainImage")!>
-<#include "individual-addDescriptionToDocument.ftl">
 <#include "individual-fileUpload.ftl">
 
 

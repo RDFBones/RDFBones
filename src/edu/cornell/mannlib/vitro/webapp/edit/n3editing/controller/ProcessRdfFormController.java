@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -63,7 +64,10 @@ public class ProcessRdfFormController extends FreemarkerHttpServlet{
             return handleMissingConfiguration(vreq);
 
         //get the EditSubmission
-        MultiValueEditSubmission submission = new MultiValueEditSubmission(vreq, configuration);        	
+        MultiValueEditSubmission submission = new MultiValueEditSubmission(vreq, configuration);  
+        
+        setFilesIfUploaded(configuration, vreq,submission);
+        
         EditSubmissionUtils.putEditSubmissionInSession(vreq.getSession(), submission);
        
         log.info("submission : " + submission.toString());
@@ -72,7 +76,7 @@ public class ProcessRdfFormController extends FreemarkerHttpServlet{
 		if( errorResponse != null )
 		    return errorResponse;
 
-        // get the models to work with in case the write model and query model are not the defaults 
+        // get the models to work wit h in case the write model and query model are not the defaults 
 		Model queryModel = configuration.getQueryModelSelector().getModel(vreq, getServletContext());		
 	    Model writeModel = configuration.getWriteModelSelector().getModel(vreq,getServletContext());  
 	    
@@ -113,7 +117,39 @@ public class ProcessRdfFormController extends FreemarkerHttpServlet{
         PostEditCleanupController.doPostEditCleanup(vreq);
         return PostEditCleanupController.doPostEditRedirect(vreq, entityToReturnTo);
 	}
+	
+	private void setFilesIfUploaded(EditConfigurationVTwo editConfig, VitroRequest vreq, MultiValueEditSubmission submission){
+		
+		
+		//if(list != null){
+		if(editConfig.getLiteralsOnForm().contains("dataFile")){
+			
+			Map<String, List<FileItem>> map = vreq.getFiles();
+			List<FileItem> list = map.get("datafile");
+			FileItem file = list.get(0);
 
+			log.info("dataFile megvan");
+			
+			if(file.getSize() == 0)	{
+				//There is no uploaded file
+				log.info("file null");
+				if(editConfig.getUrisInScope().get("fileIndividual") == null  ){
+			    		
+					//Validation error
+		    		Map <String,String> fileError = new HashMap<String,String>();
+		    		fileError.put("fileError", "Please select a file!");
+					submission.getValidationErrors().putAll(fileError);
+			    }
+			} else {
+				//There is an uploaded file
+				Map <String,List<FileItem>> files = new HashMap<String,List<FileItem>>();
+				log.info("van file");
+		    	files.put("files", list);
+				submission.setFilesFromForm(files);
+		    }
+		}
+	}
+	
 	//In case of back button confusion
 	//Currently returning an error message: 
 	//Later TODO: Per Brian Caruso's instructions, replicate
