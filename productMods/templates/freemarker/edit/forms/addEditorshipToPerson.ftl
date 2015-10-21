@@ -127,6 +127,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 
 <script type="text/javascript">
 var customFormData  = {
+    newUrl: '${urls.base}/instanceToOffer?tokenize=true',
     acUrl: '${urls.base}/autocomplete?tokenize=true&stem=true',
     editMode: '${editMode}',
     acTypes: {document: 'http://purl.org/ontology/bibo/Document'},
@@ -156,6 +157,5 @@ ${scripts.add('<script type="text/javascript" src="${urls.base}/js/jquery-ui/js/
              '<script type="text/javascript" src="${urls.base}/js/extensions/String.js"></script>',
              '<script type="text/javascript" src="${urls.base}/js/browserUtils.js"></script>',
              '<script type="text/javascript" src="${urls.base}/js/jquery_plugins/jquery.bgiframe.pack.js"></script>',
-             '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/customFormWithAutocomplete.js"></script>')}
-
+			 '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/customFormWithInstanceOffer.js"></script>')}
 

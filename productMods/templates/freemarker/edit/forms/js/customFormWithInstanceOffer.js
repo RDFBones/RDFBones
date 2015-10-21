@@ -14,6 +14,25 @@ var customForm = {
         this.mixIn();
         this.initObjects();                 
         this.initPage();
+        this.testAjaxCall();
+    },
+    
+    
+    //Test ajax call
+    testAjaxCall: function(){
+    	
+    	$.ajax({
+            url: customForm.newUrl,
+            dataType: 'json',
+            data: {
+                term: "testTerm" ,
+            },
+            complete: function(xhr, status) {
+               
+            	var results = $.parseJSON(xhr.responseText);
+            	console.log("Results : " + results)
+            }
+    	})
     },
     
     disableFormInUnsupportedBrowsers: function() {       

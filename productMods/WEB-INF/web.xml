@@ -946,6 +946,15 @@
     <url-pattern>/populateselect</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>InstanceToOfferConroller</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.InstanceToOfferController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>InstanceToOfferConroller</servlet-name>
+    <url-pattern>/instanceToOffer</url-pattern>
+  </servlet-mapping>
+  
    <servlet>
     <servlet-name>DataAutocompleteController</servlet-name>
     <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.DataAutocompleteController</servlet-class>
