@@ -92,7 +92,6 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 	</div>
 	<div id="resultContainer" style="margin-top: 20px;">
 	</div>
-	<div id="showResults" class="submit">Show results</div>	
 	    
     <p class="inline">    
         <label for="orgType">${i18n().document_type_capitalized} ${requiredHint}</label>

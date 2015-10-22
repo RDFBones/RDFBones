@@ -1,65 +1,56 @@
 /* $This file is distributed under the terms of the license in /doc/license.txt$ */
 
-var testData = ['AAA', 'BBB', 'CCC'];
 function display(num){
-	console.log(num.data1);
-	console.log(num.data2);
-
+	console.log(num);
 }
 
-var labels = ['AAA', 'BBB', 'CCC'];
-	var classes = [
-	               "Person" ,
-	               "Prof Emeritus" ,
-	               "Student" ];
-
-var buffer =[];
 
 var offerInstance = {
 
 	onLoad: function(){
 		this.initObjects();
-		this.bindEventListeners();
+		this.loadInitial();
 		},
 	
 	initObjects: function(){
 	
 		this.resultDiv = $('#resultContainer');
-		this.show = $('#showResults');
-		},
-	
-	bindEventListeners: function(){
-	
-		this.show.click(function(){
-			showInstances();
-		});
-	
 		
-		}
+	},
 
-}
- 	
-offerInstance.onLoad();
-
-function showInstances(){
-
-	for(var i=0; i<3; i++){
+	loadInitial: function(){
 		
-		buffer[i] = { 
-			data1 : labels[i],
-			data2 : classes[i],
-		};
+		$.ajax({
+            url: customFormData.newUrl,
+            dataType: 'json',
+            data: {
+                term: "" ,
+                type:  customFormData.acTypes.document,
+            },
+            complete: function(xhr, status) {
+               
+            	var results = $.parseJSON(xhr.responseText);
+            	console.log(results.length);
+            	console.log(results);
+            	$(results).each(function(index,value){
+            		
+            		offerInstance.showResult(value);
+               	})
+            }
+    	})
+	},
+		
+	showResult: function(data){
 		
 		var labelDiv = $("<div></div>").
-			text(labels[i]).
-			addClass("labelDiv");
-	
+		text(data.label).
+		addClass("labelDiv");
+
+		var str = data.mst;
 		var classDiv = $("<div></div>").
-			text(classes[i]).
+			text(data.mst).
 			addClass("classDiv");
 		
-		
-		var a = buffer[i];	
 		var rowDiv = $("<div></div>").
 			addClass("containerClass").
 			addClass("results").
@@ -69,14 +60,14 @@ function showInstances(){
 				return function(){
 				display(num);
 				}
-			}(a));
-		console.log(rowDiv);
+			}(data.uri));
 		offerInstance.resultDiv.append(rowDiv);
-				
-	}
- }
-
-
+		
+	}	
+		
+}
+ 	
+offerInstance.onLoad();
 
 var customForm = {
     
@@ -92,30 +83,6 @@ var customForm = {
         this.mixIn();
         this.initObjects();                 
         this.initPage();
-        this.testAjaxCall();
-    },
-    
-    
-    //Test ajax call
-    testAjaxCall: function(){
-    	
-    	$.ajax({
-            url: customForm.newUrl,
-            dataType: 'json',
-            data: {
-                term: "testTerm" ,
-            },
-            complete: function(xhr, status) {
-               
-            	var results = $.parseJSON(xhr.responseText);
-            	console.log(results.length);
-            	console.log(results);
-            	$(results).each(function(index,value){
-            		console.log(value);
-            		console.log(value.uri + "  " + value.label);
-            	})
-            }
-    	})
     },
     
     disableFormInUnsupportedBrowsers: function() {       
@@ -333,6 +300,7 @@ var customForm = {
 
         this.typeSelector.change(function() {
             var typeVal = $(this).val();
+            console.log(typeVal);
             this.acCache = {};
             
             // If an autocomplete selection has been made, undo it.

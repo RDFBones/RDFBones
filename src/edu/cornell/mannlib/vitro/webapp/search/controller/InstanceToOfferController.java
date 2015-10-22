@@ -10,9 +10,15 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.Literal;
+import com.hp.hpl.jena.rdf.model.Resource;
 
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.controller.ajax.VitroAjaxController;
+import edu.cornell.mannlib.vitro.webapp.dao.VitroVocabulary;
+import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
 
 /**
  * AutocompleteController generates autocomplete content
@@ -25,7 +31,8 @@ public class InstanceToOfferController extends VitroAjaxController {
     private static final Log log = LogFactory.getLog(InstanceToOfferController.class);
     
     private static final String PARAM_QUERY = "term";
-   
+    private static final String TYPE_QUERY = "type";
+    
 	    
     @Override
     protected void doRequest(VitroRequest vreq, HttpServletResponse response)
@@ -34,27 +41,71 @@ public class InstanceToOfferController extends VitroAjaxController {
     	
     	log.info("Ajax call arrived");
         String term = vreq.getParameter(PARAM_QUERY);
-			
-	    JSONArray arrayToSend = new JSONArray();
-    	
-        try {
-    		
-        	JSONObject jsonObj1 = new JSONObject();
-        	jsonObj1.put("label", term);
-        	jsonObj1.put("uri", "uri");
-    		
-        	JSONObject jsonObj2 = new JSONObject();
-        	jsonObj2.put("label", term);
-        	jsonObj2.put("uri", "uri");
-
-        	arrayToSend.put(jsonObj1);
-        	arrayToSend.put(jsonObj2);
-        	
-    	} catch(Exception ex) {
-    		log.error("Error occurred in converting values to JSON object", ex);
-    	}
+        String type = vreq.getParameter(TYPE_QUERY);
+        
+        ResultSet results =  performQuery(vreq, type, term);
+        
+        JSONArray arrayToSend = new JSONArray();
+        
+        prepareAJAX(results, arrayToSend);
         
         response.getWriter().write(arrayToSend.toString());
+    }
+    
+    
+    private static String LABEL_QUERY = ""
+    		+ "PREFIX vitro: <" + VitroVocabulary.vitroURI + "> \n" 
+            + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
+            + "SELECT DISTINCT ?subject ?label ?mst WHERE { \n"
+            + "    ?subject rdf:type  ?class  .\n"
+            + "	   ?subject vitro:mostSpecificType ?mst .\n"
+            + "    ?subject rdfs:label ?label .\n"
+            + " FILTER 	REGEX(?label, \"^(pattern)\") .\n"
+            + "} ORDER BY ?label";
+    
+    
+   private ResultSet performQuery(VitroRequest vreq, String classUri, String pattern){
+	   
+    	String queryNew = LABEL_QUERY.replace("pattern", pattern);
+        String queryStr = QueryUtils.subUriForQueryVar(queryNew, "class",  classUri );
+        log.info("queryStr = " + queryStr);
+		
+        try {
+            ResultSet results = QueryUtils.getQueryResults(queryStr, vreq);
+            return results;
+
+        } catch (Exception e) {
+                log.error(e, e);
+        }
+		return null; 
+   }
+   
+   
+   private void prepareAJAX(ResultSet results, JSONArray arr){
+    	
+    	
+    	while (results.hasNext()) {
+    		
+            QuerySolution soln = results.nextSolution();
+            Literal nodeLiteral = soln.get("label").asLiteral();
+            Resource mstResource = soln.get("mst").asResource();
+            Resource subj = soln.get("subject").asResource();
+            
+            try {
+            	
+            	JSONObject jsonObj = new JSONObject();
+	        	jsonObj.put("label", nodeLiteral.toString().split("\\^")[0]);
+	        	jsonObj.put("uri", subj.getURI());
+	        	jsonObj.put("mst", mstResource.getLocalName());
+	        	arr.put(jsonObj);
+        	
+            }	catch(Exception ex) {
+        		log.error("Error occurred in converting values to JSON object", ex);
+        	}
+	        	
+        }
+    	
     }
 
 }
