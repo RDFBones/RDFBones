@@ -1,5 +1,83 @@
 /* $This file is distributed under the terms of the license in /doc/license.txt$ */
 
+var testData = ['AAA', 'BBB', 'CCC'];
+function display(num){
+	console.log(num.data1);
+	console.log(num.data2);
+
+}
+
+var labels = ['AAA', 'BBB', 'CCC'];
+	var classes = [
+	               "Person" ,
+	               "Prof Emeritus" ,
+	               "Student" ];
+
+var buffer =[];
+
+var offerInstance = {
+
+	onLoad: function(){
+		this.initObjects();
+		this.bindEventListeners();
+		},
+	
+	initObjects: function(){
+	
+		this.resultDiv = $('#resultContainer');
+		this.show = $('#showResults');
+		},
+	
+	bindEventListeners: function(){
+	
+		this.show.click(function(){
+			showInstances();
+		});
+	
+		
+		}
+
+}
+ 	
+offerInstance.onLoad();
+
+function showInstances(){
+
+	for(var i=0; i<3; i++){
+		
+		buffer[i] = { 
+			data1 : labels[i],
+			data2 : classes[i],
+		};
+		
+		var labelDiv = $("<div></div>").
+			text(labels[i]).
+			addClass("labelDiv");
+	
+		var classDiv = $("<div></div>").
+			text(classes[i]).
+			addClass("classDiv");
+		
+		
+		var a = buffer[i];	
+		var rowDiv = $("<div></div>").
+			addClass("containerClass").
+			addClass("results").
+			append(labelDiv).
+			append(classDiv).
+			click(function(num){
+				return function(){
+				display(num);
+				}
+			}(a));
+		console.log(rowDiv);
+		offerInstance.resultDiv.append(rowDiv);
+				
+	}
+ }
+
+
+
 var customForm = {
     
     /* *** Initial page setup *** */
@@ -30,7 +108,12 @@ var customForm = {
             complete: function(xhr, status) {
                
             	var results = $.parseJSON(xhr.responseText);
-            	console.log("Results : " + results)
+            	console.log(results.length);
+            	console.log(results);
+            	$(results).each(function(index,value){
+            		console.log(value);
+            		console.log(value.uri + "  " + value.label);
+            	})
             }
     	})
     },

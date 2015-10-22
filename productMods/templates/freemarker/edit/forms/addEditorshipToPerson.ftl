@@ -78,9 +78,22 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 
 <section id="addEditorshipToPerson" role="region">        
     
-    <form id="addEditorshipToPerson" class="customForm noIE67" action="${submitUrl}"  role="add/edit editorship">
-
-    
+    <div id="filterContainer" class="containerClass" style="padding-bottom:5px;">
+		<div class="labelDiv"> 
+			<input style="border: 1px solid #e0dfdf; border-radius:5px; font-size:13px; color:#555; " onfocus='inputFocus(this)' type="text" value="Filter For label">
+		</div>
+		<div class="classDiv">
+			<select id="selectClass" style=" font-size:16px;">
+				<option value="1">Filter classes</option>					
+				<option value="2">B</option>
+				<option value="3">C</option>	
+			</select>
+		</div>
+	</div>
+	<div id="resultContainer" style="margin-top: 20px;">
+	</div>
+	<div id="showResults" class="submit">Show results</div>	
+	    
     <p class="inline">    
         <label for="orgType">${i18n().document_type_capitalized} ${requiredHint}</label>
         <#assign docTypeOpts = editConfiguration.pageData.documentType />
@@ -95,7 +108,10 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
             </#list>
         </select>
     </p>     
-    
+	
+<form id="addEditorshipToPerson" class="customForm noIE67" action="${submitUrl}"  role="add/edit editorship">
+	
+	    
     <p>
         <label for="relatedIndLabel">${i18n().document_name_capitalized} ${requiredHint}</label>
         <input class="acSelector" size="50"  type="text" id="relatedIndLabel" name="documentLabel" acGroupName="document" value="${documentLabelValue}"  />
@@ -124,7 +140,6 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 
 </form>
 
-
 <script type="text/javascript">
 var customFormData  = {
     newUrl: '${urls.base}/instanceToOffer?tokenize=true',
@@ -150,6 +165,7 @@ var i18nStrings = {
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/js/jquery-ui/css/smoothness/jquery-ui-1.8.9.custom.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customForm.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customFormWithAutocomplete.css" />')}
+${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/offerInstance.css" />')}
 
 
 ${scripts.add('<script type="text/javascript" src="${urls.base}/js/jquery-ui/js/jquery-ui-1.8.9.custom.min.js"></script>',

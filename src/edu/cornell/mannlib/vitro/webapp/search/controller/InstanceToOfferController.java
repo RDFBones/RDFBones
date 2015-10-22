@@ -35,18 +35,26 @@ public class InstanceToOfferController extends VitroAjaxController {
     	log.info("Ajax call arrived");
         String term = vreq.getParameter(PARAM_QUERY);
 			
-	    JSONArray jsonArray = new JSONArray();
-        JSONObject jsonObj = new JSONObject();
+	    JSONArray arrayToSend = new JSONArray();
     	
         try {
-    		jsonObj.put("term", term);
     		
+        	JSONObject jsonObj1 = new JSONObject();
+        	jsonObj1.put("label", term);
+        	jsonObj1.put("uri", "uri");
+    		
+        	JSONObject jsonObj2 = new JSONObject();
+        	jsonObj2.put("label", term);
+        	jsonObj2.put("uri", "uri");
+
+        	arrayToSend.put(jsonObj1);
+        	arrayToSend.put(jsonObj2);
+        	
     	} catch(Exception ex) {
     		log.error("Error occurred in converting values to JSON object", ex);
     	}
         
-        jsonArray.put(jsonObj);
-        response.getWriter().write(jsonArray.toString());
+        response.getWriter().write(arrayToSend.toString());
     }
 
 }
