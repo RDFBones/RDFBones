@@ -49,17 +49,19 @@ public class InstanceToOfferController extends VitroAjaxController {
         queryVars.put(SUB, vreq.getParameter(SUB));
         queryVars.put(PRED, vreq.getParameter(PRED));
         
-        ResultSet results =  performQuery(vreq, queryVars);
+        boolean initialQuery = vreq.getParameter("option").equals("0");
+        
+        ResultSet results =  performQuery(vreq, queryVars, initialQuery);
         
         JSONArray arrayToSend = new JSONArray();
         
-        prepareAJAX(results, arrayToSend);
+        prepareAJAX(results, arrayToSend, initialQuery, vreq);
         
         response.getWriter().write(arrayToSend.toString());
     }
     
     
-    private static String LABEL_QUERY = ""
+    private static String INITIAL_QUERY = ""
     		+ "PREFIX vitro: <" + VitroVocabulary.vitroURI + "> \n" 
             + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"
             + "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
@@ -69,16 +71,34 @@ public class InstanceToOfferController extends VitroAjaxController {
             + "    ?document rdfs:label ?label .\n"
             + " FILTER 	REGEX(?label, \"^(pattern)\") .\n"
             + " FILTER NOT EXISTS { ?subject ?predicate ?document } . \n"
+            + " FILTER (?mst != <http://purl.obolibrary.org/obo/UO_0000280> ) . \n"
+            + "	FILTER (?mst !=<http://www.w3.org/2002/07/owl#NamedIndividual> ) \n" 	
             + "} ORDER BY ?label";
     
+   
+    private static String FILTER_QUERY = ""
+    		+ "PREFIX vitro: <" + VitroVocabulary.vitroURI + "> \n" 
+            + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"
+            + "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
+            + "SELECT DISTINCT ?document ?label WHERE { \n"
+            + "	   ?document vitro:mostSpecificType ?type .\n"
+            + "    ?document rdfs:label ?label .\n"
+            + " FILTER 	REGEX(?label, \"^(pattern)\") .\n"
+            + " FILTER NOT EXISTS { ?subject ?predicate ?document } . \n"
+            + "} ORDER BY ?label"; 
     
-   private ResultSet performQuery(VitroRequest vreq, Map<String,String> varMap){
+   private ResultSet performQuery(VitroRequest vreq, Map<String,String> varMap, boolean initialQuery){
 	   
-    	String queryNew = LABEL_QUERY.replace("pattern", vreq.getParameter(TERM));
+	   
+	   String queryNew = null;
+	   if(initialQuery){
+		 queryNew = INITIAL_QUERY.replace("pattern", vreq.getParameter(TERM));
+	   } else {
+		   queryNew = FILTER_QUERY.replace("pattern", vreq.getParameter(TERM));
+	   }
     	
-        String queryStr = QueryUtils.subUrisForQueryVars(queryNew, varMap);
-
-        log.info("queryStr = " + queryStr);
+	   String queryStr = QueryUtils.subUrisForQueryVars(queryNew, varMap);
+	   log.info("queryStr = " + queryStr);
 		
         try {
             ResultSet results = QueryUtils.getQueryResults(queryStr, vreq);
@@ -91,14 +111,17 @@ public class InstanceToOfferController extends VitroAjaxController {
    }
    
    
-   private void prepareAJAX(ResultSet results, JSONArray arr){
+   private void prepareAJAX(ResultSet results, JSONArray arr, boolean initialQuery, VitroRequest vreq){
     	
     	
     	while (results.hasNext()) {
     		
             QuerySolution soln = results.nextSolution();
             Literal nodeLiteral = soln.get("label").asLiteral();
-            Resource mstResource = soln.get("mst").asResource();
+            Resource mstResource = null;
+            if(initialQuery) {
+            	mstResource = soln.get("mst").asResource();
+            }
             Resource doc = soln.get("document").asResource();
             
             try {
@@ -106,7 +129,11 @@ public class InstanceToOfferController extends VitroAjaxController {
             	JSONObject jsonObj = new JSONObject();
 	        	jsonObj.put("label", nodeLiteral.toString().split("\\^")[0]);
 	        	jsonObj.put("uri", doc.getURI());
-	        	jsonObj.put("mst", mstResource.getLocalName());
+	        	if(initialQuery){
+	        		jsonObj.put("mst", mstResource.getLocalName());
+	        	} else {
+	        		jsonObj.put("mst", vreq.getParameter("optionText"));
+	        	}
 	        	arr.put(jsonObj);
         	
             }	catch(Exception ex) {
