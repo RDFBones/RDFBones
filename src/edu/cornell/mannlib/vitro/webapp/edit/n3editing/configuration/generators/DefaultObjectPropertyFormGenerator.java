@@ -29,6 +29,7 @@ import edu.cornell.mannlib.vitro.webapp.dao.WebappDaoFactory;
 import edu.cornell.mannlib.vitro.webapp.dao.vclassgroup.ProhibitedFromSearch;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationUtils;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTwo;
+import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.ChildVClassesOptions;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.FieldVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.IndividualsViaObjectPropetyOptions;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.validators.AntiXssValidation;
@@ -468,10 +469,19 @@ public class DefaultObjectPropertyFormGenerator implements EditConfigurationGene
     	
     	Map<String, FieldVTwo> fields = new HashMap<String, FieldVTwo>();
     	fields.put(field.getName(), field);    	
-    	    	    	
+    	fields.put("rangeClasses", childOptionField(vreq));
+    	
     	editConfiguration.setFields(fields);
     }       
 
+    private FieldVTwo childOptionField(VitroRequest vreq){
+		
+    	FieldVTwo field = new FieldVTwo();
+    	field.setName("rangeClasses");
+    	field.setOptions(new ChildVClassesOptions(EditConfigurationUtils.getRangeUri(vreq)));
+    	return field;
+    }
+    
 	private void prepareForUpdate(VitroRequest vreq, HttpSession session, EditConfigurationVTwo editConfiguration) {
     	//Here, retrieve model from 
 		OntModel model = ModelAccess.on(session.getServletContext()).getOntModel();

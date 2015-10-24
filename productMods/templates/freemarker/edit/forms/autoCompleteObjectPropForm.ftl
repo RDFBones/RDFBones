@@ -46,6 +46,28 @@
 <#--In order to fill out the subject-->
 <#assign acFilterForIndividuals =  "['" + editConfiguration.subjectUri + "']" />
 
+<h2>Choose an existing document</h2>
+   
+    <div id="filterContainer" class="containerClass" style="padding-bottom:5px;">
+		<div class="labelDiv"> 
+			<input id="textFilter" style="border: 1px solid #e0dfdf; border-radius:5px; font-size:13px; color:#555; " onfocus='inputFocus(this)' type="text" value="Filter For label">
+		</div>
+		<div class="classDiv">
+	        <#assign docTypeOpts = editConfiguration.pageData.rangeClasses />
+	        <select id="typeSelector" name="documentType" acGroupName="document">
+	            <option value="" selected="selected">${i18n().select_one}</option>                
+	            <#list docTypeOpts?keys as key>             
+	            	<option value="${key}">${docTypeOpts[key]}</option>
+	            </#list>
+	        </select>
+		</div>
+	</div>
+	<div id="resultContainer" class="resultContainer">
+	</div>
+	<div id="selectedDiv">
+	</div>
+
+
 <h2>${formTitle}</h2>
 
 <#if editConfiguration.propertySelectFromExisting = true>
@@ -106,6 +128,10 @@ the parameter should not be passed at all to the search.
 Also multiple types parameter set to true only if more than one type returned-->
     <script type="text/javascript">	
     var customFormData  = {
+    	newUrl: '${urls.base}/instanceToOffer?tokenize=true',
+    	subjectUri : '${editConfiguration.subjectUri}',
+        predicateUri : '${editConfiguration.predicateUri}',
+        rangeUri: '${editConfiguration.rangeUri}',
         acUrl: '${urls.base}/autocomplete?tokenize=true',
         <#if objectTypesExist = true>
             acTypes: {object: '${objectTypes}'},
@@ -136,9 +162,9 @@ Also multiple types parameter set to true only if more than one type returned-->
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/js/jquery-ui/css/smoothness/jquery-ui-1.8.9.custom.css" />')}
  ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customForm.css" />')}
  ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customFormWithAutocomplete.css" />')}
-
+${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/offerInstance.css" />')}
 
  ${scripts.add('<script type="text/javascript" src="${urls.base}/js/jquery-ui/js/jquery-ui-1.8.9.custom.min.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/customFormUtils.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/browserUtils.js"></script>',             
-              '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/customFormWithAutocomplete.js"></script>')}
+              '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/customFormWithInstanceOffer.js"></script>')}

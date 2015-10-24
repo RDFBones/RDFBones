@@ -1,20 +1,19 @@
 /* $This file is distributed under the terms of the license in /doc/license.txt$ */
 
-function display(num){
-	console.log(num);
-}
-
+var selectedDivId = -1;
 
 var offerInstance = {
 
 	onLoad: function(){
 		this.initObjects();
 		this.loadInitial();
-		},
+	},
 	
 	initObjects: function(){
 	
 		this.resultDiv = $('#resultContainer');
+		this.selectedDiv = $("#selectedDiv");
+		this.inputField = $('.acUriReceiver');
 		
 	},
 
@@ -25,22 +24,119 @@ var offerInstance = {
             dataType: 'json',
             data: {
                 term: "" ,
-                type:  customFormData.acTypes.document,
+                type:  customFormData.rangeUri,
+                subject: customFormData.subjectUri,
+                predicate: customFormData.predicateUri
             },
             complete: function(xhr, status) {
                
             	var results = $.parseJSON(xhr.responseText);
-            	console.log(results.length);
             	console.log(results);
-            	$(results).each(function(index,value){
+            	console.log(results.length);
+            	
+            	if(results.length == 0){
             		
-            		offerInstance.showResult(value);
-               	})
+            		this.addNoResults();
+            		
+            	} else {
+	            	$(results).each(function(index,value){
+	            		
+	            		offerInstance.setResultField(value);
+	               	})
+            	}
             }
     	})
 	},
 		
-	showResult: function(data){
+	
+
+	 
+	addNoResults: function(){
+		
+		var rowDiv = $("<div></div>").
+			//addClass("containerClass").
+			//addClass("results").
+			text("Unfortunately there is no item to add;");
+		offerInstance.resultDiv.append(rowDiv);
+	},
+	
+	
+	setResultField: function(data){
+		
+		var labelDiv = $("<div></div>").
+		text(data.label).
+		addClass("labelDiv");
+
+		var str = data.mst;
+		var classDiv = $("<div></div>").
+			text(data.mst).
+			addClass("classDiv");
+		
+		var rowDiv = $("<div></div>").
+			addClass("containerClass").
+			addClass("results").
+			mouseover(function(){
+				$(this).addClass("hover");
+			}).
+			mouseout(function(){
+				$(this).removeClass("hover");
+			}).
+			append(labelDiv).
+			append(classDiv).
+			click(function(num){
+				return function(){
+					offerInstance.selectDiv($(this),num);
+				}
+			}(data));
+		offerInstance.resultDiv.append(rowDiv);
+		
+	},
+	
+	selectDiv: function(div,data){
+		
+		if(selectedDivId == div.index()){
+			
+			this.setObjectValueFromExistingUri(null);
+			customForm.disableSubmit();
+			selectedDivId = -1;
+			this.selectedDiv.empty();
+			this.addAgainMouseEvent(div);
+		}else {
+		  
+		   if(selectedDivId>=0){
+
+			   var old = offerInstance.resultDiv.children().eq(selectedDivId);
+			   old.removeClass("hover");
+			   this.addAgainMouseEvent(old);
+			   this.selectedDiv.empty();
+		   }
+		   this.createSelectedDiv(data);
+		   this.setObjectValueFromExistingUri(data.uri);
+		   customForm.enableSubmit();
+		   selectedDivId = div.index();
+		   this.clearmouseEvents(div);	
+		}	
+	},
+
+	addAgainMouseEvent: function(div){
+
+		div.mouseover(function(){
+			$(this).addClass("hover");
+		}).mouseout(function(){
+			$(this).removeClass("hover");
+		});
+	},
+	
+	clearmouseEvents: function(div){	
+		$(div).unbind('mouseover mouseout');
+	},
+		
+	setObjectValueFromExistingUri: function(uri){
+		
+		offerInstance.inputField.val(uri);
+	},
+
+	createSelectedDiv: function(data){
 		
 		var labelDiv = $("<div></div>").
 		text(data.label).
@@ -55,16 +151,11 @@ var offerInstance = {
 			addClass("containerClass").
 			addClass("results").
 			append(labelDiv).
-			append(classDiv).
-			click(function(num){
-				return function(){
-				display(num);
-				}
-			}(data.uri));
-		offerInstance.resultDiv.append(rowDiv);
+			append(classDiv);
 		
-	}	
-		
+		this.selectedDiv.append(rowDiv);
+			
+	}
 }
  	
 offerInstance.onLoad();
@@ -298,6 +389,7 @@ var customForm = {
     // that depend on the view should be initialized in the view setup method.
     bindEventListeners: function() {
 
+    	/*
         this.typeSelector.change(function() {
             var typeVal = $(this).val();
             console.log(typeVal);
@@ -311,7 +403,6 @@ var customForm = {
             if (customForm.editMode != "edit") {
                 customForm.undoAutocompleteSelection($(this));
             }
-            // Reinitialize view. If no type selection in a two-step form, go back to type view;
             // otherwise, reinitialize full view.
 			if (!typeVal.length && customForm.formSteps > 1) {
 				customForm.initFormTypeView();
@@ -320,7 +411,7 @@ var customForm = {
 				customForm.initFormFullView();
 			}
         }); 
-        
+       */
         this.verifyMatch.click(function() {
             window.open($(this).attr('href'), 'verifyMatchWindow', 'width=640,height=640,scrollbars=yes,resizable=yes,status=yes,toolbar=no,menubar=no,location=no');
             return false;
