@@ -135,10 +135,13 @@ public class ProcessRdfFormController extends FreemarkerHttpServlet{
 				log.info("file null");
 				if(editConfig.getUrisInScope().get("fileIndividual") == null  ){
 			    		
-					//Validation error
-		    		Map <String,String> fileError = new HashMap<String,String>();
-		    		fileError.put("fileError", "Please select a file!");
-					submission.getValidationErrors().putAll(fileError);
+					if(fileRequired(editConfig)){
+						//Validation error
+			    		Map <String,String> fileError = new HashMap<String,String>();
+			    		fileError.put("fileError", "Please select a file!");
+						submission.getValidationErrors().putAll(fileError);
+					}
+					
 			    }
 			} else {
 				//There is an uploaded file
@@ -150,6 +153,16 @@ public class ProcessRdfFormController extends FreemarkerHttpServlet{
 		}
 	}
 	
+	private boolean fileRequired(EditConfigurationVTwo editConfig){
+		
+		List<String> n3ReqList = editConfig.getN3Required();
+		String search = "File";
+		for(String str: n3ReqList) {
+		    if(str.trim().contains(search))
+		       return true;
+		}
+		return false;
+	}
 	//In case of back button confusion
 	//Currently returning an error message: 
 	//Later TODO: Per Brian Caruso's instructions, replicate
