@@ -133,7 +133,6 @@ public class DocumentUploadFormGenerator extends BaseEditConfigurationGenerator 
     	conf.setVarNameForPredicate("featuredIn");
     	conf.setVarNameForObject("document");
     	
-    	
     	//FieldVTwo field2 = new FieldVTwo();
     	//field2.setName("mimeType");
     	//queryForExisting is not being used anywhere in Field
@@ -144,7 +143,7 @@ public class DocumentUploadFormGenerator extends BaseEditConfigurationGenerator 
     	 * This is for the file!
     	 */
     	conf.setLiteralsOnForm("documentLabel", "dataFile", "fileDescription"); //"downloadUrl", "mimeType", "fileName");
-    	conf.setUrisOnForm("type","byteStreamIndividual");
+    	conf.setUrisOnForm("type","byteStreamIndividual","document");
     	
     	
     	FieldVTwo field1 = new FieldVTwo();
@@ -161,7 +160,7 @@ public class DocumentUploadFormGenerator extends BaseEditConfigurationGenerator 
     	conf.setFields(fields);
     
     	conf.setEntityToReturnTo(subjectUri);
-    	
+    	/*
     	String required = " @prefix vitro-public: <http://vitro.mannlib.cornell.edu/ns/vitro/public#> . \n" +
     			 		  "	@prefix vitro:    <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#> . \n" +
     			 		  " @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . " +
@@ -169,8 +168,18 @@ public class DocumentUploadFormGenerator extends BaseEditConfigurationGenerator 
     			 		  " ?document a <http://purl.org/ontology/bibo/Document> . \n" +
     			 		  " ?document vitro:mostSpecificType ?type . \n"  + 
     					  " ?document rdfs:label ?documentLabel . ";
+    	*/
+    	String required = " ?person ?featuredIn ?document . " ;
+
     	conf.setN3Required(required);
     	
+    	String opt =" @prefix vitro:    <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#> . \n" +
+          " @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . " +
+    /*    " ?document a <http://purl.org/ontology/bibo/Document> . \n" + 
+          " ?document vitro:mostSpecificType ?type . \n"  + */
+          " ?document a ?type . " +
+          " ?document rdfs:label ?documentLabel . ";
+
     	String opt1 = " @prefix vitro-public: <http://vitro.mannlib.cornell.edu/ns/vitro/public#> . \n" +
     					 " ?document <http://vivo.mydomain.edu/individual/hasFile> ?fileIndividual . \n" +
     					 " ?fileIndividual a vitro-public:File . \n" +
@@ -181,7 +190,7 @@ public class DocumentUploadFormGenerator extends BaseEditConfigurationGenerator 
     					 " ?byteStreamIndividual vitro-public:directDownloadUrl ?downloadUrl . \n"; 
     	
     	String opt2 = "?fileIndividual <http://vivo.mydomain.edu/individual/fileDescription> ?fileDescription .";
-    	conf.setN3Optional(opt1 ,opt2);
+    	conf.setN3Optional(opt, opt1 ,opt2);
     	
     	Map<String,String> uriQueries = new HashMap<String,String>();
     	
@@ -530,7 +539,7 @@ public class DocumentUploadFormGenerator extends BaseEditConfigurationGenerator 
     	List<String> literalsOnForm = new ArrayList<String>();
     	
     	//uris on form should be empty if data property
-    	urisOnForm.add("objectVar");
+    	urisOnForm.add("document");
     	
     	editConfiguration.setUrisOnform(urisOnForm);
     	editConfiguration.setLiteralsOnForm(literalsOnForm);

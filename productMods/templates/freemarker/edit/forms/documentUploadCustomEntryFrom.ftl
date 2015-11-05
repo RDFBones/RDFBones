@@ -9,23 +9,13 @@ ${scripts.add('<script type="text/javascript" src="${urls.base}/js/jquery.js"></
 
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/uploadImages.css" />')}
 
+<#assign requiredHint = "<span class='requiredHint'> *</span>" />
+
 <#if editSubmission?has_content && editSubmission.submissionExists = true && editSubmission.validationErrors?has_content>
     <#assign submissionErrors = editSubmission.validationErrors/>
 </#if>
 
-<#--Display error messages if any-->
-<#if submissionErrors?has_content>
-    <section id="error-alert" role="alert">
-        <img src="${urls.images}/iconAlert.png" width="24" height="24" alt="${i18n().error_alert_icon}" />
-        <p>
-        
-        <#list submissionErrors?keys as errorFieldName>
-            ${submissionErrors[errorFieldName]}
-        </#list>
-                        
-        </p>
-    </section>
-</#if>
+
 
 
 	<h2>Choose an existing document</h2>
@@ -37,23 +27,24 @@ ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/uploadImages.cs
 		<div class="classDiv">
 	        <#assign docTypeOpts = editConfiguration.pageData.documentClasses />
 	        <select id="typeSelector" name="documentType" acGroupName="document">
-	             <option value="http://purl.org/ontology/bibo/Document" selected="selected">Any information document</option>                
+	             <option value="http://purl.org/ontology/bibo/Document" selected="selected">Any Document</option>                
 	            <#list docTypeOpts?keys as key>             
 	            	<option value="${key}">${docTypeOpts[key]}</option>
 	            </#list>
 	        </select>
 		</div>
 	</div>
-	<div id="resultContainer" class="resultContainer">
+	<div class="auxContainer">
+		<div id="resultContainer" class="resultContainer">
+		</div>
 	</div>
 	<div id="selectedDiv">
 	</div>
 
-
 	<form class="customForm" action = "${submitUrl}">
         
         <input type="hidden" name="editKey" id="editKey" value="${editKey}" role="input" />
-        <input class="acUriReceiver" type="hidden" id="objectVar" name="objectVar" value />
+        <input class="acUriReceiver" type="hidden" id="document" name="document" value />
         <p>
             <input type="submit" id="submit" value="Add entry" role="button" disabled class="disabledSubmit"/>
             <span class="or"> or </span>
@@ -67,6 +58,21 @@ ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/uploadImages.cs
 
 <#assign i18n = i18n() >
 <#assign typesList = editConfiguration.offerTypesCreateNew />
+
+<#--Display error messages if any-->
+<#if submissionErrors?has_content>
+    <section id="error-alert" role="alert">
+        <img src="${urls.images}/iconAlert.png" width="24" height="24" />
+        <p>
+        
+        <#list submissionErrors?keys as errorFieldName>
+            ${submissionErrors[errorFieldName]}
+        </#list>
+                        
+        </p>
+    </section>
+</#if>
+
 <h2> Add a new Document </h2>
 
 	<form id="form"	action="${submitUrl}" enctype="multipart/form-data" method="post" >
@@ -78,7 +84,7 @@ ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/uploadImages.cs
             </#list>
         </select>
 		<h3> Add label </h3>
-		<input id="labelInput" type="text" name="documentLabel" />
+		<input id="labelInput" type="text" name="documentLabel" required/>
 				<span style="color:red; font-size: 11px; display:none" id="infoMsg">The label is automatically added. If you want a custom label, just modify the field</span>
 		
 		<br>
@@ -89,6 +95,7 @@ ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/uploadImages.cs
 			<textarea id="fileDescription" id="form" rows="4" cols="50" name="fileDescription" />${fileDescription}</textarea>
 		</div>
 		<input type="hidden" name = "editKey" value="${editKey}"/>
+		<input type="hidden" name = "dataUpload" value />
 		<div>
 			<input type="submit" value="submit" class="submit">
 			<span class="or"> ${i18n.or} <a class="cancel"  href="${cancelUrl}" title="${i18n.cancel_title}">${i18n.cancel_link}</a></span>

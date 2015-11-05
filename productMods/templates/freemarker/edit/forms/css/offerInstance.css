@@ -18,22 +18,31 @@
 	border: 1px solid #f7f9f9;
 	border-radius: 5px;
 }
+
+.selected{
+	background-color: #f7f9f9;
+	margin: 5px;
+	border: 1px solid #f7f9f9;
+	border-radius: 5px;
+}
+
 .hover{
-	
 	border: 1px solid black;
 	background-color: white;
 }
 
 .resultContainer{
-	
 	clear: both;
-	margin-top: 10px;
 	padding: 5px;
+	overflow:auto;
+	max-height:290px;
+}
+
+.auxContainer{
+	clear: both;
 	border: 1px solid black;
 	border-radius : 10px;
-	overflow:scroll;
-	max-height:400px;
-	
+	max-height:300px;
 }
 
 .alignHelper {

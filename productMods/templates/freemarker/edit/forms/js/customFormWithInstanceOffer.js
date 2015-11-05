@@ -208,7 +208,7 @@ var offerInstance = {
 		
 		var rowDiv = $("<div></div>").
 			addClass("containerClass").
-			addClass("results").
+			addClass("selected").
 			append(labelDiv).
 			append(classDiv);
 		

@@ -65,8 +65,9 @@ public class ProcessRdfFormController extends FreemarkerHttpServlet{
 
         //get the EditSubmission
         MultiValueEditSubmission submission = new MultiValueEditSubmission(vreq, configuration);  
-        
-        setFilesIfUploaded(configuration, vreq,submission);
+
+        log.info("newRes :" + configuration.getNewResources());
+        setFilesIfUploaded(configuration, vreq, submission);
         
         EditSubmissionUtils.putEditSubmissionInSession(vreq.getSession(), submission);
        
@@ -120,10 +121,7 @@ public class ProcessRdfFormController extends FreemarkerHttpServlet{
 	
 	private void setFilesIfUploaded(EditConfigurationVTwo editConfig, VitroRequest vreq, MultiValueEditSubmission submission){
 		
-		
-		//if(list != null){
-		if(editConfig.getLiteralsOnForm().contains("dataFile")){
-			
+		if(vreq.getParameterMap().containsKey("dataUpload")){	
 			Map<String, List<FileItem>> map = vreq.getFiles();
 			List<FileItem> list = map.get("datafile");
 			FileItem file = list.get(0);
