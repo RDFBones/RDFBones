@@ -10,6 +10,12 @@
 
 <#include "individual-adminPanel.ftl">
 
+<link rel="stylesheet" href="${urls.base}/js/previewJS/css/lightbox.css" />
+<script type="text/javascript" src="${urls.base}/js/previewJS/js/lightbox-plus-jquery.js"></script>
+<script type="text/javascript">
+	var jQuery_2_1_4 = $.noConflict(true); 
+</script> 
+
 <#if !labelCount??>
     <#assign labelCount = 0 >
 </#if>       
@@ -76,6 +82,6 @@ ${headScripts.add('<script type="text/javascript" src="${urls.base}/js/tiny_mce/
 ${scripts.add('<script type="text/javascript" src="${urls.base}/js/individual/individualUtils.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/individual/individualQtipBubble.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/individual/individualUriRdf.js"></script>',
-			  '<script type="text/javascript" src="${urls.base}/js/individual/moreLessController.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/jquery-ui/js/jquery-ui-1.8.9.custom.min.js"></script>',
+              '<script type="text/javascript" src="${urls.base}/js/individual/moreLessController.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/imageUpload/imageUploadUtils.js"></script>')}

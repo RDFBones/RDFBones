@@ -32,7 +32,7 @@
 	   		<table>	
 	   			<#if fileUpload.statements?has_content>
 	   				<tr class="border_bottom ">
-	   					<td>Filename</td>
+	   					<td>Filename or preview</td>
 	   					<td>Description</td>
 	   					<td></td>
 	   					<td></td>
@@ -56,8 +56,8 @@
     <li role="listitem">    
 	    <tr class="spaceOver"> 
 	        <#nested>       
-	        <td style="width: 80px;">
-	        	<@p.editingLinks "${property.localName}" "${property.name}" statement editable rangeUri/>
+	        <td style="width: 80px; vertical-align:middle">
+	        		<@p.editingLinks "${property.localName}" "${property.name}" statement editable rangeUri/>
 	        </td>
 	     </tr>   	
     </li>

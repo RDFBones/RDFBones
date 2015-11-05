@@ -8,13 +8,14 @@
     	PREFIX vitro-public: &lt;http://vitro.mannlib.cornell.edu/ns/vitro/public#&gt;
     	PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
     	
-		SELECT DISTINCT ?file ?downloadLoc ?downloadUrl ?filename ?fileDescription
+		SELECT DISTINCT ?file ?downloadLoc ?downloadUrl ?filename ?fileDescription ?mimeType
 		WHERE
 		{
 		     ?subject ?property ?file .
 		   	 
 		     OPTIONAL {
 		     	?file vitro-public:filename ?filename .
+		     	?file vitro-public:mimeType ?mimeType .
 		     	?file vitro-public:downloadLocation ?downloadLoc .
 		     	?downloadLoc vitro-public:directDownloadUrl ?downloadUrl . 
 		     	}
