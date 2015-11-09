@@ -274,7 +274,7 @@ public class ProcessRdfForm {
         List<String> URLToReturnTo = Arrays.asList(submission.getEntityToReturnTo());
         
         /* *********** Check if new resource needs to be forcibly created ******** */
-        urisForNewResources = URIsForNewRsources(editConfig, newURIMaker);
+        urisForNewResources = URIsForNewRsources(submission, editConfig, newURIMaker);
         
         	
         if(submission.getFilesFromForm() != null){
@@ -363,7 +363,9 @@ public class ProcessRdfForm {
     protected AdditionsAndRetractions parseN3ToChange( 
             List<String> requiredAdds, List<String> optionalAdds,
             List<String> requiredDels, List<String> optionalDels) throws Exception{
-        
+      
+      log.info("requiredAdds : " + requiredAdds.toString());
+      
     	List<Model> adds = parseN3ToRDF(requiredAdds, REQUIRED);
         adds.addAll( parseN3ToRDF(optionalAdds, OPTIONAL));
         
@@ -496,19 +498,19 @@ public class ProcessRdfForm {
 
    
    //Note this would require more analysis in context of multiple URIs
-   public Map<String,String> URIsForNewRsources(
+   public Map<String,String> URIsForNewRsources(MultiValueEditSubmission submission, 
            EditConfigurationVTwo configuration, NewURIMaker newURIMaker) 
            throws InsertException {       
        Map<String,String> newResources = configuration.getNewResources();
        
        HashMap<String,String> varToNewURIs = new HashMap<String,String>();       
        for (String key : newResources.keySet()) {
-           String prefix = newResources.get(key);
-           String uri = newURIMaker.getUnusedNewURI(prefix);                        
-           varToNewURIs.put(key, uri);  
+         String prefix = newResources.get(key);
+         String uri = newURIMaker.getUnusedNewURI(prefix); 
+         varToNewURIs.put(key, uri);  
        }   
        log.debug( "URIs for new resources: " + varToNewURIs );
-       return varToNewURIs;
+       return varToNewURIs; 
    }
 
    private static void logChanges(EditConfigurationVTwo configuration,

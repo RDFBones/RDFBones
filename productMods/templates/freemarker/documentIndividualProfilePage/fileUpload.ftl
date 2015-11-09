@@ -45,6 +45,7 @@ ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/uploadImages.cs
 		<textarea id="form" rows="4" cols="50" name="fileDescription" />${fileDescription}</textarea>
 		
 		<input type="hidden" name = "editKey" value="${editKey}"/>
+		<input type="hidden" name = "dataUpload" value />
 		<div>
 			<input type="submit" value="submit" class="submit">
 			<span class="or"> ${i18n.or} <a class="cancel"  href="${cancelUrl}" title="${i18n.cancel_title}">${i18n.cancel_link}</a></span>
