@@ -5,3 +5,7 @@
 <http://vivo.mydomain.edu/individual/hasFile>
 			<http://vitro.mannlib.cornell.edu/ontologies/display/1.1#listViewConfigFile>
 		"listViewConfig-hasFile.xml" .
+		
+<http://vivo.mydomain.edu/individual/depictedIn>
+			<http://vitro.mannlib.cornell.edu/ontologies/display/1.1#listViewConfigFile>
+		"listViewConfig-depictedIn.xml" .

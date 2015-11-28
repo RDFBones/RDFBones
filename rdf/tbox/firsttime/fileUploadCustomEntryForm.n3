@@ -4,6 +4,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix bibo:    <http://purl.org/ontology/bibo/> .
 @prefix vitro-public:  <http://vitro.mannlib.cornell.edu/ns/vitro/public#> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
 
 
 <http://vivo.mydomain.edu/individual/hasFile> rdf:type owl:ObjectProperty ;
@@ -25,4 +26,13 @@
 	vitro:customEntryFormAnnot 
 	"edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.FileUploadToDocumentFormGenerator"^^<http://www.w3.org/2001/XMLSchema#string> ;
     vitro:inPropertyGroupAnnot
-    <http://vivoweb.org/ontology#vitroPropertyGroupFile>.
+    <http://vivoweb.org/ontology#vitroPropertyGroupFile>. 
+    
+
+<http://vivo.mydomain.edu/individual/depictedIn> rdf:type owl:ObjectProperty ;
+											rdfs:domain foaf:Person;
+											rdfs:range bibo:Image ; 
+											vitro:inPropertyGroupAnnot
+    <http://vivoweb.org/ontology#vitroPropertyGroupFile> ;
+    	vitro:customEntryFormAnnot 
+	"edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.ImageUploadFormGenerator"^^<http://www.w3.org/2001/XMLSchema#string> .

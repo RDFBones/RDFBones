@@ -12,7 +12,7 @@ runtime.properties
 
 #Scripts
 *.sh
-tomcat_shutdown
+*.mysql
 
 #The datadirectory
 vivo3TierData/
