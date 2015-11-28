@@ -61,7 +61,7 @@ public class ImageUploadFormGenerator extends BaseEditConfigurationGenerator imp
 	private String predicateUri = null;
 	private String objectUri = null;	
 		
-	private String objectPropertyTemplate = "imageUpload.ftl";
+  private String objectPropertyTemplate = "fileUpload.ftl";
 	private String acObjectPropertyTemplate = "autoCompleteObjectPropForm.ftl";		
 	
 	protected boolean doAutoComplete = false;
@@ -119,20 +119,21 @@ public class ImageUploadFormGenerator extends BaseEditConfigurationGenerator imp
     	conf.setVarNameForObject("image");
     	FieldVTwo field1 = new FieldVTwo();
     	field1.setName("dataFile");
-    	
+
     	/*
     	 * This is for the file!
     	 */
-    	conf.setLiteralsOnForm("dataFile"); //"downloadUrl", "mimeType", "fileName");
+      conf.setLiteralsOnForm("dataFile", "fileDescription"); //"downloadUrl", "mimeType", "fileName");
     	conf.setUrisOnForm("byteStreamIndividual");
     	
     	List<String> validators = new ArrayList<String>();
     	field1.setValidators(validators);    	    	    
     	//field2.setValidators(validators);    	    	    
     	
-    	Map<String, FieldVTwo> fields = new HashMap<String, FieldVTwo>();
+    	Map<String, FieldVTwo> fields = new HashMap<String, FieldVTwo>();    	
     	fields.put(field1.getName(), field1);	
-    	
+      fields.put("fileDescription", new FieldVTwo().setName("fileDescription").setRangeDatatypeUri(XSD.xstring.toString()));
+
     	conf.setFields(fields);
     	
     	conf.setEntityToReturnTo(subjectUri);
@@ -151,6 +152,9 @@ public class ImageUploadFormGenerator extends BaseEditConfigurationGenerator imp
     	
     	String a = triple1 + triple2 + triple3 + triple4 + triple5 + triple6 + triple7 + triple8 + triple9 + triple10 + triple11;
     	conf.setN3Required(a);
+    	
+      String optional = "?fileIndividual <http://vivo.mydomain.edu/individual/fileDescription> ?fileDescription .";
+      conf.setN3Optional(optional);
     	
     	Map<String,String> uriQueries = new HashMap<String,String>();
     	

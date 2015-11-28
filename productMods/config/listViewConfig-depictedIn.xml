@@ -12,14 +12,15 @@
 		WHERE
 		{
 		     ?subject ?property ?image .
-		   	 
-		     OPTIONAL {
+		   	 OPTIONAL {
 		     	?image &lt;http://vivo.mydomain.edu/individual/hasFile&gt; ?file .
 		     	?file vitro-public:filename ?filename .
 		     	?file vitro-public:mimeType ?mimeType .
 		     	?file vitro-public:downloadLocation ?downloadLoc .
 		     	?downloadLoc vitro-public:directDownloadUrl ?downloadUrl . 
-		     }		     
+		     }
+		     		  
+		     OPTIONAL { ?file &lt;http://vivo.mydomain.edu/individual/fileDescription&gt; ?fileDescription  }		     
 		}
 
   </query-select>

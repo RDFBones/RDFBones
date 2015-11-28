@@ -39,6 +39,8 @@
 
 <div>Image</div>
 
+<#assign hideMainImage = propertyGroups.pullProperty("http://vitro.mannlib.cornell.edu/ns/vitro/public#mainImage")!>
+<#include "individual-imageUpload.ftl">
 
 <#include "individual-property-group-tabs.ftl">
 
