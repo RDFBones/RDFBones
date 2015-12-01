@@ -29,10 +29,8 @@
     <http://vivoweb.org/ontology#vitroPropertyGroupFile>. 
     
 
-<http://vivo.mydomain.edu/individual/depictedIn> rdf:type owl:ObjectProperty ;
-											rdfs:domain foaf:Person;
-											rdfs:range bibo:Image ; 
-											vitro:inPropertyGroupAnnot
-    <http://vivoweb.org/ontology#vitroPropertyGroupFile> ;
-    	vitro:customEntryFormAnnot 
-	"edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.ImageUploadFormGenerator"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.semanticweb.org/engel/ontologies/2015/3/rdfBones#isDepicted> 
+						vitro:inPropertyGroupAnnot
+    						<http://vivoweb.org/ontology#vitroPropertyGroupFile> ;
+    					vitro:customEntryFormAnnot 
+							"edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.ImageUploadFormGenerator"^^<http://www.w3.org/2001/XMLSchema#string> .

@@ -22,28 +22,24 @@
 <section class="vcard person" id="individual-intro">
 	<#assign fileUpload = propertyGroups.pullProperty("http://vivo.mydomain.edu/individual/hasFile")!> 
 	<#if fileUpload?has_content> <#-- true when the property is in the list, even if not populated (when editing) -->
-		 
-	   	<ul role="list" >
-	   		<table>	
-	   			<#if fileUpload.statements?has_content>
-	   				<tr class="border_bottom ">
-	   					<td>Filename or preview</td>
-	   					<td>Description</td>
-	   					<td></td>
-	   					<td></td>
-	   				</tr>
-	   				<tr style="height:10px;"><tr>
-	   				<#list fileUpload.statements as statement>
-						<@tablePropertyList fileUpload statement editable><#include "${fileUpload.template}"></@tablePropertyList>	
-					</#list>
-	   			<#else>
-	   				<#assign localName = fileUpload.localName> 
-				   	<h2 id="${localName}" class="mainPropGroup" style="clear:left" title="File" >
-				        File <@p.addLink fileUpload editable /> <@p.verboseDisplay fileUpload />
-				    </h2> 
-	   			</#if>
-			</table>
-	    </ul>
+		 <#assign localName = fileUpload.localName> 
+	   	<h2 id="${localName}" class="mainPropGroup" style="clear:left" title="File" >
+	        File <@p.addLink fileUpload editable /> <@p.verboseDisplay fileUpload />
+	    </h2> 
+   		<table>	
+   			<#if fileUpload.statements?has_content>
+   				<tr class="border_bottom ">
+   					<td>Filename or preview</td>
+   					<td>Description</td>
+   					<td></td>
+   					<td></td>
+   				</tr>
+   				<tr style="height:10px;"><tr>
+   				<#list fileUpload.statements as statement>
+					<@tablePropertyList fileUpload statement editable><#include "${fileUpload.template}"></@tablePropertyList>	
+				</#list>
+   			</#if>
+		</table>
 	</#if>   
 </section>
 
@@ -53,12 +49,10 @@
     <#else>
         <#local rangeUri = "" /> 
     </#if>
-    <li role="listitem">    
-	    <tr class="spaceOver"> 
-	        <#nested>       
-	        <td style="width: 80px; vertical-align:middle">
-	        		<@p.editingLinks "${property.localName}" "${property.name}" statement editable rangeUri/>
-	        </td>
-	     </tr>   	
-    </li>
+    <tr class="spaceOver"> 
+        <#nested>       
+        <td style="width: 80px; vertical-align:middle">
+        		<@p.editingLinks "${property.localName}" "${property.name}" statement editable rangeUri/>
+        </td>
+     </tr>   	
 </#macro>

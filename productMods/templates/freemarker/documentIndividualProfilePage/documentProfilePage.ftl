@@ -42,7 +42,7 @@
 
 
 <#include "individual-property-group-tabs.ftl">
-
+ 
 <#assign rdfUrl = individual.rdfUrl>
 
 <#if rdfUrl??>
