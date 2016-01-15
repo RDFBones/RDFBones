@@ -30,7 +30,6 @@ ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/uploadImages.cs
     </section>
 </#if>
 
-
 <#assign fileDescription = lvf.getFormFieldValue(editSubmission, editConfiguration, "fileDescription") />
 
 <#assign i18n = i18n() >

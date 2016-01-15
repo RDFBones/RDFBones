@@ -12,16 +12,16 @@ var offerInstance = {
 	
 	initObjects: function(){
 	
-		this.resultDiv = $('#resultContainer');
-		this.selectedDiv = $("#selectedDiv");
-		this.inputField = $('.acUriReceiver');
-		this.typeSelector = $('#typeSelector');
-		this.textFilter = $('#textFilter');
-		this.button = $('#submit');
+		this.resultDiv = $('#resultContainer')
+		this.selectedDiv = $("#selectedDiv")
+		this.inputField = $('.acUriReceiver')
+		this.typeSelector = $('#typeSelector')
+		this.textFilter = $('#textFilter')
+		this.button = $('#submit')
+		this.elementList = $('#elementList')
 	},
 
-	
-	
+
 	getInstances: function(classUri){
 		
 		offerInstance.showWaitGif();

@@ -1,0 +1,39 @@
+.invisible{
+	display : none ;
+}
+
+.choice {
+	border-bottom : black 1px solid ;
+	font-size : 20px ;
+	margin : 15px 5px ;
+}
+
+.titleContainer{
+	display : table-cell;
+	vertical-align: middle;
+	height: 30px;	
+	margin : 6px;
+	border-bottom : 1px solid black;
+}
+
+.sideByside{
+	display : inline-block;
+}
+
+.dataContainer{
+	margin : 3px;
+	border : 1px solid black; 
+	border-radius : 6px;
+}
+
+.data{
+	display : inline-block;
+	width : 400px;
+	margin: 0 10px;
+	padding : 4px;
+	text-align: center;
+}
+
+.backButton{
+	margin-top :30px;
+}

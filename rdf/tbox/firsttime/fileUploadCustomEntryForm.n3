@@ -5,10 +5,10 @@
 @prefix bibo:    <http://purl.org/ontology/bibo/> .
 @prefix vitro-public:  <http://vitro.mannlib.cornell.edu/ns/vitro/public#> .
 @prefix foaf:    <http://xmlns.com/foaf/0.1/> .
-
+@prefix rdfBones: <http://www.semanticweb.org/engel/ontologies/2015/3/rdfBones#> .
 
 <http://vivo.mydomain.edu/individual/hasFile> rdf:type owl:ObjectProperty ;
-											rdfs:domain bibo:Document;
+											rdfs:domain bibo:Document ;
 											rdfs:range vitro-public:File . 
 
 <http://vivo.mydomain.edu/individual/fileDescription> rdf:type owl:DatatypeProperty ;
@@ -21,13 +21,14 @@
 	"edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.DocumentUploadFormGenerator"^^<http://www.w3.org/2001/XMLSchema#string> .
 
 
-
 <http://vivo.mydomain.edu/individual/hasFile>
 	vitro:customEntryFormAnnot 
 	"edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.FileUploadToDocumentFormGenerator"^^<http://www.w3.org/2001/XMLSchema#string> ;
     vitro:inPropertyGroupAnnot
     <http://vivoweb.org/ontology#vitroPropertyGroupFile>. 
-    
+
+rdfBones:2345 a foaf:Person ;
+			rdfs:label "Black, Bob"^^<http://www.w3.org/2001/XMLSchema#string> . 
 
 <http://www.semanticweb.org/engel/ontologies/2015/3/rdfBones#isDepicted> 
 						vitro:inPropertyGroupAnnot

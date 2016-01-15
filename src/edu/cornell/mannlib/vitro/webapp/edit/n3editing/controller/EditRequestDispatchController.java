@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.vocabulary.RDFS;
 
 import edu.cornell.mannlib.vitro.webapp.auth.permissions.SimplePermission;
@@ -33,7 +34,9 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationUti
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditSubmissionUtils;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.MultiValueEditSubmission;
+import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.SparqlDisplayOntology;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.EditConfigurationGenerator;
+import edu.cornell.mannlib.vitro.webapp.modelaccess.ModelAccess;
 import edu.cornell.mannlib.vitro.webapp.web.templatemodels.edit.EditConfigurationTemplateModel;
 import edu.cornell.mannlib.vitro.webapp.web.templatemodels.edit.MultiValueEditSubmissionTemplateModel;
 
@@ -84,14 +87,31 @@ public class EditRequestDispatchController extends FreemarkerHttpServlet {
         	 return processSkipEditForm(vreq);
          }                  
      
-        //Get the edit generator name
+         log.info("PredicateUri : " + getPredicateUri(vreq));
+         String template = new String("");
+         
+         Map<String,Object> templateData = new HashMap<String,Object>();
+         
+         String predicateUri =  getPredicateUri(vreq);
+         
+         if(predicateUri != null && !predicateUri.isEmpty()){
+           if(getPredicateUri(vreq).equals("http://www.semanticweb.org/engel/ontologies/2015/3/rdfBones#isDepicted")){
+             Map<String,Object> templateData1 = new HashMap<String,Object>();
+             OntModel queryModel = ModelAccess.on(vreq).getOntModel();
+             SparqlDisplayOntology sparql = new SparqlDisplayOntology(predicateUri, vreq, queryModel);
+             log.info("sparqlObject \n" + sparql.toString());
+             templateData.put("sparql", sparql);
+             template = "mainCustomEntryForm.ftl";
+           }
+         }
+         //Get the edit generator name
          String editConfGeneratorName = processEditConfGeneratorName(vreq);
-        
          //session attribute 
          setSessionRequestFromEntity(vreq);
  
          // make new or get an existing edit configuration          
          EditConfigurationVTwo editConfig = setupEditConfiguration(editConfGeneratorName, vreq);
+         log.info("literalsin form 2 : " + editConfig.getLiteralsInScope());
          log.debug("editConfiguration:\n" + editConfig );
          
          //Mylog
@@ -103,15 +123,15 @@ public class EditRequestDispatchController extends FreemarkerHttpServlet {
          }
          
          //what template?
-         String template = editConfig.getTemplate();
+         template = template.equals("") ? editConfig.getTemplate() : template;
         
          //Get the multi value edit submission object
          MultiValueEditSubmission submission = getMultiValueSubmission(vreq, editConfig);
          MultiValueEditSubmissionTemplateModel submissionTemplateModel = new MultiValueEditSubmissionTemplateModel(submission);
          
          //what goes in the map for templates?
-         Map<String,Object> templateData = new HashMap<String,Object>();
          EditConfigurationTemplateModel etm = new EditConfigurationTemplateModel( editConfig, vreq);
+         log.info("PageData" + etm.getPageData().toString());
          templateData.put("editConfiguration", etm);
          templateData.put("editSubmission", submissionTemplateModel);
          //Corresponding to original note for consistency with selenium tests and 1.1.1
@@ -121,6 +141,8 @@ public class EditRequestDispatchController extends FreemarkerHttpServlet {
          templateData.put("editKey", editConfig.getEditKey());
          //This may change based on the particular generator? Check if true
          templateData.put("bodyClasses", "formsEdit");
+         
+         
          return new TemplateResponseValues(template, templateData);
          }catch(Throwable th){
         	
@@ -174,6 +196,7 @@ public class EditRequestDispatchController extends FreemarkerHttpServlet {
     	} else {
     		editConfig = 
     	    	    makeEditConfigurationVTwo( editConfGeneratorName, vreq, session);
+    		log.info("literalsin form 1 : " + editConfig.getLiteralsInScope());
     	}
     	 
     	if(editConfig == null) {
