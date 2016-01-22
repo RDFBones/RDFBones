@@ -41,34 +41,18 @@ public class SparqlDisplayOntology {
   public List<Map<String, String>> formElements = new ArrayList<Map<String, String>>();
   public List<Map<String, String>> listViewTitles = new ArrayList<Map<String, String>>();
   
-  public SparqlDisplayOntology(String predicateUri, VitroRequest vreq, Model model){
+  public SparqlDisplayOntology(String customEntryFormUri, VitroRequest vreq, Model model){
+    this.customEntryFormUri = customEntryFormUri;
     this.vreq = vreq;
-    this.predicateUri = predicateUri;
     if( model == null ) throw new Error("SparqlEvaluate must be passed a Model");
      this.model = model;
-     queryCustomEntryFormUri();
      queryListViewFields();
      queryFormFields();
      //performQuery(cefQuery, this.formElements);
      //performQuery(listViewTitleQuery, this.listViewTitles);
   }
-  
-  private static String customEntryFormQuery  = "PREFIX myDisplay: <http://myDisplayOntology.org#> "
-      + " SELECT ?customEntryForm "
-      + " WHERE {"
-      + "   ?predicateUri  myDisplay:customEntryFormObject   ?customEntryForm "
-      + "} ";
-  
-  private void queryCustomEntryFormUri(){
-    
-    String queryString = QueryUtils.subUriForQueryVar(customEntryFormQuery,"predicateUri", this.predicateUri);
-    log.info("customEntryFormQuery \n : " + queryString);
-    ResultSet resultSet = QueryUtils.getQueryResults(queryString, this.vreq);
-    String[] uris = {"customEntryForm" };
-    List<Map<String, String>> results = getQueryVars(resultSet, uris, null);
-    this.customEntryFormUri = results.get(0).get("customEntryForm");
-    log.info("customEntryFormUri : " + this.customEntryFormUri );
-  }
+
+
   
   private static String listViewQuery = "PREFIX myDisplay: <http://myDisplayOntology.org#> "
       + " SELECT ?name ?nr ?type"

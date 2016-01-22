@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.hp.hpl.jena.query.QuerySolution;
@@ -20,6 +21,7 @@ import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 
+import edu.cornell.mannlib.vitro.webapp.beans.ObjectPropertyStatementImpl;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.controller.ajax.VitroAjaxController;
 import edu.cornell.mannlib.vitro.webapp.dao.VitroVocabulary;
@@ -38,9 +40,9 @@ public class InstanceToOfferController extends VitroAjaxController {
     private static final String TERM = "term";
     private static final String TYPE = "type";
     
-    private static final String SUB = "subject";
-    private static final String PRED = "predicate";
-    
+    private static final String SUB = "subjectUri";
+    private static final String PRED = "predicateUri";
+    private static final String OBJ = "objectUri";
     
     Map<String, String> inputMap ;
     List<String> mainObjectUris ;
@@ -50,38 +52,63 @@ public class InstanceToOfferController extends VitroAjaxController {
     Map<String, String[]> queryVarMap ;
     //Data in Java to be retrieved
     List<Map<String, List<Map<String, String>>>> data ;
-    JSONArray arrayToSend ; 
+    JSONArray arrayToSend; 
 
     VitroRequest vreq = null;
     @Override
     protected void doRequest(VitroRequest vreq, HttpServletResponse response)
         throws IOException, ServletException {
-      
-        inputMap = new HashMap<String, String>();
-        mainObjectUris = new ArrayList<String>();
-      
-        queryMap = new HashMap<String, String>();
-        guiMap = new HashMap<String, Map<String, String>>();
-        queryVarMap = new HashMap<String, String[]>();
-        //Data in Java to be retrieved
-        data = new ArrayList<Map<String, List<Map<String, String>>>>();
-        arrayToSend = new JSONArray(); 
-      
-        log.info("Request Arrived");
-        this.vreq = vreq;
-        //Initialize the input Map
-        initInputMap();
-        log.info("InputMap " + this.inputMap.toString());
-        getMainObjects();
-        log.info("MainObjectUris \n" + this.mainObjectUris);
-        //queryMap and the guiMap is set
-        listgetTableData();
-        log.info("GuiMap \n " + this.guiMap);
-        log.info("QueryMap \n " + this.queryMap);
-        setOutputData();
-        log.info("OutputData \n " + data.toString());
-        prepareJSON(this.arrayToSend);
-        response.getWriter().write(this.arrayToSend.toString());
+        arrayToSend = new JSONArray();  
+        String cmd = vreq.getParameter("cmd");
+        if(cmd.equals("saveInstance")){
+          
+          JSONObject resp = new JSONObject();
+          try {
+            resp.accumulate("resp", "completed");
+          } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+          
+          String subject = vreq.getParameter(SUB);
+          String predicate = vreq.getParameter(PRED);
+          String object = vreq.getParameter(OBJ);
+          
+          vreq.getUnfilteredWebappDaoFactory().getObjectPropertyStatementDao().
+            insertNewObjectPropertyStatement(new ObjectPropertyStatementImpl(subject, predicate, object));
+          
+          arrayToSend.put(resp);
+          response.getWriter().write(this.arrayToSend.toString());
+            
+        } else if(cmd.endsWith("getInstances")){
+          inputMap = new HashMap<String, String>();
+          mainObjectUris = new ArrayList<String>();
+        
+          queryMap = new HashMap<String, String>();
+          guiMap = new HashMap<String, Map<String, String>>();
+          queryVarMap = new HashMap<String, String[]>();
+          //Data in Java to be retrieved
+          data = new ArrayList<Map<String, List<Map<String, String>>>>();
+          
+        
+          log.info("Request Arrived");
+          this.vreq = vreq;
+          //Initialize the input Map
+          initInputMap();
+          log.info("InputMap " + this.inputMap.toString());
+          getMainObjects();
+          log.info("MainObjectUris \n" + this.mainObjectUris);
+          //queryMap and the guiMap is set
+          listgetTableData();
+          log.info("GuiMap \n " + this.guiMap);
+          log.info("QueryMap \n " + this.queryMap);
+          setOutputData();
+          log.info("OutputData \n " + data.toString());
+          prepareJSON(this.arrayToSend);
+          response.getWriter().write(this.arrayToSend.toString());
+        }
+        
+
     }
         
     public void initInputMap(){
@@ -207,11 +234,12 @@ public class InstanceToOfferController extends VitroAjaxController {
            String queryString = queryMap.get(fieldName);
            String query = QueryUtils.subUriForQueryVar(queryString, "mainObjectVar", mainObject);
            //Execute the query 
+           log.info("QueryWith the variable  :" + query);
            ResultSet resultSet = QueryUtils.getQueryResults(query, this.vreq);
            String[] vars = this.queryVarMap.get(fieldName);
            
            List<Map<String, String>> res = getQueryVars(resultSet, vars);
-           log.info("Result of the query \n " + res.toString());
+           log.info("Result of the query \n mainObject : " + mainObject + "  \n " + res.toString());
            List<Map<String, String>> cellList = new ArrayList<Map<String, String>>();
            for(Map<String, String> fieldRowData : res){
                Map<String, String> cellData = new HashMap<String, String>();
@@ -222,7 +250,6 @@ public class InstanceToOfferController extends VitroAjaxController {
                  cellData.put(key, fieldRowData.get(this.guiMap.get(fieldName).get(key)));
 
                }
-               
                cellList.add(cellData);
            }
            rowMap.put(fieldName, cellList);
@@ -233,11 +260,13 @@ public class InstanceToOfferController extends VitroAjaxController {
     
     public void prepareJSON(JSONArray toSend){
       
+      int i = 0;
       for(Map<String, List<Map<String, String>>> rows : this.data){
-       
+        
         try {
           
         JSONObject rowData = new JSONObject();
+        rowData.put("mainObjectUri", this.mainObjectUris.get(i));
         for(String columnNames : this.queryMap.keySet()){
           JSONArray cellList = new JSONArray();
           for(Map<String, String> listData : rows.get(columnNames)){
@@ -250,13 +279,14 @@ public class InstanceToOfferController extends VitroAjaxController {
           rowData.put(columnNames, cellList);
         }
         toSend.put(rowData);
-        
+        i++;
         } catch(Exception ex) {
           log.error("Error occurred in converting values to JSON object", ex);
         }        
       } 
     }
   
+
     private static List<Map<String, String>> getQueryVars(ResultSet results, String[] vars){
       
       List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();

@@ -8,6 +8,11 @@
 	margin : 15px 5px ;
 }
 
+.choice:hover{
+	background-color : 	#DCDCDC;
+	cursor : pointer;
+}
+
 .titleContainer{
 	display : table-cell;
 	vertical-align: middle;
@@ -26,6 +31,11 @@
 	border-radius : 6px;
 }
 
+.dataContainer:hover{
+	background-color : 	#DCDCDC;
+	cursor : pointer;
+}
+
 .data{
 	display : inline-block;
 	width : 400px;
@@ -36,4 +46,29 @@
 
 .backButton{
 	margin-top :30px;
+}
+
+.backButton:hover{
+	background-color : 	#DCDCDC;
+	cursor : pointer;
+}
+
+.gifContainer{ 
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    overflow:hidden;
+    z-index:-1;
+    background-color:black; 
+    opacity:0.1;
+  text-align: center;
+
+}
+
+.helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
 }

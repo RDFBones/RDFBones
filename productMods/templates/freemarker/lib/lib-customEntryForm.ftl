@@ -1,6 +1,7 @@
 <#macro fileInputField title>  
 	<h3> ${title} </h3>
-	<input id="datafile" type="file" name="datafile" size="30" />    
+	<input id="datafile" type="file" name="datafile" size="30" /> 
+	<input type="hidden" name ="dataUpload"  />
 </#macro>
 
 <#macro hiddenInputField name val=""> 
@@ -20,5 +21,10 @@
 	<div>
 		<input type="submit" value="submit" class="submit">
 		<span class="or"> or <a class="cancel"  href="${cancelUrl}" title="cancel">Cancel</a></span>
+	</div>
+</#macro>
+<#macro done cancelUrl>
+	<div class="submit">
+		<a href="${cancelUrl}" title="cancel">Done</a>
 	</div>
 </#macro>

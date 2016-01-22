@@ -5,6 +5,7 @@ package edu.cornell.mannlib.vitro.webapp.edit.n3editing.controller;
 import static edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationUtils.getPredicateUri;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +15,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.vocabulary.RDFS;
 
 import edu.cornell.mannlib.vitro.webapp.auth.permissions.SimplePermission;
@@ -30,6 +32,7 @@ import edu.cornell.mannlib.vitro.webapp.controller.freemarker.responsevalues.Res
 import edu.cornell.mannlib.vitro.webapp.controller.freemarker.responsevalues.TemplateResponseValues;
 import edu.cornell.mannlib.vitro.webapp.dao.VitroVocabulary;
 import edu.cornell.mannlib.vitro.webapp.dao.WebappDaoFactory;
+import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationUtils;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditSubmissionUtils;
@@ -94,15 +97,17 @@ public class EditRequestDispatchController extends FreemarkerHttpServlet {
          
          String predicateUri =  getPredicateUri(vreq);
          
-         if(predicateUri != null && !predicateUri.isEmpty()){
-           if(getPredicateUri(vreq).equals("http://www.semanticweb.org/engel/ontologies/2015/3/rdfBones#isDepicted")){
+         if(predicateUri != null && !predicateUri.isEmpty() && !isDeleteForm(vreq)){
+           String customEntryFormUri = getCustomEntryFormUri(predicateUri, vreq);
+           if(customEntryFormUri != null && !customEntryFormUri.isEmpty()){
              Map<String,Object> templateData1 = new HashMap<String,Object>();
              OntModel queryModel = ModelAccess.on(vreq).getOntModel();
-             SparqlDisplayOntology sparql = new SparqlDisplayOntology(predicateUri, vreq, queryModel);
+             SparqlDisplayOntology sparql = new SparqlDisplayOntology(customEntryFormUri, vreq, queryModel);
              log.info("sparqlObject \n" + sparql.toString());
              templateData.put("sparql", sparql);
              template = "mainCustomEntryForm.ftl";
            }
+       
          }
          //Get the edit generator name
          String editConfGeneratorName = processEditConfGeneratorName(vreq);
@@ -114,9 +119,6 @@ public class EditRequestDispatchController extends FreemarkerHttpServlet {
          log.info("literalsin form 2 : " + editConfig.getLiteralsInScope());
          log.debug("editConfiguration:\n" + editConfig );
          
-         //Mylog
-         log.info("editConfiguration : " + editConfig);
-         
          //if the EditConfig indicates a URL to skip to, then redirect to that URL
          if( editConfig.getSkipToUrl() != null ){
              return new DirectRedirectResponseValues(editConfig.getSkipToUrl());
@@ -127,8 +129,10 @@ public class EditRequestDispatchController extends FreemarkerHttpServlet {
         
          //Get the multi value edit submission object
          MultiValueEditSubmission submission = getMultiValueSubmission(vreq, editConfig);
+         if(submission != null){
+           log.info("Submission XCVB \n " + submission.toString());
+         }
          MultiValueEditSubmissionTemplateModel submissionTemplateModel = new MultiValueEditSubmissionTemplateModel(submission);
-         
          //what goes in the map for templates?
          EditConfigurationTemplateModel etm = new EditConfigurationTemplateModel( editConfig, vreq);
          log.info("PageData" + etm.getPageData().toString());
@@ -154,7 +158,26 @@ public class EditRequestDispatchController extends FreemarkerHttpServlet {
          }
     }    
 
-
+  private String getCustomEntryFormUri(String predicateUri, VitroRequest vreq){
+    
+    String customEntryFormQuery  = "PREFIX myDisplay: <http://myDisplayOntology.org#> "
+        + " SELECT ?customEntryForm "
+        + " WHERE {"
+        + "   ?predicateUri  myDisplay:customEntryFormObject   ?customEntryForm "
+        + "} ";
+    
+    String queryString = QueryUtils.subUriForQueryVar(customEntryFormQuery,"predicateUri", predicateUri);
+    log.info("customEntryFormQuery \n : " + queryString);
+    ResultSet resultSet = QueryUtils.getQueryResults(queryString, vreq);
+    String[] uris = {"customEntryForm" };
+    List<Map<String, String>> results = QueryUtils.getQueryVars(resultSet, uris, null);
+    if(!results.isEmpty()){
+      return results.get(0).get("customEntryForm");
+    } else {
+      return null;
+    }
+    
+  }
 
 	private boolean isMenuMode(VitroRequest vreq) {
 		//Check if special model, in which case forward

@@ -45,12 +45,17 @@
 	<div id="elementList">
 		
 	</div>
+	
 	<div class="backButton">
 		Back
 	</div>
+	<@cef.done cancelUrl/>
+</div>
+<div class = "gifContainer invisible" id="waitForResponse">
+		<span class="helper"></span><img src="${urls.base}/images/gif/loading.gif" style="width : 120px; height : 120px;">
 </div>
 <script>
-	var customFormData = {
+var customFormData = {
 	
 		//There is one AJAX servlet which handles the request. Its mapping is constant.
 		urlBase : '${urls.base}' ,
@@ -58,6 +63,11 @@
 		newUrl: '${urls.base}/instanceToOffer?tokenize=true',
 		subjectUri : '${editConfiguration.subjectUri}',
         predicateUri : '${editConfiguration.predicateUri}',
+        <#if editConfiguration.objectUri?has_content>
+        	objectUri : '${editConfiguration.objectUri}',
+        <#else>
+        	objectUri : null,
+        </#if>
         customEntryFormUri: '${sparql.customEntryFormUri}',
 		// Based on this variable can the servlet decide what has to be sent back
 		taskDef : "customEntryForm" ,

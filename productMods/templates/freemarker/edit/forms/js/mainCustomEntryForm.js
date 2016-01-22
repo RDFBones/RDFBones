@@ -1,11 +1,12 @@
 var communication = {
 
-	getInstances: function(classUri){
+	getInstances: function(){
 		
 		$.ajax({
             url: customFormData.newUrl,
             dataType: 'json',
             data : {
+            	cmd : "getInstances",
             	subjectUri : customFormData.subjectUri ,
             	predicateUri : customFormData.predicateUri ,
             	customEntryFormUri : 	customFormData.customEntryFormUri , 
@@ -18,81 +19,86 @@ var communication = {
             }
     	})
 	},
-}
+	
+	
+	saveInstance : function(objectUri, div){
+		
+		elements.waitForResponse.show();
+		$.ajax({
+            url: customFormData.newUrl,
+            dataType: 'json',
+            data : {
+            	cmd : "saveInstance",
+            	subjectUri : customFormData.subjectUri ,
+            	predicateUri : customFormData.predicateUri ,
+            	objectUri : objectUri,
+            },
+            complete: function(xhr, status) {
+               
+            	var response = $.parseJSON(xhr.responseText)
+            	elements.waitForResponse.hide()
+            	div.remove()
+            	alert("Saved")
+            }
+    	})
+	}
+} 
 
 var showElements = {
 		
 		showResults : function(jsonArray){
-			
 			$.each(jsonArray, function(entryIndex, entryObject){
 				//Create the two divs
-				var div = $('<div/>').addClass("dataContainer")
-				var div1 = $('<div/>').addClass("data").appendTo(div)
-				var div2 = $('<div/>').addClass("data").appendTo(div)
-				
+				var skip = false;
+				var entryDiv = $('<div/>').addClass("dataContainer")
 				$.each(customFormData.listView, function(fieldIndex, fieldValue){
 					var cellList = entryObject[fieldValue.name];
 					//Fill the cell with the data
+					var fieldDiv = $('<div/>').addClass('data')
+					if(cellList.length == 0 && fieldValue.name == "image" ){
+						var fieldArrayDiv = $('<div/>').addClass("sideByside")
+						fieldArrayDiv.append(fieldElements.linkField("", "", entryObject["mainObjectUri"]))
+						fieldDiv.append(fieldArrayDiv)
+					}
 					$.each(cellList, function(index, cellObject){
+						var fieldArrayDiv = $('<div/>').addClass("sideByside")
 						switch(fieldValue.type){
 						
 						case "http://myDisplayOntology.org#LinkField" : 
-							
-							div1.append(fieldElements.linkField(cellObject.value, cellObject.uri))
+							if(cellObject.value.indexOf("per") > -1 || cellObject.value == ""){
+								console.log("indexOf "  + cellObject.value.indexOf("per"))
+								console.log("cellObject.value == " + cellObject.value)
+								skip = true
+							}
+							fieldArrayDiv.append(fieldElements.linkField(cellObject.value, cellObject.uri, entryObject["mainObjectUri"]))
 							break;
 						case "http://myDisplayOntology.org#ImageField" : 
 							
-							div2.append(fieldElements.imageField(cellObject.fileName, cellObject.mimeType, cellObject.url))
+							fieldArrayDiv.append(fieldElements.imageField(cellObject.fileName, cellObject.mimeType, cellObject.url))
 							break;
 						}
+						fieldDiv.append(fieldArrayDiv)
 					})
+					entryDiv.append(fieldDiv)
 				})
-				div.appendTo(elements.elementList)
+				console.log("Skip : " + skip)
+				if(!skip){
+					entryDiv.appendTo(elements.elementList).click(function(){
+						communication.saveInstance(entryObject["mainObjectUri"], this)
+					})
+				}
 			});	
 		}
 }
-var elements = {
-	
-	onLoad: function(){
-		this.initObjects();
-		this.initEventListeners();
-	},
-	
-	initObjects: function(){
-	
-		this.choose = $('#choose')	
-		this.newSelector = $('#newSelector')
-		this.existingSelector = $("#existingSelector")
-		this.newForm = $("#newForm")
-		this.existingForm = $("#existingForm")
-		this.backButton = $(".backButton")
-		this.elementList = $('#elementList')
-	},
 
-	initEventListeners : function(){
-		
-		this.newSelector.click(function(){
-			uiAction.showNewForm();
-		})
-		
-		this.existingSelector.click(function(){			
-			uiAction.showExistingForm()
-			communication.getInstances()
-		})
-		
-		this.backButton.click(function(){
-			uiAction.showChoiceAgain()
-			this.elementList.empty()
-		})
-	}
-}	
-
-elements.onLoad()
 
 var fieldElements = {
 	
-	linkField : function(value, uri){
+	linkField : function(value, linkUrl, uri){
 		
+		if(value == ""){
+			value = uri
+		}
 		console.log("linkField :  name - " + value + " uri - " + uri)
 		var container = "<div>" +
 							"" + value + "" +
@@ -113,7 +119,7 @@ var fieldElements = {
 					"</div> ";
 		} else {
 			//Only the fileName is shown
-			var container = "<div class='sideByside'>" + filename + "</div>"
+			var container = "<div class='sideByside'>" + fileName + "</div>"
 		}
 		//The downloadLink is show anyway
 		container += "<div class='sideByside'> " +
@@ -168,3 +174,52 @@ var uiAction = {
 		}
 	}
 }
+
+var elements = {
+	
+	onLoad: function(){
+		this.initObjects();
+		if(customFormData.objectUri != null){
+			this.showOnlyForm()
+		} else {
+			this.initEventListeners();
+		}
+	},
+	
+	initObjects: function(){
+	
+		this.choose = $('#choose')	
+		this.newSelector = $('#newSelector')
+		this.existingSelector = $("#existingSelector")
+		this.newForm = $("#newForm")
+		this.existingForm = $("#existingForm")
+		this.backButton = $(".backButton")
+		this.elementList = $('#elementList')
+		this.waitForResponse = $('#waitForResponse')
+	},
+
+	initEventListeners : function(){
+		
+		this.newSelector.click(function(){
+			uiAction.showNewForm();
+		})
+		
+		this.existingSelector.click(function(){			
+			uiAction.showExistingForm()
+			communication.getInstances()
+		})
+		
+		this.backButton.click(function(){
+			uiAction.showChoiceAgain()
+			elements.elementList.empty()
+		})
+	},
+	
+	showOnlyForm : function(){
+		uiAction.showNewForm()
+		this.backButton.hide()
+	}
+}	
+
+elements.onLoad()
+

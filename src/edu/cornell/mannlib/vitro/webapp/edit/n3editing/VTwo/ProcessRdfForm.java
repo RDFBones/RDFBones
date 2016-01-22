@@ -509,6 +509,8 @@ public class ProcessRdfForm {
         List<EditSubmissionVTwoPreprocessor> preprocessors = configuration.getEditSubmissionPreprocessors();
         if(preprocessors != null) {
             for(EditSubmissionVTwoPreprocessor p: preprocessors) {
+                //Mylog
+                log.info("Preprocess");
                 p.preprocess(submission, vreq);
             }
         }
