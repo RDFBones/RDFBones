@@ -27,8 +27,6 @@
     vitro:inPropertyGroupAnnot
     <http://vivoweb.org/ontology#vitroPropertyGroupFile>. 
 
-rdfBones:2345 a foaf:Person ;
-			rdfs:label "Black, Bob"^^<http://www.w3.org/2001/XMLSchema#string> . 
 
 <http://www.semanticweb.org/engel/ontologies/2015/3/rdfBones#isDepicted> 
 						vitro:inPropertyGroupAnnot
