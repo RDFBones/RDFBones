@@ -8,18 +8,19 @@
     	PREFIX vitro-public: &lt;http://vitro.mannlib.cornell.edu/ns/vitro/public#&gt;
     	PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
     	
-		SELECT DISTINCT ?document ?file  ?downloadLoc ?downloadUrl ?label ?documentClass
+		SELECT DISTINCT ?image ?file ?downloadLoc ?downloadUrl ?filename ?fileDescription ?mimeType
 		WHERE
 		{
-		     ?subject ?property ?document .
-		   	 ?document rdfs:label ?label . 
-		     ?document a ?documentClass.
-		     
-		     OPTIONAL {
-		     	?document &lt;http://vivo.mydomain.edu/individual/hasFile&gt; ?file .
+		     ?subject ?property ?image .
+		   	 OPTIONAL {
+		     	?image &lt;http://vivo.mydomain.edu/individual/hasFile&gt; ?file .
+		     	?file vitro-public:filename ?filename .
+		     	?file vitro-public:mimeType ?mimeType .
 		     	?file vitro-public:downloadLocation ?downloadLoc .
 		     	?downloadLoc vitro-public:directDownloadUrl ?downloadUrl . 
-		     	}
+		     }
+		     		  
+		     OPTIONAL { ?file &lt;http://vivo.mydomain.edu/individual/fileDescription&gt; ?fileDescription  }		     
 		}
 
   </query-select>
@@ -48,5 +49,5 @@
         }
     </query-construct>  
     -->        
-    <template>hasDocumentTest.ftl</template>
+    <template>depictedIn.ftl</template>
 </list-view-config>

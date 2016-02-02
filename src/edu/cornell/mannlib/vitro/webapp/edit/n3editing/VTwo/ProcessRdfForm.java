@@ -156,6 +156,7 @@ public class ProcessRdfForm {
             EditConfigurationVTwo configuration,
             List<String>... n3StrLists){                
         Map<String, String> valueMap = getSubPedObjVarMap(configuration);
+        log.info("valueMap : " + valueMap.toString());
         for (List<String> n3s : n3StrLists) {
             populator.subInUris(valueMap, n3s);
         }
@@ -178,7 +179,7 @@ public class ProcessRdfForm {
 
         log.debug("editing an existing resource: " + editConfig.getObject() );        
 
-        log.info("submission : " + submission.toString());
+        log.info("editExistingStatenents submission : " + submission.toString());
         
         if(submission.getFilesFromForm() != null){
         	
@@ -276,11 +277,19 @@ public class ProcessRdfForm {
         /* *********** Check if new resource needs to be forcibly created ******** */
         urisForNewResources = URIsForNewRsources(submission, editConfig, newURIMaker);
         
+        log.info("newResources : " + urisForNewResources.toString());
         	
         if(submission.getFilesFromForm() != null){
-        	
+          
         	saveFile(submission, urisForNewResources);
+        	List<String> sentinel = new ArrayList<String>();
+        	sentinel.add(EditConfigurationConstants.NEW_URI_SENTINEL);
+        	submission.getUrisFromForm().put("byteStreamIndividual", sentinel);
+        	//get("byteStreamIndividual").add(EditConfigurationConstants.NEW_URI_SENTINEL);
         }
+        
+        log.info("reuquiredAsserts : " + requiredAsserts.toString());
+        log.info("optionalAsserts : " + optionalAsserts.toString());
         
         substituteInForcedNewURIs(urisForNewResources, submission.getUrisFromForm(), requiredAsserts, optionalAsserts, URLToReturnTo);
         logSubstitue( "Added form URIs that required new URIs", requiredAsserts, optionalAsserts, requiredRetracts, optionalRetracts);
@@ -288,29 +297,36 @@ public class ProcessRdfForm {
         
         /* ********** Form submission URIs ********* */
         substituteInMultiURIs(submission.getUrisFromForm(), requiredAsserts, optionalAsserts, URLToReturnTo);
-        logSubstitue( "Added form URIs", requiredAsserts, optionalAsserts, requiredRetracts, optionalRetracts);
+        //logSubstitue( "Added form URIs", requiredAsserts, optionalAsserts, requiredRetracts, optionalRetracts);
         //Retractions does NOT get values from form.
+        
+        log.info("submission.getUrisFromForm() : " + submission.getUrisFromForm());
         
         /* ******** Form submission Literals *********** */
         substituteInMultiLiterals( submission.getLiteralsFromForm(), requiredAsserts, optionalAsserts, URLToReturnTo);
-        logSubstitue( "Added form Literals", requiredAsserts, optionalAsserts, requiredRetracts, optionalRetracts);
+        //logSubstitue( "Added form Literals", requiredAsserts, optionalAsserts, requiredRetracts, optionalRetracts);
         //Retractions does NOT get values from form.                               
         
-    
+        log.info("submission.getLiteralsFromForm() : " + submission.getLiteralsFromForm());
+
         
         /* *********** Add subject, object and predicate ******** */
         substituteInSubPredObjURIs(editConfig, requiredAsserts, optionalAsserts, requiredRetracts, optionalRetracts, URLToReturnTo);
-        logSubstitue( "Added sub, pred and obj URIs", requiredAsserts, optionalAsserts, requiredRetracts, optionalRetracts);
+        //logSubstitue( "Added sub, pred and obj URIs", requiredAsserts, optionalAsserts, requiredRetracts, optionalRetracts);
         
      
         /* ********* Existing URIs and Literals ********** */
+        log.info("UrisInScope : " + editConfig.getUrisInScope().toString());
+        
         substituteInMultiURIs(editConfig.getUrisInScope(), 
                 requiredAsserts, optionalAsserts, requiredRetracts, optionalRetracts, URLToReturnTo);
-        logSubstitue( "Added existing URIs", requiredAsserts, optionalAsserts, requiredRetracts, optionalRetracts);
+        //logSubstitue( "Added existing URIs", requiredAsserts, optionalAsserts, requiredRetracts, optionalRetracts);
+        
+        log.info("LiteralsInScope : " + editConfig.getLiteralsInScope().toString());
         
         substituteInMultiLiterals(editConfig.getLiteralsInScope(), 
                 requiredAsserts, optionalAsserts, requiredRetracts, optionalRetracts, URLToReturnTo);
-        logSubstitue( "Added existing Literals", requiredAsserts, optionalAsserts, requiredRetracts, optionalRetracts);
+        //logSubstitue( "Added existing Literals", requiredAsserts, optionalAsserts, requiredRetracts, optionalRetracts);
         //Both Assertions and Retractions get existing values.
         
         /* ************  Edits may need new resources *********** */
@@ -365,12 +381,14 @@ public class ProcessRdfForm {
             List<String> requiredDels, List<String> optionalDels) throws Exception{
       
       log.info("requiredAdds : " + requiredAdds.toString());
-      
+      //log.info("requiredDels : " + requiredDels.toString());
+
     	List<Model> adds = parseN3ToRDF(requiredAdds, REQUIRED);
         adds.addAll( parseN3ToRDF(optionalAdds, OPTIONAL));
         
         List<Model> retracts = new ArrayList<Model>();
         if( requiredDels != null && optionalDels != null ){
+            log.info("HereHereHere");
             retracts.addAll( parseN3ToRDF(requiredDels, REQUIRED) );
             retracts.addAll( parseN3ToRDF(optionalDels, OPTIONAL) );
         }
@@ -428,8 +446,8 @@ public class ProcessRdfForm {
     protected void logSubstitue(String msg, List<String> requiredAsserts,
             List<String> optionalAsserts, List<String> requiredRetracts,
             List<String> optionalRetracts) {
-        if( !log.isDebugEnabled() ) return;
-        log.debug(msg);
+        //if( !log.isDebugEnabled() ) return;
+        log.info(msg);
         logSubstitueN3( msg, requiredAsserts, "required assertions");
         logSubstitueN3( msg, optionalAsserts, "optional assertions");
         logSubstitueN3( msg, requiredRetracts, "required retractions");
@@ -491,6 +509,8 @@ public class ProcessRdfForm {
         List<EditSubmissionVTwoPreprocessor> preprocessors = configuration.getEditSubmissionPreprocessors();
         if(preprocessors != null) {
             for(EditSubmissionVTwoPreprocessor p: preprocessors) {
+                //Mylog
+                log.info("Preprocess");
                 p.preprocess(submission, vreq);
             }
         }

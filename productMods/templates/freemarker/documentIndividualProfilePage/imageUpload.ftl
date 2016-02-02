@@ -30,19 +30,17 @@ ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/uploadImages.cs
     </section>
 </#if>
 
+
 <#assign fileDescription = lvf.getFormFieldValue(editSubmission, editConfiguration, "fileDescription") />
 
 <#assign i18n = i18n() >
 <#assign typesList = editConfiguration.offerTypesCreateNew />
 
-	<h3> Please upload a file </h3>
+	<h3> Please upload an image </h3>
 	<form id="form"	action="${submitUrl}" enctype="multipart/form-data" method="post" >
 	
 		<input id="datafile" type="file" name="datafile" size="30" />    
-		
-		<h3> Add description </h3>
-		<textarea id="form" rows="4" cols="50" name="fileDescription" />${fileDescription}</textarea>
-		
+			
 		<input type="hidden" name = "editKey" value="${editKey}"/>
 		<input type="hidden" name = "dataUpload" value />
 		<div>

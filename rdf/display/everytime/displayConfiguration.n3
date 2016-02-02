@@ -1,0 +1,121 @@
+@prefix myDisplay: <http://myDisplayOntology.org#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfBones: <http://www.semanticweb.org/engel/ontologies/2015/3/rdfBones#> .
+@prefix vitro: <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#> .
+@prefix display: <http://vitro.mannlib.cornell.edu/ontologies/display/1.1#> .
+@prefix xmls: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix bibo:    <http://purl.org/ontology/bibo/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+
+###
+### Display Ontology Defintion
+###
+
+vitro:customEntryForm a owl:Class . 
+vitro:nr a owl:DatatypeProperty .
+
+myDisplay:dataList a owl:Class .
+myDisplay:customEntryForm a owl:Class .
+
+myDisplay:query a owl:DatatypeProperty .
+myDisplay:listViewName a owl:DatatypeProperty .
+myDisplay:listViewNumber a owl:DatatypeProperty .
+
+myDisplay:customEntryFormObject a owl:ObjectProperty .
+myDisplay:listView a owl:ObjectProperty .
+
+<http://www.semanticweb.org/engel/ontologies/2015/3/rdfBones#isDepicted> 
+	myDisplay:customEntryFormObject myDisplay:depictedCustomEntryForm .
+
+###
+### ListView Definition
+###
+	
+	
+myDisplay:depictedCustomEntryForm  myDisplay:tableField 	myDisplay:tableField1 .
+myDisplay:tableField1	myDisplay:name		"image" .
+myDisplay:tableField1	myDisplay:number 	"0" .
+myDisplay:tableField1	myDisplay:limit		"1" .
+myDisplay:tableField1	myDisplay:query		"""
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    SELECT ?mainObject ?imageLabel
+    WHERE { 
+        ?mainObject		rdfs:label		?imageLabel .
+        FILTER (?mainObject  =  ?mainObjectVar ) 
+     }             
+     """ .
+
+myDisplay:tableField1   myDisplay:guiElement	myDisplay:guiElement1 .
+myDisplay:guiElement1	rdf:type				myDisplay:LinkField .
+myDisplay:guiElement1	myDisplay:fieldValue	"imageLabel" .
+myDisplay:guiElement1	myDisplay:fieldUri		"mainObject" .
+
+
+myDisplay:depictedCustomEntryForm  myDisplay:tableField 	myDisplay:tableField2 .
+myDisplay:tableField2	myDisplay:name		"file" .
+myDisplay:tableField2	myDisplay:number 	"1" .
+myDisplay:tableField2	myDisplay:limit		"3" .
+myDisplay:tableField2	myDisplay:query		"""
+    PREFIX vitro-public:  <http://vitro.mannlib.cornell.edu/ns/vitro/public#> 
+    SELECT ?filename	?mimeType	?downloadLoc 
+    WHERE { 
+        ?mainObjectVar		<http://vivo.mydomain.edu/individual/hasFile>  ?fileIndividual .
+        ?fileIndividual vitro-public:filename ?filename .
+        ?fileIndividual vitro-public:mimeType ?mimeType .
+        ?fileIndividual vitro-public:downloadLocation ?byteStreamIndividual .
+        ?byteStreamIndividual vitro-public:directDownloadUrl ?downloadLoc . 
+     }             
+     """ .
+
+myDisplay:tableField2   myDisplay:guiElement	myDisplay:guiElement2 .
+myDisplay:guiElement2	rdf:type				myDisplay:ImageField .
+myDisplay:guiElement2	myDisplay:fieldFileName	"filename" .
+myDisplay:guiElement2	myDisplay:fieldUrl		"downloadLoc" .
+myDisplay:guiElement2	myDisplay:fieldMimeType	"mimeType" .
+
+
+###
+### Form definition
+###
+
+
+myDisplay:depictedCustomEntryForm vitro:inputField	rdfBones:001 .
+rdfBones:001 rdf:type vitro:formField .
+rdfBones:001 vitro:nr "1"^^<http://www.w3.org/2001/XMLSchema#string> ;
+			 vitro:type "file"^^<http://www.w3.org/2001/XMLSchema#string> ;
+			 vitro:name "fileUpload"^^<http://www.w3.org/2001/XMLSchema#string> ;
+			 vitro:title "Add file"^^<http://www.w3.org/2001/XMLSchema#string> .
+
+myDisplay:depictedCustomEntryForm vitro:inputField	rdfBones:002 .
+rdfBones:002 rdf:type vitro:formField .
+rdfBones:002 vitro:nr "2"^^<http://www.w3.org/2001/XMLSchema#string> ;
+			 vitro:type "hidden"^^<http://www.w3.org/2001/XMLSchema#string> ;
+			 vitro:name "dataUpload"^^<http://www.w3.org/2001/XMLSchema#string> .
+
+myDisplay:depictedCustomEntryForm vitro:inputField	rdfBones:003 .
+rdfBones:003 rdf:type vitro:formField .
+rdfBones:003 vitro:nr "3"^^<http://www.w3.org/2001/XMLSchema#string> ;
+			 vitro:type "description"^^<http://www.w3.org/2001/XMLSchema#string> ;
+			 vitro:name "fileDescription"^^<http://www.w3.org/2001/XMLSchema#string> ;
+			 vitro:title "Add description"^^<http://www.w3.org/2001/XMLSchema#string> .
+
+			 
+###
+### Example dataset
+###
+
+
+myDisplay:ex1 a bibo:Image ;
+				rdfs:label	"Example1"^^xmls:string .
+myDisplay:ex2 a bibo:Image  ;
+				rdfs:label	"Example2"^^xmls:string .
+myDisplay:ex3 a bibo:Image  ;
+				rdfs:label	"Example3"^^xmls:string .
+
+#rdfBones:2345 <http://www.semanticweb.org/engel/ontologies/2015/3/rdfBones#isDepicted>  myDisplay:ex1 .
+#rdfBones:2345 <http://www.semanticweb.org/engel/ontologies/2015/3/rdfBones#isDepicted>  myDisplay:ex2 .
+#rdfBones:2345 <http://www.semanticweb.org/engel/ontologies/2015/3/rdfBones#isDepicted>  myDisplay:ex3 .
+
+

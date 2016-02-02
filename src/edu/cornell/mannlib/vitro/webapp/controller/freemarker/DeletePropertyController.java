@@ -172,7 +172,7 @@ public class DeletePropertyController extends FreemarkerHttpServlet {
 	}
 
 	//process object property
-    private void processObjectProperty(VitroRequest vreq) {
+  private void processObjectProperty(VitroRequest vreq) {
     	ObjectProperty prop = EditConfigurationUtils.getObjectProperty(vreq);
     	    	
     	//if this property is true, it means the object needs to be deleted along with statement
@@ -186,27 +186,41 @@ public class DeletePropertyController extends FreemarkerHttpServlet {
     	if(!hasDeleteObjectUri(vreq)) {
     		
     		String rangeUri = EditConfigurationUtils.getRangeUri(vreq);
-        	if(rangeUri.equals("http://vitro.mannlib.cornell.edu/ns/vitro/public#File")){
-        		
-        		try {
-        			IndividualDao indao = vreq.getWebappDaoFactory().getIndividualDao();
-        			Individual file = indao.getIndividualByURI(EditConfigurationUtils.getObjectUri(vreq));
-        			String byteStreamUri = file.getDataValue(VitroVocabulary.FS_DOWNLOAD_LOCATION);
-            		
-        			FileStorage fileStorage = ApplicationUtils.instance().getFileStorage();
-            		fileStorage.deleteFile(byteStreamUri);
-                }	catch (IOException e) {
-        			
-        			throw new IllegalStateException("Can't delete file! .",e);
-        		}
-        	}
-    		
+        log.info("rangeUri : " + rangeUri);
+    		if(rangeUri.equals("http://vitro.mannlib.cornell.edu/ns/vitro/public#File")){
+    		  deleteFile(vreq, EditConfigurationUtils.getObjectUri(vreq));
+        }
+    		if(rangeUri.equals("http://purl.org/ontology/bibo/Image")){
+    		  IndividualDao indao = vreq.getWebappDaoFactory().getIndividualDao();
+    		  Individual image = indao.getIndividualByURI(EditConfigurationUtils.getObjectUri(vreq));
+    		  log.info("imageUri : " + image.getURI());
+    		  Individual file = image.getRelatedIndividual("http://vivo.mydomain.edu/individual/hasFile");
+    		  if (file != null){
+    		    deleteFile(vreq, file.getURI());
+    		  }
+    		}
     		deleteObjectPropertyStatement(vreq);
     	}
 		
     }
+  
+  private void deleteFile(VitroRequest vreq, String fileUri){
     
-    private void deleteObjectPropertyStatement(VitroRequest vreq) {
+    try {
+      IndividualDao indao = vreq.getWebappDaoFactory().getIndividualDao();
+      Individual file = indao.getIndividualByURI(fileUri);
+      String byteStreamUri = file.getDataValue(VitroVocabulary.FS_DOWNLOAD_LOCATION);
+        
+      FileStorage fileStorage = ApplicationUtils.instance().getFileStorage();
+        fileStorage.deleteFile(byteStreamUri);
+        } catch (IOException e) {
+      
+      throw new IllegalStateException("Can't delete file! .",e);
+    }
+    
+  }
+    
+  private void deleteObjectPropertyStatement(VitroRequest vreq) {
 		WebappDaoFactory wdf = vreq.getWebappDaoFactory();
 		String objectUri = EditConfigurationUtils.getObjectUri(vreq);
 		String subjectUri = EditConfigurationUtils.getSubjectUri(vreq);

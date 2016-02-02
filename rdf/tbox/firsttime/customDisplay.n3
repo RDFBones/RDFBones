@@ -6,7 +6,7 @@ bibo:Document
       vitro:customDisplayViewAnnot
               "documentProfilePage.ftl"^^xsd:string .
               
-#bibo:Image				
-#      vitro:customDisplayViewAnnot
-#              "imageProfilePage.ftl"^^xsd:string .
+bibo:Image				
+      vitro:customDisplayViewAnnot
+              "imageProfilePage.ftl"^^xsd:string .
               
