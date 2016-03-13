@@ -1,0 +1,98 @@
+
+
+#propertySelectorContainer{
+    display:none;
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    overflow:hidden;
+    z-index: 1;
+    background-color: rgba(0,0,0,0.4);
+    text-align: center;
+}
+
+#classSelectorContainer{
+    display:none;
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    overflow:hidden;
+    z-index: 1;
+    background-color: rgba(0,0,0,0.4);
+    text-align: center;
+}
+
+.selectorTitle{
+	font-size: 18px;
+	font-style: italic;
+	margin: 0 0 14px 0;
+	padding: 10px;
+	width: auto;
+	border-bottom: 1px solid black;
+}
+
+.ontologyViewer{
+	opacity: 1 ;
+	position:fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: #D4D4D4;
+	border: 2px solid black;
+	border-radius: 5px;
+	display: table;
+}
+
+#tableView{
+	display: table;
+}
+
+.ontologyViewerContainer{
+	display: table-cell;
+	//width: 200px;
+}
+
+.ontologyViewerTitle{
+	font-size:16px;
+	font-style:bold;
+	padding: 1px 5px;
+	margin-top: 10px;
+}
+ 
+.ontologyViewerList{
+
+	width : 400px;
+	height : 250px;
+	overflow: auto;
+	background : white;
+	border: 2px solid black;
+	border-radius: 5px;
+	margin: 4px 2px;
+}
+
+.propertyViewerList{
+
+	width :250px;
+	height : 250px;
+	overflow: auto;
+	background : white;
+	border: 2px solid black;
+	border-radius: 5px;
+	margin: 4px 2px;
+}
+
+.ontologyViewerEntry{
+	margin: 3px;
+	padding: 2px;
+	border: 1px solid black;
+	border-radius: 3xp;
+}
+
+.ontologyViewerEntry:hover{
+	cursor:pointer;
+}
+
