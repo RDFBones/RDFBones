@@ -47,14 +47,6 @@ var UIElements = {
 		},
 		
 		getFillerDiv : function(){
-			return ui.getNewDiv("imgContainer").css("width", "16")
+			return ui.getNewDiv("imgContainer")
 		}
-}
-
-
-var UIConstants = {
-	
-		minusImgSrc : "img/minus.png",
-		plusImgSrc : "img/plus.png",
-		arrowImgSrc : "img/arrows.png",
 }

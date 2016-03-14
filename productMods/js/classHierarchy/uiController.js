@@ -57,5 +57,8 @@ var classTreeController = {
 	}
 }
 
-classTreeController.init()
+$(document).ready(function() {
+	classTreeController.init()
+});
+
 

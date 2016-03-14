@@ -22,11 +22,20 @@
 	]
 </script>
 
-<script type="text/javascript src="${urls.base}/js/classHierarchy/library.js">
-<script type="text/javascript src="${urls.base}/js/classHierarchy/variables.js">
-<script type="text/javascript src="${urls.base}/js/classHierarchy/uiSetting.js">
-<script type="text/javascript src="${urls.base}/js/classHierarchy/uiController.js">
+${scripts.add('<script type="text/javascript" src="${urls.base}/js/classHierarchy/jquery-1.11.3.min.js"></script>',
+ 			  '<script type="text/javascript" src="${urls.base}/js/classHierarchy/library.js"></script>',
+			  '<script type="text/javascript" src="${urls.base}/js/classHierarchy/variables.js"></script>',
+			  '<script type="text/javascript" src="${urls.base}/js/classHierarchy/uiSetting.js"></script>',
+			  '<script type="text/javascript" src="${urls.base}/js/classHierarchy/uiController.js"></script>')}
 
-<link rel="stylesheet" href="${urls.theme}/css/classHierarchy/style.css" />
+<script>
+	var UIConstants = {
+		minusImgSrc : "${urls.base}/images/general/minus.png",
+		plusImgSrc : "${urls.base}/images/general/plus.png",
+		arrowImgSrc : "${urls.base}/images/general/arrows.png",
+	}
+</script>
+
+<link rel="stylesheet" href="${urls.base}/css/classHierarchy/style.css" />
 
 
