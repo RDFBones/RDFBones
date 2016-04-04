@@ -6,10 +6,10 @@ bibo:Document
       vitro:customDisplayViewAnnot
               "documentProfilePage.ftl"^^xsd:string .
 
-
-<http://vivoweb.org/ontology/core#UndergraduateStudent>
+<http://w3id.org/rdfbones/core#SkeletalInventory>
       vitro:customDisplayViewAnnot
               "mainPage.ftl"^^xsd:string .
+            
 
 #bibo:Image				
 #      vitro:customDisplayViewAnnot

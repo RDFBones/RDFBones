@@ -1,0 +1,23 @@
+
+.container {
+	float : left;
+	border : 1px solid black;
+	width : 200px;
+	height : 200px;	
+	margin : 5px;
+	overflow-y : auto;
+}
+
+.noEntryContainer {
+	margin : 5px;
+	color : red;
+}
+
+.entryContainer {
+	margin : 5px;
+}
+
+.entryContainer:hover {
+	cursor : pointer;
+	font-weight: bold;
+}

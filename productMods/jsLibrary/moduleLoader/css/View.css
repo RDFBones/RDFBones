@@ -1,0 +1,12 @@
+.moduleTitle {
+	font-style : italic;	
+	margin : 10px 2px;
+	display : inline-block;
+	font-size : 17px;
+ 	border-bottom : 1px solid;
+	padding : 3px;
+}
+
+.newLine {
+	display : block;
+}

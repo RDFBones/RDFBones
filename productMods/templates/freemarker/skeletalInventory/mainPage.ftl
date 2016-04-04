@@ -1,41 +1,50 @@
+	<link rel="stylesheet" type="text/css" href="${urls.base}/css/lib.css">
+	<link rel="stylesheet" type="text/css" href="${urls.base}/jsLibrary/previewJS/css/lightbox.css">
+	
+	<link rel="stylesheet" type="text/css" href="${urls.base}/jsLibrary/moduleLoader/css/tableView.css">
+	<link rel="stylesheet" type="text/css" href="${urls.base}/jsLibrary/moduleLoader/css/treeView.css">	
+	<link rel="stylesheet" type="text/css" href="${urls.base}/jsLibrary/moduleLoader/css/View.css">	
+	<link rel="stylesheet" type="text/css" href="${urls.base}/jsLibrary/moduleLoader/css/boneEditor.css">	
+	
+	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/LiteralEditor.css">	
+	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/ImageEditor.css">
+	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/SubboneEditor.css">
+
 <div>
 	Skeletal Invertories
 </div>
-<div id="classViewer">
-</div>
-<script>
-	var classes = [
 
-	<#list classRelations as classRelation>
-            {
-            superClass : {
-	    		label : "${classRelation["superClassLabel"]}" ,
-	    		uri   : "${classRelation["superClass"]}"
-	    	},
-	    	
-	    	subClass : {
-	    		label : "${classRelation["subClassLabel"]}" ,
-	    		uri   : "${classRelation["subClass"]}"
-	    	}
-          },	     
-	</#list>
-	]
-</script>
+	<div id = "pageContainer">
+	</div>
+	<script>
+		var imgSrc = "${urls.base}/images/general/"
+		var testImgSource = "${urls.base}/"
+		var skeletalInventory = '${individual.uri!}'
+	</script>
+	
+${scripts.add('<script type="text/javascript" src="${urls.base}/js/classHierarchy/jquery-1.11.3.min.js"></script>')}
 
-${scripts.add('<script type="text/javascript" src="${urls.base}/js/classHierarchy/jquery-1.11.3.min.js"></script>',
- 			  '<script type="text/javascript" src="${urls.base}/js/classHierarchy/library.js"></script>',
-			  '<script type="text/javascript" src="${urls.base}/js/classHierarchy/variables.js"></script>',
-			  '<script type="text/javascript" src="${urls.base}/js/classHierarchy/uiSetting.js"></script>',
-			  '<script type="text/javascript" src="${urls.base}/js/classHierarchy/uiController.js"></script>')}
-
-<script>
-	var UIConstants = {
-		minusImgSrc : "${urls.base}/images/general/minus.png",
-		plusImgSrc : "${urls.base}/images/general/plus.png",
-		arrowImgSrc : "${urls.base}/images/general/arrows.png",
-	}
-</script>
-
-<link rel="stylesheet" href="${urls.base}/css/classHierarchy/style.css" />
-
-
+${scripts.add('<script type="text/javascript" src="${urls.base}/js/DataController.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/Controller.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/UIController.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/jsLibrary/previewJS/js/lightbox.js"></script>')}
+	
+${scripts.add('<script type="text/javascript" src="${urls.base}/jsLibrary/dataEdit/js/library.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/jsLibrary/dataEdit/js/stringOperation.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/jsLibrary/dataEdit/js/treeData.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/jsLibrary/dataEdit/js/configData.js"></script>')}
+	
+${scripts.add('<script type="text/javascript" src="${urls.base}/jsLibrary/moduleLoader/js/html.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/jsLibrary/moduleLoader/js/UI.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/jsLibrary/moduleLoader/js/pageLoader.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/jsLibrary/moduleLoader/js/tableLoader.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/jsLibrary/moduleLoader/js/tableLoaderUI.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/jsLibrary/moduleLoader/js/treeLoader.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/jsLibrary/moduleLoader/js/treeLoaderUI.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/jsLibrary/moduleLoader/js/boneEditor.js"></script>')}
+	<!-- UI Modules -->
+${scripts.add('<script type="text/javascript" src="${urls.base}/jsLibrary/UIModules/ImageEditor.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/jsLibrary/UIModules/LiteralEditor.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/jsLibrary/UIModules/SubboneEditor.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/jsLibrary/UIModules/SingleElements.js"></script>')}
+	

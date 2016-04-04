@@ -1,0 +1,84 @@
+.moduleTitle {
+	display : inline-block;
+	border-bottom : 1px solid black;
+	padding : 2px;
+	margin-bottom : 3px;
+}
+
+.editBoneContainer{
+	opacity: 1 ;
+	position:fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding : 3px;
+	border : 2px solid black;
+	width : 580px;
+	background-color : white;
+	display: table;
+}
+
+.descriptionContainer{
+	margin : 5px 0 0 5px;
+	width : 550px;
+}
+
+.boneEntry {
+	margin : 5px 0 0 5px;
+}
+
+.treeStructureContainer{
+	text-align : left;
+	margin : 5px 0 0 5px;
+	width : 280px;
+	height : 220px;
+	border : 1px solid;	
+	float : left;
+}
+
+.fileUpload {
+	font-size : 10px;
+}
+
+/***************************************************************************
+ * Complete Incomplete Decision
+ **************************************************************************/
+	 
+.completeness{
+	border : 2px solid black;
+	padding : 3px 6px;
+	margin : 10px;
+	display : inline-block;
+}
+
+.completeness:hover{
+	cursor:pointer;
+}
+
+.completeIncompleteContainer{
+	border : 2px solid black;
+	width : 700px;
+}
+
+.imageContainer {
+	width : 400px;
+	height : 120px;
+}
+
+.boneImage {
+	width : 100px;
+	margin : 10px;
+}
+
+.boneLink {
+	display : inline-block;
+}
+
+#widthSetting {
+	overflow-x: auto;
+    white-space: nowrap
+}
+
+.addNewButton {
+	margin : 10px;
+}

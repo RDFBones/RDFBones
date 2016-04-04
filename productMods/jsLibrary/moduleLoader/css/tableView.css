@@ -1,0 +1,68 @@
+.tableTitle {
+	margin : 10px 2px;
+	display : inline-block;
+	font-size : 18px;
+ 	border-bottom : 1px solid;
+	padding : 3px;
+}
+
+.columnTitle {
+	display : inline-block;
+	width : 170px;
+	border-bottom : 1px solid black;
+	margin : 5px;
+	text-align : center;
+}
+
+.rowContainer {
+	display : table;
+	margin-top: 5px;
+	border-bottom : 1px solid black;
+}
+
+.columnContainer {
+	display: table-cell;
+    width: 180px;
+    height: 80px;
+    vertical-align: middle;
+    padding : 2px;
+    border : 2px solid white;
+}
+
+.columnContent {
+	max-height: 90px;
+    overflow : auto;
+}
+
+.xScroll {
+	overflow-x: auto;
+}
+
+.yScroll {
+	overflow-y: auto;
+}
+
+.imagesOuterContainer {
+	width : 180px;
+}
+
+.imagesInnerContainer {
+	overflow-x: auto;
+    white-space: nowrap
+}
+
+.imgContainer {
+	width: 80px;
+	display : inline-block;
+	paddig: 3px;
+	margin-left: 4px;
+}
+
+.previewImg {
+	width: 70px;
+	margin: 5px;
+}
+
+.imgCheckBoxContainer {
+	text-align: center;
+}
