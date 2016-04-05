@@ -1,14 +1,22 @@
 var WaitingGif = function(){
-	this.container = html.getNewDiv("waitGifContainer")
-	this.container.append(html.getImgClass(imgSrc + "loading.gif", "waitGifClass"))
+	return html.getNewDiv("waitGifContainer")
+			.append(html.getImgClass(imgSrc + "loading.gif", "waitGifClass"))
 }
+
 
 var Close = function(container){
 	this.container = html.getImgClass(imgSrc + "close.png", "floatRight")
 			.click(function(){
+				console.log("exit")
+				console.log(container)
 				container.hide()
 				Controller.refreshPage()
 			})
+}
+
+Close.prototype.show = function(){
+	console.log("closeShow")
+	this.container.show()
 }
 
 var BackToParent = function(boneEditor, parent){

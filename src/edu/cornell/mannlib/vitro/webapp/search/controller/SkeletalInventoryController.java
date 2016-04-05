@@ -23,10 +23,14 @@ import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 
+import edu.cornell.mannlib.vitro.webapp.beans.DataPropertyStatementImpl;
+import edu.cornell.mannlib.vitro.webapp.beans.ObjectPropertyStatementImpl;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.controller.ajax.VitroAjaxController;
+import edu.cornell.mannlib.vitro.webapp.dao.DataPropertyStatementDao;
 import edu.cornell.mannlib.vitro.webapp.dao.InsertException;
 import edu.cornell.mannlib.vitro.webapp.dao.NewURIMakerVitro;
+import edu.cornell.mannlib.vitro.webapp.dao.ObjectPropertyStatementDao;
 import edu.cornell.mannlib.vitro.webapp.dao.VitroVocabulary;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.NewURIMaker;
@@ -59,23 +63,20 @@ public class SkeletalInventoryController extends VitroAjaxController {
     private static final String[] boneNewUris = {"completeNess" , "skeletalRegion"};
     private static final String[] systemicNewUris = {"label", "descriptin"};
     
-    private static String prefix = "http://w3id.org/rdfbones/core";
+    private static String prefix = "bone";
+    
+    private static Map<String, String> prefixDef = new HashMap<String, String>();
     
     
     @Override
     protected void doRequest(VitroRequest vreq, HttpServletResponse response)
         throws IOException, ServletException {
+      
+        prefixDef.put("rdf","http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+        prefixDef.put("rdfs","http://www.w3.org/2000/01/rdf-schema#");
+        prefixDef.put("obo","http://purl.obolibrary.org/obo/");
         
-      log.info("Request Arrived");
-        JSONObject jsonObj = new JSONObject();
-        try {
-          jsonObj.put("value", "test");
-        } catch (JSONException e1) {
-          // TODO Auto-generated catch block
-          e1.printStackTrace();
-        }
-        response.getWriter().write(jsonObj.toString());  
-    	  /*
+        
     	  Map<String,String> queryVars = new HashMap<String,String>();
         List<Map<String, String>> result;
         String[] uris = new String[5];
@@ -113,34 +114,43 @@ public class SkeletalInventoryController extends VitroAjaxController {
           JSONArray arrayToSend = new JSONArray();
           //setJsonArray(arrayToSend, result);
  
-          
-          
          } else {
-           NewURIMaker newUri = new NewURIMakerVitro(vreq.getWebappDaoFactory());
-           try {
-             newUri.getUnusedNewURI(prefix);
-           } catch (InsertException e) {
-             // TODO Auto-generated catch block
-             e.printStackTrace();
-           }
            
-          String[] newUris = new String[2];
+          log.info("NewData");
+          NewURIMaker newUri = new NewURIMakerVitro(vreq.getWebappDaoFactory());
+
           String triples = new String();
           Map<String,String> inputMap = new HashMap<String,String>();
-
+          
           //Creating or modifying triples 
           switch(vreq.getParameter("type")){
-          case "newBone" :
-              newUris = boneNewUris;
-              inputMap.put("classUri", vreq.getParameter("classUri"));
+          case "new" :
+              try {
+                inputMap.put("completeNess", newUri.getUnusedNewURI(""));
+                inputMap.put("skeletalRegion", newUri.getUnusedNewURI(""));
+                log.info("Done");
+              } catch (InsertException e) {
+                // TODO Auto-generated catch block
+                log.info("Not done");
+                e.printStackTrace();
+              }
               inputMap.put("skeletalInventory", vreq.getParameter("skeletalInventory"));
-              triples = boneTriples;
-              break;
-          case "newSystemicPart" :
-              newUris = systemicNewUris;
               inputMap.put("classUri", vreq.getParameter("classUri"));
-              inputMap.put("boneUri", vreq.getParameter("boneUri"));
-              triples = systemicTriples;
+              triples = substituteQuery(inputMap, boneTriples);
+              break;
+          case "systemic" :
+            log.info("newBranch");
+            try {
+              inputMap.put("skeletalRegion", newUri.getUnusedNewURI(""));
+              log.info("Done");
+            } catch (InsertException e) {
+              // TODO Auto-generated catch block
+              log.info("Not done");
+              e.printStackTrace();
+            }
+            inputMap.put("boneUri", vreq.getParameter("boneUri"));
+            inputMap.put("classUri", vreq.getParameter("classUri"));
+            triples = substituteQuery(inputMap, systemicTriples);
               break;          
           case "editLabel" :
             break;        
@@ -150,9 +160,64 @@ public class SkeletalInventoryController extends VitroAjaxController {
             break;
           default : break;
          }
+          storeTriples(vreq, triples);
+          JSONObject jsonObj = new JSONObject();
+          try {
+            jsonObj.put("uri", "newUri");
+            jsonObj.put("classUri", vreq.getParameter("classUri"));
+            jsonObj.put("label", "Default Label");
+            jsonObj.put("description", "");
+          } catch (JSONException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          }
+          response.getWriter().write(jsonObj.toString());  
         }
-        */
      }
+    
+    private static void storeTriples(VitroRequest vreq, String triples){
+      
+      log.info("storeTriples");
+      ObjectPropertyStatementDao oDao = 
+          vreq.getWebappDaoFactory().getObjectPropertyStatementDao();
+      DataPropertyStatementDao dDao  =    
+          vreq.getWebappDaoFactory().getDataPropertyStatementDao();
+      log.info(triples);
+      String[] tripleList = triples.split("\n");
+      log.info(tripleList.toString());
+      for(String triple : tripleList){
+        log.info("triple " +  triple);
+        String[] node = triple.split("\\s+");
+        String subject = node[0];
+        String predicate = changePrefixes(node[1]);
+        String object = node[2];
+        log.info(subject + "  " + predicate + " " + object);
+        if(!predicate.equals("http://www.w3.org/2000/01/rdf-schema#label")){
+          oDao.insertNewObjectPropertyStatement(
+              new ObjectPropertyStatementImpl(subject, predicate, object));
+        } else {
+          dDao.insertNewDataPropertyStatement(
+              new DataPropertyStatementImpl(subject, predicate, object));
+        }
+      }
+    }
+    
+    private static String changePrefixes(String predicate){
+        for(String prefix : prefixDef.keySet()){
+         if(predicate.contains(prefix + ":")){
+           predicate = predicate.replace(prefix + ":", prefixDef.get(prefix));
+           break;
+         } 
+        }
+        return predicate;
+    }
+    private static String substituteQuery(Map<String, String> values, String query){
+      for(String key : values.keySet()){
+        log.info("?" + key  + " " + values.get(key));
+        query = query.replace("?" + key, values.get(key) );
+      }
+      return query;
+    }
     
     private static String labelTriple = ""
         + "?skeletalRegion rdfs:label  ?label . ";
@@ -161,15 +226,15 @@ public class SkeletalInventoryController extends VitroAjaxController {
         + "?skeletalRegion rdfbones:description  ?description . ";
     
      private static String boneTriples = ""
-         + "?completeNess obo:BFO_0000050  ?skeletalInventory ."
-         + "?completeNess obo:IAO_0000136  ?skeletalRegion  ."
-         + "?skeletalRegion  rdf:type     ?classUri . "
-         + "?skeletalRegion rdfs:label  'Default Label' . ";
+         + "?completeNess obo:BFO_0000050 ?skeletalInventory\n"
+         + "?completeNess obo:IAO_0000136 ?skeletalRegion\n"
+         + "?skeletalRegion rdf:type ?classUri\n"
+         + "?skeletalRegion rdfs:label 'Default Label'";
      
      private static String systemicTriples = ""
-         + "?boneUri     obo:systemic_part_of   ?newBone . "
-         + "?newBone  rdf:type    ?classUri   . "
-         + "?newBone  rdfs:label    'Default Label'  . ";
+         + "?boneUri obo:systemic_part_of ?skeletalRegion\n"
+         + "?skeletalRegion rdf:type ?classUri\n"
+         + "?skeletalRegion rdfs:label 'Default Label'\n";
 
      private static String imageTriples = ""
          + "    ?image <http://vivo.mydomain.edu/individual/hasFile>  ?fileIndividual ."
@@ -194,7 +259,6 @@ public class SkeletalInventoryController extends VitroAjaxController {
         }
     }
       private static String CoherentBones = ""
-          + "PREFIX vitro: <" + VitroVocabulary.vitroURI + "> \n" 
               + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"
               + "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
               + "PREFIX obo:      <http://purl.obolibrary.org/obo/> \n"
@@ -205,15 +269,15 @@ public class SkeletalInventoryController extends VitroAjaxController {
               + "    ?completeNess    obo:BFO_0000050   ?skeletalInventory ."
               + "    ?completeNess    obo:IAO_0000136   ?skeletalRegion . "
               + "    ?skeletalRegion  rdfs:label  ?label  . \n"
-              + "    ?skeletalRegion  rdfbones:desrition  ?description  . "
+              + "    OPTIONAL { ?skeletalRegion  rdfbones:description  ?description  .  } "
               + "    ?skeletalRegion rdf:type <http://purl.obolibrary.org/obo/FMA_53672> . "
               + "   }  UNION { "
               + "    ?completeNess    obo:BFO_0000050   ?skeletalInventory ."
               + "    ?completeNess    obo:IAO_0000136   ?skeletalRegion . "
               + "    ?skeletalRegion  rdfs:label  ?label  . "
-              + "    ?skeletalRegion  rdfbones:desrition  ?description  . "
+              + "    OPTIONAL { ?skeletalRegion  rdfbones:description  ?description . } "
               + "    ?skeletalRegion rdf:type <http://purl.obolibrary.org/obo/FMA_53673> . "
-              + "   }"  
+              + "   }" 
               + "} "; 
     
       private static String SingleBones = ""
@@ -227,7 +291,7 @@ public class SkeletalInventoryController extends VitroAjaxController {
             + "	   ?completeNess    obo:BFO_0000050   ?skeletalInventory .\n"
             + "    ?completeNess    obo:IAO_0000136   ?skeletalRegion . \n"
             + "    ?skeletalRegion  rdfs:label  ?label  . \n"
-            + "    ?skeletalRegion  rdfbones:description  ?description  . \n"
+            + "    OPTIONAL { ?skeletalRegion  rdfbones:description  ?description  . } \n"
             + " FILTER NOT EXISTS { ?skeletalRegion rdf:type <http://purl.obolibrary.org/obo/FMA_53672> } . \n"
             + " FILTER NOT EXISTS { ?skeletalRegion rdf:type <http://purl.obolibrary.org/obo/FMA_53673> } . \n"
             + "} "; 

@@ -31,17 +31,21 @@ var DataController = {
 		this.ajaxQuery("getSingle")
 	},
 			
-	addBone : function(type){
+	addBone : function(type, boneUri, classUri){
 		$.ajax({
 			url : baseUrl + "skeletalInventory",
 			data : {
 				skeletalInventory : skeletalInventory,
-				queryType : type
+				dataOperation : "newData",
+				type : type,
+				classUri : classUri,
+				boneUri : boneUri,
 			}
 		}).done(function(msg){
 			
 			var result = $.parseJSON(msg);
 			console.log(result)
+			DataController.saveAndShowBone(classUri, result)
 			/*
 			var varToStore = null
 			switch(type){
@@ -55,9 +59,23 @@ var DataController = {
 				varToStore.push(bone)
 			})*/
 		})
-		
-		
+	},
+	
+	saveAndShowBone : function(classUri, newObject){
+		newObject.images = []
+		if(classUri == "http://purl.obolibrary.org/obo/FMA_53672" 
+			|| classUri == "http://purl.obolibrary.org/obo/FMA_53673"){
+			console.log("coherentBones")
+			coherentBones.push(newObject)
+		} else {
+			console.log("singleBones")
+			singleBones.push(newObject)
+		}
+		Controller.showBoneViewer(newObject)
 	}
+		
 
+		
+		
 
 }

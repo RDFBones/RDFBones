@@ -24,13 +24,26 @@ BoneEditor.prototype.addElements = function(data){
 	.append(this.labelEditor.container)
 	.append(this.descriptionEditor.container)
 	.append(this.imageEditor.container)
-	.append(this.subboneEditor.container)
-	
+	.append(this.subboneEditor.container)	
 }
+
+BoneEditor.prototype.hideElements = function(data){
+	this.close.container.hide()
+	this.backButton.container.hide()
+	this.labelEditor.container.hide()
+	this.descriptionEditor.container.hide()
+	this.imageEditor.container.hide()
+	this.subboneEditor.container.hide()
+}
+
 BoneEditor.prototype.show1 = function(data){
-	DataController.addBone("addBone")
+
+	console.log("show1")
 	this.data = data
+	this.waitingGif.remove()
 	this.fullScreen.show()
+	this.addElements()
+	this.close.show()
 	this.backButton.show1(data.parent)
 	this.labelEditor.show1(data.label)
 	this.descriptionEditor.show1(data.description)
@@ -40,6 +53,6 @@ BoneEditor.prototype.show1 = function(data){
 
 BoneEditor.prototype.waitForResult = function(){
 	this.fullScreen.show()
-	this.container.empty()
-	this.container.append(this.waitingGif.container)
+	this.hideElements()
+	this.container.append(this.waitingGif)
 }

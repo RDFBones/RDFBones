@@ -31,7 +31,7 @@ var coherentBones = [
 		{
 			uri : "uri1",
 			parent : null,
-			classUri : "1",
+			classUri : "http://purl.obolibrary.org/obo/FMA_53672",
 			label : "Label1",
 			description : "Description1",
 			images : [ {
@@ -50,7 +50,7 @@ var coherentBones = [
 		{
 			uri : "uri1",
 			parent : null,
-			classUri : "1",
+			classUri : "http://purl.obolibrary.org/obo/FMA_53673",
 			label : "Label2",
 			description : "Description2",
 			images : [ {
@@ -131,7 +131,7 @@ var pageElements = [ {
 console.log(pageElements)
 
 var	treeStructure = [ {
-		uri : "1",
+		uri : "http://purl.obolibrary.org/obo/FMA_53672",
 		label : "Neurocranium",
 		children : [ {
 			uri : "http://purl.obolibrary.org/obo/FMA_52735",
@@ -147,7 +147,7 @@ var	treeStructure = [ {
 			label : "Right parietal bone"
 		}, ]
 	}, {
-		uri : "2",
+		uri : "http://purl.obolibrary.org/obo/FMA_53673",
 		label : "Viscerocranium",
 		children : [ {
 			uri : "http://purl.obolibrary.org/obo/FMA_52738",

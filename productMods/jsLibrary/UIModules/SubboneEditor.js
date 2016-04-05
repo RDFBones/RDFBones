@@ -42,7 +42,6 @@ SubboneEditor.prototype.show1 = function(data){
 	var editor = this
 	$.each(treeStructure, function(index,value){
 		if(value.uri == data.classUri){
-			console.log("dd")
 			$.each(value.children, function(index, child){
 				editor.treeStructure.append(new ChildStructure(child, editor))
 			})

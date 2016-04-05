@@ -11,6 +11,7 @@ var ImageEditor = function(boneEditor){
 }	
 
 ImageEditor.prototype.show1 = function(imageList, edit){
+	this.container.show()
 	this.imageList = imageList
 	if(edit){
 		var func = this.getEditImg

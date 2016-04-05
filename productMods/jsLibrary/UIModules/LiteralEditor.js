@@ -14,6 +14,7 @@ var LiteralEditor = function(boneEditor, title, id, predicate, required) {
 }
 
 LiteralEditor.prototype.show1 = function(value){
+	this.container.show()
 	if(value != null){
 		this.valueDiv.text(value)
 		this.editButton.show()

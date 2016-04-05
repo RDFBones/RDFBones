@@ -71,8 +71,8 @@ public class ProcessRdfForm {
 
 	
 
-/**
-     * Construct the ProcessRdfForm object. 
+	  /**  
+     ** Construct the ProcessRdfForm object. 
      */
     public ProcessRdfForm( EditConfigurationVTwo config, NewURIMaker newURIMaker){
         this.newURIMaker = newURIMaker;

@@ -35,11 +35,11 @@ var treeUI = {
 		return container.append(img)
 	},
 
-	addInstanceImg : function(classLabel) {
+	addInstanceImg : function(classUri) {
 		var container = html.getNewDiv("imgContainer1")
 		var img = $("<img/>").attr("src", ImgSrc.addInstance)
 		return container.append(img).click(function() {
-			Controller.addBone(classLabel)
+			Controller.addNewBone(classUri)
 		})
 	},
 
