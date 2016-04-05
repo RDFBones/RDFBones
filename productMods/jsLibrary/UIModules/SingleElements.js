@@ -1,3 +1,8 @@
+var WaitingGif = function(){
+	this.container = html.getNewDiv("waitGifContainer")
+	this.container.append(html.getImgClass(imgSrc + "loading.gif", "waitGifClass"))
+}
+
 var Close = function(container){
 	this.container = html.getImgClass(imgSrc + "close.png", "floatRight")
 			.click(function(){

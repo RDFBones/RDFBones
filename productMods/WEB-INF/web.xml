@@ -955,6 +955,15 @@
     <url-pattern>/instanceToOffer</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>SkeletalInventoryController</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.SkeletalInventoryController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SkeletalInventoryController</servlet-name>
+    <url-pattern>/skeletalInventory</url-pattern>
+  </servlet-mapping>
+  
    <servlet>
     <servlet-name>DataAutocompleteController</servlet-name>
     <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.DataAutocompleteController</servlet-class>

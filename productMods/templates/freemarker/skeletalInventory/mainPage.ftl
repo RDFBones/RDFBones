@@ -9,6 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/LiteralEditor.css">	
 	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/ImageEditor.css">
 	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/SubboneEditor.css">
+	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/SingleElements.css">
 
 <div>
 	Skeletal Invertories
@@ -19,6 +20,7 @@
 	<script>
 		var imgSrc = "${urls.base}/images/general/"
 		var testImgSource = "${urls.base}/"
+		var baseUrl = "${urls.base}/"
 		var skeletalInventory = '${individual.uri!}'
 	</script>
 	
@@ -26,6 +28,7 @@ ${scripts.add('<script type="text/javascript" src="${urls.base}/js/classHierarch
 
 ${scripts.add('<script type="text/javascript" src="${urls.base}/js/DataController.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/Controller.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/DataController.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIController.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/jsLibrary/previewJS/js/lightbox.js"></script>')}
 	
