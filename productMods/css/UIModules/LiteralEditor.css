@@ -14,14 +14,20 @@
  	cursor : pointer;	
 }
 
-.labelTextBox {
+.literalTextBox {
+	margin-left : 5px;
+	margin-top : 8px;
+	font-size : 15px;
+	width : 300px;
+	border : 1px solid black;
+}
+.descriptionTextBox{
 	margin-left : 5px;
 	margin-top : 8px;
 	height : 28px;
 	width : 200px;
-	border : 1px solid black;
+	border : 1px solid black;	
 }
-
 .multiLineTextBox {
 	
 }

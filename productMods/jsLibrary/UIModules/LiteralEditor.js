@@ -8,12 +8,14 @@ var LiteralEditor = function(boneEditor, title, id, predicate, required) {
 	this.container = this.getContainerDiv()
 	this.container.append(this.getTitleDiv())
 	this.container.append(this.getValueDiv())
-	this.container.append(this.getTextBox())
+	this.container.append(this.getTextBox(id))
 	this.container.append(this.getButtons())
 	this.container.append(html.getNewDiv("newLine"))
 }
 
-LiteralEditor.prototype.show1 = function(value){
+LiteralEditor.prototype.show1 = function(data, value){
+	console.log(data)
+	this.data = data
 	this.container.show()
 	if(value != null){
 		this.valueDiv.text(value)
@@ -40,8 +42,12 @@ LiteralEditor.prototype.getValueDiv = function() {
 	return this.valueDiv
 }
 
-LiteralEditor.prototype.getTextBox = function() {
-	this.textBox = html.getTextBox().addClass("labelTextBox").hide()
+LiteralEditor.prototype.getTextBox = function(type) {
+	if(type == "label"){
+		this.textBox = html.getTextBox().addClass("literalTextBox").hide()
+	} else {
+		this.textBox = html.getTextArea().attr("rows", 4).addClass("literalTextBox").hide()
+	}
 	return this.textBox
 }
 
@@ -70,6 +76,8 @@ LiteralEditor.prototype.getButtons = function() {
 				if(object.required && object.textBox.val() == ""){
 					alert("This field cannot be empty")
 				} else {
+					var old  = object.valueDiv.text()
+					var new_ = object.textBox.val()
 					object.clearButton.hide()
 					object.textBox.hide()
 					object.valueDiv.show().text(object.textBox.val())
@@ -79,7 +87,8 @@ LiteralEditor.prototype.getButtons = function() {
 					} else {
 						object.editButton.show()
 					}
-					DataController.saveLiteral(object.boneEditor.data, object.id, object.textBox.val())
+					//Save In the database
+					DataController.saveLiteral(object, old, new_)
 				}
 				
 			}).appendTo(this.buttonContainer)
@@ -93,4 +102,8 @@ LiteralEditor.prototype.getButtons = function() {
 		this.editButton.hide()
 	}
 	return this.buttonContainer
+}
+
+LiteralEditor.prototype.saved = function(){
+	console.log("josag")
 }

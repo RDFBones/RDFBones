@@ -5,9 +5,10 @@ var pageLoader = {
 		$.each(pageElements, function(index, element) {
 			switch (element.type) {
 			case "table":
-				console.log(element.dataKey)
-				pageModules.append(
-					tableLoader.showTable(element, element.dataKey))
+					console.log(element.dataKey)
+					var table = new TableLoader(element)
+					element.table = table
+					pageModules.append(table.getContainer())
 				break
 			case "treeStructure":
 				pageModules.append(
@@ -31,6 +32,14 @@ var pageLoader = {
 			}
 		})
 		$("#pageContainer").append(pageModules)
+	},
+
+	refreshTables : function(){
+		$.each(pageElements, function(index, element) {
+			if(element.type == "table"){
+				element.table.refresh()
+			}
+		})
 	}
 }
 

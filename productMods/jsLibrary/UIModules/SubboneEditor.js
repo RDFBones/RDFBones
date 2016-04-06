@@ -56,23 +56,20 @@ SubboneEditor.prototype.show1 = function(data){
 
 SubboneEditor.prototype.showBone = function(_class){
 	
+	_this = this
+	console.log("showBone")
 	this.childBoneViewer.empty()
-	if(!this.searchParentTree(this.boneData.systemicParts, _class.uri)){
+	if(!this.searchParentTree(this.boneData, _class.uri)){
 		this.childBoneViewer.append(
 				html.getNewDivT("There is no " + _class.label).addClass("noEntryContainer"))
 	} else {
-		
+
 	}
-	var boneData = this.boneData
+
 	this.childBoneViewer.append(
 			html.getNewDivT("Add").addClass("button1")
 				.click(function(){
-					//Set data operation
-					var newInstance = DataController.addSystemicPart(boneData, _class.uri)
-					//Show the new module
-					console.log("Coherentbones")
-					console.log(newInstance)
-					UIController.modules["boneEditor"].show1(newInstance)
+					var newInstance = DataController.addSystemicPart(_this.boneData, _class.uri)
 				}))
 }
 
@@ -80,23 +77,27 @@ SubboneEditor.prototype.searchParentTree = function(element, uri){
 	var found = false
 	var childrenFound = false
 	var _this = this
-	$.each(element, function(index, child){
-		if("systemicParts" in child){
-			childrenFound = _this.searchParentTree(child.systemicParts, uri)
-		}
-		if(childrenFound){
-			found = true
-		}
-		if(child.classUri == uri){
-			//If a bone exist of the class we have to be able to click on it
-			_this.childBoneViewer.append(_this.childBoneDiv(child.label).
-					click(function(){
-						UIController.modules["boneEditor"].show1(child)
-					}))
-			found = true
-		}
-	})
-	return found
+	if("systemicParts" in element){
+		$.each(element.systemicParts, function(index, child){
+			if("systemicParts" in child){
+				childrenFound = _this.searchParentTree(child, uri)
+			}
+			if(childrenFound){
+				found = true
+			}
+			if(child.classUri == uri){
+				//If a bone exist of the class we have to be able to click on it
+				_this.childBoneViewer.append(_this.childBoneDiv(child.label).
+						click(function(){
+							UIController.modules["boneEditor"].show1(child)
+						}))
+				found = true
+			}
+		})
+		return found
+	} else {
+		return false;
+	}
 }
 
 SubboneEditor.prototype.childBoneDiv = function(value){

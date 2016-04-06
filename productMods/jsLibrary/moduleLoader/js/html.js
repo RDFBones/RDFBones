@@ -83,6 +83,9 @@ var html = {
 	
 	getTextBox : function(){
 		return $("<input>").attr("type", "text")
-	}
+	},
 	
+	getTextArea : function(){
+		return $("<textarea>")
+	}
 }

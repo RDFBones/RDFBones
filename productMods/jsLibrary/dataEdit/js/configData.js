@@ -1,79 +1,12 @@
-
-var singleBones = [
-	             		
-		{
-			uri : "uri3",
-			parent : null,
-			classUri : "3",
-			label : "Label3",
-			description : "Description3",
-			images : [],
-		}, {
-			uri : "uri3",
-			parent : null,
-			classUri : "3",
-			label : "Label4",
-			description : "Description4",
-			images : [ {
-				image : "http//example.org/1",
-				src : "testImg/1.jpg"
-			}, {
-				image : "http//example.org/2",
-				src : "testImg/2.jpg"
-			}, {
-				image : "http//example.org/3",
-				src : "testImg/3.jpg"
-			} ],
-		}
-	]
-var coherentBones = [
-		
-		{
-			uri : "uri1",
-			parent : null,
-			classUri : "http://purl.obolibrary.org/obo/FMA_53672",
-			label : "Label1",
-			description : "Description1",
-			images : [ {
-				image : "http//example.org/1",
-				src : "testImg/1.jpg"
-			}, {
-				image : "http//example.org/2",
-				src : "testImg/2.jpg"
-			}, {
-				image : "http//example.org/3",
-				src : "testImg/3.jpg"
-			} ],
-			systemicParts : []
-		}, 
-			
-		{
-			uri : "uri1",
-			parent : null,
-			classUri : "http://purl.obolibrary.org/obo/FMA_53673",
-			label : "Label2",
-			description : "Description2",
-			images : [ {
-				image : "http//example.org/1",
-				src : "testImg/1.jpg"
-			}, {
-				image : "http//example.org/2",
-				src : "testImg/2.jpg"
-			}, {
-				image : "http//example.org/3",
-				src : "testImg/3.jpg"
-			} ],
-			systemicParts : []
-		}
-	]
-
-
+var singleBones = []
+var coherentBones = []
 
 var pageElements = [ {
 	id : "coherentBones",
 	title : "Coherent Bones",
 	type : "table",
-	dataKey : coherentBones,
+	dataKey : "coherent",
+	dataSet : coherentBones,
 	columns : [ {
 		columnName : "label",
 	}, {
@@ -100,7 +33,9 @@ var pageElements = [ {
 	id : "singleBones",
 	title : "Single Bones",
 	type : "table",
-	dataKey : singleBones,
+	dataKey : "single",
+	dataSet : singleBones,
+
 	columns : [ {
 		columnName : "label",
 	}, {

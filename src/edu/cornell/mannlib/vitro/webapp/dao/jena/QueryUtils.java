@@ -43,16 +43,23 @@ public class QueryUtils {
         QuerySolution sol = results.next();
         //Map for the row of the result
         Map<String, String> resultMap  = new HashMap<String, String>();
-        if(literals != null){
-          for(String literal : literals){
-            resultMap.put(literal, sol.getLiteral(literal).getString());
-          }
-        }
         if(uris != null){
           for(String uri : uris){
+            log.info(uri);
             resultMap.put(uri, sol.get(uri).asResource().getURI());
           }
         }
+        if(literals != null){
+          for(String literal : literals){
+            log.info(literal);
+            if(sol.getLiteral(literal) != null){
+              resultMap.put(literal, sol.getLiteral(literal).getString());
+              log.info(resultMap);
+            }
+          }
+        }
+        log.info(resultMap);
+
         resultList.add(resultMap);
       }
       return resultList;

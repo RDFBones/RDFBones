@@ -10,7 +10,7 @@ var Close = function(container){
 				console.log("exit")
 				console.log(container)
 				container.hide()
-				Controller.refreshPage()
+				pageLoader.refreshTables()
 			})
 }
 
@@ -19,25 +19,23 @@ Close.prototype.show = function(){
 	this.container.show()
 }
 
-var BackToParent = function(boneEditor, parent){
-	this.boneEditor = boneEditor
-	_this = this
-	this.parent = parent
-	this.container = html.getNewDiv().
-		append(html.getImg(imgSrc + "backToParent.png")).
-		append(html.getNewDiv("inline").text("Back to Parent"))
-		.click(function(){
-			UIController.modules["boneEditor"].show1(_this.parent)
-		})
+var BackToParent = function(parent){
+	console.log(parent)
+	var a = null
+	if(parent != null){
+		console.log("if")
+		a = html.getDivId("backToParent").
+			append(html.getImg(imgSrc + "backToParent.png")).
+			append(html.getNewDiv("inline").text("Back to Parent"))
+			.click(function(){
+				console.log(parent)
+				UIController.modules["boneEditor"].show1(parent)
+			})
+	} else {
+		console.log("else")
+	}
+	return a
 }
 
-BackToParent.prototype.show1= function(parent){
-	this.parent = parent
-	if(parent != null){
-		this.container.show()
-	} else {
-		this.container.hide()
-	}
-}
 
 
