@@ -33,7 +33,6 @@ BoneEditor.prototype.hideElements = function(data){
 }
 
 BoneEditor.prototype.show1 = function(data){
-	
 	console.log("show1")
 	console.log(data)
 	this.data = data

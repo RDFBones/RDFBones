@@ -45,25 +45,25 @@ public class QueryUtils {
         Map<String, String> resultMap  = new HashMap<String, String>();
         if(uris != null){
           for(String uri : uris){
-            log.info(uri);
+            //og.info(uri);
             resultMap.put(uri, sol.get(uri).asResource().getURI());
           }
         }
         if(literals != null){
           for(String literal : literals){
-            log.info(literal);
+            //log.info(literal);
             if(sol.getLiteral(literal) != null){
               resultMap.put(literal, sol.getLiteral(literal).getString());
-              log.info(resultMap);
             }
           }
         }
-        log.info(resultMap);
+        //log.info(resultMap);
 
         resultList.add(resultMap);
       }
       return resultList;
     }
+    
     
     
     public static Map<String,Object> querySolutionToObjectValueMap( QuerySolution soln){

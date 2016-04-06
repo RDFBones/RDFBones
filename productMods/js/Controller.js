@@ -9,12 +9,13 @@ var Controller = {
 	 **************************************************************************/
 	addNewBone : function(classUri){
 		UIController.modules["boneEditor"].waitForResult()
-		DataController.addBone("new", null, classUri)
+		console.log("ClassUri " + classUri)
+		DataController.addBone(classUri)
 	},
 
 	addSystemicPart : function(boneData, classUri){
 		UIController.modules["boneEditor"].waitForResult()
-		DataController.addBone("systemic", boneData.uri, classUri)
+		DataController.addSystemicPart(boneData, classUri)
 	},
 	
 	refreshPage : function(){

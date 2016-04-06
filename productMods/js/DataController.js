@@ -1,21 +1,19 @@
 var DataController = {
-	
-		
+
 	addSystemicPart : function(boneData, classUri){
 		
 		console.log(boneData)
 		UIController.modules["boneEditor"].waitForResult()
 		$.ajax({
-			url : baseUrl + "skeletalInventory",
+			url : baseUrl + "skeletalInventoryData",
 			data : {
-				dataOperation : "newData",
-				type : "systemic",
+				dataOperation : "systemic",
 				boneUri : boneData.uri,
 				classUri : classUri,
 			}
 			}).done(function(msg){
 				var result = $.parseJSON(msg)
-				var newObject = DataController.initCoherentBone(result.uri, classUri, boneData)
+				var newObject = DataController.initCoherentBone(result.systemicUri, classUri, boneData)
 				if(! ("systemicParts" in boneData)){
 					console.log("addded")
 					boneData.systemicParts = []
@@ -23,14 +21,13 @@ var DataController = {
 				boneData.systemicParts.push(newObject)
 				UIController.modules["boneEditor"].show1(newObject)
 			})
-			
 	},	
 
 	initCoherentBone : function(uri, classUri, parent){
 		var newObject = new Object()
 		newObject.uri = uri
 		newObject.parent = parent
-		newObject.label = "Default label"
+		newObject.label = "Default"
 		newObject.classUri = classUri
 		newObject.images = []
 		newObject.systemicParts = []
@@ -46,7 +43,7 @@ var DataController = {
 		console.log(singleBones)
 		//Save it in the database
 		$.ajax({
-			url : baseUrl + "skeletalInventory",
+			url : baseUrl + "skeletalInventoryData",
 			data : {
 				dataOperation : "editLiteral",
 				subject : literalEditor.data.uri,
@@ -61,41 +58,82 @@ var DataController = {
 	
 	getBones : function(tableLoader){
 		$.ajax({
-			url : baseUrl + "skeletalInventory",
+			url : baseUrl + "skeletalInventoryQuery",
 			data : {
 				skeletalInventory : skeletalInventory,
-				dataOperation : "query",
-				type : tableLoader.module.dataKey,
+				dataOperation : tableLoader.module.dataKey,
 			}
 		}).done(function(msg){
 			var results = $.parseJSON(msg)
-			console.log("Answer!")
 			console.log(results)
-			$.each(results, function(index, obj){
-				obj.images = []
-				tableLoader.dataSet.push(obj)
+			var length = ""
+			$.each(results, function(index, object){
+				
+				tableLoader.module.dataSet.push(object)
+				/*
+				object.images = []
+				DataController.loadImages(object)
+				object.systemicParts = []
+				DataController.loadSystemicParts(object)*/
+			})
+			console.log("Arrived Data")
+			console.log(tableLoader.module.dataKey)
+			console.log(tableLoader.module.dataSet)
+			pageLoader.refreshTables()
+		})
+	},
+	
+	loadImages : function(object){
+		$.ajax({
+			url : baseUrl + "skeletalInventoryQuery",
+		    async: false,
+			data : {
+				boneUri : object.boneUri,
+				type : "images",
+			}
+		}).done(function(msg){
+			console.log("laodImagesDones")
+			var results = $.parseJSON(msg)
+			$.each(results, function(index, value){
+				object.images.push(value)
 			})
 			pageLoader.refreshTables()
 		})
 	},
 	
-	addBone : function(type, boneUri, classUri){
+	loadSystemicParts : function(object, lenght, i){
 		$.ajax({
-			url : baseUrl + "skeletalInventory",
+			url : baseUrl + "skeletalInventoryQuery",
+		    async: false,
+			data : {
+				boneUri : object.boneUri,
+				type : "systemicParts",
+			}
+		}).done(function(msg){
+			console.log("loadSystemicParts")
+			var results = $.parseJSON(msg)
+			$.each(results, function(index, value){
+				object.systemicParts.push(value)
+			})
+			if(length == i + 1){
+				pageLoader.refreshTables()
+			}
+			
+		})
+	},
+	
+	
+	addBone : function(classUri){
+		$.ajax({
+			url : baseUrl + "skeletalInventoryData",
 			data : {
 				skeletalInventory : skeletalInventory,
-				dataOperation : "newData",
-				type : type,
+				dataOperation : "newBone",
 				classUri : classUri,
-				boneUri : boneUri,
 			}
 		}).done(function(msg){
 			result = $.parseJSON(msg)
-			bone = new Object()
-			bone.uri = result.uri
-			bone.classUri = classUri
-			bone.parent = null
-			bone.images = []
+			var bone = DataController.initCoherentBone(result.boneUri, classUri, null)
 			if(classUri == "http://purl.obolibrary.org/obo/FMA_53672" ||
 					classUri == "http://purl.obolibrary.org/obo/FMA_53673"){
 				coherentBones.push(bone)

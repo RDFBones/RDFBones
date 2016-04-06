@@ -45,4 +45,22 @@ var pageLoader = {
 
 $(document).ready(function() {
 	pageLoader.init()
+	
 })
+/*
+var ajaxCall = function(i){
+	return $.ajax({
+		url : baseUrl + "skeletalInventoryData",
+	    async: false,
+		data : {
+			dataOperation : "test"
+			}
+		}).done(function(msg){
+			result = $.parseJSON(msg)
+			console.log(i)
+			if(i == 9){
+				console.log("donedonedone")
+			}
+		})
+}
+*/

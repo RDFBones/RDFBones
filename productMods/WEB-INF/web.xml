@@ -955,15 +955,33 @@
     <url-pattern>/instanceToOffer</url-pattern>
   </servlet-mapping>
   
-  <servlet>
-    <servlet-name>SkeletalInventoryController</servlet-name>
-    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.SkeletalInventoryController</servlet-class>
+   <servlet>
+    <servlet-name>SkeletalInventoryFileController</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.SkeletalInventoryFileController</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>SkeletalInventoryController</servlet-name>
-    <url-pattern>/skeletalInventory</url-pattern>
+    <servlet-name>SkeletalInventoryFileController</servlet-name>
+    <url-pattern>/skeletalInventoryFile</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>SkeletalInventoryDataController</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.SkeletalInventoryDataController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SkeletalInventoryDataController</servlet-name>
+    <url-pattern>/skeletalInventoryData</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+    <servlet-name>SkeletalInventoryQueryController</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.SkeletalInventoryQueryController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SkeletalInventoryQueryController</servlet-name>
+    <url-pattern>/skeletalInventoryQuery</url-pattern>
+  </servlet-mapping>
+   
    <servlet>
     <servlet-name>DataAutocompleteController</servlet-name>
     <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.DataAutocompleteController</servlet-class>
