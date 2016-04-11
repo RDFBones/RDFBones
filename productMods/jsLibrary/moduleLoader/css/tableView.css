@@ -15,13 +15,13 @@
 }
 
 .rowContainer {
-	display : table;
+	//display : table;
 	margin-top: 5px;
 	border-bottom : 1px solid black;
 }
 
 .columnContainer {
-	display: table-cell;
+	display: inline-block;
     width: 180px;
     height: 80px;
     vertical-align: middle;
@@ -30,7 +30,7 @@
 }
 
 .columnContent {
-	max-height: 90px;
+	max-height: 80px;
     overflow : auto;
 }
 

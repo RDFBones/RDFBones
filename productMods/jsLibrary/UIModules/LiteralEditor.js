@@ -14,6 +14,7 @@ var LiteralEditor = function(boneEditor, title, id, predicate, required) {
 }
 
 LiteralEditor.prototype.show1 = function(data, value){
+	
 	console.log(data)
 	this.data = data
 	this.container.show()

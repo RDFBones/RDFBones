@@ -33,8 +33,8 @@
 	background-color: white;
 	display: table;
 	overflow : auto;
-
 	width : 500px;
+	max-height : 700px;
 }
 
 /****

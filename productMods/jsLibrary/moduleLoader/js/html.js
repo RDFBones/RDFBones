@@ -87,5 +87,13 @@ var html = {
 	
 	getTextArea : function(){
 		return $("<textarea>")
-	}
+	},
+	
+	getForm : function(){
+		return $("<form>")
+	},
+	
+	getFileUploadId : function(id){
+		return $("<input>").attr("type", "file").attr("id", id)
+	},
 }

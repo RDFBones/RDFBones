@@ -8,6 +8,11 @@ var ImageEditor = function(boneEditor){
 			.append(this.outerContainer
 					.append(this.innerContainer))
 					.append(html.getNewDiv("newLine"))
+	this.fileUpload = html.getForm()
+		.append(html.getFileUploadId("datafile")
+				.on('change', prepareUpload))
+				
+	this.container.append(this.fileUpload)
 }	
 
 ImageEditor.prototype.show1 = function(imageList, edit){
@@ -60,4 +65,53 @@ ImageEditor.prototype.getEditImg = function(src, index){
 	
 ImageEditor.prototype.getNewLine = function() {
 		return html.getNewDiv("newLine")
+}
+
+function prepareUpload(event)
+{
+  files = event.target.files;
+  uploadFiles(event)
+}
+
+function uploadFiles(event){
+	
+	event.stopPropagation(); 
+	event.preventDefault(); 
+	var fileName = files[0].name;
+	var extension = fileName.split("\.")[1].toLowerCase()
+	console.log(extension)
+	if(extension == "png" || extension== "jpg" || extension == "jpeg" || 
+			extension == "tiff"){
+		var data = new FormData();
+		$.each(files, function(key, value)
+		{
+    		data.append(key, value);
+		});
+
+		$.ajax({
+   			url: baseUrl + "skeletalInventoryData",
+    		type: 'POST',
+    		data: data ,
+    		cache: false ,
+    		dataType: 'json',
+    		processData: false ,  
+    		contentType: false ,         		
+		success: function(data, textStatus, jqXHR){
+        			if(typeof data.error === 'undefined'){
+            			// Success so call function to process the form
+            			submitForm(event, data);
+        			} else {
+            			// Handle errors here
+          			  	console.log('ERRORS: ' + data.error);
+        			}
+    	},
+    	error: function(jqXHR, textStatus, errorThrown)
+    	{
+    	  console.log('ERRORS: ' + textStatus);
+    	}
+
+	});
+	} else {
+		alert("Please upload an image!")
+	}
 }

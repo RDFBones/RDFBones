@@ -3,38 +3,40 @@ var WaitingGif = function(){
 			.append(html.getImgClass(imgSrc + "loading.gif", "waitGifClass"))
 }
 
-
-var Close = function(container){
-	this.container = html.getImgClass(imgSrc + "close.png", "floatRight")
+var Done = function(container){
+	 this.container = html.getNewDiv("done").text("Done")
 			.click(function(){
-				console.log("exit")
-				console.log(container)
 				container.hide()
 				pageLoader.refreshTables()
 			})
 }
 
-Close.prototype.show = function(){
-	console.log("closeShow")
+Done.prototype.show = function(){
 	this.container.show()
 }
 
 var BackToParent = function(parent){
-	console.log(parent)
-	var a = null
-	if(parent != null){
-		console.log("if")
-		a = html.getDivId("backToParent").
-			append(html.getImg(imgSrc + "backToParent.png")).
+	this.container = html.getNewDiv("backToParent").
 			append(html.getNewDiv("inline").text("Back to Parent"))
-			.click(function(){
-				console.log(parent)
-				UIController.modules["boneEditor"].show1(parent)
-			})
+}
+
+BackToParent.prototype.show = function(boneData){
+	if(boneData.parent == null){
+		this.container.hide()
 	} else {
-		console.log("else")
+		this.container.show()
+		.click(function(){
+			UIController.modules["boneEditor"].show1(boneData.parent)
+		})
 	}
-	return a
+}
+
+var TableTitle = function(){
+	this.container = html.getNewDiv("titleContainer");
+}
+
+TableTitle.prototype.show = function(classUri){
+	this.container.text(DataController.getClassObject(classUri).label)
 }
 
 

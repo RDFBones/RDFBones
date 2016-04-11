@@ -28,20 +28,26 @@ TableLoader.prototype.refresh = function(){
 	_this = this
 	this.waitingGif.hide()
 	this.dataContainer.empty()
+	console.log("dataSet")
 	$.each(this.dataSet, function(outerIndex, data) {
+		console.log("dataSet " + outerIndex)
 		var rowContainer = _this.getRowContainer()
 		$.each(_this.module.columns, function(innerIndex, config) {
 			var container = null
+			console.log("columns " + innerIndex)
 			if ("cardinality" in config) {
 				// List of data
-				container = _this.getListElement(data, config,
-						outerIndex)
+				container = _this.getColumnDiv(
+						DataController.getClassObject(data[config.columnName]).label)
 			} else { // Simple Data
 				container = _this.getColumnDiv(data[config.columnName])
 			}
 			rowContainer.append(container)
 		})
+	console.log("To editButton")
+	console.log(data)
 	rowContainer.append(_this.getEditButton(data))
+	//rowContainer.append(_this.getDeleteButton(data))
 	_this.dataContainer.append(rowContainer)
 	})
 }
@@ -49,8 +55,7 @@ TableLoader.prototype.refresh = function(){
 TableLoader.prototype.addColumnTitles = function() {
 	_this = this
 	$.each(this.columns, function(index, value) {
-		_this.columnTitles.append(_this.getColumnTitle(value.columnName
-				.capitalizeFirstLetter()))
+		_this.columnTitles.append(_this.getColumnTitle(value.title))
 	})
 }
 
@@ -71,6 +76,7 @@ TableLoader.prototype.getListElement = function(data, config, inputIndex) {
 			}
 			container.find(".imagesInnerContainer").append(img)
 		})
+		console.log("afterHere")
 		break;
 	default:
 		break;
@@ -92,6 +98,7 @@ TableLoader.prototype.getRowContainer = function(){
 
 TableLoader.prototype.getEditButton = function(data){
 	return html.getImg(ImgSrc.edit).click(function(){
+		console.log("editButton clicked")
 		UIController.modules["boneEditor"].show1(data)
 	})
 },

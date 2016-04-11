@@ -1,9 +1,39 @@
 .waitGifContainer{
 	width : 494px;
-	text-align: center
+	text-align: center;
 }
 
 .waitGifClass{
 	margin : 20px;
 	height : 100px;	
 }
+
+.titleContainer {
+	padding : 2px;
+	text-align: center;	
+	border-bottom : 2px solid black;
+}
+
+.backToParent {
+	padding : 2px;
+	text-align: center;	
+	border-bottom : 2px solid black;
+}
+.backToParent:hover{
+	background-color : #E8E8E8;
+	cursor : pointer;
+}
+
+.done {
+	margin-top : 10px;
+	width : 496px;
+	padding : 2px;
+	text-align: center;	
+	border-top : 2px solid black;
+}
+
+.done:hover{
+	background-color : #E8E8E8;
+	cursor : pointer;	
+}
+

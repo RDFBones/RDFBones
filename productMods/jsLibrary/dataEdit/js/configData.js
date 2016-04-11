@@ -8,21 +8,15 @@ var pageElements = [ {
 	dataKey : "coherent",
 	dataSet : coherentBones,
 	columns : [ {
+		columnName : "classUri",
+		title : "Class",
+		cardinality : "kutya"
+	}, {
 		columnName : "label",
+		title : "Label"
 	}, {
 		columnName : "description",
-	}, {
-		columnName : "images",
-		cardinality : true,
-		ui : {
-			type : "imageList",
-			edit : false
-		},
-		// From the image we know that it will be an
-		dataMap : {
-			uri : "image",
-			src : "src"
-		}
+		title : "Description"
 	} ]
 }, {
 	id : "coherentBoneTree",
@@ -36,23 +30,17 @@ var pageElements = [ {
 	dataKey : "single",
 	dataSet : singleBones,
 
-	columns : [ {
+	columns : [  {
+		columnName : "classUri",
+		title : "Class",
+		cardinality : "kutya"
+	}, {
 		columnName : "label",
+		title : "Label"
 	}, {
 		columnName : "description",
-	}, {
-		columnName : "images",
-		cardinality : true,
-		ui : {
-			type : "imageList",
-			edit : false
-		},
-		// From the image we know that it will be an
-		dataMap : {
-			uri : "image",
-			src : "src"
-		}
-	} ]
+		title : "Description"
+	}]
 },{
 	id : "singleBoneTree",
 	title : "Add Single Bones",

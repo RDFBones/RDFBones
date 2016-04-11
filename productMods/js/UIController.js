@@ -53,7 +53,7 @@ var UIController = {
 				}
 				if (value.childToDisplay) {
 					UIController.setDisplay(value)
-					HshowChildrenDiv(value)
+					showChildrenDiv(value)
 				}
 			} else {
 				value.div.hide()

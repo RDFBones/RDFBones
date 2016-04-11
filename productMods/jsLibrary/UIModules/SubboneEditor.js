@@ -10,6 +10,7 @@ var SubboneEditor = function(boneEditor){
 	this.container.append(this.getNewLine())
 	this.container.append(this.getTreeStructureContainer())
 	this.container.append(this.getChildBoneViewer())
+	this.container.append(this.getNewLine())
 }
 
 SubboneEditor.prototype.getTreeStructureContainer = function(){

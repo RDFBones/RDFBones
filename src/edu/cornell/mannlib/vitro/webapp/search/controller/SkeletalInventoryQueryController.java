@@ -69,7 +69,7 @@ public class SkeletalInventoryQueryController extends VitroAjaxController {
                   resultSet = QueryUtils.getQueryResults(readyQuery, vreq);
                   result = QueryUtils.getQueryVars(resultSet, BoneQueryUris, BoneQueryLiterals);
                   break;   
-              case "systemicParts" : 
+              case "systemic" : 
                   readyQuery = N3Utils.setPrefixes(SystemicPartsQueryPrefixes, SystemicPartsQuery);
                   readyQuery = N3Utils.subInputUriQuery(
                             readyQuery, SystemicPartsQueryInputs, vreq);
@@ -85,13 +85,14 @@ public class SkeletalInventoryQueryController extends VitroAjaxController {
     }
       
     private static String[] BoneQueryInputUris = {"skeletalInventory"};
-    private static String[] BoneQueryUris = {"boneUri", "completeness"};
+    private static String[] BoneQueryUris = {"boneUri", "completeness", "classUri"};
     private static String[] BoneQueryLiterals = {"label", "description"};
     
-    private static String[] CoherentQueryPrefixes = {"obo", "rdfs", "rdfbones", "rdf"};
+    private static String[] CoherentQueryPrefixes = {"obo", "rdfs", "rdfbones", "rdf", "vitro"};
       private static String CoherentQuery = ""
-              + "SELECT ?boneUri ?completeness ?label ?description "
+              + "SELECT ?boneUri ?classUri ?completeness ?label ?description "
               + " WHERE { "
+              + "   ?boneUri  vitro:mostSpecificType ?classUri ."
               + "   { "  
               + "    ?completeness    obo:BFO_0000050   ?skeletalInventory ."
               + "    ?completeness    obo:IAO_0000136   ?boneUri . "
@@ -107,28 +108,30 @@ public class SkeletalInventoryQueryController extends VitroAjaxController {
               + "   }" 
               + "} "; 
       
-      private static String[] SingleQueryPrefixes = {"obo", "rdfs", "rdfbones", "rdf"};
+      private static String[] SingleQueryPrefixes = {"obo", "rdfs", "rdfbones", "rdf", "vitro"};
       private static String SingleQuery = ""
-            + "SELECT  ?boneUri ?completeness ?label ?description"
+            + "SELECT  ?boneUri ?classUri ?completeness ?label ?description"
             + " WHERE { \n"
             + "    ?completeness    obo:BFO_0000050   ?skeletalInventory ."
-            + "    ?completeNess    obo:IAO_0000136   ?boneUri . "
+            + "    ?completeness    obo:IAO_0000136   ?boneUri . "
             + "    ?boneUri  rdfs:label  ?label  . "
+            + "    ?boneUri  vitro:mostSpecificType  ?classUri ."  
             + "    OPTIONAL { ?boneUri  rdfbones:description  ?description  . } "
             + " FILTER NOT EXISTS { ?boneUri rdf:type <http://purl.obolibrary.org/obo/FMA_53672> } ."
             + " FILTER NOT EXISTS { ?boneUri rdf:type <http://purl.obolibrary.org/obo/FMA_53673> } ."
             + "} "; 
       
-      private static String[] SystemicPartsQueryInputs = {"boneUri"};
-      private static String[] SystemicPartsQueryUris= {"systemicPart"};
+      private static String[] SystemicPartsQueryInputs = {"parentUri"};
+      private static String[] SystemicPartsQueryUris = {"boneUri", "classUri"};
       private static String[] SystemicPartsQueryLiterals = {"label", "description"};
-      private static String[] SystemicPartsQueryPrefixes = {"obo", "rdfs", "rdfbones"};
+      private static String[] SystemicPartsQueryPrefixes = {"obo", "rdfs", "rdfbones", "vitro"};
       
       private static String SystemicPartsQuery = ""
-          + "SELECT  ?boneUri ?systemicPart ?label ?description "
+          + "SELECT ?boneUri ?classUri ?label ?description "
           + " WHERE { "
-          + "    ?boneUri    obo:systemic_part_of  ?systemicPart . "
-          + "    ?systemicPart  rdfs:label  ?label  . "
+          + "    ?boneUri    obo:systemic_part_of  ?parentUri . "
+          + "    ?boneUri  rdfs:label  ?label  . "
+          + "    ?boneUri  vitro:mostSpecificType  ?classUri ."  
           + "    OPTIONAL { ?systemicPart  rdfbones:description  ?description  . } "
           + "} "; 
       

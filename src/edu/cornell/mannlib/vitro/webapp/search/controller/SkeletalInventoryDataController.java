@@ -37,13 +37,8 @@ import edu.cornell.mannlib.vitro.webapp.dao.DataPropertyStatementDao;
 import edu.cornell.mannlib.vitro.webapp.dao.InsertException;
 import edu.cornell.mannlib.vitro.webapp.dao.NewURIMakerVitro;
 import edu.cornell.mannlib.vitro.webapp.dao.ObjectPropertyStatementDao;
-import edu.cornell.mannlib.vitro.webapp.dao.VitroVocabulary;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.N3Utils;
-import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
-import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.MultiValueEditSubmission;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.NewURIMaker;
-import edu.cornell.mannlib.vitro.webapp.filestorage.FileServingHelper;
-import edu.cornell.mannlib.vitro.webapp.modules.fileStorage.FileStorage;
 
 /**
  * AutocompleteController generates autocomplete content
@@ -57,7 +52,6 @@ public class SkeletalInventoryDataController extends VitroAjaxController {
     private static final long serialVersionUID = 1L;
     private static final Log log = LogFactory.getLog(SkeletalInventoryDataController.class);
     
-
     
     private DataPropertyStatementDao dataDao;
     private ObjectPropertyStatementDao objectDao;
@@ -92,12 +86,12 @@ public class SkeletalInventoryDataController extends VitroAjaxController {
               break;
             
         case "delete": 
-              
                N3Utils.setInputMap(inputMap, DeleteInputParams, vreq);
                N3Utils.setOutputMap(outputMap, DeleteOutputParams, inputMap);
                this.objectTriplesRemove = N3Utils.subInputMap(inputMap, DeleteObjectTriples);
                this.dataTriplesRemove = N3Utils.subInputMap(inputMap, DeleteDataTriples);
-               performRemoveDataOperations();
+               this.removeData();
+               this.removeObject();
                
         case "newBone" :
               //Creating or modifying triples 
@@ -115,7 +109,8 @@ public class SkeletalInventoryDataController extends VitroAjaxController {
               N3Utils.setOutputMap(outputMap, BoneOutputParams, inputMap);
               this.objectTriplesAdd = N3Utils.subInputMap(inputMap, BoneObjectTriples);
               this.dataTriplesAdd = N3Utils.subInputMap(inputMap, BoneDataTriples);
-              performAddDataOperations();
+              this.addData();
+              this.addObject();
               break;
           
         case "systemic" :
@@ -133,14 +128,21 @@ public class SkeletalInventoryDataController extends VitroAjaxController {
               N3Utils.setOutputMap(outputMap, SystemicOutputParams, inputMap);
               this.objectTriplesAdd = N3Utils.subInputMap(inputMap, SystemicObjectTriples);
               this.dataTriplesAdd = N3Utils.subInputMap(inputMap, SystemicDataTriples);
-              performAddDataOperations();
+              this.addData();
+              this.addObject();
               break;
           
         case "editLiteral":
               N3Utils.setInputMap(inputMap, EditLiteralInputParams, vreq);
               N3Utils.setOutputMap(outputMap, EditLiteralOutputParams, inputMap);
-              this.dataTriplesRemove = N3Utils.subInputMap(inputMap, EditLiteralDataTriplesAdd);
-              this.dataTriplesAdd = N3Utils.subInputMap(inputMap, EditLiteralDataTriplesRemove);
+              this.dataTriplesAdd= N3Utils.subInputMap(inputMap, EditLiteralDataTriplesAdd);
+              this.dataTriplesRemove = N3Utils.subInputMap(inputMap, EditLiteralDataTriplesRemove);
+              log.info("editLiteral");
+              this.removeData();
+              this.addData();
+              log.info("afterDataoperatio");
+              break;
+         default : break;
         }
         
         
@@ -167,8 +169,7 @@ public class SkeletalInventoryDataController extends VitroAjaxController {
         response.getWriter().write(json.toString());  
      }
     
-    private void performAddDataOperations(){      
-      
+    private void addObject(){      
       for(String triple : this.objectTriplesAdd){
         log.info("Object add  : " + triple);
         this.objectDao.insertNewObjectPropertyStatement(
@@ -177,19 +178,20 @@ public class SkeletalInventoryDataController extends VitroAjaxController {
                     N3Utils.getPredicate(triple),
                     N3Utils.getObject(triple)));
       }
-      
+    }
+
+    private void addData(){      
       for(String triple : this.dataTriplesAdd){
         log.info("Data add  : " + triple);
         this.dataDao.insertNewDataPropertyStatement(
             new DataPropertyStatementImpl(
                     N3Utils.getSubject(triple), 
                     N3Utils.getPredicate(triple),
-                    N3Utils.getObject(triple)));
+                    N3Utils.getLiteralObject(triple)));
       }
     }
     
-    private void performRemoveDataOperations(){      
-
+    private void removeObject(){      
       for(String triple : this.objectTriplesRemove){
         log.info("Object remove  : " + triple);
         this.objectDao.deleteObjectPropertyStatement(
@@ -198,50 +200,50 @@ public class SkeletalInventoryDataController extends VitroAjaxController {
                     N3Utils.getPredicate(triple),
                     N3Utils.getObject(triple)));
       }
-      
+    }
+    
+    private void removeData(){      
       for(String triple : this.dataTriplesRemove){
         log.info("Data remove  : " + triple);
         this.dataDao.deleteDataPropertyStatement(
             new DataPropertyStatementImpl(
                     N3Utils.getSubject(triple), 
                     N3Utils.getPredicate(triple),
-                    N3Utils.getObject(triple)));
+                    N3Utils.getLiteralObject(triple)));
       }
     }
-    
     
       /*
        * Bone
        */
-    
-     private static String[] BoneInputParams = {"skeletalInventory", "classUri"};
-     private static String[] BoneOutputParams = {"completeness", "boneUri"};
-     private static String[] BoneNewResources = {"completeness", "boneUri"};
+     private static String[] BoneInputParams = {"skeletalInventory", "classUri", "label"};
+     private static String[] BoneOutputParams = {"classUri", "boneUri", "completeness", "label"};
+     private static String[] BoneNewResources = {"boneUri", "completeness", "label"};
 
      private static String[] BoneObjectTriples = {
          "?completeness obo:BFO_0000050 ?skeletalInventory",
          "?completeness obo:IAO_0000136 ?boneUri",
-         "?boneUri rdf:type ?classUri\n",
+         "?boneUri rdf:type ?classUri",
      };
      private static String[] BoneDataTriples = {
-        "?boneUri rdfs:label 'Default'"
+        "?boneUri rdfs:label ?label"
      };
      
      /*
       * Systemic
       */
      
-     private static String[] SystemicInputParams = {"boneUri", "classUri"};
-     private static String[] SystemicOutputParams = {"systemicUri", "classUri"};
-     private static String[] SystemicNewResources = {"systemicUri", "classUri"};
+     private static String[] SystemicInputParams = {"parentUri", "classUri", "?label"};
+     private static String[] SystemicOutputParams = {"boneUri", "classUri"};
+     private static String[] SystemicNewResources = {"boneUri"};
 
      private static String[] SystemicObjectTriples = {
-         "?systemicUri obo:systemic_part_of ?boneUri",
-         "?systemicUri rdf:type ?classUri",
+         "?boneUri obo:systemic_part_of ?parentUri",
+         "?boneUri rdf:type ?classUri",
      };
 
      private static String[] SystemicDataTriples = {
-        "?systemicUri rdfs:label Default",
+        "?systemicUri rdfs:label ?label",
      };
      
      /*
@@ -283,42 +285,4 @@ public class SkeletalInventoryDataController extends VitroAjaxController {
          + "    ?fileIndividual vitro-public:downloadLocation ?byteStreamIndividual ."
          + "    ?byteStreamIndividual vitro-public:directDownloadUrl ?downloadLoc . ";
     
-      /*
-      public void saveFile(, Map<String,String> urisForNewResources){
-         
-         
-       FileItem fileItem = vreq.getFilesFromForm().get("files").get(0);
-       FileStorage fileStorage = ApplicationUtils.instance().getFileStorage();
-       String fileName = fileItem.getName();
-       String filename = FilenameUtils.getName(fileName);
-       
-       int periodHere = filename.lastIndexOf('.');
-       String mimeType = filename.substring(periodHere);
-       
-       try{
-
-           InputStream inputStream = fileItem.getInputStream();
-           String downloadLocation = FileServingHelper.getBytestreamAliasUrl(urisForNewResources.get("byteStreamIndividual"), filename, vreq.getSession().getServletContext());
-           fileStorage.createFile(urisForNewResources.get("byteStreamIndividual"), filename, inputStream);
-           Map <String,List<Literal>> litOnFor = submission.getLiteralsFromForm();
-           List<Literal> literalsArray1 = new ArrayList<Literal>();
-           Literal a = ResourceFactory.createPlainLiteral(fileName);
-           literalsArray1.add(a);
-           List<Literal> literalsArray2 = new ArrayList<Literal>();
-           Literal b = ResourceFactory.createPlainLiteral(downloadLocation);
-           literalsArray2.add(b);
-           List<Literal> literalsArray3 = new ArrayList<Literal>();
-           Literal c = ResourceFactory.createPlainLiteral(mimeType);
-           literalsArray3.add(c);
-           litOnFor.put("fileName", literalsArray1);
-           litOnFor.put("downloadUrl", literalsArray2);
-           litOnFor.put("mimeType", literalsArray3);
-           submission.setLiteralsFromForm(litOnFor);
-     
-       } catch (IOException e) {
-           throw new IllegalStateException("Can't create the new image file.",e);
-       }
-         
-       }*/
-
 }

@@ -1,52 +1,58 @@
 var DataController = {
 
-	addSystemicPart : function(boneData, classUri){
-		
-		console.log(boneData)
+	addBone : function(classUri){
+		$.ajax({
+			url : baseUrl + "skeletalInventoryData",
+			data : {
+				dataOperation : "newBone",
+				skeletalInventory : skeletalInventory,
+				classUri : classUri,
+				label : "Default",
+			}
+		}).done(function(msg){
+			result = $.parseJSON(msg)
+			var bone = DataController.boneObject(null, result)
+			if(classUri == "http://purl.obolibrary.org/obo/FMA_53672" ||
+					classUri == "http://purl.obolibrary.org/obo/FMA_53673"){
+				coherentBones.push(bone)
+			} else {
+				singleBones.push(bone)
+			}
+			console.log("Saving is done")
+			console.log(bone)
+			Controller.showBoneViewer(bone)
+		})
+	},
+
+	addSystemicPart : function(parent, classUri){
+		console.log("Add Systemic Part")
+		console.log(parent)
 		UIController.modules["boneEditor"].waitForResult()
 		$.ajax({
 			url : baseUrl + "skeletalInventoryData",
 			data : {
 				dataOperation : "systemic",
-				boneUri : boneData.uri,
+				parentUri : parent.uri,
 				classUri : classUri,
+				label : "Default",
 			}
 			}).done(function(msg){
 				var result = $.parseJSON(msg)
-				var newObject = DataController.initCoherentBone(result.systemicUri, classUri, boneData)
-				if(! ("systemicParts" in boneData)){
-					console.log("addded")
-					boneData.systemicParts = []
-				} 
-				boneData.systemicParts.push(newObject)
-				UIController.modules["boneEditor"].show1(newObject)
+				var newObject = DataController.boneObject(parent, result)
+				parent.systemicParts.push(newObject)
+				Controller.showBoneViewer(newObject)
 			})
 	},	
 
-	initCoherentBone : function(uri, classUri, parent){
-		var newObject = new Object()
-		newObject.uri = uri
-		newObject.parent = parent
-		newObject.label = "Default"
-		newObject.classUri = classUri
-		newObject.images = []
-		newObject.systemicParts = []
-		return newObject
-	},
-	
 	saveLiteral : function(literalEditor, old, new_){
 		//Save it in the local store
-		console.log(literalEditor.data)
 		literalEditor.data[literalEditor.id]
 				= new_
-		console.log(coherentBones)
-		console.log(singleBones)
-		//Save it in the database
 		$.ajax({
 			url : baseUrl + "skeletalInventoryData",
 			data : {
 				dataOperation : "editLiteral",
-				subject : literalEditor.data.uri,
+				boneUri : literalEditor.data.uri,
 				predicate : literalEditor.predicate,
 				oldValue : old,
 				newValue : new_,
@@ -55,7 +61,22 @@ var DataController = {
 				literalEditor.saved()
 			})
 	},
-	
+	/*
+	deleteBones : function(data){
+		$.ajax({
+			url : baseUrl + "skeletalInventoryQuery",
+			data : {
+				dataOperation : "delete"
+				skeletalInventory : skeletalInventory,
+				completeness : data.completeness,
+				boneUri : data.uri,
+				classUri : data.classUri,
+			}
+		}).done(function(){
+			
+		})
+	}
+	*/
 	getBones : function(tableLoader){
 		$.ajax({
 			url : baseUrl + "skeletalInventoryQuery",
@@ -65,22 +86,16 @@ var DataController = {
 			}
 		}).done(function(msg){
 			var results = $.parseJSON(msg)
-			console.log(results)
-			var length = ""
+			var length = results.length
 			$.each(results, function(index, object){
-				
-				tableLoader.module.dataSet.push(object)
-				/*
-				object.images = []
-				DataController.loadImages(object)
-				object.systemicParts = []
-				DataController.loadSystemicParts(object)*/
+				tableLoader.module.dataSet.push(
+						DataController.boneObject(null, object))
+				//DataController.loadSystemicParts(tableLoader, object, length, index)
+				//DataController.loadImages(object)
 			})
-			console.log("Arrived Data")
-			console.log(tableLoader.module.dataKey)
-			console.log(tableLoader.module.dataSet)
-			pageLoader.refreshTables()
+			tableLoader.refresh()
 		})
+		
 	},
 	
 	loadImages : function(object){
@@ -101,47 +116,56 @@ var DataController = {
 		})
 	},
 	
-	loadSystemicParts : function(object, lenght, i){
+	loadSystemicParts : function(tableLoader, parent, lenght, i){
 		$.ajax({
 			url : baseUrl + "skeletalInventoryQuery",
-		    async: false,
 			data : {
-				boneUri : object.boneUri,
-				type : "systemicParts",
+				parentUri : parent.uri,
+				dataOperation : "systemic",
 			}
 		}).done(function(msg){
 			console.log("loadSystemicParts")
 			var results = $.parseJSON(msg)
 			$.each(results, function(index, value){
-				object.systemicParts.push(value)
+				object.systemicParts.push(
+						DataController.boneObject(parent, value))
 			})
-			if(length == i + 1){
-				pageLoader.refreshTables()
-			}
-			
+			tableLoader.refresh()
 		})
 	},
 	
 	
-	addBone : function(classUri){
-		$.ajax({
-			url : baseUrl + "skeletalInventoryData",
-			data : {
-				skeletalInventory : skeletalInventory,
-				dataOperation : "newBone",
-				classUri : classUri,
-			}
-		}).done(function(msg){
-			result = $.parseJSON(msg)
-			var bone = DataController.initCoherentBone(result.boneUri, classUri, null)
-			if(classUri == "http://purl.obolibrary.org/obo/FMA_53672" ||
-					classUri == "http://purl.obolibrary.org/obo/FMA_53673"){
-				coherentBones.push(bone)
+	boneObject : function(parent, object){
+		var newObject = new Object()
+		newObject.uri = object.boneUri
+		newObject.classUri = object.classUri
+		newObject.completeNess = object.completeness
+		newObject.label = object.label
+		newObject.description = object.description
+		newObject.classUri = object.classUri
+		newObject.parent = parent
+		newObject.images = []
+		newObject.systemicParts = []
+		return newObject
+	},
+	
+	getClassObject : function(classUri){
+		var toReturn
+		$.each(treeStructure, function(index, value){
+			//console.log(value.uri + "  " + classUri)
+			if(value.uri === classUri){
+				toReturn = value
+				return false
 			} else {
-				singleBones.push(bone)
+				$.each(value.children, function(index1, value1){
+					//console.log("innner " + value1.uri + "  " + classUri)
+					if(value1.uri === classUri){
+						toReturn = value1
+						return false
+					} 
+				})
 			}
-			console.log("Saving is done")
-			Controller.showBoneViewer(bone)
 		})
-	},
+		return toReturn
+	}
 }

@@ -21,8 +21,8 @@ public class N3Utils {
       put("obo","http://purl.obolibrary.org/obo/");
       put("rdfbones","http://w3id.org/rdfbones/core#");
       put("vitro-public", "http://vitro.mannlib.cornell.edu/ns/vitro/public#");
+      put("vitro", "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#");
     }};
-    
     
     public static void setInputMap(Map<String, String> inputMap, 
       String[] inputParameters, VitroRequest vreq){
@@ -70,15 +70,30 @@ public class N3Utils {
           break;
         } 
        }
-      log.info(predicate);
+      log.info("Predicate:" + predicate);
        return predicate;
     }
     
     public static String getObject(String triple){
-      log.info(triple.split("\\s+")[2]);
+      log.info("Object: " + triple.split("\\s+")[2]);
       return triple.split("\\s+")[2];
     }
 
+    public static String getLiteralObject(String triple){
+      String[] res =  triple.split("\\s+");
+      String ret = new String();
+      int n = 0;
+      for(String part : res){
+        if(n > 1){
+          ret += part + " ";
+        }
+        n++;
+      }
+      log.info("Object: " + ret.substring(0, ret.length()-1));
+      return ret.substring(0, ret.length()-1);
+      //return ret + "^^http://www.w3.org/2001/XMLSchema#string";
+    }
+    
     public static String setPrefixes(String[] prefixes, String query){
       String prefixList = new String();
       for(String prefix : prefixes){
