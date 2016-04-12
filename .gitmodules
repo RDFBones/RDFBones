@@ -1,10 +1,10 @@
 [submodule "VIVO"]
 	branch = maint-rel-1.8
-	path = VIVO
+	path = /Library/VIVO
 	url = https://github.com/vivo-project/VIVO.git
 [submodule "Vitro"]
 	branch = maint-rel-1.8
-	path = Vitro
+	path = /Library/Vitro
 	url = https://github.com/vivo-project/Vitro.git
 [submodule "rdf/tbox/filegraph"]
 	path = rdf/tbox/filegraph

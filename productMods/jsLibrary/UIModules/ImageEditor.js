@@ -13,7 +13,7 @@ var ImageEditor = function(boneEditor){
 				.on('change', prepareUpload))
 				
 	this.container.append(this.fileUpload)
-}	
+}
 
 ImageEditor.prototype.show1 = function(imageList, edit){
 	this.container.show()

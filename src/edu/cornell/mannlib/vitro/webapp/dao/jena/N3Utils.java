@@ -19,6 +19,7 @@ public class N3Utils {
       put("rdf","http://www.w3.org/1999/02/22-rdf-syntax-ns#");
       put("rdfs","http://www.w3.org/2000/01/rdf-schema#");
       put("obo","http://purl.obolibrary.org/obo/");
+      put("bibo","http://purl.org/ontology/bibo/");
       put("rdfbones","http://w3id.org/rdfbones/core#");
       put("vitro-public", "http://vitro.mannlib.cornell.edu/ns/vitro/public#");
       put("vitro", "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#");
@@ -75,8 +76,15 @@ public class N3Utils {
     }
     
     public static String getObject(String triple){
-      log.info("Object: " + triple.split("\\s+")[2]);
-      return triple.split("\\s+")[2];
+      String object = triple.split("\\s+")[2];
+      for(String prefix : prefixDef.keySet()){
+        if(object.contains(prefix + ":")){
+          object = object.replace(prefix + ":", prefixDef.get(prefix));
+          break;
+        } 
+       }
+      log.info("Object:" + object);
+       return object;
     }
 
     public static String getLiteralObject(String triple){

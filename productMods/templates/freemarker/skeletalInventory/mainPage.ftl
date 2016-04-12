@@ -19,7 +19,13 @@
 		var baseUrl = "${urls.base}/"
 		var skeletalInventory = '${individual.uri!}'
 	</script>
-	
+	<form enctype="multipart/form-data" id="myForm">
+		<input type="file" name="datafile" id="datafile">
+		<input type="submit" value="Submit">
+	</form>
+	<div id="subm">
+		Submit
+	</div>
 ${scripts.add('<script type="text/javascript" src="${urls.base}/js/classHierarchy/jquery-1.11.3.min.js"></script>')}
 
 ${scripts.add('<script type="text/javascript" src="${urls.base}/js/DataController.js"></script>',
@@ -45,5 +51,6 @@ ${scripts.add('<script type="text/javascript" src="${urls.base}/jsLibrary/UIModu
 	'<script type="text/javascript" src="${urls.base}/jsLibrary/UIModules/LiteralEditor.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/jsLibrary/UIModules/SubboneEditor.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/jsLibrary/UIModules/TableLoader.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/jsLibrary/UIModules/AjaxFileUpload.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/jsLibrary/UIModules/SingleElements.js"></script>')}
 	

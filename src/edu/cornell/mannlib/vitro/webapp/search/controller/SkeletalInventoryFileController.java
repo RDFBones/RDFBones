@@ -14,6 +14,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.logging.Log;
@@ -68,14 +71,20 @@ public class SkeletalInventoryFileController extends VitroAjaxController {
       Map<String, String> inputMap = new HashMap<String, String>();
       Map<String,String> outputMap = new HashMap<String,String>();
       
-      FileItem fileItem = vreq.getFiles().get(PARAMETER_UPLOADED_FILE).get(0);
-      log.info(fileItem.toString());
+      List<FileItem> items = new ArrayList<FileItem>();
+      try {
+        items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(vreq);
+      } catch (FileUploadException e2) {
+        // TODO Auto-generated catch block
+        log.info("etwas stimmt nicht");
+        e2.printStackTrace();
+      }
+      FileItem fileItem = items.get(0);
       FileStorage fileStorage = ApplicationUtils.instance().getFileStorage();
       String fileName = fileItem.getName();
       String filename = FilenameUtils.getName(fileName);
       int periodHere = filename.lastIndexOf('.');
-      String mimeType = filename.substring(periodHere);
-      log.info(mimeType.toString());
+      String mimetype = filename.substring(periodHere);
       NewURIMaker newUri = new NewURIMakerVitro(vreq.getWebappDaoFactory());
       String byteStreamIndividual = new String();
       String imageIndividual = new String();
@@ -89,32 +98,31 @@ public class SkeletalInventoryFileController extends VitroAjaxController {
         // TODO Auto-generated catch block
         e1.printStackTrace();
       }
-
+      InputStream inputStream;
       try{
-          InputStream inputStream = fileItem.getInputStream();
+           inputStream = fileItem.getInputStream();
           downloadLocation = FileServingHelper.getBytestreamAliasUrl(byteStreamIndividual, filename, vreq.getSession().getServletContext());
           fileStorage.createFile(byteStreamIndividual, filename, inputStream);
       } catch (IOException e) {
           throw new IllegalStateException("Can't create the new image file.",e);
       }
-      
-      inputMap.put("imageIndividual", imageIndividual);
-      inputMap.put("byteStreamIndividual", byteStreamIndividual);
-      inputMap.put("fileIndividual", fileIndividual);
-      outputMap.put("downloadLocation", downloadLocation);
-      
-      N3Utils.setInputMap(inputMap, ImageUploadInputParams, vreq);
-      N3Utils.setOutputMap(outputMap, ImageUploadOutputParams, inputMap);
+      if (inputStream != null) {
+        try {
+          inputStream.close();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
 
-      this.objectTriplesAdd = N3Utils.subInputMap(inputMap, ImageUploadObjectTriplesAdd);
-      this.dataTriplesAdd = N3Utils.subInputMap(inputMap, ImageUploadDataTriplesAdd);
-      
-      this.performAddDataOperations();
+      outputMap.put("imageIndividual", imageIndividual);
+      outputMap.put("byteStreamIndividual", byteStreamIndividual);
+      outputMap.put("fileIndividual", fileIndividual);
+      outputMap.put("downloadLocation", downloadLocation);
+      outputMap.put("mimetype", mimetype);
+      outputMap.put("filename", filename);
       
       JSONObject json = new JSONObject();
-      boolean flag = false;
       for(String key : outputMap.keySet()){
-        flag = true;
         try {
           json.put(key, outputMap.get(key));
         } catch (JSONException e) {
@@ -124,42 +132,6 @@ public class SkeletalInventoryFileController extends VitroAjaxController {
       }
       response.getWriter().write(json.toString());  
     }  
-    
-    private static String[] ImageUploadInputParams = {"boneUri"};
-    
-    private static String[] ImageUploadOutputParams = {"downloadLocation"};
-  
-    private static String[] ImageUploadObjectTriplesAdd = {
-       "?image <http://vivo.mydomain.edu/individual/hasFile>  ?fileIndividual",
-       "?fileIndividual vitro-public:downloadLocation ?byteStreamIndividual .",
-    };
-    
-    private static String[] ImageUploadDataTriplesAdd = {
-        "    ?fileIndividual vitro-public:filename ?filename .",
-        "    ?fileIndividual vitro-public:mimeType ?mimeType .",
-        "    ?byteStreamIndividual vitro-public:directDownloadUrl ?downloadLoc . ",
-    };
-    
-    private void performAddDataOperations(){      
-      
-      for(String triple : this.objectTriplesAdd){
-        log.info("Object add  : " + triple);
-        this.objectDao.insertNewObjectPropertyStatement(
-            new ObjectPropertyStatementImpl(
-                    N3Utils.getSubject(triple), 
-                    N3Utils.getPredicate(triple),
-                    N3Utils.getObject(triple)));
-      }
-      
-      for(String triple : this.dataTriplesAdd){
-        log.info("Data add  : " + triple);
-        this.dataDao.insertNewDataPropertyStatement(
-            new DataPropertyStatementImpl(
-                    N3Utils.getSubject(triple), 
-                    N3Utils.getPredicate(triple),
-                    N3Utils.getObject(triple)));
-      }
-    }
 }    
 
 

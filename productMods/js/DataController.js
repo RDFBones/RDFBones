@@ -143,7 +143,6 @@ var DataController = {
 		})
 	},
 	
-	
 	boneObject : function(parent, object){
 		var newObject = new Object()
 		newObject.uri = object.boneUri

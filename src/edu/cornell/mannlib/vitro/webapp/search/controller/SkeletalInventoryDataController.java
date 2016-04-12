@@ -151,6 +151,23 @@ public class SkeletalInventoryDataController extends VitroAjaxController {
               this.addData();
               log.info("afterDataoperatio");
               break;
+        case "saveImage" :
+              log.info("SaveImage");
+              N3Utils.setInputMap(inputMap,ImageUploadInputParams, vreq);
+              N3Utils.setOutputMap(outputMap, ImageUploadOutputParams, inputMap);
+              log.info("After outputmap setting");
+              log.info(inputMap.toString());
+              this.objectTriplesAdd = N3Utils.subInputMap(inputMap, ImageUploadObjectTriplesAdd);
+              for(String a : this.objectTriplesAdd){
+                log.info(a);
+              }
+              
+              this.dataTriplesAdd = N3Utils.subInputMap(inputMap, ImageUploadDataTriplesAdd);
+              for(String a : this.dataTriplesAdd){
+                log.info(a);
+              }
+              this.addData();
+              this.addObject();
          default : break;
         }
         
@@ -262,7 +279,7 @@ public class SkeletalInventoryDataController extends VitroAjaxController {
      private static String[] DeleteOutputParams = {};
 
      private static String[] DeleteObjectTriples = {
-         //"?completeness obo:BFO_0000050 ?skeletalInventory",
+         "?completeness obo:BFO_0000050 ?skeletalInventory",
          "?completeness obo:IAO_0000136 ?boneUri",
          "?boneUri rdf:type ?classUri",
      };
@@ -284,12 +301,24 @@ public class SkeletalInventoryDataController extends VitroAjaxController {
      private static String[] EditLiteralDataTriplesAdd = {
           "?boneUri ?predicate ?newValue"
      };
-      
-     private static String imageTriples = ""
-         + "    ?image <http://vivo.mydomain.edu/individual/hasFile>  ?fileIndividual ."
-         + "    ?fileIndividual vitro-public:filename ?filename ."
-         + "    ?fileIndividual vitro-public:mimeType ?mimeType ."
-         + "    ?fileIndividual vitro-public:downloadLocation ?byteStreamIndividual ."
-         + "    ?byteStreamIndividual vitro-public:directDownloadUrl ?downloadLoc . ";
-    
+          
+     private static String[] ImageUploadInputParams = {"boneUri", "imageIndividual", "byteStreamIndividual",
+       "fileIndividual", "filename", "mimetype", "downloadLocation"};
+   
+     private static String[] ImageUploadOutputParams = {};
+
+     private static String[] ImageUploadObjectTriplesAdd = {
+        "?boneUri rdfbones:isDepicted ?imageIndividual",
+        "?imageIndividual rdf:type bibo:Image",
+        "?fileIndividual rdf:type vitro-public:File",
+        "?imageIndividual http://vivo.mydomain.edu/individual/hasFile ?fileIndividual",
+        "?fileIndividual vitro-public:downloadLocation ?byteStreamIndividual",
+        "?byteStreamIndividual rdf:type vitro-public:FileByteStream" 
+     };
+     
+     private static String[] ImageUploadDataTriplesAdd = {
+         "?fileIndividual vitro-public:filename ?filename",
+         "?fileIndividual vitro-public:mimeType ?mimetype",
+         "?byteStreamIndividual vitro-public:directDownloadUrl ?downloadLocation",
+     };
 }
