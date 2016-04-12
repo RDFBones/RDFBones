@@ -30,11 +30,9 @@ TableLoader.prototype.refresh = function(){
 	this.dataContainer.empty()
 	console.log("dataSet")
 	$.each(this.dataSet, function(outerIndex, data) {
-		console.log("dataSet " + outerIndex)
 		var rowContainer = _this.getRowContainer()
 		$.each(_this.module.columns, function(innerIndex, config) {
 			var container = null
-			console.log("columns " + innerIndex)
 			if ("cardinality" in config) {
 				// List of data
 				container = _this.getColumnDiv(
@@ -44,9 +42,13 @@ TableLoader.prototype.refresh = function(){
 			}
 			rowContainer.append(container)
 		})
-	console.log("To editButton")
-	console.log(data)
 	rowContainer.append(_this.getEditButton(data))
+	if(data.classUri == "http://purl.obolibrary.org/obo/FMA_53672" ||
+				data.classUri == "http://purl.obolibrary.org/obo/FMA_53673"){
+		rowContainer.append(_this.getDeleteButton(true, outerIndex, rowContainer))
+	} else {
+		rowContainer.append(_this.getDeleteButton(false, outerIndex, rowContainer))
+	}
 	//rowContainer.append(_this.getDeleteButton(data))
 	_this.dataContainer.append(rowContainer)
 	})
@@ -97,12 +99,29 @@ TableLoader.prototype.getRowContainer = function(){
 
 
 TableLoader.prototype.getEditButton = function(data){
-	return html.getImg(ImgSrc.edit).click(function(){
+	return this.getImgRow(ImgSrc.edit).click(function(){
 		console.log("editButton clicked")
 		UIController.modules["boneEditor"].show1(data)
 	})
 },
 	
+TableLoader.prototype.getDeleteButton = function(coherent, number, rowContainer){
+	return this.getImgRow(ImgSrc.del16).click(function(){
+		rowContainer.remove()
+		Controller.deleteBone(coherent, number)
+	})
+},
+
+TableLoader.prototype.getImgRow = function(src) {
+	return html.getNewDiv("imgContainerRow").append(
+			html.getImg(src))
+},
+
+TableLoader.prototype.getImg = function(src, index) {
+	return html.getNewDiv("imgContainer").append(
+			html.getPreviewImage(testImgSource + src, "previewImg",index))
+},
+
 TableLoader.prototype.getColumnTitle = function(title){
 	return html.getNewDiv("columnTitle").text(title)
 },

@@ -37,6 +37,7 @@ import edu.cornell.mannlib.vitro.webapp.dao.DataPropertyStatementDao;
 import edu.cornell.mannlib.vitro.webapp.dao.InsertException;
 import edu.cornell.mannlib.vitro.webapp.dao.NewURIMakerVitro;
 import edu.cornell.mannlib.vitro.webapp.dao.ObjectPropertyStatementDao;
+import edu.cornell.mannlib.vitro.webapp.dao.PropertyInstanceDao;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.N3Utils;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.NewURIMaker;
 
@@ -55,6 +56,7 @@ public class SkeletalInventoryDataController extends VitroAjaxController {
     
     private DataPropertyStatementDao dataDao;
     private ObjectPropertyStatementDao objectDao;
+    private PropertyInstanceDao propDao;
     
     private String[] objectTriplesAdd;
     private String[] dataTriplesAdd;
@@ -69,8 +71,9 @@ public class SkeletalInventoryDataController extends VitroAjaxController {
       
         this.dataDao = vreq.getWebappDaoFactory().getDataPropertyStatementDao();
         this.objectDao = vreq.getWebappDaoFactory().getObjectPropertyStatementDao();
-        NewURIMaker newUri = new NewURIMakerVitro(vreq.getWebappDaoFactory());
+        this.propDao = vreq.getWebappDaoFactory().getPropertyInstanceDao();
 
+        NewURIMaker newUri = new NewURIMakerVitro(vreq.getWebappDaoFactory());
         Map<String,String> inputMap = new HashMap<String,String>();
         Map<String,String> outputMap = new HashMap<String,String>();
         
@@ -86,13 +89,19 @@ public class SkeletalInventoryDataController extends VitroAjaxController {
               break;
             
         case "delete": 
+               log.info("Delete");
                N3Utils.setInputMap(inputMap, DeleteInputParams, vreq);
+               log.info("InputMap set");
                N3Utils.setOutputMap(outputMap, DeleteOutputParams, inputMap);
+               log.info("OutputMap set");
+               log.info("inputMap " + inputMap.toString());
                this.objectTriplesRemove = N3Utils.subInputMap(inputMap, DeleteObjectTriples);
+               log.info("Object set");
                this.dataTriplesRemove = N3Utils.subInputMap(inputMap, DeleteDataTriples);
+               log.info("Data set");
                this.removeData();
                this.removeObject();
-               
+               break;
         case "newBone" :
               //Creating or modifying triples 
               try {
@@ -194,22 +203,20 @@ public class SkeletalInventoryDataController extends VitroAjaxController {
     private void removeObject(){      
       for(String triple : this.objectTriplesRemove){
         log.info("Object remove  : " + triple);
-        this.objectDao.deleteObjectPropertyStatement(
-            new ObjectPropertyStatementImpl(
+        //this.objectDao.deleteObjectPropertyStatement(
+        this.propDao.deleteObjectPropertyStatement(
                     N3Utils.getSubject(triple), 
                     N3Utils.getPredicate(triple),
-                    N3Utils.getObject(triple)));
+                    N3Utils.getObject(triple));
       }
     }
     
     private void removeData(){      
       for(String triple : this.dataTriplesRemove){
         log.info("Data remove  : " + triple);
-        this.dataDao.deleteDataPropertyStatement(
-            new DataPropertyStatementImpl(
-                    N3Utils.getSubject(triple), 
-                    N3Utils.getPredicate(triple),
-                    N3Utils.getLiteralObject(triple)));
+        dataDao.deleteDataPropertyStatementsForIndividualByDataProperty(
+            N3Utils.getSubject(triple), 
+            N3Utils.getPredicate(triple));
       }
     }
     
@@ -251,12 +258,12 @@ public class SkeletalInventoryDataController extends VitroAjaxController {
       */
      
      private static String[] DeleteInputParams = 
-       {"skeletalInventory", "completeness", "boneUri", "classUri"};
+       {"skeletalInventory", "completeness", "boneUri", "classUri", "label"};
      private static String[] DeleteOutputParams = {};
 
      private static String[] DeleteObjectTriples = {
-         "?completeness obo:BFO_0000050 ?skeletalInventory",
-         "?completeness obo:IAO_0000136 ?boneUri\n",
+         //"?completeness obo:BFO_0000050 ?skeletalInventory",
+         "?completeness obo:IAO_0000136 ?boneUri",
          "?boneUri rdf:type ?classUri",
      };
      

@@ -101,6 +101,7 @@ var ImgSrc = {
 	backToParent : this.folder + "backToParent.png",
 	close : this.folder + "close.png",
 	del : this.folder + "delete.png",
+	del16 : this.folder + "del16.png",
 	edit : this.folder + "edit.png",
 	loadingGif : this.folder + "loading.gif",
 	minus : this.folder + "minus.png",

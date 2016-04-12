@@ -18,6 +18,10 @@ var Controller = {
 		DataController.addSystemicPart(boneData, classUri)
 	},
 	
+	deleteBone : function(coherent, index){
+		DataController.deleteBones(coherent, index)
+	},
+	
 	refreshPage : function(){
 		$("#pageContainer").empty()
 		pageLoader.init()

@@ -61,22 +61,31 @@ var DataController = {
 				literalEditor.saved()
 			})
 	},
-	/*
-	deleteBones : function(data){
+	
+	deleteBones : function(coherent, index){
+		var data = null
+		if(coherent){
+			data = coherentBones[index]
+			coherentBones.splice(index,1)
+		} else {
+			data = singleBones[index]
+			singleBones.splice(index,1)
+		}
 		$.ajax({
-			url : baseUrl + "skeletalInventoryQuery",
+			url : baseUrl + "skeletalInventoryData",
 			data : {
-				dataOperation : "delete"
+				dataOperation : "delete",
 				skeletalInventory : skeletalInventory,
 				completeness : data.completeness,
 				boneUri : data.uri,
 				classUri : data.classUri,
+				label : data.label,
 			}
 		}).done(function(){
-			
+			console.log("Data is deleted")
 		})
-	}
-	*/
+	},
+	
 	getBones : function(tableLoader){
 		$.ajax({
 			url : baseUrl + "skeletalInventoryQuery",
@@ -139,7 +148,7 @@ var DataController = {
 		var newObject = new Object()
 		newObject.uri = object.boneUri
 		newObject.classUri = object.classUri
-		newObject.completeNess = object.completeness
+		newObject.completeness = object.completeness
 		newObject.label = object.label
 		newObject.description = object.description
 		newObject.classUri = object.classUri

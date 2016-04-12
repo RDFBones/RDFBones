@@ -58,6 +58,15 @@
 	margin-left: 4px;
 }
 
+.imgContainerRow {
+	display : inline-block;
+	margin : 6px;
+}
+
+.imgContainerRow:hover {
+	cursor : pointer;
+}
+
 .previewImg {
 	width: 70px;
 	margin: 5px;
