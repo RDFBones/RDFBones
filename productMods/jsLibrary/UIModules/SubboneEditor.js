@@ -6,7 +6,7 @@ var SubboneEditor = function(boneEditor){
 
 	// The definition of the tree structure
 	this.container = html.getNewDiv()
-	this.container.append(this.getTitleDiv("Add systemic parts"))
+	this.container.append(this.getTitleDiv("Systemic parts"))
 	this.container.append(this.getNewLine())
 	this.container.append(this.getTreeStructureContainer())
 	this.container.append(this.getChildBoneViewer())
@@ -42,7 +42,7 @@ SubboneEditor.prototype.show1 = function(data){
 	$.each(treeStructure, function(index,value){
 		if(value.uri == data.classUri){
 			$.each(value.children, function(index, child){
-				editor.treeStructure.append(new ChildStructure(child, editor))
+				editor.treeStructure.append(new ChildStructure(child, editor, true))
 			})
 		}
 	})
@@ -105,7 +105,7 @@ SubboneEditor.prototype.childBoneDiv = function(value){
 /*******************************************************************************
  * ChildStructure
  ******************************************************************************/
-var ChildStructure = function(parentData, editor){
+var ChildStructure = function(parentData, editor, start){
 
 	this.container = this.getChildrenContainer()
 	this.classNameNameContainer = this.getClassNameDiv()
@@ -159,7 +159,7 @@ var ChildStructure = function(parentData, editor){
 }
 
 ChildStructure.prototype.getClassNameDiv = function(classLabel) {
-	return html.getNewDivT(classLabel).addClass("classLabel")
+	return html.getNewDivT(classLabel)
 }
 
 ChildStructure.prototype.getPlusImg = function() {
@@ -175,7 +175,7 @@ ChildStructure.prototype.getMinusImg = function() {
 }
 
 ChildStructure.prototype.getChildrenContainer = function() {
-	return html.getNewDiv("childrenContainer")
+	return html.getNewDiv("listContainer")
 }
 
 ChildStructure.prototype.getFillerDiv = function() {

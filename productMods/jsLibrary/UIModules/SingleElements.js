@@ -1,6 +1,11 @@
 var WaitingGif = function(){
 	return html.getNewDiv("waitGifContainer")
-			.append(html.getImgClass(imgSrc + "loading.gif", "waitGifClass"))
+			.append(html.getImgClass(imgSrc + "loading.gif", "waitGif"))
+}
+
+var SmallWaitingGif = function(){
+	return html.getNewDiv("smallWaitGifContainer")
+			.append(html.getImgClass(imgSrc + "loading.gif", "smallWaitGif"))
 }
 
 var Done = function(container){

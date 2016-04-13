@@ -1,39 +1,49 @@
-.waitGifContainer{
-	width : 494px;
+.waitGifContainer {
+	width: 494px;
 	text-align: center;
 }
 
-.waitGifClass{
-	margin : 20px;
-	height : 100px;	
+.waitGif {
+	margin: 20px;
+	height: 100px;
+}
+
+.smallWaitGifContainer {
+	width: 300px;
+	text-align: center;
+}
+
+.smallWaitGif {
+	margin: 3px;
+	height: 30px;
 }
 
 .titleContainer {
-	padding : 2px;
-	text-align: center;	
-	border-bottom : 2px solid black;
+	padding: 2px;
+	text-align: center;
+	border-bottom: 2px solid black;
 }
 
 .backToParent {
-	padding : 2px;
-	text-align: center;	
-	border-bottom : 2px solid black;
+	padding: 2px;
+	text-align: center;
+	border-bottom: 2px solid black;
 }
-.backToParent:hover{
-	background-color : #E8E8E8;
-	cursor : pointer;
+
+.backToParent:hover {
+	background-color: #E8E8E8;
+	cursor: pointer;
 }
 
 .done {
-	margin-top : 10px;
-	width : 496px;
-	padding : 2px;
-	text-align: center;	
-	border-top : 2px solid black;
+	margin-top: 10px;
+	width: 496px;
+	padding: 2px;
+	text-align: center;
+	border-top: 2px solid black;
 }
 
-.done:hover{
-	background-color : #E8E8E8;
-	cursor : pointer;	
+.done:hover {
+	background-color: #E8E8E8;
+	cursor: pointer;
 }
-

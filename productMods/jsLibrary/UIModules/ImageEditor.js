@@ -5,6 +5,9 @@ var ImageEditor = function(boneEditor){
 	this.outerContainer = this.getOuterContainer()
 	this.innerContainer = this.getInnerContainer()
 	
+	this.waitGif = new SmallWaitingGif()
+	this.noImageMsg = html.getNewDiv("margin10").text("There is no image loaded to this bone")
+	
 	this.imageUpload = html.getForm()
 		.attr("id", "imageForm").attr("enctype","multipart/form-data")
 		.append(html.getFileUploadId("datafile").attr("name", "datafile"))
@@ -19,6 +22,7 @@ var ImageEditor = function(boneEditor){
 			.append(this.outerContainer
 					.append(this.innerContainer))
 					.append(html.getNewDiv("newLine"))
+			.append(this.noImageMsg.hide())
 			.append(this.imageUpload)
 			.append(this.submitButton)
 			.append(html.getNewDiv("newLine"))
@@ -26,18 +30,56 @@ var ImageEditor = function(boneEditor){
 
 ImageEditor.prototype.show1 = function(data){
 	this.boneData = data
-	if(data.image != "undefined")
-	this.refreshImages()
 	this.container.show()
+	this.showWaitGif();
+	_this = this
+	if(data.image == null){
+		//Query them
+		$.ajax({
+			url : baseUrl + "skeletalInventoryQuery",
+			data : {
+				dataOperation : "images",
+				boneUri : _this.boneData.uri,
+			}
+		}).done(function(msg){
+			var result = $.parseJSON(msg)
+			console.log(result)
+			_this.boneData.images = []
+			if(result.noResult == null){
+				$.each(result, function(index, value){
+					//I have to cut the last / element
+					console.log("Image " + value)
+					_this.boneData.images.push(
+							baseUrl.substring(0, baseUrl.length - 1) + value.downloadLocation)
+				})
+			}
+			_this.refreshImages()
+		})
+	} else {
+		this.refreshImages()
+	}
+}
+
+ImageEditor.prototype.showWaitGif = function(){
+	this.innerContainer.append(this.waitGif)
 }
 
 ImageEditor.prototype.refreshImages = function(){
 	this.innerContainer.empty()
 	_this = this
-	$.each(this.boneData.images, function(index, img){
-		_this.innerContainer.append(
-				_this.getImg(img))
-	})
+	if(this.boneData.images.length > 0){
+		console.log("Existing images")
+		this.outerContainer.show()
+		this.noImageMsg.hide()
+		$.each(this.boneData.images, function(index, img){
+			console.log(img)
+			_this.innerContainer.append(
+					_this.getImg(img))
+		})
+	} else {
+		this.outerContainer.hide()
+		this.noImageMsg.show()
+	}
 }
 
 ImageEditor.prototype.getSubmitButton = function(){
@@ -59,7 +101,7 @@ ImageEditor.prototype.getSubmitButton = function(){
 			result["dataOperation"] = "saveImage"
 			console.log(result)
 			//I have to cut the last / element
-			_this.boneData.images.push(
+			_this.boneData.images.unshift(
 					baseUrl.substring(0, baseUrl.length - 1) + result.downloadLocation)
 			$.ajax({
 			  url : baseUrl + "skeletalInventoryData",
@@ -70,6 +112,10 @@ ImageEditor.prototype.getSubmitButton = function(){
 		})
 	})		
 }
+ImageEditor.prototype.getWaitGif = function(title) {
+	html
+}
+
 
 ImageEditor.prototype.getTitleDiv = function(title) {
 	this.titleDiv = html.getNewDiv("moduleTitle").text(title)

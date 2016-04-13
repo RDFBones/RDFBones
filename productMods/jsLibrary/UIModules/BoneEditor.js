@@ -11,7 +11,7 @@ var BoneEditor = function(data) {
 	this.backToParent = new BackToParent()
 	this.labelEditor = new LiteralEditor(this, "Label", "label", "rdfs:label", true)
 	this.descriptionEditor = new LiteralEditor(this, "Description","description","rdfbones:description", false)
-	this.imageEditor = new ImageEditor(this, data.images)
+	this.imageEditor = new ImageEditor(this)
 	this.subboneEditor = new SubboneEditor(this)
 	this.waitingGif = new WaitingGif()
 	this.done = new Done(this.fullScreenContainer)
@@ -48,7 +48,7 @@ BoneEditor.prototype.show1 = function(data){
 	this.backToParent.show(data)
 	this.labelEditor.show1(data, data.label)
 	this.descriptionEditor.show1(data, data.description)
-	this.imageEditor.show1(data, false)
+	this.imageEditor.show1(data)
 	this.subboneEditor.show1(data)
 	this.done.show()
 }

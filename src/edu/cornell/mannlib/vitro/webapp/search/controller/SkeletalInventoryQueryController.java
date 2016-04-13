@@ -76,12 +76,33 @@ public class SkeletalInventoryQueryController extends VitroAjaxController {
                   resultSet = QueryUtils.getQueryResults(readyQuery, vreq);
                   result = QueryUtils.getQueryVars(resultSet, SystemicPartsQueryUris, SystemicPartsQueryLiterals);
                 break;   
-                
+              case "images" :
+                log.info("images");
+                readyQuery = N3Utils.setPrefixes(ImagesQueryPrefixes, ImagesQuery);
+                readyQuery = N3Utils.subInputUriQuery(
+                          readyQuery, ImagesQueryInputs, vreq);
+                resultSet = QueryUtils.getQueryResults(readyQuery, vreq);
+                result = QueryUtils.getQueryVars(resultSet, ImagesQueryUris, ImagesQueryLiterals);
+                log.info("Result");
+                log.info(result.toString());
+              break;   
        }
-       JSONArray arrayToSend = new JSONArray();
-       N3Utils.setJsonArray(arrayToSend, result);
-       log.info(arrayToSend);
-       response.getWriter().write(arrayToSend.toString());  
+        
+       if(result.size() > 0){
+         JSONArray arrayToSend = new JSONArray();
+         N3Utils.setJsonArray(arrayToSend, result);
+         log.info(arrayToSend);  
+         response.getWriter().write(arrayToSend.toString());
+       } else {
+         JSONObject obj = new JSONObject();
+         try {
+          obj.append("noResult", "true");
+        } catch (JSONException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+         response.getWriter().write(obj.toString());
+       }  
     }
       
     private static String[] BoneQueryInputUris = {"skeletalInventory"};
@@ -137,18 +158,18 @@ public class SkeletalInventoryQueryController extends VitroAjaxController {
       
       private static String[] ImagesQueryInputs = {"boneUri"};
       private static String[] ImagesQueryUris = {};
-      private static String[] ImagesQueryLiterals = {"downloadLoc"};
+      private static String[] ImagesQueryLiterals = {"downloadLocation"};
       private static String[] ImagesQueryPrefixes = {"vitro-public", "rdfbones"};
       
-      private static String ImageQuery = ""
-              + "SELECT  ?downloadLoc "
+      private static String ImagesQuery = ""
+              + "SELECT  ?downloadLocation "
               + " WHERE { \n"
               + "    ?boneUri    rdfbones:isDepicted   ?image ."
               + "    ?image <http://vivo.mydomain.edu/individual/hasFile>  ?fileIndividual ."
               + "    ?fileIndividual vitro-public:filename ?filename ."
               + "    ?fileIndividual vitro-public:mimeType ?mimeType ."
               + "    ?fileIndividual vitro-public:downloadLocation ?byteStreamIndividual ."
-              + "    ?byteStreamIndividual vitro-public:directDownloadUrl ?downloadLoc . "
+              + "    ?byteStreamIndividual vitro-public:directDownloadUrl ?downloadLocation . "
               + "   } "; 
      
 }
