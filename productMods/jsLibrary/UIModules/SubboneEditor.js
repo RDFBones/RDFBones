@@ -37,8 +37,6 @@ SubboneEditor.prototype.show1 = function(data){
 	this.treeStructure.empty() 
 	this.childBoneViewer.empty()
 	this.boneData = data
-	console.log("ClassUri")
-	console.log(data)
 	//Search uri in treeStructure
 	var editor = this
 	$.each(treeStructure, function(index,value){

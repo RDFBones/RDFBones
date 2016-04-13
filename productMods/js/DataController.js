@@ -152,7 +152,7 @@ var DataController = {
 		newObject.description = object.description
 		newObject.classUri = object.classUri
 		newObject.parent = parent
-		newObject.images = []
+		//newObject.images = []
 		newObject.systemicParts = []
 		return newObject
 	},

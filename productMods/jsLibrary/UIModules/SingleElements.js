@@ -36,7 +36,7 @@ var TableTitle = function(){
 }
 
 TableTitle.prototype.show = function(classUri){
-	this.container.text(DataController.getClassObject(classUri).label)
+	this.container.text(DataController.getClassObject(classUri).label).show()
 }
 
 

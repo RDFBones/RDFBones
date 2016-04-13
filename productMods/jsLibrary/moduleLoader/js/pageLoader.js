@@ -23,7 +23,7 @@ var pageLoader = {
 				//definition is not constant
 				var boneEditor = new BoneEditor(element)
 				UIController.modules[element.id] = boneEditor
-				pageModules.append(boneEditor.fullScreen)
+				pageModules.append(boneEditor.fullScreenContainer)
 				//This is just the loading of the frame. It "constructor" shows the sub-
 				//page module and fills it with data
 				break

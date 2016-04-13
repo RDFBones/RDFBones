@@ -25,14 +25,6 @@ var html = {
 		return $("<div/>").addClass(classes).text(text)
 	},
 
-	getFullScreen : function(id){
-		return $("<div/>").addClass("fullScreen").attr("id", id)
-	}, 
-	
-	getFullScreenContainer : function(){
-		return $("<div/>").addClass("fullScreenContainer")
-	},
-
 	getSelectorField : function() {
 		return selector = $("<select/>", {
 			class : "",

@@ -6,6 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="${urls.base}/jsLibrary/moduleLoader/css/View.css">	
 	<link rel="stylesheet" type="text/css" href="${urls.base}/jsLibrary/moduleLoader/css/boneEditor.css">	
 	
+	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/BoneEditor.css">	
 	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/LiteralEditor.css">	
 	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/ImageEditor.css">
 	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/SubboneEditor.css">
@@ -19,13 +20,7 @@
 		var baseUrl = "${urls.base}/"
 		var skeletalInventory = '${individual.uri!}'
 	</script>
-	<form enctype="multipart/form-data" id="myForm">
-		<input type="file" name="datafile" id="datafile">
-		<!--<input type="submit" value="Submit"> -->
-	</form>
-	<div id="subm">
-		Submit
-	</div>
+
 ${scripts.add('<script type="text/javascript" src="${urls.base}/js/classHierarchy/jquery-1.11.3.min.js"></script>')}
 
 ${scripts.add('<script type="text/javascript" src="${urls.base}/js/DataController.js"></script>',
@@ -43,14 +38,12 @@ ${scripts.add('<script type="text/javascript" src="${urls.base}/jsLibrary/module
 	'<script type="text/javascript" src="${urls.base}/jsLibrary/moduleLoader/js/UI.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/jsLibrary/moduleLoader/js/pageLoader.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/jsLibrary/moduleLoader/js/treeLoader.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/jsLibrary/moduleLoader/js/treeLoaderUI.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/jsLibrary/moduleLoader/js/boneEditor.js"></script>')}
-	<!-- UI Modules -->
+	'<script type="text/javascript" src="${urls.base}/jsLibrary/moduleLoader/js/treeLoaderUI.js"></script>')}
 	
 ${scripts.add('<script type="text/javascript" src="${urls.base}/jsLibrary/UIModules/ImageEditor.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/jsLibrary/UIModules/LiteralEditor.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/jsLibrary/UIModules/SubboneEditor.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/jsLibrary/UIModules/TableLoader.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/jsLibrary/UIModules/AjaxFileUpload.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/jsLibrary/UIModules/BoneEditor.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/jsLibrary/UIModules/SingleElements.js"></script>')}
 	

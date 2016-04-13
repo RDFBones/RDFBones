@@ -4,8 +4,9 @@ var BoneEditor = function(data) {
 	 * Initiate the boneeditor function
 	 ******************************************************************************/
 	this.data = data
-	this.fullScreen = html.getFullScreen(data.id)
-	this.container = html.getFullScreenContainer()
+	this.fullScreenContainer = this.getFullScreenContainer(data.id)
+	this.outerContainer = this.getOuterContainer()
+	this.innerContainer = this.getInnerContainer()
 	this.tableTitle = new TableTitle()
 	this.backToParent = new BackToParent()
 	this.labelEditor = new LiteralEditor(this, "Label", "label", "rdfs:label", true)
@@ -13,38 +14,37 @@ var BoneEditor = function(data) {
 	this.imageEditor = new ImageEditor(this, data.images)
 	this.subboneEditor = new SubboneEditor(this)
 	this.waitingGif = new WaitingGif()
-	this.done = new Done(this.fullScreen)
+	this.done = new Done(this.fullScreenContainer)
 	this.addElements()
-	this.fullScreen.append(this.container).hide()
 }
 
 BoneEditor.prototype.addElements = function(data){
-	this.container
-		.append(this.tableTitle.container)
-		.append(this.backToParent.container)
-		.append(this.labelEditor.container)
-		.append(this.descriptionEditor.container)
-		.append(this.imageEditor.container)
-		.append(this.subboneEditor.container)
-		.append(this.done.container)	
+	this.fullScreenContainer
+		.append(this.outerContainer
+			.append(this.backToParent.container)
+			.append(this.tableTitle.container)
+			.append(this.innerContainer
+					.append(this.labelEditor.container)
+					.append(this.descriptionEditor.container)
+					.append(this.imageEditor.container)
+					.append(this.subboneEditor.container))
+			.append(this.done.container))
+			.hide()
 }
 
 BoneEditor.prototype.hideElements = function(data){
-	
 	this.tableTitle.container.hide()
-	this.labelEditor.container.hide()
-	this.descriptionEditor.container.hide()
-	this.imageEditor.container.hide()
-	this.subboneEditor.container.hide()
+	this.backToParent.container.hide()
+	this.innerContainer.hide()
 	this.done.container.hide()
 }
 
 BoneEditor.prototype.show1 = function(data){
-
 	this.data = data
+	this.fullScreenContainer.show()
+	this.innerContainer.show()
 	this.tableTitle.show(data.classUri)
 	this.waitingGif.remove()
-	this.fullScreen.show()
 	this.backToParent.show(data)
 	this.labelEditor.show1(data, data.label)
 	this.descriptionEditor.show1(data, data.description)
@@ -54,7 +54,20 @@ BoneEditor.prototype.show1 = function(data){
 }
 
 BoneEditor.prototype.waitForResult = function(){
-	this.fullScreen.show()
+	this.fullScreenContainer.show()
 	this.hideElements()
-	this.container.append(this.waitingGif)
+	this.outerContainer.append(this.waitingGif)
+}
+
+BoneEditor.prototype.getFullScreenContainer = function(){
+	return html.getNewDiv("fullScreenContainer")
+}
+
+BoneEditor.prototype.getOuterContainer = function(){
+	return html.getNewDiv("outerContainer")
+}
+
+BoneEditor.prototype.getInnerContainer = function(){
+	return html.getNewDiv("innerContainer")
+
 }

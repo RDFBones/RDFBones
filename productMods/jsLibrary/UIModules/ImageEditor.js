@@ -26,6 +26,7 @@ var ImageEditor = function(boneEditor){
 
 ImageEditor.prototype.show1 = function(data){
 	this.boneData = data
+	if(data.image != "undefined")
 	this.refreshImages()
 	this.container.show()
 }
