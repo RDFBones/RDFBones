@@ -8,6 +8,11 @@
 	height: 100px;
 }
 
+.middleWaitGifContainer {
+	width: 100px;
+	text-align: center;
+}
+
 .smallWaitGifContainer {
 	width: 300px;
 	text-align: center;
@@ -37,7 +42,7 @@
 
 .done {
 	margin-top: 10px;
-	width: 496px;
+	//width: 496px;
 	padding: 2px;
 	text-align: center;
 	border-top: 2px solid black;

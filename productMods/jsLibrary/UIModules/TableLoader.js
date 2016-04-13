@@ -25,7 +25,7 @@ TableLoader.prototype.appendElements = function(){
 }
 
 TableLoader.prototype.refresh = function(){
-	_this = this
+	var _this = this
 	this.waitingGif.hide()
 	this.dataContainer.empty()
 	console.log("dataSet")
@@ -55,14 +55,14 @@ TableLoader.prototype.refresh = function(){
 }
 
 TableLoader.prototype.addColumnTitles = function() {
-	_this = this
+	var _this = this
 	$.each(this.columns, function(index, value) {
 		_this.columnTitles.append(_this.getColumnTitle(value.title))
 	})
 }
 
 TableLoader.prototype.getListElement = function(data, config, inputIndex) {
-	_this = this
+	var _this = this
 	switch (config.ui.type) {
 	case "imageList":
 		var container = _this.getImageContainer()

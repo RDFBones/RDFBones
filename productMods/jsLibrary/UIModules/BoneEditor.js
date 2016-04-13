@@ -21,8 +21,8 @@ var BoneEditor = function(data) {
 BoneEditor.prototype.addElements = function(data){
 	this.fullScreenContainer
 		.append(this.outerContainer
-			.append(this.backToParent.container)
 			.append(this.tableTitle.container)
+			.append(this.backToParent.container)
 			.append(this.innerContainer
 					.append(this.labelEditor.container)
 					.append(this.descriptionEditor.container)
@@ -46,10 +46,10 @@ BoneEditor.prototype.show1 = function(data){
 	this.tableTitle.show(data.classUri)
 	this.waitingGif.remove()
 	this.backToParent.show(data)
-	this.labelEditor.show1(data, data.label)
-	this.descriptionEditor.show1(data, data.description)
-	this.imageEditor.show1(data)
-	this.subboneEditor.show1(data)
+	this.labelEditor.show(data, data.label)
+	this.descriptionEditor.show(data, data.description)
+	this.imageEditor.show(data)
+	this.subboneEditor.show(data)
 	this.done.show()
 }
 

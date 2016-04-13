@@ -39,10 +39,18 @@ var DataController = {
 			}).done(function(msg){
 				var result = $.parseJSON(msg)
 				var newObject = DataController.boneObject(parent, result)
+				if(parent.systemicParts == null){
+					console.log("null")
+					parent.systemicParts = []
+				} else {
+					console.log("Miageci")
+					console.log(parent.systemicParts)
+				}
 				parent.systemicParts.push(newObject)
+				console.log(parent)
 				Controller.showBoneViewer(newObject)
 			})
-	},	
+	},
 
 	saveLiteral : function(literalEditor, old, new_){
 		//Save it in the local store
@@ -86,6 +94,18 @@ var DataController = {
 		})
 	},
 	
+	deleteSystemic : function(data){
+		$.ajax({
+			url : baseUrl + "skeletalInventoryData",
+			data : {
+				dataOperation : "deleteSystemic",
+				parent : data.parent.uri,
+				boneUri : data.uri,
+				label : data.label,
+			}
+		})
+	},
+	
 	getBones : function(tableLoader){
 		$.ajax({
 			url : baseUrl + "skeletalInventoryQuery",
@@ -125,23 +145,6 @@ var DataController = {
 		})
 	},
 	
-	loadSystemicParts : function(tableLoader, parent, lenght, i){
-		$.ajax({
-			url : baseUrl + "skeletalInventoryQuery",
-			data : {
-				parentUri : parent.uri,
-				dataOperation : "systemic",
-			}
-		}).done(function(msg){
-			console.log("loadSystemicParts")
-			var results = $.parseJSON(msg)
-			$.each(results, function(index, value){
-				object.systemicParts.push(
-						DataController.boneObject(parent, value))
-			})
-			tableLoader.refresh()
-		})
-	},
 	
 	boneObject : function(parent, object){
 		var newObject = new Object()
@@ -152,8 +155,8 @@ var DataController = {
 		newObject.description = object.description
 		newObject.classUri = object.classUri
 		newObject.parent = parent
-		//newObject.images = []
-		newObject.systemicParts = []
+		newObject.images = null
+		newObject.systemicParts = null
 		return newObject
 	},
 	
@@ -175,5 +178,33 @@ var DataController = {
 			}
 		})
 		return toReturn
+	}, 
+	
+	queries : {
+		"systemicParts" : function(data, object){
+			$.ajax({
+				url : baseUrl + "skeletalInventoryQuery",
+				data : {
+					dataOperation : "systemicParts",
+					parentUri : data.uri
+				}
+			}).done(function(msg){
+				results = $.parseJSON(msg)
+				console.log(data)
+				if(data.systemicParts == null){
+					data.systemicParts = []
+				}
+				$.each(results, function(index, result){
+					data.systemicParts.push(
+							DataController.boneObject(data, result))
+				})
+				
+				object.loadSystemicList()
+			})
+		},
+	},
+	
+	getQuery : function(name, data, outputFunction){
+		this.queries[name](data, outputFunction)
 	}
 }

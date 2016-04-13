@@ -13,7 +13,7 @@ var LiteralEditor = function(boneEditor, title, id, predicate, required) {
 	this.container.append(html.getNewDiv("newLine"))
 }
 
-LiteralEditor.prototype.show1 = function(data, value){
+LiteralEditor.prototype.show = function(data, value){
 	this.data = data
 	this.container.show()
 	if(value != null){

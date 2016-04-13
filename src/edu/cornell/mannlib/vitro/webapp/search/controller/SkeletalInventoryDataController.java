@@ -140,7 +140,15 @@ public class SkeletalInventoryDataController extends VitroAjaxController {
               this.addData();
               this.addObject();
               break;
-          
+        
+        case "deleteSystemic" : 
+              N3Utils.setInputMap(inputMap, DeleteSystemicInputParams, vreq);
+              this.objectTriplesAdd = N3Utils.subInputMap(inputMap, DeleteSystemicObjectTriples);
+              this.dataTriplesAdd = N3Utils.subInputMap(inputMap, DeleteSystemicDataTriples);
+              this.removeData();
+              this.removeObject();
+              break;
+              
         case "editLiteral":
               N3Utils.setInputMap(inputMap, EditLiteralInputParams, vreq);
               N3Utils.setOutputMap(outputMap, EditLiteralOutputParams, inputMap);
@@ -257,8 +265,8 @@ public class SkeletalInventoryDataController extends VitroAjaxController {
       * Systemic
       */
      
-     private static String[] SystemicInputParams = {"parentUri", "classUri", "?label"};
-     private static String[] SystemicOutputParams = {"boneUri", "classUri"};
+     private static String[] SystemicInputParams = {"parentUri", "classUri", "label"};
+     private static String[] SystemicOutputParams = {"classUri", "boneUri", "label"};
      private static String[] SystemicNewResources = {"boneUri"};
 
      private static String[] SystemicObjectTriples = {
@@ -267,7 +275,20 @@ public class SkeletalInventoryDataController extends VitroAjaxController {
      };
 
      private static String[] SystemicDataTriples = {
-        "?systemicUri rdfs:label ?label",
+        "?boneUri rdfs:label ?label",
+     };
+     
+     
+     private static String[] DeleteSystemicInputParams = {"parentUri", "uri", "label"};
+     private static String[] DeleteSystemicOutputParams = {};
+     private static String[] DeleteSystemicNewResources = {};
+
+     private static String[] DeleteSystemicObjectTriples = {
+         "?boneUri obo:systemic_part_of ?parentUri",
+     };
+
+     private static String[] DeleteSystemicDataTriples = {
+        "?boneUri rdfs:label ?label",
      };
      
      /*

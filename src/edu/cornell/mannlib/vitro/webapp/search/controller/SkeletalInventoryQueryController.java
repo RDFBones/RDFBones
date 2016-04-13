@@ -69,13 +69,16 @@ public class SkeletalInventoryQueryController extends VitroAjaxController {
                   resultSet = QueryUtils.getQueryResults(readyQuery, vreq);
                   result = QueryUtils.getQueryVars(resultSet, BoneQueryUris, BoneQueryLiterals);
                   break;   
-              case "systemic" : 
+              case "systemicParts" : 
                   readyQuery = N3Utils.setPrefixes(SystemicPartsQueryPrefixes, SystemicPartsQuery);
                   readyQuery = N3Utils.subInputUriQuery(
                             readyQuery, SystemicPartsQueryInputs, vreq);
+                  log.info(readyQuery);
                   resultSet = QueryUtils.getQueryResults(readyQuery, vreq);
                   result = QueryUtils.getQueryVars(resultSet, SystemicPartsQueryUris, SystemicPartsQueryLiterals);
-                break;   
+                  log.info("Result");
+                  log.info(result.toString());
+                  break;   
               case "images" :
                 log.info("images");
                 readyQuery = N3Utils.setPrefixes(ImagesQueryPrefixes, ImagesQuery);
@@ -153,8 +156,9 @@ public class SkeletalInventoryQueryController extends VitroAjaxController {
           + "    ?boneUri    obo:systemic_part_of  ?parentUri . "
           + "    ?boneUri  rdfs:label  ?label  . "
           + "    ?boneUri  vitro:mostSpecificType  ?classUri ."  
-          + "    OPTIONAL { ?systemicPart  rdfbones:description  ?description  . } "
+          + "    OPTIONAL { ?boneUri  rdfbones:description  ?description  . } "
           + "} "; 
+      
       
       private static String[] ImagesQueryInputs = {"boneUri"};
       private static String[] ImagesQueryUris = {};

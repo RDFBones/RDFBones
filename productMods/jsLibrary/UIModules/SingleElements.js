@@ -1,3 +1,8 @@
+var AdaptiveWaitingGif = function(){
+	return html.getNewDiv("gifContainer")
+			.append(html.getImgClass(imgSrc + "loading.gif", "loadingGif"))
+}
+
 var WaitingGif = function(){
 	return html.getNewDiv("waitGifContainer")
 			.append(html.getImgClass(imgSrc + "loading.gif", "waitGif"))

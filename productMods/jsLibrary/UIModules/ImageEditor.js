@@ -28,11 +28,11 @@ var ImageEditor = function(boneEditor){
 			.append(html.getNewDiv("newLine"))
 }
 
-ImageEditor.prototype.show1 = function(data){
+ImageEditor.prototype.show = function(data){
 	this.boneData = data
 	this.container.show()
 	this.showWaitGif();
-	_this = this
+	var _this = this
 	if(data.image == null){
 		//Query them
 		$.ajax({
@@ -45,6 +45,7 @@ ImageEditor.prototype.show1 = function(data){
 			var result = $.parseJSON(msg)
 			console.log(result)
 			_this.boneData.images = []
+			console.log(_this)
 			if(result.noResult == null){
 				$.each(result, function(index, value){
 					//I have to cut the last / element
@@ -53,6 +54,7 @@ ImageEditor.prototype.show1 = function(data){
 							baseUrl.substring(0, baseUrl.length - 1) + value.downloadLocation)
 				})
 			}
+			console.log(_this.boneData)
 			_this.refreshImages()
 		})
 	} else {
@@ -66,7 +68,7 @@ ImageEditor.prototype.showWaitGif = function(){
 
 ImageEditor.prototype.refreshImages = function(){
 	this.innerContainer.empty()
-	_this = this
+	var _this = this
 	if(this.boneData.images.length > 0){
 		console.log("Existing images")
 		this.outerContainer.show()
@@ -84,6 +86,7 @@ ImageEditor.prototype.refreshImages = function(){
 
 ImageEditor.prototype.getSubmitButton = function(){
 	var _this = this
+	console.log(this.boneData)
 	return html.getNewDiv("button1")
 				.text("Upload")
 				.click(function(){
@@ -101,6 +104,9 @@ ImageEditor.prototype.getSubmitButton = function(){
 			result["dataOperation"] = "saveImage"
 			console.log(result)
 			//I have to cut the last / element
+			if(parent.images == null ){
+				parent.images = []
+			}
 			_this.boneData.images.unshift(
 					baseUrl.substring(0, baseUrl.length - 1) + result.downloadLocation)
 			$.ajax({
@@ -112,15 +118,12 @@ ImageEditor.prototype.getSubmitButton = function(){
 		})
 	})		
 }
-ImageEditor.prototype.getWaitGif = function(title) {
-	html
-}
-
 
 ImageEditor.prototype.getTitleDiv = function(title) {
 	this.titleDiv = html.getNewDiv("moduleTitle").text(title)
 	return this.titleDiv
 }
+
 ImageEditor.prototype.getOuterContainer = function(){
 	this.innerContainer = html.getNewDiv("imgEditOuterContainer")
 	return this.innerContainer
@@ -131,9 +134,9 @@ ImageEditor.prototype.getInnerContainer = function(){
 }
 
 ImageEditor.prototype.getImg = function(src) {
-	return html.getNewDiv("imgContainer").append(
-			html.getPreviewImage(src, "previewImg","viewer"))
-},
+	return html.getNewDiv("boneImageContainer").append(
+			html.getPreviewImage(src, "boneImage","viewer"))
+}
 
 ImageEditor.prototype.getEditImg = function(src, index){
 	return html.getNewDiv("imageContainer")
@@ -146,57 +149,8 @@ ImageEditor.prototype.getEditImg = function(src, index){
 				<input type = "checkbox"/>
 			</div>	
 		</div> 	*/
-},
+}
 	
 ImageEditor.prototype.getNewLine = function() {
 		return html.getNewDiv("newLine")
-}
-
-function prepareUpload(event)
-{
-  files = event.target.files;
-  uploadFiles(event)
-}
-
-function uploadFiles(event){
-	
-	event.stopPropagation(); 
-	event.preventDefault(); 
-	var fileName = files[0].name;
-	var extension = fileName.split("\.")[1].toLowerCase()
-	console.log(extension)
-	if(extension == "png" || extension== "jpg" || extension == "jpeg" || 
-			extension == "tiff"){
-		var data = new FormData();
-		$.each(files, function(key, value)
-		{
-    		data.append(key, value);
-		});
-
-		$.ajax({
-   			url: baseUrl + "skeletalInventoryData",
-    		type: 'POST',
-    		data: data ,
-    		cache: false ,
-    		dataType: 'json',
-    		processData: false ,  
-    		contentType: false ,         		
-		success: function(data, textStatus, jqXHR){
-        			if(typeof data.error === 'undefined'){
-            			// Success so call function to process the form
-            			submitForm(event, data);
-        			} else {
-            			// Handle errors here
-          			  	console.log('ERRORS: ' + data.error);
-        			}
-    	},
-    	error: function(jqXHR, textStatus, errorThrown)
-    	{
-    	  console.log('ERRORS: ' + textStatus);
-    	}
-
-	});
-	} else {
-		alert("Please upload an image!")
-	}
 }

@@ -19,11 +19,10 @@
 	transform: translate(-50%, -50%);
 	padding: 3px;
 	border: 2px solid black;
-	width : 500px;
+	width : 700px;
 }
 
 .innerContainer {
 	max-height : 500px;
 	overflow : auto;
-	width : 500px;
 }

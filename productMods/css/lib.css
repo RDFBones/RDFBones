@@ -101,3 +101,17 @@ margin5 {
 .margin20 {
 	margin: 20px;
 }
+
+.gifContainer{
+	width : 50%;
+	height : 50%;
+	transform: translate(50%, 50%);
+	text-align: center;
+}
+
+.loadingGif{
+	width : auto;
+	max-width : 100%;
+	height : auto;
+	max-height : 100%;
+}
