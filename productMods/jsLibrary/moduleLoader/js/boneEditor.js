@@ -48,7 +48,7 @@ BoneEditor.prototype.show1 = function(data){
 	this.backToParent.show(data)
 	this.labelEditor.show1(data, data.label)
 	this.descriptionEditor.show1(data, data.description)
-	this.imageEditor.show1(data.images, false)
+	this.imageEditor.show1(data, false)
 	this.subboneEditor.show1(data)
 	this.done.show()
 }

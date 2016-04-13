@@ -96,4 +96,9 @@ var html = {
 	getFileUploadId : function(id){
 		return $("<input>").attr("type", "file").attr("id", id)
 	},
+	
+	getSubmitButton : function(){
+		return $("<input>").attr("type", "submit").attr("value", "Submit")
+			.css("display", "none")
+	}
 }

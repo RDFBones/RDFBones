@@ -21,7 +21,7 @@
 	</script>
 	<form enctype="multipart/form-data" id="myForm">
 		<input type="file" name="datafile" id="datafile">
-		<input type="submit" value="Submit">
+		<!--<input type="submit" value="Submit"> -->
 	</form>
 	<div id="subm">
 		Submit
