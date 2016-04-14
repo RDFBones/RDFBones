@@ -10,7 +10,9 @@ var ImageEditor = function(boneEditor){
 	
 	this.imageUpload = html.getForm()
 		.attr("id", "imageForm").attr("enctype","multipart/form-data")
-		.append(html.getFileUploadId("datafile").attr("name", "datafile"))
+		.append(html.getFileUploadId("datafile")
+				.attr("name", "datafile")
+				.addClass("uploadField"))
 		
 	this.submitButton = this.getSubmitButton()
 	
@@ -46,7 +48,8 @@ ImageEditor.prototype.show = function(data){
 			console.log(result)
 			_this.boneData.images = []
 			console.log(_this)
-			if(result.noResult == null){
+			if(!("noResult" in result)){
+			//if(result.noResult == null){
 				$.each(result, function(index, value){
 					//I have to cut the last / element
 					console.log("Image " + value)

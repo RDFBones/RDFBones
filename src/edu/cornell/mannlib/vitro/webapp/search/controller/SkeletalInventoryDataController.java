@@ -53,7 +53,6 @@ public class SkeletalInventoryDataController extends VitroAjaxController {
     private static final long serialVersionUID = 1L;
     private static final Log log = LogFactory.getLog(SkeletalInventoryDataController.class);
     
-    
     private DataPropertyStatementDao dataDao;
     private ObjectPropertyStatementDao objectDao;
     private PropertyInstanceDao propDao;
@@ -143,8 +142,8 @@ public class SkeletalInventoryDataController extends VitroAjaxController {
         
         case "deleteSystemic" : 
               N3Utils.setInputMap(inputMap, DeleteSystemicInputParams, vreq);
-              this.objectTriplesAdd = N3Utils.subInputMap(inputMap, DeleteSystemicObjectTriples);
-              this.dataTriplesAdd = N3Utils.subInputMap(inputMap, DeleteSystemicDataTriples);
+              this.objectTriplesRemove = N3Utils.subInputMap(inputMap, DeleteSystemicObjectTriples);
+              this.dataTriplesRemove = N3Utils.subInputMap(inputMap, DeleteSystemicDataTriples);
               this.removeData();
               this.removeObject();
               break;
@@ -279,7 +278,7 @@ public class SkeletalInventoryDataController extends VitroAjaxController {
      };
      
      
-     private static String[] DeleteSystemicInputParams = {"parentUri", "uri", "label"};
+     private static String[] DeleteSystemicInputParams = {"parentUri", "boneUri", "label"};
      private static String[] DeleteSystemicOutputParams = {};
      private static String[] DeleteSystemicNewResources = {};
 

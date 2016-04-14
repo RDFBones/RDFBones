@@ -8,6 +8,8 @@ var SubboneEditor = function(boneEditor){
 	this.waitingGif = new AdaptiveWaitingGif()
 	this.container.append(this.getTitleDiv("Systemic parts"))
 	this.container.append(this.getNewLine())
+	//this.container.append(this.getCompleteSelector())
+	//this.container.append(this.getNewLine())
 	this.container.append(this.getTreeStructureContainer())
 	this.container.append(this.getChildBoneViewer())
 	this.container.append(this.getNewLine())
@@ -17,6 +19,24 @@ SubboneEditor.prototype.getTreeStructureContainer = function(){
 	this.treeStructure = html.getNewDiv("container")
 	return this.treeStructure
 }
+
+SubboneEditor.prototype.getChildBoneSelector = function(){
+	
+	this.completeCheckBox = html.getCheckBox().addClass("completeSelector")
+				.change(function(event){
+					checkbox = event.target
+					if (checkbox.checked) {
+						
+					} else {
+				        
+				    }
+				})
+	var valueDiv = html.getNewDiv("completeSelector").text("Complete")
+	return html.getNewDiv()
+				.append(this.completeCheckBox)
+				.append(valueDiv)
+}
+
 
 SubboneEditor.prototype.getTitleDiv = function(title) {
 	this.titleDiv = html.getNewDiv("moduleTitle").text(title)
@@ -50,9 +70,11 @@ SubboneEditor.prototype.show = function(data){
 			}
 		})
 		if(data.systemicParts == null){
+			console.log("get the systemic parts")
 			DataController.getQuery(
 					"systemicParts", this.boneData, this)
 		} else {
+			console.log("we already queried the systemic parts")
 			this.loadSystemicList()
 		}
 	} else {
@@ -63,6 +85,8 @@ SubboneEditor.prototype.show = function(data){
 SubboneEditor.prototype.loadSystemicList = function(){
 	this.waitingGif.remove()
 	var _this = this
+	console.log("loadSystemicList")
+	console.log(this.boneData)
 	$.each(this.systemicClasses, function(index, systemicClass){
 		//editor.treeStructure.append(new ChildStructure(child, editor, true))
 		_this.treeStructure.append(_this.addClass(systemicClass))
@@ -128,7 +152,7 @@ SubboneEditor.prototype.searchParentTree = function(element, uri){
 }
 
 SubboneEditor.prototype.childBoneContainer = function(data){
-	
+	_this = this 
 	var container = html.getNewDiv("entryContainer")
 	var labelDiv = html.getNewDiv("floatLeft").text(data.label)
 		.click(function(){
@@ -136,8 +160,31 @@ SubboneEditor.prototype.childBoneContainer = function(data){
 		})
 	var deleteButton = html.getImgClass(ImgSrc.del16, "floatRight")
 			.click(function(){
+				console.log("Data")
+				console.log(data)
 				container.remove()
-				DataController.deleteSystemic(data);
+				_this.setWaiting()
+				$.ajax({
+					url : baseUrl + "skeletalInventoryData",
+					data : {
+						dataOperation : "deleteSystemic",
+						parentUri : data.parent.uri,
+						boneUri : data.uri,
+						label : data.label,
+					}
+				}).done(function(){
+					//Remove data from the dataset
+					var indexToDelete = []
+					$.each(data.parent.systemicParts, function(index, value){
+						if(value.uri === data.uri){
+							console.log("stimmt")
+							data.parent.systemicParts.splice(index, 1)
+							return false
+						}
+					})
+					console.log(data)
+					_this.resetTree()
+				})
 			})
 	var newLine = UI.getNewLine()
 	container
@@ -145,6 +192,15 @@ SubboneEditor.prototype.childBoneContainer = function(data){
 		.append(deleteButton)
 		.append(newLine)
 	return container
+}
+
+SubboneEditor.prototype.setWaiting = function(){
+	this.treeStructure.empty() 
+	this.treeStructure.append(this.waitingGif)
+}
+
+SubboneEditor.prototype.resetTree = function(){
+	_this.show(_this.boneData)
 }
 
 

@@ -18,3 +18,7 @@
 .boneImage:hover{
 	cursor : pointer;
 }
+
+.uploadField {
+	margin-top : 5px;
+}

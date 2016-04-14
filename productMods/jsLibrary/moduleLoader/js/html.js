@@ -92,5 +92,10 @@ var html = {
 	getSubmitButton : function(){
 		return $("<input>").attr("type", "submit").attr("value", "Submit")
 			.css("display", "none")
+	},
+	
+	getCheckBox : function(){
+		return $("<input>").attr("type", "checkbox")
 	}
+	
 }

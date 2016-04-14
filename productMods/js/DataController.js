@@ -94,18 +94,6 @@ var DataController = {
 		})
 	},
 	
-	deleteSystemic : function(data){
-		$.ajax({
-			url : baseUrl + "skeletalInventoryData",
-			data : {
-				dataOperation : "deleteSystemic",
-				parent : data.parent.uri,
-				boneUri : data.uri,
-				label : data.label,
-			}
-		})
-	},
-	
 	getBones : function(tableLoader){
 		$.ajax({
 			url : baseUrl + "skeletalInventoryQuery",
@@ -124,7 +112,6 @@ var DataController = {
 			})
 			tableLoader.refresh()
 		})
-		
 	},
 	
 	loadImages : function(object){
@@ -190,15 +177,19 @@ var DataController = {
 				}
 			}).done(function(msg){
 				results = $.parseJSON(msg)
+				console.log("Systemic Parts")
+				console.log(results)
 				console.log(data)
-				if(data.systemicParts == null){
-					data.systemicParts = []
+				data.systemicParts = []
+				if(!("noResult" in results)){
+					//There is result
+					$.each(results, function(index, result){
+						console.log("Push to systemic part")
+						console.log(result)
+						data.systemicParts.push(
+								DataController.boneObject(data, result))
+					})
 				}
-				$.each(results, function(index, result){
-					data.systemicParts.push(
-							DataController.boneObject(data, result))
-				})
-				
 				object.loadSystemicList()
 			})
 		},

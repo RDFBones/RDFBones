@@ -2,6 +2,10 @@
 	margin-left : 5px;
 }
 
+.listContainer:hover {
+	cursor : pointer;
+}
+
 .entryContainer:hover {
 	cursor : pointer;
 }
@@ -27,4 +31,8 @@
 .entryContainer:hover {
 	cursor : pointer;
 	font-weight: bold;
+}
+
+.completeSelector {
+	
 }
