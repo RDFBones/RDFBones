@@ -8,8 +8,9 @@ var SubboneEditor = function(boneEditor){
 	this.waitingGif = new AdaptiveWaitingGif()
 	this.container.append(this.getTitleDiv("Systemic parts"))
 	this.container.append(this.getNewLine())
-	//this.container.append(this.getCompleteSelector())
-	//this.container.append(this.getNewLine())
+	this.container.append(this.getCompleteMsg())
+	this.container.append(this.getCompleteCheckBox())
+	this.container.append(this.getNewLine())
 	this.container.append(this.getTreeStructureContainer())
 	this.container.append(this.getChildBoneViewer())
 	this.container.append(this.getNewLine())
@@ -20,23 +21,64 @@ SubboneEditor.prototype.getTreeStructureContainer = function(){
 	return this.treeStructure
 }
 
-SubboneEditor.prototype.getChildBoneSelector = function(){
-	
+SubboneEditor.prototype.getCompleteMsg = function(){
+	this.completeMsg = html.getNewDiv("completeSelector").text("The bone is complete!")
+	return this.completeMsg
+}
+
+SubboneEditor.prototype.getCompleteCheckBox = function(){
+	_this = this
 	this.completeCheckBox = html.getCheckBox().addClass("completeSelector")
 				.change(function(event){
 					checkbox = event.target
 					if (checkbox.checked) {
-						
-					} else {
-				        
-				    }
+						_this.setToComplete()
+					} 
 				})
-	var valueDiv = html.getNewDiv("completeSelector").text("Complete")
-	return html.getNewDiv()
-				.append(this.completeCheckBox)
-				.append(valueDiv)
+	var valueDiv = html.getNewDiv("completeSelector").text("Add all")
+	this.completeCheckBoxContainer =  html.getNewDiv()
+										.append(valueDiv)
+										.append(html.getNewDiv("completeSelector")
+												.append(this.completeCheckBox))
+	return this.completeCheckBoxContainer
 }
 
+SubboneEditor.prototype.setToComplete = function(){
+	_this = this
+	this.completeCounter = 0
+	this.setWaiting()
+	var classList = []
+	var counter = 0
+	$.each(this.systemicClasses, function(index, systemicClass){
+		if(systemicClass.systemicParts.length == 0){
+			counter++;
+			classList.push(systemicClass.classUri)
+		}
+	})
+	this.addSystemicParts(classList, this)
+}
+
+SubboneEditor.prototype.addSystemicParts = function(list, editor){
+	var classUri = list.shift()
+	$.ajax({
+		url : baseUrl + "skeletalInventoryData",
+		data : {
+			dataOperation : "systemic",
+			parentUri : editor.boneData.uri,
+			classUri : classUri,
+			label : "Default",
+		}
+		}).done(function(msg){
+			var result = $.parseJSON(msg)
+			editor.boneData.systemicParts.
+				push(DataController.boneObject(editor.boneData, result))
+			if(list.length > 0){
+				SubboneEditor.prototype.addSystemicParts(list, editor)
+			} else{
+				editor.show(editor.boneData)
+			}
+		})
+}
 
 SubboneEditor.prototype.getTitleDiv = function(title) {
 	this.titleDiv = html.getNewDiv("moduleTitle").text(title)
@@ -52,29 +94,36 @@ SubboneEditor.prototype.getChildBoneViewer = function(){
 	return this.childBoneViewer
 }
 
-SubboneEditor.prototype.show = function(data){
+SubboneEditor.prototype.show = function(data, justRefresh){
 
 	//Search uri in treeStructure
 	this.boneData = data
 	console.log(this.boneData)
 	if(data.classUri == "http://purl.obolibrary.org/obo/FMA_53672" ||
 			data.classUri == "http://purl.obolibrary.org/obo/FMA_53673"){
-		var _this = this
 		this.container.show()
 		this.treeStructure.empty() 
 		this.treeStructure.append(this.waitingGif)
 		this.childBoneViewer.empty()
+		var systemicClasses = new Object()
 		$.each(treeStructure, function(index,value){
 			if(value.uri == data.classUri){
-				_this.systemicClasses = value.children
+				 $.each(value.children,function(index, child){
+					 systemicClasses[child.uri] = new Object()
+					 systemicClasses[child.uri].label = child.label
+					 systemicClasses[child.uri].classUri = child.uri
+					 systemicClasses[child.uri].systemicParts = []
+				 })
+				 return false
 			}
 		})
+		this.systemicClasses = systemicClasses			
+
 		if(data.systemicParts == null){
-			console.log("get the systemic parts")
 			DataController.getQuery(
 					"systemicParts", this.boneData, this)
 		} else {
-			console.log("we already queried the systemic parts")
+			this.loadSystemicParts()
 			this.loadSystemicList()
 		}
 	} else {
@@ -82,31 +131,51 @@ SubboneEditor.prototype.show = function(data){
 	}
 }
 
+SubboneEditor.prototype.loadSystemicParts = function(){
+	var _this = this
+	console.log("LoadSystemicParts")
+	console.log(this.systemicClasses)
+	console.log("Bonedata")
+	console.log(_this.boneData)
+	var complete
+	$.each(this.systemicClasses, function(key, systemicClass){
+		console.log(key)
+		complete
+		$.each(_this.boneData.systemicParts, function(index, systemic){
+			console.log(systemic.classUri)
+			if(systemic.classUri === systemicClass.classUri){
+				console.log("Added")
+				systemicClass.systemicParts.push(systemic)
+			}
+		})
+	})
+}
+
 SubboneEditor.prototype.loadSystemicList = function(){
 	this.waitingGif.remove()
 	var _this = this
-	console.log("loadSystemicList")
-	console.log(this.boneData)
-	$.each(this.systemicClasses, function(index, systemicClass){
-		//editor.treeStructure.append(new ChildStructure(child, editor, true))
-		_this.treeStructure.append(_this.addClass(systemicClass))
-	})
-}
-
-SubboneEditor.prototype.numberOfBone = function(classUri){
-	var cnt = 0
-	$.each(this.boneData.systemicParts, function(index, value){
-		if(value.classUri == classUri){
-			cnt++;
+	//
+	this.completeMsg.show()
+	this.completeCheckBox.prop("checked", false)
+	this.completeCheckBoxContainer.hide()
+	$.each(this.systemicClasses, function(classUri, systemicClass){
+		if(systemicClass.systemicParts.length == 0){
+			_this.completeMsg.hide()
+			_this.completeCheckBoxContainer.show()
+			return false
 		}
 	})
-	return cnt
+	
+	$.each(this.systemicClasses, function(classUri, systemicClass){
+		_this.treeStructure.append(_this.addSystemicClass(systemicClass))
+	})
+	
 }
 
-SubboneEditor.prototype.addClass = function(_class){
+SubboneEditor.prototype.addSystemicClass = function(_class){
 	var _this = this
 	return html.getNewDiv("listContainer")
-		.text(_class.label +" ("+ this.numberOfBone(_class.uri) +")")
+		.text(_class.label +" ("+ _class.systemicParts.length +")")
 		.click(function(){
 			_this.showBone(_class)
 		})
@@ -115,44 +184,24 @@ SubboneEditor.prototype.addClass = function(_class){
 SubboneEditor.prototype.showBone = function(_class){
 	var _this = this
 	this.childBoneViewer.empty()
-	if(!this.searchParentTree(this.boneData, _class.uri)){
+	if(_class.systemicParts.length == 0){
 		this.childBoneViewer.append(
 				html.getNewDivT("There is no " + _class.label).addClass("noEntryContainer"))
+	} else {
+		$.each(_class.systemicParts, function(index, systemicPart){
+			_this.childBoneViewer.append(_this.childBoneContainer(systemicPart))
+		})
 	}
 	this.childBoneViewer.append(
 		html.getNewDivT("Add")
 			.addClass("button1")
 			.click(function(){
-				DataController.addSystemicPart(_this.boneData, _class.uri)
+				DataController.addSystemicPart(_this.boneData, _class.classUri)
 			}))
 }
 
-SubboneEditor.prototype.searchParentTree = function(element, uri){
-	var found = false
-	var childrenFound = false
-	var _this = this
-	if(element.systemicParts != null){
-		$.each(element.systemicParts, function(index, child){
-			if("systemicParts" in child){
-				childrenFound = _this.searchParentTree(child, uri)
-			}
-			if(childrenFound){
-				found = true
-			}
-			if(child.classUri == uri){
-				//If a bone exist of the class we have to be able to click on it
-				_this.childBoneViewer.append(_this.childBoneContainer(child))
-				found = true
-			}
-		})
-		return found
-	} else {
-		return false;
-	}
-}
-
 SubboneEditor.prototype.childBoneContainer = function(data){
-	_this = this 
+	_this = this
 	var container = html.getNewDiv("entryContainer")
 	var labelDiv = html.getNewDiv("floatLeft").text(data.label)
 		.click(function(){

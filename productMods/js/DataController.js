@@ -190,6 +190,7 @@ var DataController = {
 								DataController.boneObject(data, result))
 					})
 				}
+				object.loadSystemicParts()
 				object.loadSystemicList()
 			})
 		},
