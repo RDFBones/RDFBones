@@ -61,7 +61,7 @@ public class ImageUploadFormGenerator extends BaseEditConfigurationGenerator imp
 	private String predicateUri = null;
 	private String objectUri = null;	
 		
-  private String objectPropertyTemplate = "fileUpload.ftl";
+  private String objectPropertyTemplate = "imageUpload.ftl";
 	private String acObjectPropertyTemplate = "autoCompleteObjectPropForm.ftl";		
 	
 	protected boolean doAutoComplete = false;
@@ -272,7 +272,7 @@ public class ImageUploadFormGenerator extends BaseEditConfigurationGenerator imp
    		    }
    		}
    		WebappDaoFactory wDaoFact = vreq.getWebappDaoFactory();
-		//Get all vclasses applicable to subject
+   		//Get all vclasses applicable to subject
    		if(subject != null) {
 			List<VClass> vClasses = subject.getVClasses();
 			HashMap<String, VClass> typesHash = new HashMap<String, VClass>();

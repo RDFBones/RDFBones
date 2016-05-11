@@ -1,0 +1,25 @@
+
+
+.rowContainer {
+	margin : 4px;
+}
+
+.column {
+	width : 140px;
+	overflow : auto;
+	display : inline-block;
+}
+
+.columnImg {
+	display : inline-block;
+	width : 60px;
+	height : 60px;	
+}
+
+.addInstanceButton {
+	display : inline-block;
+}
+
+.inline {
+	display : inline-block;
+}

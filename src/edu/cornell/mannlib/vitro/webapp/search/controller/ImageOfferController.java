@@ -32,10 +32,10 @@ import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
  * via the search index.
  */
 
-public class InstanceToOfferController extends VitroAjaxController {
+public class ImageOfferController extends VitroAjaxController {
 
     private static final long serialVersionUID = 1L;
-    private static final Log log = LogFactory.getLog(InstanceToOfferController.class);
+    private static final Log log = LogFactory.getLog(ImageOfferController.class);
     
     private static final String TERM = "term";
     private static final String TYPE = "type";
@@ -108,19 +108,28 @@ public class InstanceToOfferController extends VitroAjaxController {
           response.getWriter().write(this.arrayToSend.toString());
         }
     }
-        
-    public void initInputMap(){
       
+    private static String mainObjectQuery = ""
+        + " PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+        + " SELECT ?mainObject "
+        + " WHERE {  "
+        + "   ?predicateUri   rdfs:range   ?rangeClass . "
+        + "   ?mainObject     a            ?rangeClass . "
+        + "   FILTER NOT EXISTS { ?subjectUri   ?predicateUri   ?mainObject } "
+        + " } ORDER BY DESC(?mainObject)"
+        + " LIMIT 10 ";
+    
+    public void initInputMap(){
       this.inputMap.put("subjectUri", vreq.getParameter("subjectUri"));
       this.inputMap.put("predicateUri", vreq.getParameter("predicateUri"));
-      this.inputMap.put("customEntryFormUri", vreq.getParameter("customEntryFormUri"));
+      //this.inputMap.put("customEntryFormUri", vreq.getParameter("customEntryFormUri"));
     }
     
     private static String fieldsQuery = ""
         + " PREFIX myDisplay: <http://myDisplayOntology.org#> "
         + " SELECT ?name ?number ?query ?limit ?guiElement ?guiType  "
         + " WHERE {"
-        + "   ?customeEN   myDisplay:tableField  ?field ."
+        + "   ?customEntryForm   myDisplay:tableField  ?field ."
         + "   ?field myDisplay:name ?name . "
         + "   ?field myDisplay:number ?number . "
         + "   ?field myDisplay:query  ?query ."
@@ -203,15 +212,7 @@ public class InstanceToOfferController extends VitroAjaxController {
       }
    }
     
-    private static String mainObjectQuery = ""
-        + " PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-        + " SELECT ?mainObject "
-        + " WHERE {  "
-        + "   ?predicateUri   rdfs:range   ?rangeClass . "
-        + "   ?mainObject     a            ?rangeClass . "
-        + "   FILTER NOT EXISTS { ?subjectUri   ?predicateUri   ?mainObject } "
-        + " } ORDER BY DESC(?mainObject)"
-        + " LIMIT 10 ";
+ 
     
     public void getMainObjects(){
       String query = QueryUtils.subUrisForQueryVars(mainObjectQuery, this.inputMap);
@@ -262,7 +263,6 @@ public class InstanceToOfferController extends VitroAjaxController {
       for(Map<String, List<Map<String, String>>> rows : this.data){
         
         try {
-          
         JSONObject rowData = new JSONObject();
         rowData.put("mainObjectUri", this.mainObjectUris.get(i));
         for(String columnNames : this.queryMap.keySet()){
@@ -283,7 +283,6 @@ public class InstanceToOfferController extends VitroAjaxController {
         }        
       } 
     }
-  
 
     private static List<Map<String, String>> getQueryVars(ResultSet results, String[] vars){
       
@@ -315,148 +314,5 @@ public class InstanceToOfferController extends VitroAjaxController {
       return resultMap;
     }
     
-    /*
-    public void JSONTest(){
-      
-        List<Map<String, List<Map<String, String>>>> var = new ArrayList<Map<String, List<Map<String, String>>>>();
-        Map<String, List<Map<String, String>>> map1 = new HashMap<String, List<Map<String, String>>>();
-        Map<String, List<Map<String, String>>> map2 = new HashMap<String, List<Map<String, String>>>();
-        
-        List<Map<String, String>> list11 = new ArrayList<Map<String, String>>();
-        List<Map<String, String>> list12 = new ArrayList<Map<String, String>>();
-        List<Map<String, String>> list21 = new ArrayList<Map<String, String>>();
-        List<Map<String, String>> list22 = new ArrayList<Map<String, String>>();
-        
-        Map<String, String> map111 = new HashMap<String, String>();
-        Map<String, String> map121 = new HashMap<String, String>();
-        Map<String, String> map122 = new HashMap<String, String>();
-        Map<String, String> map211 = new HashMap<String, String>();
-        Map<String, String> map221 = new HashMap<String, String>();
-        Map<String, String> map222 = new HashMap<String, String>();
-        
-        map111.put("type", "literalField");
-        map111.put("value", "FirstRowFirstColumn");
-        
-        map121.put("type", "linkField");
-        map121.put("value", "121");
-        
-        map122.put("type", "linkField");
-        map122.put("name", "122");
-        map122.put("uri", "/vivo/individual/123");
-          
-        map211.put("type", "literalField");
-        map211.put("value", "SecondRowFirstColumn");
-        
-        map221.put("type", "linkField");
-        map221.put("name", "221");
-        map221.put("uri", "/vivo/individual/123");
-        
-        map222.put("type", "download");
-        map222.put("url", "/vivo/file/123");
-        
-        list11.add(map111);
-        list12.add(map121);
-        list12.add(map122);
-        
-        list21.add(map211);
-        list22.add(map221);
-        list22.add(map222);
-        
-        map1.put("image", list11);
-        map1.put("files", list12);
-        map1.put("image", list21);
-        map1.put("files", list22);
-        
-        var.add(map1);
-        var.add(map2);
-        
-        log.info("Testdata : \n" + var.toString());
-        
-        testJSONPrepare(var, arrayToSend);
-    }
-    
-    private static String INITIAL_QUERY = ""
-    		+ "PREFIX vitro: <" + VitroVocabulary.vitroURI + "> \n" 
-            + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"
-            + "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
-            + "SELECT DISTINCT ?document ?label ?mst WHERE { \n"
-            + "    ?document rdf:type  ?type  .\n"
-            + "	   ?document vitro:mostSpecificType ?mst .\n"
-            + "    ?document rdfs:label ?label .\n"
-            + " FILTER 	REGEX(?label, \"^(pattern)\") .\n"
-            + " FILTER NOT EXISTS { ?subject ?predicate ?document } . \n"
-            + " FILTER (?mst != <http://purl.obolibrary.org/obo/UO_0000280> ) . \n"
-            + "	FILTER (?mst !=<http://www.w3.org/2002/07/owl#NamedIndividual> ) \n" 	
-            + "} ORDER BY ?label";
-    
-   
-    private static String FILTER_QUERY = ""
-    		+ "PREFIX vitro: <" + VitroVocabulary.vitroURI + "> \n" 
-            + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"
-            + "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
-            + "SELECT DISTINCT ?document ?label WHERE { \n"
-            + "	   ?document vitro:mostSpecificType ?type .\n"
-            + "    ?document rdfs:label ?label .\n"
-            + " FILTER 	REGEX(?label, \"^(pattern)\") .\n"
-            + " FILTER NOT EXISTS { ?subject ?predicate ?document } . \n"
-            + "} ORDER BY ?label"; 
-    
-    
-    // The customEntryForm uri will be into this query substituted and we get all
-    // fields have to be filled for the table view.
 
-   private ResultSet performQuery(VitroRequest vreq, Map<String,String> varMap, boolean initialQuery){
-	   
-	   String queryNew = null;
-	   if(initialQuery){
-		 queryNew = INITIAL_QUERY.replace("pattern", vreq.getParameter(TERM));
-	   } else {
-		   queryNew = FILTER_QUERY.replace("pattern", vreq.getParameter(TERM));
-	   }
-    	
-	   String queryStr = QueryUtils.subUrisForQueryVars(queryNew, varMap);
-	   log.info("queryStr = " + queryStr);
-		
-        try {
-            ResultSet results = QueryUtils.getQueryResults(queryStr, vreq);
-            return results;
-
-        } catch (Exception e) {
-                log.error(e, e);
-        }
-		return null; 
-   }
-  
-   private void prepareAJAX(ResultSet results, JSONArray arr, boolean initialQuery, VitroRequest vreq){
-    	
-    	while (results.hasNext()) {
-    		
-            QuerySolution soln = results.nextSolution();
-            Literal nodeLiteral = soln.get("label").asLiteral();
-            Resource mstResource = null;
-            if(initialQuery) {
-            	mstResource = soln.get("mst").asResource();
-            }
-            Resource doc = soln.get("document").asResource();
-            
-            try {
-            	
-            	JSONObject jsonObj = new JSONObject();
-	        	jsonObj.put("label", nodeLiteral.toString().split("\\^")[0]);
-	        	jsonObj.put("uri", doc.getURI());
-	        	if(initialQuery){
-	        		jsonObj.put("mst", mstResource.getLocalName());
-	        	} else {
-	        		jsonObj.put("mst", vreq.getParameter("optionText"));
-	        	}
-	        	arr.put(jsonObj);
-        	
-            }	catch(Exception ex) {
-        		log.error("Error occurred in converting values to JSON object", ex);
-            }
-	        	
-        }
-    	
-    }
-   */
 }

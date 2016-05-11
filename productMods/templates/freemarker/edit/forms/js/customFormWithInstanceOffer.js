@@ -21,7 +21,6 @@ var offerInstance = {
 		this.elementList = $('#elementList')
 	},
 
-
 	getInstances: function(classUri){
 		
 		offerInstance.showWaitGif();

@@ -109,7 +109,6 @@ ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/uploadImages.cs
         predicateUri : '${editConfiguration.predicateUri}',
         rangeUri: 'http://purl.org/ontology/bibo/Document',
         gifPath : '${urls.base}/images/gif/loading.gif',
-     
         baseHref: '${urls.base}/individual?uri='
     };
  
