@@ -15,9 +15,10 @@ var AddInstanceButton = function(containerToRemove, instanceURI){
 	return html.div("button").text("Add").
 		click(function(){
 			$.ajax({
-				url : baseUrl + "skeletalInventoryData",
+				url : baseUrl + "ajaxData",
 				data : {
 					subject : subjectUri,
+					predicate : predicateUri,
 					object : instanceURI,
 					dataOperation : "addInstance",
 				}

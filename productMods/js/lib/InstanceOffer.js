@@ -12,7 +12,7 @@ InstanceOffer.prototype = {
 	getDataToOffer : function(){
 		var _this = this
 		$.ajax({
-			url : baseUrl + "skeletalInventoryQuery",
+			url : baseUrl + "ajaxQuery",
 			data : {
 				subject : subjectUri,
 				dataOperation : _this.dataOperation,
@@ -51,7 +51,7 @@ var ImageInstanceOffer = function(){
 	
 	//I have to define how the element is called whose value
 	//has to be added to in the case of the addbutton
-	this.dataOperation = "imagesToOffer"
+	this.dataOperation = "imagesOfNotIndividual"
 	this.objectToAdd = "image"
 	this.fields = [
 	{
