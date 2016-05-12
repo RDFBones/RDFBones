@@ -1,0 +1,10 @@
+drop database newDb;
+CREATE DATABASE newDb CHARACTER SET utf8;
+GRANT ALL ON newDb.* TO 'newDb'@'localhost' IDENTIFIED BY 'newDb';
+
+
+#This is in the runtime.properties in the vivo data directory
+
+#VitroConnection.DataSource.url = jdbc:mysql://localhost/newDb
+#VitroConnection.DataSource.username = newDb
+#VitroConnection.DataSource.password = newDb
