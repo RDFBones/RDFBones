@@ -955,6 +955,24 @@
     <url-pattern>/instanceToOffer</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>AjaxQueryController</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.AjaxQueryController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AjaxQueryController</servlet-name>
+    <url-pattern>/ajaxQuery</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>AjaxDataController</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.AjaxDataController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AjaxDataController</servlet-name>
+    <url-pattern>/ajaxData</url-pattern>
+  </servlet-mapping>
+  
    <servlet>
     <servlet-name>AjaxFileController</servlet-name>
     <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.AjaxFileController</servlet-class>

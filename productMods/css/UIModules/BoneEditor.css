@@ -1,28 +1,79 @@
-.fullScreenContainer {
-	display: none;
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	overflow: hidden;
-	z-index: 1;
-	//background-color: rgba(0, 0, 0, 0.4);
+.moduleTitle {
+	display : inline-block;
+	border-bottom : 1px solid black;
+	padding : 2px;
+	margin-bottom : 3px;
 }
 
-.outerContainer {
-	opacity : 1;
-	background-color : white;
-	position: fixed;
+.editBoneContainer{
+	opacity: 1 ;
+	position:fixed;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	padding: 3px;
-	border: 2px solid black;
+	padding : 3px;
+	border : 2px solid black;
+	width : 580px;
+	background-color : white;
+	display: table;
+}
+
+.descriptionContainer{
+	margin : 5px 0 0 5px;
+	width : 550px;
+}
+
+.boneEntry {
+	margin : 5px 0 0 5px;
+}
+
+.treeStructureContainer{
+	text-align : left;
+	margin : 5px 0 0 5px;
+	width : 280px;
+	height : 220px;
+	border : 1px solid;	
+	float : left;
+}
+
+.fileUpload {
+	font-size : 10px;
+}
+
+/***************************************************************************
+ * Complete Incomplete Decision
+ **************************************************************************/
+	 
+.completeness{
+	border : 2px solid black;
+	padding : 3px 6px;
+	margin : 10px;
+	display : inline-block;
+}
+
+.completeness:hover{
+	cursor:pointer;
+}
+
+.completeIncompleteContainer{
+	border : 2px solid black;
 	width : 700px;
 }
 
-.innerContainer {
-	max-height : 500px;
-	overflow : auto;
+.imageContainer {
+	width : 400px;
+	height : 120px;
+}
+
+.boneLink {
+	display : inline-block;
+}
+
+#widthSetting {
+	overflow-x: auto;
+    white-space: nowrap
+}
+
+.addNewButton {
+	margin : 10px;
 }

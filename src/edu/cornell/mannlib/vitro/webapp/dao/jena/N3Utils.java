@@ -104,7 +104,7 @@ public class N3Utils {
     
     public static String setPrefixes(String[] prefixes, String query){
       String prefixList = new String();
-      for(String prefix : prefixes){
+      for(String prefix : prefixDef.keySet()){
         prefixList += "PREFIX " + prefix + ": <" + prefixDef.get(prefix) + ">\n";
       }
       String queryToReturn = prefixList + query;

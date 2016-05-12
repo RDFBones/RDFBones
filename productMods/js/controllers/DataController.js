@@ -18,8 +18,6 @@ var DataController = {
 			} else {
 				singleBones.push(bone)
 			}
-			console.log("Saving is done")
-			console.log(bone)
 			Controller.showBoneViewer(bone)
 		})
 	},
@@ -40,10 +38,8 @@ var DataController = {
 				var result = $.parseJSON(msg)
 				var newObject = DataController.boneObject(parent, result)
 				if(parent.systemicParts == null){
-					console.log("null")
 					parent.systemicParts = []
 				} else {
-					console.log("Miageci")
 					console.log(parent.systemicParts)
 				}
 				parent.systemicParts.push(newObject)
@@ -57,10 +53,10 @@ var DataController = {
 		literalEditor.data[literalEditor.id]
 				= new_
 		$.ajax({
-			url : baseUrl + "skeletalInventoryData",
+			url : baseUrl + "ajaxData",
 			data : {
 				dataOperation : "editLiteral",
-				boneUri : literalEditor.data.uri,
+				subjectUri : literalEditor.data.uri,
 				predicate : literalEditor.predicate,
 				oldValue : old,
 				newValue : new_,
@@ -116,11 +112,11 @@ var DataController = {
 	
 	loadImages : function(object){
 		$.ajax({
-			url : baseUrl + "skeletalInventoryQuery",
+			url : baseUrl + "ajaxQuery",
 		    async: false,
 			data : {
-				boneUri : object.boneUri,
-				type : "images",
+				subject : object.boneUri,
+				dataOperation : "imagesOfIndividual",
 			}
 		}).done(function(msg){
 			console.log("laodImagesDones")
@@ -137,6 +133,7 @@ var DataController = {
 		var newObject = new Object()
 		newObject.uri = object.boneUri
 		newObject.classUri = object.classUri
+		newObject.classLabel = object.classLabel
 		newObject.completeness = object.completeness
 		newObject.label = object.label
 		newObject.description = object.description

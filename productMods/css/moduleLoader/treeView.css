@@ -1,55 +1,51 @@
 /****
 * Show existing bones
 ****/
-
 .title {
-	font-style : italics;	
-	padding : 5px;
-	border-bottom : 1px solid black;
-	display : table;
-	margin : 10px;
+	font-style: italics;
+	padding: 5px;
+	border-bottom: 1px solid black;
+	display: table;
+	margin: 10px;
 }
 
-
-
 .columnTitle {
-	padding : 3px;
-	display : inline-block;
-	border-bottom : 1px solid black;
-	text-align : center;
+	padding: 3px;
+	display: inline-block;
+	border-bottom: 1px solid black;
+	text-align: center;
 }
 
 .columnValue {
-	padding : 3px;
-	display : inline-block
+	padding: 3px;
+	display: inline-block
 }
 
 .id {
-	width : 80px;
+	width: 80px;
 }
 
 .type {
-	width : 120px;
+	width: 120px;
 }
 
 .description {
-	width : 260px;
+	width: 260px;
 }
 
 .images {
-	width : 260px;
+	width: 260px;
 }
-
 
 .valueContainer {
-	border : 1px solid white;
-	float : left;
-	clear : both;
-	margin : 5px 0px 0px 0px;
+	border: 1px solid white;
+	float: left;
+	clear: both;
+	margin: 5px 0px 0px 0px;
 }
 
-.valueContainer:hover{
-	border : 1px solid black;
+.valueContainer:hover {
+	border: 1px solid black;
 }
 
 /**
@@ -82,17 +78,17 @@
 }
 
 .treeViewImgContainer {
-	vertical-align : middle;
-	display : inline-block;
-	margin : 3px;
-	width : 16px;
+	vertical-align: middle;
+	display: inline-block;
+	margin: 3px;
+	width: 16px;
 }
 
 .imgContainer1 {
-	vertical-align : middle;
-	display : inline-block;
-	margin : 3px;
-	width : 16px;
+	vertical-align: middle;
+	display: inline-block;
+	margin: 3px;
+	width: 16px;
 }
 
 .classLabel {

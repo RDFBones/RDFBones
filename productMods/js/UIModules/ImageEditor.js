@@ -38,10 +38,10 @@ ImageEditor.prototype.show = function(data){
 	if(data.image == null){
 		//Query them
 		$.ajax({
-			url : baseUrl + "skeletalInventoryQuery",
+			url : baseUrl + "ajaxQuery",
 			data : {
-				dataOperation : "images",
-				boneUri : _this.boneData.uri,
+				dataOperation : "imagesOfIndividual",
+				subject : _this.boneData.uri,
 			}
 		}).done(function(msg){
 			var result = $.parseJSON(msg)
@@ -93,7 +93,7 @@ ImageEditor.prototype.getSubmitButton = function(){
 	return html.getNewDiv("button1")
 				.text("Upload")
 				.click(function(){
-	
+					
 		var fd = new FormData(document.getElementById("imageForm"));
 		$.ajax({
 		  url : baseUrl + "ajaxFile",
@@ -103,7 +103,7 @@ ImageEditor.prototype.getSubmitButton = function(){
 		  contentType: false   // tell jQuery not to set contentType
 		}).done(function(msg){
 			var result = $.parseJSON(msg)
-			result["boneUri"] = _this.boneData.uri
+			result["subject"] = _this.boneData.uri
 			result["dataOperation"] = "saveImage"
 			console.log(result)
 			//I have to cut the last / element
@@ -113,7 +113,7 @@ ImageEditor.prototype.getSubmitButton = function(){
 			_this.boneData.images.unshift(
 					baseUrl.substring(0, baseUrl.length - 1) + result.downloadLocation)
 			$.ajax({
-			  url : baseUrl + "skeletalInventoryData",
+			  url : baseUrl + "ajaxData",
 			  data: result
 			}).done(function(msg){
 				_this.refreshImages()

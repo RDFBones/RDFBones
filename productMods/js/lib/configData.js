@@ -8,9 +8,8 @@ var pageElements = [ {
 	dataKey : "coherent",
 	dataSet : coherentBones,
 	columns : [ {
-		columnName : "classUri",
+		columnName : "classLabel",
 		title : "Class",
-		cardinality : "kutya"
 	}, {
 		columnName : "label",
 		title : "Label"
@@ -33,7 +32,6 @@ var pageElements = [ {
 	columns : [  {
 		columnName : "classUri",
 		title : "Class",
-		cardinality : "kutya"
 	}, {
 		columnName : "label",
 		title : "Label"
