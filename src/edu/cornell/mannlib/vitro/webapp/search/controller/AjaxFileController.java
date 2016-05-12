@@ -48,14 +48,14 @@ import edu.cornell.mannlib.vitro.webapp.modules.fileStorage.FileStorage;
  * via the search index.
  */
 
-public class SkeletalInventoryFileController extends VitroAjaxController {
+public class AjaxFileController extends VitroAjaxController {
 
   
   /**
    * 
    */
   private static final long serialVersionUID = 1L;
-  private static final Log log = LogFactory.getLog(SkeletalInventoryFileController.class);
+  private static final Log log = LogFactory.getLog(AjaxFileController.class);
 
   
     private DataPropertyStatementDao dataDao;

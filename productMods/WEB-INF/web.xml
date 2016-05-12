@@ -956,12 +956,12 @@
   </servlet-mapping>
   
    <servlet>
-    <servlet-name>SkeletalInventoryFileController</servlet-name>
-    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.SkeletalInventoryFileController</servlet-class>
+    <servlet-name>AjaxFileController</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.AjaxFileController</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>SkeletalInventoryFileController</servlet-name>
-    <url-pattern>/skeletalInventoryFile</url-pattern>
+    <servlet-name>AjaxFileController</servlet-name>
+    <url-pattern>/ajaxFile</url-pattern>
   </servlet-mapping>
   
   <servlet>

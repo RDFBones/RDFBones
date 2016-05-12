@@ -96,7 +96,7 @@ ImageEditor.prototype.getSubmitButton = function(){
 	
 		var fd = new FormData(document.getElementById("imageForm"));
 		$.ajax({
-		  url : baseUrl + "skeletalInventoryFile",
+		  url : baseUrl + "ajaxFile",
 		  type: "POST",
 		  data: fd,
 		  processData: false,  // tell jQuery not to process the data
