@@ -115,3 +115,10 @@ margin5 {
 	height : auto;
 	max-height : 100%;
 }
+
+.moduleTitle {
+	display : inline-block;
+	border-bottom : 1px solid black;
+	padding : 2px;
+	margin-bottom : 3px;
+}
