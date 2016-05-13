@@ -11,6 +11,7 @@
 	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/SubboneEditor.css">
 	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/SingleElements.css">
 
+
 	<div id = "pageContainer">
 	</div>
 	<script>
@@ -31,6 +32,7 @@ ${scripts.add(
 	)}
 	
 ${scripts.add(
+	'<script type="text/javascript" src="${urls.base}/js/lib/DataOperations.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/lib/configData.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/lib/html.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/lib/library.js"></script>',

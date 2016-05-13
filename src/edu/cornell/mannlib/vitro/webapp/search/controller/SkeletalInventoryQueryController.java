@@ -158,4 +158,24 @@ public class SkeletalInventoryQueryController extends VitroAjaxController {
       + "    ?classUri rdfs:label  ?classLabel ."
       + "    OPTIONAL { ?boneUri  rdfbones:description  ?description . } "
       + "} ";
+  
+  private static String[] BoneSegemntInputs = { "skeletalInventory" };
+  private static String[] BoneSegemntUris = { "boneUri", "classUri" };
+  private static String[] BoneSegemntLiterals = { "label",
+      "description", "classLabel" };
+  private static String[] BoneSegemntPrefixes = { "obo", "rdfs",
+      "rdfbones", "vitro" };
+
+  private static String BoneSegemntQuery = ""
+      + "SELECT ?boneUri ?classUri ?label ?description ?classLabel"
+      + " WHERE { " + "    ?boneUri    obo:systemic_part_of  ?parentUri . "
+      + "    ?completeness    obo:BFO_0000050   ?skeletalInventory ."
+      + "    ?completeness    obo:IAO_0000136   ?boneSegment . "
+      + "    ?boneSegment     obo:regional_part_of ?boneOrgan"
+      + "    ?boneOrgan  vitro:mostSpecificType  ?boneOrganClass ."
+      + "    OPTIONAL {  "
+      + "       ?boneOrgan  obo:systemic_part_of ?boneDivision . " 
+      + "       ?boneOrgan  vitro:mostSpecificType ?boneOrgan . "
+      + "    } "
+      + "} ";
 }

@@ -1,7 +1,10 @@
 var pageLoader = {
 
 	init : function() {
+		
+		this.initData()
 		var pageModules = html.getNewDiv()
+		/*
 		$.each(pageElements, function(index, element) {
 			switch (element.type) {
 			case "table":
@@ -31,9 +34,26 @@ var pageLoader = {
 				break
 			}
 		})
-		$("#pageContainer").append(pageModules)
+		$("#pageContainer").append(pageModules)*/
 	},
-
+	
+	initData : function(){
+		
+		//In reality it has to be loaded by a query
+		var coherentBones = []
+		var singleBones = []
+		DataOperations.selectIntoTwo(boneSegments, coherentBones, singleBones, "boneDivision")
+		console.log(coherentBones)
+		console.log(singleBones)
+		var groupedCoherent = DataOperations.groupArrayToObject(coherentBones, "boneDivision", 
+				["boneDivision", "boneDivisionLabel", "boneDivisionClass"], "systemicParts")
+		console.log(groupedCoherent)	
+		var groupedCoherent2 = DataOperations.twoLevelGroupArrayToObject(coherentBones, "boneDivision", 
+				["boneDivision", "boneDivisionLabel", "boneDivisionClass"], "systemicParts",
+				"boneOrgan", ["boneOrgan", "boneOrganLabel", "boneOrganClass"], "regionalParts")
+		console.log(groupedCoherent2)	
+	},
+	
 	refreshTables : function(){
 		$.each(pageElements, function(index, element) {
 			if(element.type == "table"){
@@ -47,20 +67,5 @@ $(document).ready(function() {
 	pageLoader.init()
 	
 })
-/*
-var ajaxCall = function(i){
-	return $.ajax({
-		url : baseUrl + "skeletalInventoryData",
-	    async: false,
-		data : {
-			dataOperation : "test"
-			}
-		}).done(function(msg){
-			result = $.parseJSON(msg)
-			console.log(i)
-			if(i == 9){
-				console.log("donedonedone")
-			}
-		})
-}
-*/
+
+

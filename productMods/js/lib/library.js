@@ -42,3 +42,12 @@ var dataEdit = {
 		this.getClearButton(type).addClass("enabledButton")
 	},
 }
+
+var lib = {
+		default_  : function(defaultValue, value){
+		if(value === undefined){
+			value = defaultValue
+		}
+		return value
+	}
+}
