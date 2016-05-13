@@ -18,11 +18,24 @@ InstanceOffer.prototype = {
 				dataOperation : _this.dataOperation,
 			}
 		}).done((function(results){
-			console.log(results)
-			this.showData($.parseJSON(results))
+
+			var result = $.parseJSON(results)
+			if(result.constructor === Array){
+				this.showData(result)
+			} else {
+				this.showNoData()
+			}
+			
 		}).bind(this))
 	},
 
+	showNoData : function(){
+		this.container = html.div()
+		this.container.append(this.getTitleDiv())
+		this.container.append(html.div("noResult").text("There is no entry to add"))
+		$("#dataOfferContainer").append(this.container)
+	},	
+	
 	showData : function(data){
 		console.log(data)
 		var tableBuffer = []
@@ -41,35 +54,13 @@ InstanceOffer.prototype = {
 		this.container.append(tableBuffer)
 		$("#dataOfferContainer").append(this.container)
 	},
-		
+	
 	getTitleDiv : function(){
 		return html.div("title").text(this.title)
 	}	
 }
 
-var ImageInstanceOffer = function(){
-	
-	//I have to define how the element is called whose value
-	//has to be added to in the case of the addbutton
-	this.dataOperation = "imagesOfNotIndividual"
-	this.objectToAdd = "image"
-	this.fields = [
-	{
-		type : LiteralColumn,
-		key : ["label"]
-	}, {
-		type : ImageColumn,
-		key : ["dl"]
-	}]
-	
-	this.dataObject = new Object()
-	this.tableFields = new Object()
-	this.dataToGet = ["label", "downloadUri"] 
-	this.title = "Select Existing Image"
-	InstanceOffer.call(this)
-} 
 
-ImageInstanceOffer.prototype = Object.create(InstanceOffer.prototype)
 
 
 

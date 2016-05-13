@@ -50,7 +50,7 @@ var k = function(){
 	console.log("abcdefghijklmnopqrstuxzy")
 }
 
-var folder = "img/"
+var folder = "images/general/"
 var ImgSrc = {
 		add : this.folder + "add.png",
 		addInstance : this.folder + "addInstance.png",

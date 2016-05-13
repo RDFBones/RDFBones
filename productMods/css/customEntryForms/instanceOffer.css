@@ -8,6 +8,7 @@
 	width : 140px;
 	overflow : auto;
 	display : inline-block;
+	margin : 5px;
 }
 
 .columnImg {
@@ -22,4 +23,10 @@
 
 .inline {
 	display : inline-block;
+}
+
+.noResult {
+	    font-style: italic;
+	margin : 10px 20px;
+	
 }

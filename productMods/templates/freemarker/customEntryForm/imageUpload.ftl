@@ -5,14 +5,17 @@
 <#import "lib-vitro-form.ftl" as lvf>
 
 ${scripts.add('<script type="text/javascript" src="${urls.base}/js/imageUpload/imageUploadUtils.js"></script>',
-              '<script type="text/javascript" src="${urls.base}/js/lib/InstanceOffer.js"></script>',
+        	  '<script type="text/javascript" src="${urls.base}/js/lib/InstanceOffer.js"></script>',
+              '<script type="text/javascript" src="${urls.base}/js/lib/ImageInstanceOffer.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/lib/InstanceOfferLibrary.js"></script>',
+              '<script type="text/javascript" src="${urls.base}/js/lib/library.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/lib/html.js"></script>',
+              '<script type="text/javascript" src="${urls.base}/js/lib/DataLibrary.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/lib/jquery.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/lib/UI.js"></script>')}
 
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/uploadImages.css" />')}
-${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/instanceOffer.css" />')}
+${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/customEntryForms/instanceOffer.css" />')}
 
 <#if editSubmission?has_content && editSubmission.submissionExists = true && editSubmission.validationErrors?has_content>
     <#assign submissionErrors = editSubmission.validationErrors/>

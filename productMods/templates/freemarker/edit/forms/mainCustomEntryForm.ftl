@@ -79,5 +79,5 @@ var customFormData = {
 		//This variable will be substituted into the query
 	}
 </script>
-${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/mainCustomEntryForm.css" />')}
+${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/customEntryForms/mainCustomEntryForm.css" />')}
 <script type = "text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/mainCustomEntryForm.js"></script>

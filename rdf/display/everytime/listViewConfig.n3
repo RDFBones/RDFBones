@@ -6,6 +6,6 @@
 			<http://vitro.mannlib.cornell.edu/ontologies/display/1.1#listViewConfigFile>
 		"listViewConfig-hasFile.xml" .
 
-###<http://www.semanticweb.org/engel/ontologies/2015/3/rdfBones#isDepicted> 
-###			<http://vitro.mannlib.cornell.edu/ontologies/display/1.1#listViewConfigFile>
-###		"listViewConfig-depictedIn.xml" .
+<http://w3id.org/rdfbones/core#isDepiceted>
+			<http://vitro.mannlib.cornell.edu/ontologies/display/1.1#listViewConfigFile>
+		"listViewConfig-depictedIn.xml" .

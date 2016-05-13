@@ -8,7 +8,7 @@ var UI = {
 	},
 
 	getInlineActionImg : function(type) {
-		return html.div("editImg").append(html.getImg(ImgSrc[type]))
+		return html.div("inline").append(html.getImg(ImgSrc[type]))
 	},
 
 	getActionImgEvent : function(type, event) {

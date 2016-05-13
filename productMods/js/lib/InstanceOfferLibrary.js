@@ -6,13 +6,16 @@ var LiteralColumn = function(value){
 }
 
 var ImageColumn = function(src){
-	console.log(src)
-	return html.getImgClass(imgBaseUrl + src, "column columnImg")
+	if(src != undefined){
+		return html.getImgClass(imgBaseUrl + src, "column columnImg")
+	} else {
+		return html.div("column columnImg")
+	}
 }
 
 var AddInstanceButton = function(containerToRemove, instanceURI){
 	
-	return html.div("button").text("Add").
+	return UI.getInlineActionImg("addInstance").
 		click(function(){
 			$.ajax({
 				url : baseUrl + "ajaxData",

@@ -57,9 +57,9 @@ public class AjaxQueryController extends VitroAjaxController {
       log.info(readyQuery);
       resultSet = QueryUtils.getQueryResults(readyQuery, vreq);
       log.info("resultSet");
-      result =
-          QueryUtils.getQueryVars(resultSet, ImagesOfNOTIndividualQueryUris,
-              ImagesOfNOTIndividualQueryLiterals);
+        result =
+            QueryUtils.getQueryVars(resultSet, ImagesOfNOTIndividualQueryUris,
+                ImagesOfNOTIndividualQueryLiterals);
       log.info("Result");
       log.info(result.toString());
       break;
@@ -76,7 +76,7 @@ public class AjaxQueryController extends VitroAjaxController {
       log.info(result.toString());
       break;
     }
-
+    
     if (result.size() > 0) {
       JSONArray arrayToSend = new JSONArray();
       N3Utils.setJsonArray(arrayToSend, result);
@@ -122,11 +122,13 @@ public class AjaxQueryController extends VitroAjaxController {
           + " WHERE { \n"
           + "    ?image rdf:type bibo:Image ."
           + "    ?image rdfs:label  ?lab ."
-          + "    ?image <http://vivo.mydomain.edu/individual/hasFile>  ?fileIndividual ."
-          + "    ?fileIndividual vitro-public:filename ?filename ."
-          + "    ?fileIndividual vitro-public:mimeType ?mimeType ."
-          + "    ?fileIndividual vitro-public:downloadLocation ?byteStreamIndividual ."
-          + "    ?byteStreamIndividual vitro-public:directDownloadUrl ?downloadLocation . "
+          + "    OPTIONAL {"
+          + "       ?image <http://vivo.mydomain.edu/individual/hasFile>  ?fileIndividual ."
+          + "       ?fileIndividual vitro-public:filename ?filename ."
+          + "       ?fileIndividual vitro-public:mimeType ?mimeType ."
+          + "       ?fileIndividual vitro-public:downloadLocation ?byteStreamIndividual ."
+          + "       ?byteStreamIndividual vitro-public:directDownloadUrl ?downloadLocation . "
+          + "    }"
           + "    FILTER NOT EXISTS { ?subject    rdfbones:isDepiceted  ?image }"
           + "   } GROUP BY ?image";
 }

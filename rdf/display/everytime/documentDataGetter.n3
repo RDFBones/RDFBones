@@ -20,3 +20,8 @@ display:documentsDataGetter a <java:edu.cornell.mannlib.vitro.webapp.utils.dataG
      }        
      
      """ .
+
+display:documentDataGetter
+      a <java:edu.cornell.mannlib.vitro.webapp.utils.dataGetter.ClassGroupPageData>;
+      display:forClassGroup
+              vivoweb:vitroClassGroupdocuments .

@@ -39,22 +39,34 @@ public class QueryUtils {
     public static List<Map<String, String>> getQueryVars(ResultSet results, String[] uris, String[] literals){
       
       List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
+      log.info("before");
       while(results.hasNext()){
+        log.info("inside");
+       
         QuerySolution sol = results.next();
         //Map for the row of the result
         Map<String, String> resultMap  = new HashMap<String, String>();
         if(literals != null){
           for(String literal : literals){
-            resultMap.put(literal, sol.getLiteral(literal).getString());
+            if(sol.getLiteral(literal) == null){
+              resultMap.put(literal, null);
+            } else {
+              resultMap.put(literal, sol.getLiteral(literal).getString());  
+            }
           }
         }
         if(uris != null){
           for(String uri : uris){
-            resultMap.put(uri, sol.get(uri).asResource().getURI());
+            if(sol.get(uri) == null){
+              resultMap.put(uri, null);
+            } else {
+              resultMap.put(uri, sol.get(uri).asResource().getURI());  
+            }
           }
         }
         resultList.add(resultMap);
       }
+      log.info("after");
       return resultList;
     }
     
