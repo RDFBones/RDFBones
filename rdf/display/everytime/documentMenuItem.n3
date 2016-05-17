@@ -24,4 +24,8 @@ display:DocumentsMenuItem
 
 display:DefaultMenu 
 	display:hasElement display:DocumentsMenuItem .
-         
+
+display:documentDataGetter
+      a <java:edu.cornell.mannlib.vitro.webapp.utils.dataGetter.ClassGroupPageData>;
+      display:forClassGroup
+              vivoweb:vitroClassGroupdocuments .
