@@ -7,8 +7,6 @@
 @prefix vitro:   <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-
-
 display:Documents
     a display:Page ;    
     a display:ClassGroupPage;
@@ -16,29 +14,14 @@ display:Documents
     display:title "Documents" ;
     display:urlMapping "/documents" ;
     display:hasDataGetter display:documentDataGetter .
-    
-    
+
+
 display:DocumentsMenuItem
     a display:NavigationElement ;
     display:menuPosition "6";
     display:linkText "Documents";
     display:toPage display:Documents .    
-    
+
 display:DefaultMenu 
 	display:hasElement display:DocumentsMenuItem .
-    
-              
-http://purl.org/ontology/bibo/Document>
-	vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupdocuments> .
-
-<http://purl.org/ontology/bibo/Image>
-   vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupdocuments> .
-   
-<http://purl.org/ontology/bibo/AudioVisualDocument>
-    vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupdocuments> .
- 
-<http://purl.org/ontology/bibo/Note>
- 	   vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupdocuments> .
- 
-<http://purl.org/ontology/bibo/Slideshow>
- 	   vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupdocuments> .
+         

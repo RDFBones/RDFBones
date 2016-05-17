@@ -1,12 +1,18 @@
 <table>	
 	<tr>
 		<td style="vertical-align:middle; width:150px"> 
-			<#if  statement.mimeType?upper_case =".PNG" || statement.mimeType?upper_case == ".JPG" || statement.mimeType?upper_case == ".JPEG">
-				<a href="${urls.base}${statement.downloadUrl}" data-lightbox="previewSet" data-title="Click ">
-					<img src="${urls.base}${statement.downloadUrl}" height="100" width="100">
-				</a>	
+			<#if statement.mimeType?has_content>
+				<#if statement.mimeType?upper_case =".PNG" || statement.mimeType?upper_case == ".JPG" || statement.mimeType?upper_case == ".JPEG">
+					<a href="${urls.base}${statement.downloadUrl}" data-lightbox="previewSet" data-title="Click">
+						<img src="${urls.base}${statement.downloadUrl}" height="100" width="100">
+					</a>	
+				<#else>
+					${statement.filename}
+				</#if>
+			<#elseif statement.label?has_content>
+				<div> ${statement.label} </div>
 			<#else>
-				${statement.filename}
+				<div> No information </div>
 			</#if>
 		</td>
 		<td style="vertical-align:middle; width:150px">
@@ -15,9 +21,11 @@
 			</#if>
 		</td>
 		<td style="width:15px; vertical-align:middle">
-			<a href="${urls.base}${statement.downloadUrl}" download style="color:white">
-				<img style="width:12px; height:12px; margin-left: 25px;" id="downloadIcon" src="${urls.base}/images/individual/download-icon.png" alt="Download File" title="Download File" />
-			</a>
+			<#if statement.downloadUrl?has_content>
+				<a href="${urls.base}${statement.downloadUrl}" download style="color:white">
+					<img style="width:12px; height:12px; margin-left: 25px;" id="downloadIcon" src="${urls.base}/images/individual/download-icon.png" alt="Download File" title="Download File" />
+				</a>
+			</#if>
 		</td>
 		<td style="width:15px; vertical-align:middle">
 			<a href="${profileUrl(statement.uri("image"))}" title="${i18n().name}">

@@ -121,7 +121,7 @@ public class AjaxQueryController extends VitroAjaxController {
           + "SELECT ?image (SAMPLE (?downloadLocation) as ?dl) (SAMPLE (?lab) as ?label)  "
           + " WHERE { \n"
           + "    ?image rdf:type bibo:Image ."
-          + "    ?image rdfs:label  ?lab ."
+          + "    OPTIONAL { ?image rdfs:label  ?lab } ."
           + "    OPTIONAL {"
           + "       ?image <http://vivo.mydomain.edu/individual/hasFile>  ?fileIndividual ."
           + "       ?fileIndividual vitro-public:filename ?filename ."

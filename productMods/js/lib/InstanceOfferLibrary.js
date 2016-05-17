@@ -2,21 +2,28 @@
 
 var LiteralColumn = function(value){
 	console.log(value)
-	return html.div("column inline").text(value)
+	if(value == null){
+		value = "There is no label"
+	}
+	return html.div("column").
+			append(html.div("textColumn").text(value))
 }
 
 var ImageColumn = function(src){
+	console.log(src)
 	if(src != undefined){
-		return html.getImgClass(imgBaseUrl + src, "column columnImg")
+		return html.div("column").
+					append(ImgUI.previewImage(imgBaseUrl + src, "normalImg"))
 	} else {
-		return html.div("column columnImg")
+		return LiteralColumn("There is no file")
 	}
 }
 
-var AddInstanceButton = function(containerToRemove, instanceURI){
+var AddInstanceButton = function(instanceOffer, container, instanceURI){
 	
-	return UI.getInlineActionImg("addInstance").
-		click(function(){
+	return ImgUI.libImgCont("addInstance", "middle")
+			.click(function(){
+			PopUpController.initWaiting()
 			$.ajax({
 				url : baseUrl + "ajaxData",
 				data : {
@@ -26,7 +33,8 @@ var AddInstanceButton = function(containerToRemove, instanceURI){
 					dataOperation : "addInstance",
 				}
 			}).done(function(){
-				containerToRemove.remove()
+				PopUpController.doneMsg("The image was saved")
+				instanceOffer.removeContainer(container)
 			})
 		})
 }

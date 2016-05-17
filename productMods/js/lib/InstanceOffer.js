@@ -1,63 +1,95 @@
 
+/*
+ * The InstanceOffer is never called by itself. Its subclasses are called, that
+ * contains the specification of way how the page has element has to be loaded.
+ */
+
 var InstanceOffer = function(){
 
-	//It creates a table and the
-	console.log(this)
+	//Here we create the frame of the table.
+	this.initElement()	
 	this.getDataToOffer()
 }
 
 InstanceOffer.prototype = {
-
+		
+	initElement : function(){
+		this.container = html.div()
+		this.container.append(html.div("moduleTitle").text(this.title))
+		this.titleContainer = html.div()
+		$.each(this.columnTitles, function(index, value){
+			this.titleContainer.append(html.div("columnTitle").text(value))
+		})
+		this.container.append(this.titleContainer)
+		this.dataContainer = html.div()
+		this.dataContainer.append(TableUI.getWaitGif())
+		this.container.append(this.dataContainer)
+		$("#dataOfferContainer").append(this.container)
+	},
 	//In the instanceoffer 
 	getDataToOffer : function(){
-		var _this = this
-		$.ajax({
+	
+		var inputData = {
 			url : baseUrl + "ajaxQuery",
 			data : {
 				subject : subjectUri,
-				dataOperation : _this.dataOperation,
+				dataOperation : this.dataOperation,
 			}
-		}).done((function(results){
-
-			var result = $.parseJSON(results)
-			if(result.constructor === Array){
-				this.showData(result)
-			} else {
-				this.showNoData()
-			}
-			
-		}).bind(this))
+		}
+		AJAXController.getData(inputData, this)
 	},
 
+	returnRoutine : function(result){
+		console.log(result)
+		this.data = result
+		if(result.length == 0){
+			this.showNoData()
+		} else if(result.length == 1) {
+			if(result[0][this.objectToAdd] == null){
+				this.showNoData()
+			} else {
+				this.showData(result)
+			}
+		} else {
+			this.showData(result)
+		}
+	},
+	
 	showNoData : function(){
-		this.container = html.div()
-		this.container.append(this.getTitleDiv())
+		this.dataContainer.empty()
 		this.container.append(html.div("noResult").text("There is no entry to add"))
-		$("#dataOfferContainer").append(this.container)
 	},	
+	
+	removeContainer : function(container){
+		container.remove()
+		this.numOfEntries--
+		if(this.numOfEntries == 0){
+			console.log("itt")
+			this.showNoData()
+		}
+	},
 	
 	showData : function(data){
 		console.log(data)
-		var tableBuffer = []
+		var tableContainer = []
+		this.numOfEntries = 0
 		$.each(data, (function(index, value){
-			var rowContainer = html.div("rowContainer")
-			$.each(this.fields, function(innerIndex, field){
-				rowContainer.append(field.type(value[field.key]))
-			})
-			rowContainer.append(AddInstanceButton(rowContainer, value[this.objectToAdd]))
-			tableBuffer.push(rowContainer)
+			console.log(value)
+			if(value[this.objectToAdd] != null){
+				console.log("kutya")
+				var rowContainer = html.div("rowContainer")
+				var rowInnerContainer = html.div("rowInnerContainer")
+				$.each(this.fields, function(innerIndex, field){
+					rowInnerContainer.append(field.type(value[field.key]))
+				})
+				rowInnerContainer.append(AddInstanceButton(this, rowContainer, value[this.objectToAdd]))
+				tableContainer.push(rowContainer.append(rowInnerContainer))	
+				this.numOfEntries++;
+			}
 		}).bind(this))
-		
-		this.container = html.div()
-		//Title
-		this.container.append(this.getTitleDiv())
-		this.container.append(tableBuffer)
-		$("#dataOfferContainer").append(this.container)
+		this.dataContainer.empty()
+		this.dataContainer.append(tableContainer)
 	},
-	
-	getTitleDiv : function(){
-		return html.div("title").text(this.title)
-	}	
 }
 
 

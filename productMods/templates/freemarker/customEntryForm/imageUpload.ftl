@@ -5,17 +5,26 @@
 <#import "lib-vitro-form.ftl" as lvf>
 
 ${scripts.add('<script type="text/javascript" src="${urls.base}/js/imageUpload/imageUploadUtils.js"></script>',
+        	  '<script type="text/javascript" src="${urls.base}/js/lib/AJAXController.js"></script>',
+        	  '<script type="text/javascript" src="${urls.base}/js/lib/DataLibrary.js"></script>',
+        	  '<script type="text/javascript" src="${urls.base}/js/lib/html.js"></script>',
         	  '<script type="text/javascript" src="${urls.base}/js/lib/InstanceOffer.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/lib/ImageInstanceOffer.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/lib/InstanceOfferLibrary.js"></script>',
-              '<script type="text/javascript" src="${urls.base}/js/lib/library.js"></script>',
-              '<script type="text/javascript" src="${urls.base}/js/lib/html.js"></script>',
-              '<script type="text/javascript" src="${urls.base}/js/lib/DataLibrary.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/lib/jquery.js"></script>',
-              '<script type="text/javascript" src="${urls.base}/js/lib/UI.js"></script>')}
+              '<script type="text/javascript" src="${urls.base}/js/lib/library.js"></script>',
+              '<script type="text/javascript" src="${urls.base}/js/lib/PopUpController.js"></script>',
+              '<script type="text/javascript" src="${urls.base}/js/lib/TableUI.js"></script>',
+              '<script type="text/javascript" src="${urls.base}/js/UI/UI.js"></script>',
+              '<script type="text/javascript" src="${urls.base}/js/UI/ImgUI.js"></script>',
+              '<script type="text/javascript" src="${urls.base}/js/previewJS/js/lightbox.js"></script>')}
 
-${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/uploadImages.css" />')}
-${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/customEntryForms/instanceOffer.css" />')}
+${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/lib.css" />')}
+${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/table.css" />')}
+${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/font.css" />')}
+${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/image.css" />')}
+${stylesheets.add('<link rel="stylesheet" href="${urls.base}/js/previewJS/css/lightbox.css" />')}
+
 
 <#if editSubmission?has_content && editSubmission.submissionExists = true && editSubmission.validationErrors?has_content>
     <#assign submissionErrors = editSubmission.validationErrors/>
@@ -59,11 +68,13 @@ ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/customEntryForm
 	var imgBaseUrl = "${urls.base}"
 	var subjectUri = '${editConfiguration.subjectUri}'
     var predicateUri = '${editConfiguration.predicateUri}'
+    
 </script>
 
 <div id = "dataOfferContainer">
 </div>
-
+<div id = "popUpContainer">
+</div>
 <script>
 	$(document).ready(function(){
 		new ImageInstanceOffer();
