@@ -1,3 +1,4 @@
+@prefix vitro:   <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#> .
 
 <http://purl.org/ontology/bibo/Document>
 	vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupdocuments> .
