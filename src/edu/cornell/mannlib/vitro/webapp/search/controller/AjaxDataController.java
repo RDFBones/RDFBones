@@ -242,7 +242,7 @@ public class AjaxDataController extends VitroAjaxController {
      private static String[] InstanceAddOutputParams = {};
      
      private static String[] InstanceAddObjectTriplesAdd = {
-       "?subject rdfbones:isDepiceted ?object",
+       "?subject ?predicate ?object",
      };
 
 }

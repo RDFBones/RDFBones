@@ -57,19 +57,17 @@ public class AjaxQueryController extends VitroAjaxController {
       log.info(readyQuery);
       resultSet = QueryUtils.getQueryResults(readyQuery, vreq);
       log.info("resultSet");
-      result =
-          QueryUtils.getQueryVars(resultSet, ImagesOfNOTIndividualQueryUris,
-              ImagesOfNOTIndividualQueryLiterals);
+        result =
+            QueryUtils.getQueryVars(resultSet, ImagesOfNOTIndividualQueryUris,
+                ImagesOfNOTIndividualQueryLiterals);
       log.info("Result");
       log.info(result.toString());
       break;
     case "imagesOfIndividual":
       log.info("imagesOfIndividual");
       readyQuery = N3Utils.setPrefixes(null, ImagesOfIndividualQuery);
-      log.info(readyQuery);
       readyQuery =
           N3Utils.subInputUriQuery(readyQuery, ImagesOfIndividualQueryInputs, vreq);
-      log.info(readyQuery);
       resultSet = QueryUtils.getQueryResults(readyQuery, vreq);
       result =
           QueryUtils.getQueryVars(resultSet, ImagesOfIndividualQueryUris,
@@ -78,7 +76,7 @@ public class AjaxQueryController extends VitroAjaxController {
       log.info(result.toString());
       break;
     }
-
+    
     if (result.size() > 0) {
       JSONArray arrayToSend = new JSONArray();
       N3Utils.setJsonArray(arrayToSend, result);
@@ -105,7 +103,7 @@ public class AjaxQueryController extends VitroAjaxController {
       ""
           + "SELECT  ?downloadLocation "
           + " WHERE { \n"
-          + "    ?subject    rdfbones:isDepiceted   ?image ."
+          + "    ?subject    rdfbones:isDepicted   ?image ."
           + "    ?image <http://vivo.mydomain.edu/individual/hasFile>  ?fileIndividual ."
           + "    ?fileIndividual vitro-public:filename ?filename ."
           + "    ?fileIndividual vitro-public:mimeType ?mimeType ."
@@ -123,12 +121,14 @@ public class AjaxQueryController extends VitroAjaxController {
           + "SELECT ?image (SAMPLE (?downloadLocation) as ?dl) (SAMPLE (?lab) as ?label)  "
           + " WHERE { \n"
           + "    ?image rdf:type bibo:Image ."
-          + "    ?image rdfs:label  ?lab ."
-          + "    ?image <http://vivo.mydomain.edu/individual/hasFile>  ?fileIndividual ."
-          + "    ?fileIndividual vitro-public:filename ?filename ."
-          + "    ?fileIndividual vitro-public:mimeType ?mimeType ."
-          + "    ?fileIndividual vitro-public:downloadLocation ?byteStreamIndividual ."
-          + "    ?byteStreamIndividual vitro-public:directDownloadUrl ?downloadLocation . "
-          + "    FILTER NOT EXISTS { ?subject    rdfbones:isDepiceted  ?image }"
+          + "    OPTIONAL { ?image rdfs:label  ?lab } ."
+          + "    OPTIONAL {"
+          + "       ?image <http://vivo.mydomain.edu/individual/hasFile>  ?fileIndividual ."
+          + "       ?fileIndividual vitro-public:filename ?filename ."
+          + "       ?fileIndividual vitro-public:mimeType ?mimeType ."
+          + "       ?fileIndividual vitro-public:downloadLocation ?byteStreamIndividual ."
+          + "       ?byteStreamIndividual vitro-public:directDownloadUrl ?downloadLocation . "
+          + "    }"
+          + "    FILTER NOT EXISTS { ?subject  rdfbones:isDepicted  ?image }"
           + "   } GROUP BY ?image";
 }
