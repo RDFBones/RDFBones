@@ -1,0 +1,104 @@
+.moduleTitle {
+	font-style: italic;
+	margin: 10px 2px;
+	display: inline-block;
+	font-size: 18px;
+	border-bottom: 1px solid;
+	padding: 3px;
+}
+
+/****************************************************
+*** Full Screen  
+*****************************************************/
+.fullScreenContainer {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	overflow: hidden;
+	z-index: 1;
+	//background-color: rgba(0, 0, 0, 0.4);
+}
+
+.fullScreenInner {
+	opacity : 1;
+	background-color : white;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding: 3px;
+	border: 2px solid black;
+	
+}
+
+.hoverCursor:hover {
+	color: red;
+	cursor: pointer;
+}
+
+.generalButton {
+	border: 1px solid black;
+	border-radius: 3px;
+	padding: 2px 5px;
+}
+
+.redBorder {
+	border: 1px solid red;
+}
+
+.border1 {
+	border: 1px solid black;
+}
+
+.generalButton:hover {
+	cursor: pointer;
+}
+
+.inline {
+	display: inline-block;
+}
+
+.newLine {
+	clear: both;
+}
+
+.hidden {
+	display: none;
+}
+
+.table {
+	display : table;
+}
+
+.floatRight {
+	float: right;
+}
+
+.floatLeft {
+	float: left;
+}
+
+.margin10 {
+	margin : 10px;
+}
+
+/****************************************************
+*** Scroll  
+*****************************************************/
+.horizontalScroll {
+	overflow-x: auto;
+}
+
+.xScroll {
+	overflow-x: auto;
+}
+
+.yScroll {
+	overflow-y: auto;
+}
+
+.height100 {
+	height : 100%;
+}

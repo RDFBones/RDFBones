@@ -1,0 +1,48 @@
+.pageTitle{
+	width : max ;
+	text-align : center ;
+	font-size: 20px;	
+	font-style: bold;
+	margin : 24px;
+}
+
+.stepTitle{
+	font-size: 17px;	
+	padding : 2px;
+	margin: 2px;
+	border-bottom: 1px solid black;	
+}
+
+form {
+	margin-bottom: 2px;
+	padding-left: 200px;
+}
+
+.tableHeader {
+	margin-bottom: 7px;
+}
+
+/***************************************************************************
+* Visibility Setting
+****************************************************************************/
+.disabled {
+	opacity : 0.2;
+}
+
+.hideAtFirst{
+	visibility : hidden;
+}
+
+/***************************************************************************
+* Buttons
+****************************************************************************/
+.plus {
+	font-size: 16px;
+	padding: 0px 4px;
+}
+
+.plus:hover {
+	border-radius: 10px;
+	border: 1px solid black;
+	cursor: pointer;
+}

@@ -1,0 +1,31 @@
+#Config
+deploy.properties
+build.properties
+runtime.properties
+
+#Build dir
+.build/
+
+#Vivo and Vitro directories
+./VIVO/*
+./Vitro/*
+
+#Scripts
+*.sh
+*.mysql
+
+#The datadirectory
+vivo3TierData/
+
+#Release files
+vivo-rel-1.5.1
+vitro-data
+data
+vivo-rel-1.5.1.zip
+revisionInfo
+
+#Eclipse
+.classpath
+.project
+.settings
+/bin/

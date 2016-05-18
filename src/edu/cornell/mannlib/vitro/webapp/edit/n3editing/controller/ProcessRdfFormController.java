@@ -131,16 +131,16 @@ public class ProcessRdfFormController extends FreemarkerHttpServlet{
 			if(file.getSize() == 0)	{
 				//There is no uploaded file
 				log.info("file null");
+				//Here I check if there is already an uploaded file
 				if(editConfig.getUrisInScope().get("fileIndividual") == null  ){
-			    		
+			    //If no and it is required, then error
 					if(fileRequired(editConfig)){
 						//Validation error
 			    		Map <String,String> fileError = new HashMap<String,String>();
 			    		fileError.put("fileError", "Please select a file!");
 						submission.getValidationErrors().putAll(fileError);
 					}
-					
-			    }
+			  }
 			} else {
 				//There is an uploaded file
 				Map <String,List<FileItem>> files = new HashMap<String,List<FileItem>>();

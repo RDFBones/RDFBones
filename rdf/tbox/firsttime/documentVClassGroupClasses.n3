@@ -1,0 +1,16 @@
+@prefix vitro:   <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#> .
+
+<http://purl.org/ontology/bibo/Document>
+	vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupdocuments> .
+
+<http://purl.org/ontology/bibo/Image>
+   vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupdocuments> .
+   
+<http://purl.org/ontology/bibo/AudioVisualDocument>
+    vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupdocuments> .
+ 
+<http://purl.org/ontology/bibo/Note>
+ 	   vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupdocuments> .
+ 
+<http://purl.org/ontology/bibo/Slideshow>
+ 	   vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupdocuments> .
