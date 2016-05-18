@@ -1,6 +1,6 @@
 @prefix vitro:   <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#> .
 
-<http://w3id.org/rdfbones/core#isDepiceted>
+<http://w3id.org/rdfbones/core#isDepicted>
 	vitro:inPropertyGroupAnnot
     	<http://vivoweb.org/ontology#vitroPropertyGroupFile> .
     						

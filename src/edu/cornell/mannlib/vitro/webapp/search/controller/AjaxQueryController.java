@@ -94,7 +94,7 @@ public class AjaxQueryController extends VitroAjaxController {
     }
   }
 
-  private static String[] ImagesOfIndividualQueryInputs = { "boneUri" };
+  private static String[] ImagesOfIndividualQueryInputs = { "subject" };
   private static String[] ImagesOfIndividualQueryUris = {};
   private static String[] ImagesOfIndividualQueryLiterals =
       { "downloadLocation" };
@@ -103,7 +103,7 @@ public class AjaxQueryController extends VitroAjaxController {
       ""
           + "SELECT  ?downloadLocation "
           + " WHERE { \n"
-          + "    ?boneUri    rdfbones:isDepicted   ?image ."
+          + "    ?subject    rdfbones:isDepicted   ?image ."
           + "    ?image <http://vivo.mydomain.edu/individual/hasFile>  ?fileIndividual ."
           + "    ?fileIndividual vitro-public:filename ?filename ."
           + "    ?fileIndividual vitro-public:mimeType ?mimeType ."
@@ -129,6 +129,6 @@ public class AjaxQueryController extends VitroAjaxController {
           + "       ?fileIndividual vitro-public:downloadLocation ?byteStreamIndividual ."
           + "       ?byteStreamIndividual vitro-public:directDownloadUrl ?downloadLocation . "
           + "    }"
-          + "    FILTER NOT EXISTS { ?subject    rdfbones:isDepiceted  ?image }"
+          + "    FILTER NOT EXISTS { ?subject  rdfbones:isDepicted  ?image }"
           + "   } GROUP BY ?image";
 }
