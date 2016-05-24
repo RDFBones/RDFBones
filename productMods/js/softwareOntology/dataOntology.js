@@ -1,7 +1,4 @@
 
-
-
-
 var ontology = {
 		
 	restrictions : {
@@ -53,6 +50,7 @@ var ontology = {
 	
 	
 	classes : {
+		
 	   boneOrgan : {
 		   uri : "boneOrgan",
 		   label : "Bone Organ",
@@ -73,8 +71,16 @@ var ontology = {
 	   
 	   completeness : {
 		   
-	   }
+	   },
 	   
+	   primarySkeletalInventory : {
+			
+	   },
+		
+	   completeness : {
+			subClassOf : ["completenessRestriction1",
+			              "completenessRestriction2"]
+	   }
 	}
 	
 }

@@ -4,9 +4,6 @@
 
 var nodes = {
 	
-		
-		
-	
 	boneOrgan : {
 		addNew : true,
 		classTo : "boneOrgan",
@@ -57,22 +54,6 @@ var type = {
 	
 	"individualUri" : "primarySkeletalInventory",
 }
-
-var ontology = {
-	
-	classes : {
-		
-		primarySkeletalInventory : {
-			
-		},
-		
-		completeness : {
-			subClassOf : ["completenessRestriction1",
-			              "completenessRestriction2"]
-		}
-	}
-}
-
 
 var alg = function(){
 	

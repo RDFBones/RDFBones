@@ -70,12 +70,14 @@ var processes = {
 
 	createClassSelector : function(class_) {
 
-		console.log("ok")
-		//var subClasses = ontology.classes[class_].subClasses
-		$("#skeletalInventory").append(
-				UI.getFieldWithAddButton("test", function() {
+		console.log(ontology.classes)
+		var subClasses = ontology.classes[class_].subclasses
+		$.each(subClasses, function(index, subClass){
+			$("#skeletalInventory").append(
+				UI.getFieldWithAddButton(ontology.classes[subClass].label, function() {
 					alert("a")
 				}))
+		})
 	},
 
 	/*
