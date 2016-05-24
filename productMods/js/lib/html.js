@@ -58,14 +58,14 @@ var html = {
 	
 	getPreviewImage : function(src, class_, index) {
 		return $("<a/>").attr("href", src).attr("data-lightbox", index).append(
-				this.getImgClass(src, class_))
+				this.getImg(src, class_))
 	},
 	
 	getImg : function(src) {
 		return $("<img/>").attr("src", src)
 	},
 	
-	getImgClass : function(src, class_) {
+	getImg : function(src, class_) {
 		return $("<img/>").attr("src", src).addClass(class_)
 	},
 	
@@ -79,5 +79,13 @@ var html = {
 	
 	getInput : function(type){
 		return $("<input>").attr("type", type)
+	},
+	
+	span : function(){
+		return $("<span/>")
+	},
+	
+	span : function(_class){
+		return $("<span/>").addClass(_class)
 	}
 }
