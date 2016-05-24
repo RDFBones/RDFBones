@@ -22,7 +22,7 @@ InstanceOffer.prototype = {
 		})
 		this.container.append(this.titleContainer)
 		this.dataContainer = html.div()
-		this.dataContainer.append(TableUI.getWaitGif())
+		this.dataContainer.append(UI.getWaitGif())
 		this.container.append(this.dataContainer)
 		$("#dataOfferContainer").append(this.container)
 	},
