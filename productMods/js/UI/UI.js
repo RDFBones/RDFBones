@@ -1,11 +1,13 @@
 var UI = {
 
-
-		
 	/***************************************************************************
 	 * Horizontal general img
 	 **************************************************************************/
 
+	getWaitGif : function(){
+		return ImgUI.libImg("loading","largeImg")
+	},
+	
 	getHorizontalDiv : function() {
 		
 	},
@@ -46,22 +48,6 @@ var UI = {
 	},
 
 	/***************************************************************************
-	 * Img without container
-	 **************************************************************************/
-
-	getGeneralImg : function(type) {
-		return html.getImg(ImgSrc[type])
-	},
-
-	getGeneralImgSize : function(type, size) {
-		return html.getImg(ImgSrc[type], size + "Img")
-	},
-
-	getGeneralImgClass : function(type, _class) {
-		return html.getImgClass(ImgSrc[type], _class)
-	},
-
-	/***************************************************************************
 	 * Self adjusting gif
 	 **************************************************************************/
 
@@ -99,7 +85,7 @@ var UI = {
 
 	getFieldWithAddButton : function(value, clickFunction) {
 		return html.getNewDiv().append(html.getNewDiv("inline").text(value))
-				.append(this.getInlineImg(ImgSrc.add).click(clickFunction))
+				.append(ImgUI.libImg("add", "inline").click(clickFunction))
 	},
 
 	/***************************************************************************
