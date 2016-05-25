@@ -23,6 +23,7 @@ var cachedNodes = {
 			maxilla : {
 				variables : {
 					boneSegment : {
+						type : "newInstance",
 						property : "regionalPartOf",
 						customClasses : ["a", "b"]
 					}
@@ -32,6 +33,7 @@ var cachedNodes = {
 			nasalBone : {
 				variables : {
 					boneSegment : {
+						type : "newInstance",
 						property : "regionalPartOf",
 						customClasses : ["c", "d"]
 					}
@@ -45,8 +47,6 @@ var cachedNodes = {
 		possibleClasses : {
 
 			a : {
-				uri : "a",
-				label : "A",
 				variables : {
 					completeness : {
 						property : "isAbout",
@@ -56,8 +56,6 @@ var cachedNodes = {
 			},
 			
 			b : {
-				uri : "b",
-				label : "B",
 				variables : {
 					completeness : {
 						property : "isAbout",
@@ -67,8 +65,6 @@ var cachedNodes = {
 			},
 			
 			c : {
-				uri : "c",
-				label : "C",
 				variables : {
 					completeness : {
 						property : "isAbout",
@@ -78,8 +74,6 @@ var cachedNodes = {
 			},
 			
 			d : {
-				uri : "d",
-				label : "D",
 				variables : {
 					completeness : {
 						customClasses : ["completeness2state"]

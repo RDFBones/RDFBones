@@ -69,18 +69,39 @@ var ontology = {
 		   regionalParts : ["c", "d"],
 	   },
 	   
-	   completeness : {
-		   
+	   a : {
+			uri : "a",
+			label : "A",
 	   },
 	   
-	   primarySkeletalInventory : {
-			
+	   b : {
+			uri : "b",
+			label : "B",
 	   },
+	   
+	   c : {
+			uri : "c",
+			label : "C",
+	   },
+	   
+	   d : {
+			uri : "d",
+			label : "D",
+	   },
+	   
+	   weight : {
+			uri : "weight",
+			label : "Weight",
+		},
 		
-	   completeness : {
+		twoState : {
+			uri : "twoState",
+			label : "Two State",
+		},
+		
+		completeness : {
 			subClassOf : ["completenessRestriction1",
 			              "completenessRestriction2"]
-	   }
+	   	}
 	}
-	
 }

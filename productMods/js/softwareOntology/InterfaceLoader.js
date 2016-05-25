@@ -13,8 +13,8 @@ InterfaceLoader.prototype = {
 		console.log(cachedNodes)
 		$.each(nodes, (function(key, node){
 			if(node.interfaceSelection != undefined){
-				$.each(cachedNodes[key].possibleClasses, (function(classKey, cachedNode){
-					this.interfaceContainer.append(new ClassField(key, classKey).container)
+				$.each(cachedNodes[key].possibleClasses, (function(classKey, cachedDef){
+					this.interfaceContainer.append(new ClassField(key, classKey, cachedDef).container)
 				}).bind(this))
 			}
 		}).bind(this))

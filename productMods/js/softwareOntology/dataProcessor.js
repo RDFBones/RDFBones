@@ -85,8 +85,11 @@ var dataProcessor = {
 		dataProcessor.exploreRestrictions(mainProperty)
 	},
 
-	getFields : function(variable, class_) {
-
+	/*
+	 * This class returns the element
+	 */
+	getFields : function(variable, class_, cachedDef) {
+		
 		console.log(variable + "   " + class_)
 		/* var htmlField = html.div()
 		var variable = cachedNodes[variable].possibleClasses[class_].variables
