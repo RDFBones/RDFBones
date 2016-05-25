@@ -63,9 +63,9 @@ var ontology = {
 		   regionalParts : ["a", "b"],
 	   },
 	   
-	   parietal : {
-		   uri : "parietal",
-		   label : "Parietal",
+	   nasalBone : {
+		   uri : "nasalbone",
+		   label : "Nasal Bone",
 		   regionalParts : ["c", "d"],
 	   },
 	   

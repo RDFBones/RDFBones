@@ -1,39 +1,3 @@
-
-//RULE 1
-
-//If a node appears on the interface, then we have to check if it is an object or subject of
-//predicate. The interface has to contain the definition of the interface type.
-//The following could be : 
-
-/*
- * Tree structure
- * Text field
- * Datum Field
- */
-
-//To be able to know what are the possible classes to add we have to build a query that
-//Start Bone Division -
-//?boneDivision   rdfs:subClassOf obo:BoneDivision .
-//all bone division classes
-//then predicate systemic part comes :
-
-//Query  :               ?boneOrgan rdfs:subClassOf [
-//								a owl:Restrion,
-//								owl:someValuesFrom ?boneDivision .
-//							]
-//We get the possible classes for the ?boneOrgans.
-//
-//Query  :               ?boneSegment rdfs:subClassOf [
-//								a owl:Restrion,
-//								owl:someValuesFrom ?boneOrgan .
-//							]
-//						 ?completeness rdfs:subClassOf [
-//								a owl:Restrion,
-//								owl:someValuesFrom ?boneSegment .
-//						 ]
-//After performing the query and doing the grouping we should get something like this : 
-//This dataset is already a combination of the ontology data and the display configuration data
-//The data structure has to represent completely what happens.
 var query = {
 
 	getObjectOf : function(varname) {
@@ -41,25 +5,15 @@ var query = {
 	}
 }
 
-var processes = {
+var nodeBuffer = []
+var propertyBuffer = []
 
-	// First step
-	// Find the class where we can choose from and create for this a classlabel
-	// and add button
-
-	// QUESTION : How to find this in the software configuration which is the
-	// variable
-	// As in one triple store we can query the variables.
-
-	/*
-	 * SOLUTION : iterate through the nodes of the configuration triples and
-	 * check which value has to be added.
-	 */
+var dataProcessor = {
 
 	getInterface : function() {
-		$.each(nodes, function(index, node) {
+		$.each(nodes, function(key, node) {
 			if (node.addNew != undefined) {
-				processes.createClassSelector(node.classTo)
+				dataProcessor.createClassSelector(key, node.classTo)
 			}
 		})
 	},
@@ -68,86 +22,117 @@ var processes = {
 	 * Create a list of classes with add button from a parent class
 	 */
 
-	createClassSelector : function(class_) {
+	createClassSelector : function(node, class_) {
 
 		console.log(ontology.classes)
 		var subClasses = ontology.classes[class_].subclasses
-		$.each(subClasses, function(index, subClass){
+		$.each(subClasses, function(index, subClass) {
 			$("#skeletalInventory").append(
-				UI.getFieldWithAddButton(ontology.classes[subClass].label, function() {
-					alert("a")
-				}))
+					UI.getFieldWithAddButton(ontology.classes[subClass].label,
+							function() {
+								// Here I have to check what kind opportunities
+								// are there
+								dataProcessor.addEvent(node, subClass)
+							}))
+		})
+	},
+	
+	exploreRestrictions : function(property) {
+
+		var node
+		if (nodeBuffer.indexOf(property.range) == -1) {
+			node = nodeBuffer.indexOf(property.range)
+		} else if (nodeBuffer.indexOf(property.domain) == -1) {
+			node = nodeBuffer.indexOf(property.domain)
+		}
+		$.each(node.subjectOf, function(index, domainPred) {
+			if (propertyBuffer.indexOf(domainPred) == -1) {
+				propertyBuffer.push(domainPred)
+				if (domainPred.checkRestriction != undefined) {
+					// Here I look for the range classes
+
+					/*
+					 * SPARQL for the problem select ?possibleClasses where {
+					 * [${node.possibleClassses}] rdfs:subClassOf [ a
+					 * owl:Restriction . owl:onProperty ${domainPred} .
+					 * owl:allValuesFrom ] }
+					 */
+					/*
+					 * This has to create
+					 * 
+					 */
+				}
+			}
+		})
+		$.each(node.objectOf, function(index, rangePred) {
+			if (propertyBuffer.indexOf(rangePred) == -1) {
+				propertyBuffer.push(rangePred)
+				dataProcessor.exploreRestrictions(rangePred)
+			}
 		})
 	},
 
-	/*
-	 * This function either returns a false, so that we cannot display the form.
-	 * Or a concrete form div.
-	 */
-	generateForm : function(className) {
-		// I have to check all the predicates whose subject or object is this
-		// varname
-
-		var classesToQuestion
-		var property = query.getObjectOf(varname)
-		// Now only the completely new parts are interested
-
-		if (predicate.checkRestriction) {
-			// Here we have to list all classes come into the question
-			if (ontology.properties[property].restriction[className] != undefined) {
-
-			}
+	init : function() {
+		
+		nodeBuffer.push("individual")
+		var mainProperty
+		if (nodes.individual.subjectOf != undefined) {
+			mainProperty = nodes.individual.subjectOf
+		} else {
+			mainProperty = nodes.individual.objectOf
 		}
-
+		propertyBuffer.push(mainProperty)
+		dataProcessor.exploreRestrictions(mainProperty)
 	},
 
-	addNew : function(varName) {
+	getFields : function(variable, class_) {
 
+		console.log(variable + "   " + class_)
+		/* var htmlField = html.div()
+		var variable = cachedNodes[variable].possibleClasses[class_].variables
+		$.each(variables, function(variable, data) {
+			var propertyDef = predicates[data.property]
+			if (propertyDef.offerAllPossible != undefined) {
+				
+			}
+		})
+		return htmlField*/
 	},
-
-	showForm : function(property) {
-
-	},
-
 }
 
-var UIConfig = {
+var logic = {
 
-	boneDivisions : {
-		classsesForNew : [ {
-			uri : "1",
-			label : "Viscerocraium",
-			connections : {
-				boneOrgan : {
-					minCardinality : 1,
-					classesForNew : [ {
-						uri : "leftparietal1",
-						label : "Left Parietal Bone",
+		
+	isFinalNode : function(variable){
 
-					}, {
-						uri : "rightparietal1",
-						label : "Right Parietal Bone",
-						connections : {
-							entireBone : {
-								mincardinality : 1,
-								connections : {
-									classesForNew : [ {
-										uri : "entireLeftParietal",
-										label : "Entire Left Parietal Bone",
-										connections : {
-											completeness : {
+		return Arithmetic.or([this.isDataProperty(prop), this.onlyAddExisting(prop), this.connectsToIndividual(prop)])
+	},
 
-											}
-										}
-									} ]
-								}
-							}
-						}
-					} ]
-				}
-			},
-		} ]
+	isDataProperty : function(prop) {
+
+		if (properties[prop].dataProperty != undefined) {
+			return true
+		} else {
+			return false
+		}
+	},
+
+	onlyAddExisting : function(prop) {
+
+		if (properties[prop].addExisting != undefined
+				&& properties[prop].addNew === undefined) {
+			return true
+		} else {
+			return false
+		}
+	},
+	
+	connectsToIndividual : function(prop){
+		
+		if(properties[prop].domain == "individual" || properties[prop].range == "individual"){
+			return true
+		} else {
+			return false
+		}
 	}
-}
-
-processes.getInterface()
+}	

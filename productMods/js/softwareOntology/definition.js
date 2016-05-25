@@ -1,18 +1,123 @@
 
 
-//We get at first predicates
-
 var nodes = {
 	
 	boneOrgan : {
-		addNew : true,
-		classTo : "boneOrgan",
-		objectOf : ["isAbout"]
+		interfaceSelection : true
 	}
 }
 
+//We load the software ontology to JS, and it performs the queries necessary
+//to the page load and optimizes
 
-var predicates = {
+var cachedNodes = {
+	
+	//The SPARQL query definition is represented here in JS
+	//We need to distinct it based on the nodes, because we add the 
+	//data node by node. And the restrictions, should be defined
+	//in a more compact way.
+	
+	boneOrgan : {
+		
+		possibleClasses : {
+			maxilla : {
+				variables : {
+					boneSegment : {
+						property : "regionalPartOf",
+						customClasses : ["a", "b"]
+					}
+				}
+			},
+
+			nasalBone : {
+				variables : {
+					boneSegment : {
+						property : "regionalPartOf",
+						customClasses : ["c", "d"]
+					}
+				}
+			}
+		}
+	},
+	
+	boneSegment : {
+		
+		possibleClasses : {
+
+			a : {
+				uri : "a",
+				label : "A",
+				variables : {
+					completeness : {
+						property : "isAbout",
+						customClasses : ["completeness2state", "weight"]
+					}
+				}
+			},
+			
+			b : {
+				uri : "b",
+				label : "B",
+				variables : {
+					completeness : {
+						property : "isAbout",
+						customClasses : ["completeness2state", "weight"],
+					}
+				}
+			},
+			
+			c : {
+				uri : "c",
+				label : "C",
+				variables : {
+					completeness : {
+						property : "isAbout",
+						customClasses : ["completeness2state"]
+					}
+				}
+			},
+			
+			d : {
+				uri : "d",
+				label : "D",
+				variables : {
+					completeness : {
+						customClasses : ["completeness2state"]
+					}
+				}
+			}
+		}
+	},
+	
+	completeness : {
+		possibleClasses : {
+			twoState : {
+				uri : "twoState",
+				label : "Two State",
+			},
+	
+			weight : {
+				uri : "weight",
+				label : "Weight",
+			},
+		}
+	},
+	
+	categoricalLabel : {
+		possibleInstances : {
+			set : ["complete", "incomplete"]
+		}
+	},
+	
+	individual : {
+		possibleClassesForNew : [],
+		subjectOf : ["hasPart"]
+	},
+}
+
+
+
+var properties = {
 
 	hasPart : {
 		cardinality : 1,
@@ -30,7 +135,7 @@ var predicates = {
 		domain : "completeness",
 		range : "boneSegment",
 		cardinality : 1,
-		fauxOf : "isAbout",
+		offerAllPossible : true,
 	},
 
 	regionalPartOf : {
@@ -46,26 +151,11 @@ var predicates = {
 		minCardinality : 1,
 		fauxOf : "obo:systemicPartOf",
 	},
-    
 }
 
 
 var type = {
 	
 	"individualUri" : "primarySkeletalInventory",
-}
-
-var alg = function(){
-	
-	$.each(predicates, function(index, predicate){
-		if(predicate.subject == "individualUri"){
-			
-			//Here we have to check what kind of objects can we add
-			switch(predicate.individualUri){
-				
-			}
-			return false 
-		}
-	})
 }
 
