@@ -1,4 +1,20 @@
-
+var folder = imgSrc
+var ImgSrc = {
+		add : this.folder + "add.png",
+		arrows : this.folder + "arrows.png",
+		backToParent : this.folder + "backToParent.png",
+		close : this.folder + "close.png",
+		del : this.folder + "del.png",
+		done : this.folder + "done.png",
+		done32 : this.folder + "done32.png",
+		edit : this.folder + "edit.png",
+		loading : this.folder + "loading.gif",
+		minus : this.folder + "minus.png",
+		modify : this.folder + "modify.png",
+		ok : this.folder + "ok.png",
+		plus : this.folder + "plus.png",
+		jump : this.folder + "jump.png",
+	}
 
 var ImgUI = {
 		
