@@ -1,6 +1,6 @@
 
 
-var DataEntry = function(className){
+var DataEntry = function(className, dataController){
 	
 	this.container = html.div("table")
 	this.innerContainer = html.div("dataEntry").appendTo(this.container)
@@ -8,5 +8,28 @@ var DataEntry = function(className){
 	
 	this.innerContainer.append(html.div("inline").text(this.label))
 	this.innerContainer.append(ImgUI.libImg("edit", "dataEntryImg"))
-	this.innerContainer.append(ImgUI.libImg("del", "dataEntryImg"))
+	this.innerContainer.append(
+			ImgUI.libImg("del", "dataEntryImg").
+			click((function(){
+				this.remove()
+			}).bind(this)))
+
+	
+	/*
+	 * It add a variable to the controller immediately.
+	 */
+	this.dataController = dataController
+	this.dataController.add()
 }
+
+
+DataEntry.prototype = {
+	
+		
+	remove : function(){
+		
+		this.container.remove()
+		this.dataController.remove()
+	}	
+}
+

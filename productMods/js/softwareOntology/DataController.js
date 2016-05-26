@@ -8,16 +8,19 @@
  * allowed to save the process.
  */
 
-var DataController = function(dataField, outputVar, dataField){
+var DataController = function(dataField, newVar, property, parentDataController){
 	
 	//We have to pass the dataField to be able to controler the 
 	//save and cancel button
+	this.parentDataConroller = parentDataController
 	this.dataField = dataField
 	this.inputVar = dataField.varName
-	
-	this.outputVar = outputVar
-	
+	this.inputClassUri = dataField.classUri
+	this.newVar = newVar
+ 	this.property = property
 	this.getCardinality()
+	console.log(this.cardinality)
+	this.numOfInstance = 0
 }
 
 DataController.prototype = {
@@ -25,36 +28,48 @@ DataController.prototype = {
 	getCardinality : function(){
 		
 		this.cardinality = new Object
-		if(properties[this.variable.property].domain = "varName"){
-			// We have to check theinverse cardinality
-			if(properties[this.variable.property].inverseMinCardinality != undefined){
+		if(properties[this.property].domain = "varName"){
+			// We have to check the inverse cardinality
+			if(properties[this.property].inverseMinCardinality != undefined){
 				this.cardinality.type = "min",
-				this.cardinality.value	= properties[this.variable.property].inverseMinCardinality
-			} else if(properties[this.variable.property].inverseMaxCardinality != undefined){
+				this.cardinality.value	= properties[this.property].inverseMinCardinality
+			} else if(properties[this.property].inverseMaxCardinality != undefined){
 				this.cardinality.type = "max",
-				this.cardinality.value	= properties[this.variable.property].inverseMaxCardinality
-			} if(properties[this.variable.property].inverseCardinality != undefined){
-				this.cardinality.value	= properties[this.variable.property].inverseCardinality
+				this.cardinality.value	= properties[this.property].inverseMaxCardinality
+			} if(properties[this.property].inverseCardinality != undefined){
+				this.cardinality.value	= properties[this.property].inverseCardinality
 			}
 		} else {
-			if(properties[this.variable.property].minCardinality != undefined){
+			if(properties[this.property].minCardinality != undefined){
 				this.cardinality.type = "min",
-				this.cardinality.value	= properties[this.variable.property].minCardinality
-			} else if(properties[this.variable.property].inverseMaxCardinality != undefined){
+				this.cardinality.value	= properties[this.property].minCardinality
+			} else if(properties[this.property].inverseMaxCardinality != undefined){
 				this.cardinality.type = "max",
-				this.cardinality.value	= properties[this.variable.property].maxCardinality
-			} if(properties[this.variable.property].inverseCardinality != undefined){
-				this.cardniality.value	= properties[this.variable.property].cardinality
+				this.cardinality.value	= properties[this.property].maxCardinality
+			} if(properties[this.property].inverseCardinality != undefined){
+				this.cardinality.value	= properties[this.property].cardinality
 			}
 		}
 	},
 		
 	add : function(){
 		
+		this.numOfInstance++
+		console.log(this.cardinality)
+		if(this.cardinality.type == "min"){
+			if(this.numOfInstance >= this.cardinality.value){
+				console.log("dsd")
+				this.dataField.saveButton.enable()
+			}
+		}
 	},
 		
 	remove : function(){
-		
-		
+		this.numOfInstance--
+		if(this.cardinality.type == "min"){
+			if(this.numOfInstance < this.cardinality.value){
+				this.dataField.saveButton.disable()
+			}
+		}
 	}
 }
