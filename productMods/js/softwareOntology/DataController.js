@@ -8,11 +8,10 @@
  * allowed to save the process.
  */
 
-var DataController = function(dataField, newVar, property, parentDataController){
+var DataController = function(dataField, newVar, property){
 	
 	//We have to pass the dataField to be able to controler the 
 	//save and cancel button
-	this.parentDataConroller = parentDataController
 	this.dataField = dataField
 	this.inputVar = dataField.varName
 	this.inputClassUri = dataField.classUri
