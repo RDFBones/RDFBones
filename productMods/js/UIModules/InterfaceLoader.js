@@ -4,6 +4,7 @@ var InterfaceLoader = function(containerDiv){
 	this.interfaceContainer = html.div()
 	this.initInterface()
 	this.container.append(this.interfaceContainer)
+	
 }
 
 InterfaceLoader.prototype = {

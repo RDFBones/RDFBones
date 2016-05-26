@@ -19,9 +19,14 @@ DataField.prototype = {
 		 */
 		if(Object.keys(this.cachedDef.variables).length == 1 && 
 				this.cachedDef.variables.individual != undefined){
-			var dataController = new DataEntryDataController(this, "individual",
-					this.cachedDef.variables.individual.property, this.dataController)
-			this.fieldContainer.append(new DataEntry(this.classUri, dataController).container)
+			
+			
+			if(this.fieldDataController === undefined){
+				this.fieldDataController = new DataEntryDataController(this, "individual",
+						this.cachedDef.variables.individual.property, this.dataController)
+			}
+			
+			this.fieldContainer.append(new DataEntry(this.classUri, this.fieldDataController).container)
 		} else if(true){
 			
 			$.each(this.cachedDef.variables, (function(varName, variableDef) {
