@@ -50,14 +50,13 @@ var k = function(){
 	console.log("abcdefghijklmnopqrstuxzy")
 }
 
-//var folder = "/Library/images/general/"
 var folder = imgSrc
 var ImgSrc = {
 		add : this.folder + "add.png",
 		arrows : this.folder + "arrows.png",
 		backToParent : this.folder + "backToParent.png",
 		close : this.folder + "close.png",
-		del : this.folder + "delete.png",
+		del : this.folder + "del.png",
 		done : this.folder + "done.png",
 		done32 : this.folder + "done32.png",
 		edit : this.folder + "edit.png",
