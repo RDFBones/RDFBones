@@ -69,9 +69,14 @@
 	background-color : #9D9696;
 }
 
-.disabledGeneralButton {
-	opacity : 0.8;
+.enabledButton {
+	opacity : 1;
 }
+
+.disabledButton {
+	opacity : 0.4;	
+}
+
 
 .redBorder {
 	border: 1px solid red;
@@ -81,7 +86,7 @@
 	border: 1px solid black;
 }
 
-.generalButton:hover {
+.enabledButton:hover {
 	cursor: pointer;
 }
 

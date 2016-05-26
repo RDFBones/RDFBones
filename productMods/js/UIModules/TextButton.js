@@ -5,7 +5,7 @@ var TextButton = function(text, returnFunction){
 	
 	this.enabled = true
 	this.returnFunction = returnFunction
-	this.container = UI.getTextButton(text).click(this.clickEvent)
+	this.container = UI.getTextButton(text).click((this.clickEvent).bind(this))
 }
 
 
@@ -19,12 +19,24 @@ TextButton.prototype = {
 		
 	disable : function(){
 		this.enabled = false
-		this.container.addClass("disabled")
+		this.container.removeClass("enabledButton").addClass("disabledButton")
+		return this
 	},
 	
 	enable : function(){
 		this.enabled = true
-		this.container.addClass("generalButton")
-	}
+		console.log("enable")
+		this.container.removeClass("disabledButton").addClass("enabledButton")
+		return this
+	},
 		
+	hide : function(){
+		this.container.css("display", "none")
+		return this
+	},
+	
+	show : function(){
+		this.container.css("display", "inline-block")
+		return this
+	}
 }

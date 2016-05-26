@@ -89,7 +89,7 @@ var UI = {
 	},
 
 	getTextButton : function(text){
-		return html.div("generalButton").text(text)
+		return html.div("generalButton enabledButton").text(text)
 	},
 	
 	/***************************************************************************
