@@ -10,16 +10,15 @@
 
 var DataEntryDataController = function(dataField, newVar, property, parentDataController){
 	
-	DataController.call(this, dataField, newVar, property, parentDataController)
+	DataController.call(this, dataField, newVar, property)
 }
 
 DataEntryDataController.prototype = Object.create(DataController.prototype)
 
 var dataEntryControllerMethod = {
 	
-	add : function(){
+	add : function(data){
 		
-		this.parentDataConroller.add()
 	},
 	
 	remove : function(){
