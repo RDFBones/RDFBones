@@ -1,10 +1,11 @@
 
-var ClassField = function(varName, classUri) {
+var ClassField = function(varName, classUri, dataController) {
 
 	DataField.call(this)
-	this.cachedDef = cachedNodes[varName].possibleClasses[classUri]
-	this.varname = varName
-	this.classuri = classUri
+	this.dataController = dataController
+	this.cachedDef = processedNodes[varName].possibleClasses[classUri]
+	this.varName = varName
+	this.classUri = classUri
 	this.container = html.div()
 	this.fieldContainer = html.div("dataFieldContainer")
 	this.subSessions = []
@@ -15,16 +16,17 @@ var ClassField = function(varName, classUri) {
 	this.buttonContainer = html.div("dataFieldContainer")
 
 	this.saveButton = new TextButton("Save")
-	this.saveButton.disable()
+	this.saveButton.hide().disable()
 	this.cancelButton = new TextButton("Cancel")
+	this.cancelButton.hide()
 
 	this.buttonContainer = html.div("dataFieldContainer")
-				.append(this.saveButton.container.hide())
-				.append(this.cancelButton.container.hide())
+				.append(this.saveButton.container)
+				.append(this.cancelButton.container)
 	this.container.append(this.classContainer)
 				.append(this.fieldContainer)
 				.append(this.buttonContainer)
-			
+
 }
 
 ClassField.prototype = Object.create(DataField.prototype)
