@@ -19,7 +19,13 @@ var DataEntry = function(className, dataController){
 	 * It add a variable to the controller immediately.
 	 */
 	this.dataController = dataController
-	this.dataController.add()
+	
+	var data = new Object()
+	data.label = this.label
+	
+	this.dataController.add(data)
+
+	
 }
 
 
