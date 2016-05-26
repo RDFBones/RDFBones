@@ -15,5 +15,4 @@ var AJAXController = {
 			returnObject.returnRoutine(currentTestData)
 		}
 	}
-	
 }
