@@ -1,6 +1,6 @@
 var DataField = function() {
 	
-	
+		
 }
 
 DataField.prototype = {
@@ -9,34 +9,42 @@ DataField.prototype = {
 	 * The add is general for each type of DataField since we do not know
 	 * what kind of type do we have.
 	 * 
-	 * 
 	 * The inputs - >  dataController, variableName (forward), class
 	 */
 	add : function() {
 
 		/*
-		 * Important - we have to create a DataController for each variable 
-		 * connected to the variable
+		 * Case I. - We arrived to the last instance before the individual
+		 * and there is no other type of variables coming out from this instance
 		 */
-		
-		$.each(this.cachedDef.variables, (function(varName, variable) {
+		if(Object.keys(this.cachedDef.variables).length == 1 && 
+				this.cachedDef.variables.individual != undefined){
+			var dataController = new DataEntryDataController(this, "individual",
+					this.cachedDef.variables.individual.property, this.dataController)
+			this.fieldContainer.append(new DataEntry(this.classUri, dataController).container)
+		} else if(true){
 			
-			//Each variable is connected to the variable in scope throug a property
-			//This property is in the processed node
-			
-			//The dataController is independent from the class selected
-			var dataController = new DataController(this, varName)
-			
-			var property = variable.property
-			//We have to figure out what fields do we offer for this property
-			
-			if(properties[property].addNew != undefined){
-				//If addNew is there then we create the new classes for the
+			$.each(this.cachedDef.variables, (function(varName, variableDef) {
 				
-			}
-			
-		}).bind(this))
+				var property = variableDef.property
+				var dataController = new DataController(this, varName, variableDef.property)
+				
+				if(processedNodes[this.varName].type == "addNew"){
+					
+					console.log(processedNodes[varName])
+					//Check if we can select from more classes or from just one
+					var bufferArray = []
+					//The we show ones from the possible classes that can be displayed
+					$.each(variableDef.customClasses, function(i, customClass){
+						//The classField knows the from the customClass the defintion
+						//in the processedNodes
+						bufferArray.push(new ClassField(varName, customClass, dataController).container)
+					})
+					this.fieldContainer.append(bufferArray)
+					this.saveButton.show()
+					this.cancelButton.show()		
+				} 
+			}).bind(this))
+		}
 	},
-	
-
 }

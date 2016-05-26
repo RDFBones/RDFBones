@@ -10,7 +10,7 @@ var nodes = {
 //We load the software ontology to JS, and it performs the queries necessary
 //to the page load and optimizes
 
-var cachedNodes = {
+var processedNodes = {
 	
 	//The SPARQL query definition is represented here in JS
 	//We need to distinct it based on the nodes, because we add the 
@@ -18,12 +18,11 @@ var cachedNodes = {
 	//in a more compact way.
 	
 	boneOrgan : {
-		
+		type : "addNew",
 		possibleClasses : {
 			maxilla : {
 				variables : {
 					boneSegment : {
-						type : "newInstance",
 						property : "regionalPartOf",
 						customClasses : ["a", "b"]
 					}
@@ -33,7 +32,6 @@ var cachedNodes = {
 			nasalBone : {
 				variables : {
 					boneSegment : {
-						type : "newInstance",
 						property : "regionalPartOf",
 						customClasses : ["c", "d"]
 					}
@@ -44,20 +42,25 @@ var cachedNodes = {
 	
 	boneSegment : {
 		
+		/*
+		 * Finalnode means we will not create any 
+		 * more DataField after them.
+		 */
+		type : "addNew",
 		possibleClasses : {
 
 			a : {
 				variables : {
-					completeness : {
+					individual : {
 						property : "isAbout",
-						customClasses : ["completeness2state", "weight"]
+						
 					}
 				}
 			},
 			
 			b : {
 				variables : {
-					completeness : {
+					individual : {
 						property : "isAbout",
 						customClasses : ["completeness2state", "weight"],
 					}
@@ -128,6 +131,7 @@ var properties = {
 	isAbout : {
 		domain : "completeness",
 		range : "boneSegment",
+		inverseMinCardinality : 1,
 		cardinality : 1,
 		offerAllPossible : true,
 	},
@@ -135,7 +139,8 @@ var properties = {
 	regionalPartOf : {
 		subject : "boneSegment",
 		object : "boneOrgan",
-		minCardinality : 1,
+		inverseMinCardinality : 1,
+		cardinality : 1,
 		fauxOf : "regionalPartOf",
 	},
 	
