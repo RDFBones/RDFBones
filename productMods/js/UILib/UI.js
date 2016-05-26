@@ -88,6 +88,10 @@ var UI = {
 				.append(ImgUI.libImg("add", "addFieldImg").click(clickFunction))
 	},
 
+	getTextButton : function(text){
+		return html.div("generalButton").text(text)
+	},
+	
 	/***************************************************************************
 	 * Checkbox with text
 	 **************************************************************************/
