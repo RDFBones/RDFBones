@@ -61,9 +61,16 @@
 }
 
 .generalButton {
+	margin-left : 10px;
+	display : inline-block;
 	border: 1px solid black;
 	border-radius: 3px;
 	padding: 2px 5px;
+	background-color : #9D9696;
+}
+
+.disabledGeneralButton {
+	opacity : 0.8;
 }
 
 .redBorder {

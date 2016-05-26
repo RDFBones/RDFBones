@@ -1,0 +1,22 @@
+
+
+.dataFieldContainer{
+	padding-left : 18px;
+}
+
+
+.dataEntry {
+	display : flex;
+	align-items : center;
+	height : 25px;
+	font-size : 16px;
+	margin : 3px;
+	border : 1px solid;
+	border-radius : 5px;
+	padding : 0 10px;
+}
+
+.dataEntryImg {
+	margin-left : 10px;
+	display : inline-block;
+}
