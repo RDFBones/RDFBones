@@ -27,7 +27,7 @@ body {
     margin: 0 auto;
 }
 body {
-   background: #f3f3f0 url(../images/header-background.png) center 0 no-repeat; 
+   background: #f3f3f0 url(../images/rdfbones-background.png) center 0 no-repeat; 
 }
 a {
     color: #2485AE;
@@ -457,7 +457,7 @@ h1.vivo-logo {
     height: 59px;
     top: 28px;
     left: 0;
-    background: url(../images/VIVO-logo.png) 0 0 no-repeat;
+    background: url(../images/vitruvianMan.png) 0 0 no-repeat;
 }
 h1.vivo-logo a {
     display: block;
@@ -768,7 +768,7 @@ p.external-auth a.blue:hover {
     padding: 0;
     font-size: 22px;
     margin-bottom: 15px;
-    color: #2485AE;
+    color: #DECBA6;
 		padding-left: 24px;
 }
 #search-home-field {
@@ -886,7 +886,7 @@ a.view-all-style {
 .home-sections h4 {
 		border-top: 1px solid rgba(220,228,227,.42); /* stroke */
 		border-bottom: 1px solid rgba(220,228,227,.42); /* stroke */
-		background-color: #395d7f; /* layer fill content */
+		background-color: #DECBA6; /* layer fill content */
 		border-bottom: 2px solid #62b6d7;
 		color: #fff;
 }
