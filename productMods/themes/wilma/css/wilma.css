@@ -585,7 +585,7 @@ body.loggedIn #intro {
 #intro h2 {
     padding: 35px 0 12px 24px;
     border-bottom: none;
-    color: #2485AE;
+    color: #DECBA6;
 }
 #intro p {
     font-size: 16px;
@@ -621,7 +621,7 @@ body.login #login {
 }
 #login h2 {
     font-size: 22px;
-    color: #2485ae;
+    color: #DECBA6;
     padding-left: 15px;
     padding-top: 18px;
     border-bottom: none;
