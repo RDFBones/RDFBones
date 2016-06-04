@@ -1,55 +1,84 @@
 var singleBones = []
 var coherentBones = []
 
-var pageElements = [ {
-	id : "coherentBones",
-	title : "Coherent Bones",
-	type : "table",
-	dataKey : "coherent",
-	dataSet : coherentBones,
-	columns : [ {
-		columnName : "classLabel",
-		title : "Class",
-	}, {
-		columnName : "label",
-		title : "Label"
-	}, {
-		columnName : "description",
-		title : "Description"
-	} ]
-}, {
-	id : "coherentBoneTree",
-	title : "Add Coherent Bones",
-	type : "treeStructure",
-	dataKey : "treeStructure",
-}, {
-	id : "singleBones",
-	title : "Single Bones",
-	type : "table",
-	dataKey : "single",
-	dataSet : singleBones,
-
-	columns : [  {
-		columnName : "classUri",
-		title : "Class",
-	}, {
-		columnName : "label",
-		title : "Label"
-	}, {
-		columnName : "description",
-		title : "Description"
-	}]
+var pageElements = [{ 
+    
+	id : "skeletalInventoryLabel",
+	type : "literalField",
+	title : "Label",
+	//This key comes from the page load process 
+	value : "inventoryLabel",
+},{ 
+	id : "skeletalInventoryDescription",
+	type : "literalField",
+	title : "Description",
+	
+	//This key comes from the page load process 
+	value : "inventoryDescription",
 },{
-	id : "singleBoneTree",
-	title : "Add Single Bones",
-	type : "treeStructureSingle",
-	dataKey : "treeStructure",
-}, {
-	id : "boneEditor",
-	type : "subPage",
-} ]
+	id : "inventoryTab",
+	type : "tabContainer",
+	tabs : [{
+		title : "Single Bone Regions",
+		dataFields : [{
+			addFieldText : "add",
+			dataKey : "singleBones",
+			dataFields : [{
+				title : "Type",
+				dataKey : "class",
+				type : "literal",
+			},{
+				title : "Label",
+				dataKey : "class",
+				type : "literal",
+			},{
+				title : "Number of Bone Segments",
+				dataKey : "number",
+				type : "number",
+			},{
+				type : "editButton",
+				linkTo : {
+					type : "profilePageLoad",
+					dataMap : {
+						subjecUri : "pageData",
+						boneSegment : "localData",
+					}
+				}
+			}
+			]
+		},{
+			title : "Coherent Bone Regions",
+			dataFields : [{
+				addFieldText : "add",
+				dataKey : "coherentBones",
+				dataFields : [{
+					title : "Type",
+					dataKey : "class",
+					type : "literal"
+				},{
+					title : "Label",
+					dataKey : "class",
+					type : "literal",
+				},{
+					title : "Number of Bone Organs",
+					dataKey : "number",
+					type : "number",
+				},{
+					type : "editButton",
+					linkTo : {
+						type : "profilePageLoad",
+						dataMap : {
+							subjecUri : "pageData",
+							boneSegment : "localData",
+						}
+					}
+				}
+				]
+			}]
+		}]
+	}]
+}]
 
-console.log(pageElements)
 
 var	treeStructure = [ {
 		uri : "http://purl.obolibrary.org/obo/FMA_53672",
