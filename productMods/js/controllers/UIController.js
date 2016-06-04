@@ -91,21 +91,3 @@ var UIController = {
 		}
 	},
 }
-
-var folder = imgSrc
-
-var ImgSrc = {
-	addImgSrc : this.folder + "add.png",
-	addInstance : this.folder + "addInstance.png",
-	arrows : this.folder + "arrows.png",
-	backToParent : this.folder + "backToParent.png",
-	close : this.folder + "close.png",
-	del : this.folder + "delete.png",
-	del16 : this.folder + "del16.png",
-	edit : this.folder + "edit.png",
-	loadingGif : this.folder + "loading.gif",
-	minus : this.folder + "minus.png",
-	modify : this.folder + "modify.png",
-	ok : this.folder + "ok.png",
-	plus : this.folder + "plus.png",	
-}
