@@ -1,0 +1,58 @@
+
+@prefix sw:  <http://softwareOntology.com/>  .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+
+sw:skeletalInventoryPage 	sw:pageElement  sw:boneContainer1 .
+
+sw:boneContainer1		rdf:type		sw:TabContainer ;
+						sw:tab			sw:singleBonesTab ;
+						sw:tab			sw:coherentBonesTab .
+
+# Tab Definition
+
+sw:singleBonesTab		rdf:type 		sw:Tab ;
+						sw:tabTitle		"Single Bones" ;
+						sw:contains		sw:singleBonesTable .
+
+sw:coherentBonesTab		rdf:type 		sw:Tab ;
+						sw:tabTitle		"Coherent Bones " ;
+						sw:contains		sw:coherentBoneTable .
+
+### DataTable
+
+sw:singleBonesTable		rdf:type		sw:DataTable ;
+						sw:dataKey		"singleBones" .
+
+### LiteralField
+
+sw:singleBonesTable		sw:dataField	sw:typeDataField1 .
+
+sw:typeDataField1		rdf:type 		sw:LiteralField ;
+						sw:dataKey		"type" .
+
+### LabelField
+
+sw:singleBonesTable		sw:dataField	sw:labelDataField1 .
+sw:labelDataField1		rdf:type 		sw:LiteralField ;
+						sw:dataKey		"label" .
+
+### CounterField
+
+sw:singleBonesTable		sw:dataField	sw:counterDataField1 .
+
+sw:counterDataField1	rdf:type 		sw:LiteralField ;
+						sw:dataKey		"numberOfBoneSegments" .
+
+### EditButton
+
+sw:singleBonesTable		sw:dataField	sw:editSingleButton .
+sw:editSingleButton		rdf:type		sw:EditButton .
+
+sw:EditButton			sw:input		sw:dataInput1 .
+sw:dataInput1			rdf:type		sw:global .
+sw:dataInput1			sw:value		"individual" .
+
+sw:EditButton			sw:input		sw:dataInput2 .
+sw:dataInput2			rdf:type		sw:global .
+sw:dataInput2			sw:value		"boneUri" .
