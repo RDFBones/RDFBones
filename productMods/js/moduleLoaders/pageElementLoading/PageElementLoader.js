@@ -1,14 +1,17 @@
 
 
-var PageElementLoader = function(){
-	
+var PageElementLoader = function(uri){
+	pageData["pageConfig"] = new Object()
+	this.loadingQueue = []
+	pageData["pageConfig"].uri = uri
 	this.dataObject = pageData["pageConfig"]
 	this.varName = "pageElement"
 	this.setVars()
 	this.root = this
+	this.getElements()
 }
 
-PageElementLoader.prototye = {
+PageElementLoader.prototype = {
 
 		init : function(pageData){
 			pageData[pageElements] = []
@@ -16,16 +19,18 @@ PageElementLoader.prototye = {
 		},
 		
 		addToQueue : function(){
+			console.log(this)
 			this.loadingQueue.push(1)
 		},
 		
 		removeFromQueue : function(){
 			this.loadingQueue.pop()
 			if(this.loadingQueue.length == 0){
-				return true
-			} else {
-				return false
-			}
+				//If we are here then everything were loaded
+				console.log("Ready")
+				console.log(pageData)
+				pageLoader.loadPage()
+			} 
 		},
 	
 		getElements : function(){
@@ -33,21 +38,30 @@ PageElementLoader.prototye = {
 			this.dataObject[this.arrayName] = []
 			$.ajax({
 				context: this,
-				url : baseUrl + this.queryKey,
+				url : baseUrl + "pageConfigLoad",
 				data : {
+					configType : this.queryKey,
 					subject : this.dataObject.uri
 				}
-			}).done(function(msg){
-				$.each(results, (function(i, pageElement){
-					var data = new Object()
-					$.extend(data, pageElement)
-					data["uri"] = data[this.varName]
-					delete data[this.varName]
-					this.dataObject[this.arrayName].push(data)
-					new PageLoaderMap[pageElement.type](this, data).getElements()
-				}).bind(this))
-			})
-			this.root.removeFromQueue()
+			}).done((function(msg){
+				var results = $.parseJSON(msg)
+				if(results.noResult === undefined){
+					$.each(results, (function(i, pageElement){
+						var data = new Object()
+						$.extend(data, pageElement)
+						data["uri"] = data[this.varName]
+						delete data[this.varName]
+						this.dataObject[this.arrayName].push(data)
+						new PageLoaderMap[pageElement.type](this.root, data).getElements()
+					}).bind(this))			
+				}
+				this.root.removeFromQueue()
+			}).bind(this)).fail((function(){
+				console.log("The AJAX call were not succesful")
+				console.log(this.queryKey)
+				console.log(this.dataObject)
+			}).bind(this))
+			
 		},
 		
 		setVars : function(){
@@ -56,20 +70,3 @@ PageElementLoader.prototye = {
 			this.arrayName = this.varName + "s"
 		}
 }
-
-
-var sw = {
-		tabContainer : "TabContainer",
-		tab : "Tab",
-		dataTable : "DataTable",
-		literalField : "LiteralField"
-}
-
-var PageLoaderMap = new Object()
-
-pageLoaderMap[sw.tabContainer] = TabContainerLoader
-pageLoaderMap[sw.literalField] = LiteralLoader
-pageloaderMap[sw.tab] = TabLoader
-pageLoaderMap[sw.dataTable] = DataTableLoader
-pageLoaderMap[sw.literalField] = LiteralLoader
-
