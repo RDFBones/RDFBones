@@ -1009,6 +1009,16 @@
     <url-pattern>/dataautocomplete</url-pattern>
   </servlet-mapping>
  
+ 
+  <servlet>
+    <servlet-name>PageConfigurationLoader</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.PageConfigurationLoader</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PageConfigurationLoader</servlet-name>
+    <url-pattern>/pageConfigLoad</url-pattern>
+  </servlet-mapping>
+ 
   <servlet>
     <servlet-name>ReorderController</servlet-name>
     <servlet-class>edu.cornell.mannlib.vitro.webapp.controller.edit.ReorderController</servlet-class>

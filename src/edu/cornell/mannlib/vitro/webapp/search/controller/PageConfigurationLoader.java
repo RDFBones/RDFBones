@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,12 +18,14 @@ import org.json.JSONObject;
 import com.hp.hpl.jena.query.ResultSet;
 
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
+import edu.cornell.mannlib.vitro.webapp.controller.ajax.VitroAjaxController;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.N3Utils;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
 
 public class PageConfigurationLoader extends VitroAjaxController {
 
-  
+  private static final Log log = LogFactory.getLog(PageConfigurationLoader.class);
+
   VitroRequest vreq;
   
   @Override
@@ -30,32 +34,33 @@ public class PageConfigurationLoader extends VitroAjaxController {
 
       this.vreq = vreq;
       List<Map<String, String>> result = new ArrayList<Map<String, String>>();
-      
+      log.info("Something arrives");
+     
       switch (vreq.getParameter("configType")) {
         
       case "pageElements" : 
             
           String[] inputParam = {"subject"};
-          String[] uris = {"pageElement", "?type"};
+          String[] uris = {"pageElement", "type"};
           String query = 
             "SELECT ?pageElement  ?type" 
             +   " WHERE {  "
             +   "  ?subject       sw:pageElement             ?pageElement . "
-            +   "  ?pageElement   vitro:mostSpecificType     ?type ." 
+            +   "  ?pageElement   rdf:type     ?type ." 
             +   " }  ";  
           result = this.performQuery(query, inputParam, uris, null);
           break;
       case "tabs" : 
         
         String[] tabInputParam = {"subject"};
-        String[] tabUris = {"tab", "?type"};
+        String[] tabUris = {"tab", "type"};
         String[] tabLiterals = {"tabTitle"};
         
         String tabQuery = 
           "SELECT ?tab  ?type ?tabTitle" 
           +   " WHERE {  "
           +   "  ?subject     sw:tab                     ?tab . "
-          +   "  ?tab         vitro:mostSpecificType     ?type ." 
+          +   "  ?tab         rdf:type                   ?type ." 
           +   "  ?tab         sw:tabTitle                ?tabTitle ."        
           +   " }  ";  
         
@@ -69,14 +74,16 @@ public class PageConfigurationLoader extends VitroAjaxController {
         String[] tabElementLiterals = {"dataKey"};
         
         String tabElementQuery = 
-          "SELECT ?tabElement ?type ?dataKey" 
+          "SELECT ?element ?type ?dataKey ?cef ?addText" 
           +   " WHERE {  "
           +   "  ?subject         sw:contains               ?element . "
-          +   "  ?element         vitro:mostSpecificType    ?type ."
-          +   "  OPTIONAL     { ?tabElement  sw:dataKey  ?dataKey} ." 
+          +   "  ?element         rdf:type    ?type ."
+          +   "  OPTIONAL     { ?element  sw:dataKey  ?dataKey} ." 
+          +   "  OPTIONAL     { ?element  sw:customEntryForm  ?customEntryForm } ." 
+          +   "  OPTIONAL     { ?element  sw:addText   ?addText } ." 
           +   " }  ";  
         
-        result = this.performQuery(tabQuery, tabInputParam, tabUris, tabLiterals);
+        result = this.performQuery(tabElementQuery, tabElementInputParam, tabElementUris, tabElementLiterals);
         break;
  
       case "dataFields" : 
@@ -87,15 +94,35 @@ public class PageConfigurationLoader extends VitroAjaxController {
         
         String dataFieldQuery = 
 
-        "SELECT ?uri ?type ?dataKey" 
+        "SELECT ?dataField ?type ?dataKey" 
           +   " WHERE {  "
-          +   "  ?subject        sw:contains               ?dataField . "
-          +   "  ?dataField      vitro:mostSpecificType    ?type ."
-          +   "  OPTIONAL        { ?dataFields    sw:dataKey        ?dataKey} ." 
-          +   " }  ";  
+          +   "  ?subject        sw:dataField               ?dataField . "
+          +   "  ?dataField      rdf:type    ?type ."
+          +   "  ?dataField      sw:num      ?num . "
+          +   "  OPTIONAL        { ?dataField    sw:dataKey   ?dataKey} ." 
+          +   " } ORDER BY ASC(?num)  ";  
         
         result = this.performQuery(dataFieldQuery, dataFieldInputParam, dataFieldUris, dataFieldLiterals);
         break; 
+        
+      case "linkDataInputs" : 
+        
+        String[] linkDataInputParam = {"subject"};
+        String[] linkDataInputUris = {"linkDataInput", "type"};
+        String[] linkDataInputLiterals = {"dataKey"};
+        
+        String linkDataInputQuery = 
+
+        "SELECT ?linkDataInput ?type ?dataKey" 
+          +   " WHERE {  "
+          +   "  ?subject           sw:input              ?linkDataInput . "
+          +   "  ?linkDataInput     rdf:type    ?type ."
+          +   "  ?linkDataInput     sw:dataKey        ?dataKey ." 
+          +   " }  ";  
+        
+        result = this.performQuery(linkDataInputQuery, linkDataInputParam, linkDataInputUris, linkDataInputLiterals);
+        break;
+        default : break;
       }
       
       if (result.size() > 0) {
@@ -125,9 +152,9 @@ public class PageConfigurationLoader extends VitroAjaxController {
       readyQuery =
           N3Utils.subInputUriQuery(readyQuery,
               inputParam, this.vreq);  
+      log.info(readyQuery);
       resultSet = QueryUtils.getQueryResults(readyQuery, vreq);
-      return QueryUtils.getQueryVars(resultSet, uris, null);
+      return QueryUtils.getQueryVars(resultSet, uris, literals);
     }
-  
   
 }
