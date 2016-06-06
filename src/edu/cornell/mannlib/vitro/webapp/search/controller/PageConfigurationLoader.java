@@ -71,7 +71,7 @@ public class PageConfigurationLoader extends VitroAjaxController {
         
         String[] tabElementInputParam = {"subject"};
         String[] tabElementUris = {"element", "type"};
-        String[] tabElementLiterals = {"dataKey"};
+        String[] tabElementLiterals = {"dataKey", "addText"};
         
         String tabElementQuery = 
           "SELECT ?element ?type ?dataKey ?cef ?addText" 
@@ -79,7 +79,7 @@ public class PageConfigurationLoader extends VitroAjaxController {
           +   "  ?subject         sw:contains               ?element . "
           +   "  ?element         rdf:type    ?type ."
           +   "  OPTIONAL     { ?element  sw:dataKey  ?dataKey} ." 
-          +   "  OPTIONAL     { ?element  sw:customEntryForm  ?customEntryForm } ." 
+          +   "  OPTIONAL     { ?element  sw:customEntryForm  ?cef } ." 
           +   "  OPTIONAL     { ?element  sw:addText   ?addText } ." 
           +   " }  ";  
         
@@ -90,16 +90,17 @@ public class PageConfigurationLoader extends VitroAjaxController {
         
         String[] dataFieldInputParam = {"subject"};
         String[] dataFieldUris = {"dataField", "type"};
-        String[] dataFieldLiterals = {"dataKey"};
+        String[] dataFieldLiterals = {"dataKey", "title"};
         
         String dataFieldQuery = 
 
-        "SELECT ?dataField ?type ?dataKey" 
+        "SELECT ?dataField ?type ?dataKey ?title" 
           +   " WHERE {  "
           +   "  ?subject        sw:dataField               ?dataField . "
           +   "  ?dataField      rdf:type    ?type ."
           +   "  ?dataField      sw:num      ?num . "
-          +   "  OPTIONAL        { ?dataField    sw:dataKey   ?dataKey} ." 
+          +   "  OPTIONAL { ?dataField       sw:title    ?title } ."
+          +   "  OPTIONAL { ?dataField    sw:dataKey   ?dataKey } ." 
           +   " } ORDER BY ASC(?num)  ";  
         
         result = this.performQuery(dataFieldQuery, dataFieldInputParam, dataFieldUris, dataFieldLiterals);

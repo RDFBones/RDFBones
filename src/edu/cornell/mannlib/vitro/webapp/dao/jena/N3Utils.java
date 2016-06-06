@@ -23,6 +23,7 @@ public class N3Utils {
       put("rdfbones","http://w3id.org/rdfbones/core#");
       put("vitro-public", "http://vitro.mannlib.cornell.edu/ns/vitro/public#");
       put("vitro", "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#");
+      put("sw", "http://softwareOntology.com/");
     }};
     
     public static void setInputMap(Map<String, String> inputMap, 
