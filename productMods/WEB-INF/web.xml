@@ -999,6 +999,16 @@
     <servlet-name>SkeletalInventoryQueryController</servlet-name>
     <url-pattern>/skeletalInventoryQuery</url-pattern>
   </servlet-mapping>
+  
+   <servlet>
+    <servlet-name>CustomPageLoadController</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.CustomPageLoadController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CustomPageLoadController</servlet-name>
+    <url-pattern>/customPageLoad</url-pattern>
+  </servlet-mapping>
+   
    
    <servlet>
     <servlet-name>DataAutocompleteController</servlet-name>
