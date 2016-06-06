@@ -1,0 +1,28 @@
+@prefix sw:  <http://softwareOntology.com/>  .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+
+sw:coherentBonesTab    sw:contains		sw:coherentBonesContainer .
+sw:coherentBonesContainer	rdf:type		sw:DataContainer ;
+							sw:dataKey		"coherentBones" ;
+							sw:addText 		"Add new coherent bone" .
+							
+
+### Reuse of the previous fields
+
+sw:coherentBonesContainer		sw:dataField	sw:typeDataField1 .
+sw:coherentBonesContainer		sw:dataField	sw:labelDataField1 .
+
+
+### CounterField
+
+sw:coherentBonesContainer		sw:dataField	sw:counterDataField2 .
+
+sw:counterDataField2		rdf:type 		sw:LiteralField ;
+							sw:num			"3" ;
+							sw:dataKey		"boneOrgans" ;
+							sw:title        "Bone Organs " .
+
+### EditButton
+
+sw:coherentBonesContainer		sw:dataField	sw:editSingleButton .

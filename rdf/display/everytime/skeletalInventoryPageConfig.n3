@@ -16,13 +16,13 @@ sw:singleBonesTab		rdf:type 		sw:Tab ;
 
 sw:coherentBonesTab		rdf:type 		sw:Tab ;
 						sw:tabTitle		"Coherent Bones " ;
-						sw:contains		sw:coherentBoneTable .
+						sw:contains		sw:coherentBonesContainer .
 
 ### DataTable
 
 sw:singleBonesContainer	rdf:type		sw:DataContainer ;
 						sw:dataKey		"singleBones" ;
-						sw:addText 		"Add new" .
+						sw:addText 		"Add new single bone" .
 
 ### LiteralField
 
@@ -30,14 +30,17 @@ sw:singleBonesContainer		sw:dataField	sw:typeDataField1 .
 
 sw:typeDataField1		rdf:type 		sw:LiteralField ;
 						sw:num			"1" ;
-						sw:dataKey		"type" .
+						sw:dataKey		"type" ;
+						sw:title   		"Type" .
 
 ### LabelField
 
 sw:singleBonesContainer		sw:dataField	sw:labelDataField1 .
+
 sw:labelDataField1			rdf:type 		sw:LiteralField ;
 							sw:num			"2" ;
-							sw:dataKey		"label" .
+							sw:dataKey		"label" ;
+							sw:title        "Label" .
 
 ### CounterField
 
@@ -45,13 +48,16 @@ sw:singleBonesContainer		sw:dataField	sw:counterDataField1 .
 
 sw:counterDataField1	rdf:type 		sw:LiteralField ;
 						sw:num			"3" ;
-						sw:dataKey		"numberOfBoneSegments" .
+						sw:dataKey		"boneSegments" ;
+						sw:title		"Bone Segments " .
 
 ### EditButton
 
 sw:singleBonesContainer		sw:dataField	sw:editSingleButton .
 sw:editSingleButton			rdf:type		sw:EditButton ;
 							sw:num			"4" .
+							
+							
 							
 sw:editSingleButton			sw:input		sw:dataInput1 .
 sw:dataInput1				rdf:type		sw:global .
