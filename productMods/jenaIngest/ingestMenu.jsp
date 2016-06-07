@@ -14,7 +14,6 @@
 
 <ul class="ingestMenu">
     <li><a href="ingest?action=csv2rdf" title="Convert a CSV file to RDF in preparation for ingest">Convert CSV to RDF</a></li>
-    <li><a href="ingest?action=newCSV2RDF" title="Convert a CSV file to RDF in preparation for ingest">Convert CSV to RDF II</a></li>
     <li><a href="jenaXmlFileUpload" title="Convert an XML file to RDF in preparation for ingest">Convert XML to RDF</a></li>
 </ul>
 
