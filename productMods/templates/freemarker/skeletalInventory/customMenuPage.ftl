@@ -14,8 +14,9 @@
 		var baseUrl = "${urls.base}/"
 		var pageData = new Object()
 		$(document).ready(function(){
-			//new PageElementLoader("${dataGetterUri}")
-			new PageElementLoader("http://softwareOntology.com/skeletalInventoryPage")
+				pageData["pageConfig"] = new Object()
+				pageData["pageConfig"]["pageElements"] = skInventoryMenuElements
+				pageLoader.loadPage()
 		})
 </script>
 

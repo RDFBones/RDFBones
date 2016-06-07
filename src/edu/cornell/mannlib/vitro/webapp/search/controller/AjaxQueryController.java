@@ -58,7 +58,7 @@ public class AjaxQueryController extends VitroAjaxController {
       resultSet = QueryUtils.getQueryResults(readyQuery, vreq);
       log.info("resultSet");
         result =
-            QueryUtils.getQueryVars(resultSet, ImagesOfNOTIndividualQueryUris,
+            QueryUtils.getQueryVars(resultSet, ImagesOfNOTIndividualQueryLiterals,
                 ImagesOfNOTIndividualQueryLiterals);
       log.info("Result");
       log.info(result.toString());

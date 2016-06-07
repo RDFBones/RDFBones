@@ -3,9 +3,12 @@ var sw = {
 		tabContainer :  swPrefix + "TabContainer",
 		tab : swPrefix + "Tab",
 		dataContainer : swPrefix + "DataContainer",
+		dataTable : swPrefix + "DataTable",
 		dataField : swPrefix + "DataField",
 		literalField : swPrefix + "LiteralField",
 		editButton : swPrefix + "EditButton",
+		linkDataTable : swPrefix + "LinkDataTable",
+		selectorAddField : swPrefix + "SelectorAddField",
 		global : swPrefix + "global",
 		local : swPrefix + "local",
 }
@@ -27,10 +30,12 @@ var PageElementMap = new Object()
 PageElementMap[sw.tabContainer] = TabContainer
 PageElementMap[sw.tab] = TabLoader
 PageElementMap[sw.dataContainer] = DataContainer
+PageElementMap[sw.dataTable] = DataTable
+PageElementMap[sw.linkDataTable] = LinkDataTable
+PageElementMap[sw.selectorAddField] = SelectorAddField
 
 
 var RowElementMap = new Object()
 
 RowElementMap[sw.editButton] = EditButton
 RowElementMap[sw.literalField] = LiteralField
-

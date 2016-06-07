@@ -55,7 +55,7 @@ sw:counterDataField1	rdf:type 		sw:LiteralField ;
 
 sw:singleBonesContainer		sw:dataField	sw:editSingleButton .
 sw:editSingleButton			rdf:type		sw:EditButton ;
-							sw:num			"4" .
+							sw:num			"5" .
 							
 							
 							

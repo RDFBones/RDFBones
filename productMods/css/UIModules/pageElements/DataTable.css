@@ -1,0 +1,32 @@
+
+
+
+
+.dataTable {
+	
+		
+}
+
+
+.tableHeader {
+	display : table;
+	padding : 7px;
+}
+
+
+.tableTitle {
+	text-align : center;
+	display : inline-block;
+	width : 200px;
+}
+
+.literalField {
+	display : inline-block;
+	margin : 5px;
+	width : 200px;
+}
+
+.linkTableRow:hover {
+	background-color : #B0B0B0;
+	display : table;
+}

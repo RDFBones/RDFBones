@@ -87,5 +87,9 @@ var html = {
 	
 	span : function(_class){
 		return $("<span/>").addClass(_class)
+	},
+	
+	link : function(href){
+		return $("<a/>").attr("href", href)
 	}
 }

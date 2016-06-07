@@ -1,83 +1,131 @@
 var singleBones = []
 var coherentBones = []
 
-var pageElements = [{ 
-    
-	id : "skeletalInventoryLabel",
-	type : "literalField",
-	title : "Label",
-	//This key comes from the page load process 
-	value : "inventoryLabel",
-},{ 
-	id : "skeletalInventoryDescription",
-	type : "literalField",
-	title : "Description",
+
+var pageData = {
+		
+	individual : "12345567",	
+	singleBones : [
+	    { boneUri : "rdfbones#1", label : "frontal03302", type : "Frontal bone", boneSegments : "3"},
+	    { boneUri : "rdfbones#2", label : "mand3943", type : "Mandible", boneSegments : "0"},
+	    { boneUri : "rdfbones#3", label : "max289292", type : "Right maxilla", boneSegments : "1"},
+	],
 	
-	//This key comes from the page load process 
-	value : "inventoryDescription",
-},{
-	id : "inventoryTab",
-	type : "tabContainer",
-	tabs : [{
-		title : "Single Bone Regions",
-		dataFields : [{
-			addFieldText : "add",
-			dataKey : "singleBones",
-			dataFields : [{
-				title : "Type",
-				dataKey : "class",
-				type : "literal",
-			},{
-				title : "Label",
-				dataKey : "class",
-				type : "literal",
-			},{
-				title : "Number of Bone Segments",
-				dataKey : "number",
-				type : "number",
-			},{
-				type : "editButton",
-				linkTo : {
-					type : "profilePageLoad",
-					dataMap : {
-						subjecUri : "pageData",
-						boneSegment : "localData",
-					}
-				}
-			}
-			]
-		},{
-			title : "Coherent Bone Regions",
-			dataFields : [{
-				addFieldText : "add",
-				dataKey : "coherentBones",
-				dataFields : [{
-					title : "Type",
-					dataKey : "class",
-					type : "literal"
-				},{
-					title : "Label",
-					dataKey : "class",
-					type : "literal",
-				},{
-					title : "Number of Bone Organs",
-					dataKey : "number",
-					type : "number",
-				},{
-					type : "editButton",
-					linkTo : {
-						type : "profilePageLoad",
-						dataMap : {
-							subjecUri : "pageData",
-							boneSegment : "localData",
-						}
-					}
-				}
-				]
-			}]
-		}]
-	}]
-}]
+	coherentBones : [
+	  {  boneUri : "123457",  label : "nuerocranium_5932",  type : "Neurocranium", boneOrgans : "2"},
+	  {  boneUri : "123456",  label : "viscerocranium_1954",  type : "Viscerocranium", boneOrgans : "3"},
+	],
+	
+	skeletalInventories : [
+	    { uri : "123", label : "Test Inventory", type : "Primary Skeletal Inventory"},
+	    { uri : "123", label : "SI on AES", type : "Secondary Skeletal Inventory"}
+	]
+}
+
+var skInventoryMenuElements = [
+    {
+    	uri : "http://softwareOntology.com/addField1",
+    	type : "http://softwareOntology.com/SelectorAddField",
+    	title : "Add new Skeletal Inventory",
+    	listElements : [
+    	    { 
+    	    	value : "http://w3id.org/rdfbones/core#PrimarySkeletalInventory",
+    	    	text : "Primary Skeletal Inventory",
+    	    },{
+    	    	value : "http://w3id.org/rdfbones/core#SecondarySkeletalInventory",
+    	    	text : "Secondary Skeletal Inventory",
+    	    },{
+    	    	value : "http://w3id.org/rdfbones/core#ThirdarySkeletalInventory",
+    	    	text : "Thirdary Skeletal Inventory",
+    	    }
+    	 ]
+    },{
+    	uri : "http://softwareOntology.com/existingInventories",
+     	type : "http://softwareOntology.com/LinkDataTable",
+    	title : "Existing Skeletal Inventories",
+    	dataKey : "skeletalInventories",
+    	linkDataInputs : [
+    		 { 
+    			 type : "http://softwareOntology.com/local",
+    			 uri : "http://softwareOntology.com/dataInput1",
+    			 dataKey : "uri",
+    		 }
+	    ],
+	    dataFields : [
+             {
+            	 title : "Label",
+    	    	 dataKey : "label",
+    	    	 type : "http://softwareOntology.com/LiteralField",
+    	    	 uri : "http://softwareOntology.com/labelDataField1", 
+    	     },{
+    	    	 title : "Type",
+    	    	 dataKey : "type",
+    	    	 type : "http://softwareOntology.com/LiteralField",
+    	    	 uri : "http://softwareOntology.com/typeDataField1",	        	    	    	 
+    	     },
+    	]
+     }
+     
+   ]                            
+
+var pageElements = [
+	   { uri : "http://softwareOntology.com/boneContainer1",
+		 type : "http://softwareOntology.com/TabContainer",
+	     tabs : [
+	         {
+	        	 type : "http://softwareOntology.com/Tab",
+	        	 uri : "http://softwareOntology.com/singleBonesTab",
+	        	 title : "Single Bones",
+	        	 elements : [
+	        	    {
+	        	    	type : "http://softwareOntology.com/DataContainer",
+	        	    	uri : "http://softwareOntology.com/singleBonesContainer",
+	        	    	addText : "Add new",
+	        	    	dataKey : "singleBones",
+	        	    	dataFields : [
+	        	    	     {
+	        	    	    	 title : "Label",
+	        	    	    	 dataKey : "label",
+	        	    	    	 type : "http://softwareOntology.com/LiteralField",
+	        	    	    	 uri : "http://softwareOntology.com/labelDataField1", 
+	        	    	     },{
+	        	    	    	 title : "Type",
+	        	    	    	 dataKey : "type",
+	        	    	    	 type : "http://softwareOntology.com/LiteralField",
+	        	    	    	 uri : "http://softwareOntology.com/typeDataField1",	        	    	    	 
+	        	    	     },{
+	        	    	    	 title : "Bone Segments",
+	        	    	    	 dataKey : "numberOfBoneSegments",
+	        	    	    	 type : "http://softwareOntology.com/LiteralField",
+	        	    	    	 uri : "http://softwareOntology.com/counterDataField1",
+	        	    	     },{
+	        	    	    	 linkDataInputs : [
+		        	    	    		 { 
+		        	    	    			 type : "http://softwareOntology.com/local",
+		        	    	    			 uri : "http://softwareOntology.com/dataInput1",
+		        	    	    			 dataKey : "uri",
+		        	    	    		 },{ 
+		        	    	    			 type : "http://softwareOntology.com/global",
+		        	    	    			 uri : "http://softwareOntology.com/dataInput1",
+		        	    	    			 dataKey : "individual",
+		        	    	    		 }
+		        	    	    	 ],
+		        	    	    	 type : "http://softwareOntology.com/EditButton",
+		        	    	    	 uri : "http://softwareOntology.com/editSingleButton",
+		        	    	     }
+	        	    	]
+	        	    }
+	        	 ]  
+	         },{
+	        	 type : "http://softwareOntology.com/Tab",
+	        	 uri : "http://softwareOntology.com/coherentBonesTab",
+	        	 title : "Coheren Bones",
+	        	 elements : [],
+	         }
+	     ]
+	   }             
+]
+
 
 
 var	treeStructure = [ {

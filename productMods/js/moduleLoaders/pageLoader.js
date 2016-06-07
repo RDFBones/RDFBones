@@ -2,7 +2,7 @@ var pageLoader = {
 
 	loadPage : function() {
 		var pageElementBuffer = []
-		$.each(pageElements, function(index, element) {
+		$.each(pageData["pageConfig"]["pageElements"], function(index, element) {
 			console.log(element.type)
 			pageElementBuffer.push(new PageElementMap[element.type](element).container)
 		})

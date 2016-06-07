@@ -5,7 +5,7 @@ var TabContainer = function(configData){
 	this.configData = configData
 	this.tabContainer = html.div("tabContainer")
 	this.contentContainer = html.div("contentContainer")
-	this.container = html.div("tabContainer")
+	this.container = html.div("tabContainerCont")
 				.append(this.tabContainer)
 				.append(this.contentContainer)
 	this.tabs = []
@@ -41,7 +41,7 @@ var Tab = function(tabCont, tabDef){
 	
 	this.tabCont = tabCont
 	this.tabDef = tabDef
-	this.container = html.div("tab").text(tabDef.title).
+	this.container = html.div("tab").text(tabDef.tabTitle).
 		click((this.showContent).bind(this))
 	this.initContent()
 }

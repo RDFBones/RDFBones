@@ -50,9 +50,10 @@ display:SkeletalInventoryMenuItem
     
 display:DefaultMenu 
 	display:hasElement display:SkeletalInventoryMenuItem .
-    
+	
+
 display:skeletalInventoryDataGetter
-   	a <java:edu.cornell.mannlib.vitro.webapp.utils.dataGetter.ClassGroupPageData>;
+   	a <java:edu.cornell.mannlib.vitro.webapp.utils.dataGetter.CustomPageDataGetter>;
       display:forClassGroup
               vivoweb:vitroClassGroupSkeletalInventory . 
 

@@ -29,3 +29,9 @@ Button.prototype = {
 		this.container.removeClass("disabledImg").addClass("enabledImg")
 	}
 }
+
+var LinkButton = function(type){
+	Button.call(this, type, null)
+}
+
+LinkButton.prototype = Object.create(Button.prototype)
