@@ -61,8 +61,9 @@ public class PageConfigurationLoader extends VitroAjaxController {
           +   " WHERE {  "
           +   "  ?subject     sw:tab                     ?tab . "
           +   "  ?tab         rdf:type                   ?type ." 
-          +   "  ?tab         sw:tabTitle                ?tabTitle ."        
-          +   " }  ";  
+          +   "  ?tab         sw:tabTitle                ?tabTitle ."
+          +   "  OPTIONAL { ?tab         sw:num          ?num . } "         
+          +   " }  ORDER BY ASC(?num) ";  
         
         result = this.performQuery(tabQuery, tabInputParam, tabUris, tabLiterals);
         break;         
