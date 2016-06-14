@@ -19,6 +19,42 @@ var pageData = {
 	skeletalInventories : [
 	    { uri : "123", label : "Test Inventory", type : "Primary Skeletal Inventory"},
 	    { uri : "123", label : "SI on AES", type : "Secondary Skeletal Inventory"}
+	],
+
+	queries : [
+    		{   
+    			type : "query", 
+    			parameters : [
+    				{ type : "global", varName : "classUri", name : "inputClassUri" },
+    				{ type : "local", value	 : "systemicParts", name : "queryType" }
+    			],
+    			mapping : "anatomicalModelLoader",
+    			toVariable : "systemicParts",
+    		}, {   
+    			type : "query", 
+    			parameters : [
+    				{ type : "global", varName : "classUri", name : "inputClassUri" },
+    				{ type : "local", value : "subClasses", name : "queryType" }
+    			],
+    			mapping : "anatomicalModelLoader",
+    			toVariable : "subClasses",	
+    		}
+    	],
+            	
+	dataOperations : [
+            	
+		{
+			type : "grouping",
+			processes : [
+				{  	
+					inputVariable : "systemicParts", by : "inputClass", within : ["inputLabel"], to : "systemicParts",
+					rename : [ { key : "inputClass" , to : "uri"}, { key : "inputLabel" , to : "label"}]
+				}, {  	
+					inputVariable : "systemicParts", by : "boneDivision", within : ["label"], to : "subClasses",
+					rename : [ { key : "boneDivision" , to : "uri"} ]
+				}
+			]
+		}		
 	]
 }
 

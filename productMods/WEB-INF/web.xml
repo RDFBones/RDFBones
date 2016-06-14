@@ -1009,6 +1009,25 @@
     <url-pattern>/customPageLoad</url-pattern>
   </servlet-mapping>
    
+   <servlet>
+    <servlet-name>EntryFormLoader</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.EntryFormLoader</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EntryFormLoader</servlet-name>
+    <url-pattern>/entryFormLoad</url-pattern>
+  </servlet-mapping>
+   
+  <servlet>
+    <servlet-name>AnatomicalModelLoader</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.AnatomicalModelLoader</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AnatomicalModelLoader</servlet-name>
+    <url-pattern>/anatomicalModelLoader</url-pattern>
+  </servlet-mapping>
+     
+   
    
    <servlet>
     <servlet-name>DataAutocompleteController</servlet-name>
