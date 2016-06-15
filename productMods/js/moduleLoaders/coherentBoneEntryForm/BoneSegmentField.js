@@ -4,7 +4,7 @@ var completenessSet =[
     { uri : "incomplete", label : "Incomplete"}
 ]
 
-var BoneSegmentField = function(systemicPartEditor, dataSet, dataToStore){
+var BoneSegmentField = function(classSelector, dataSet, dataToStore){
 	
 	/*
 	 * Here we create a dataset already
@@ -15,17 +15,20 @@ var BoneSegmentField = function(systemicPartEditor, dataSet, dataToStore){
 	boneSegment.type = "new"
 	boneSegment.completeness = "complete"
 	dataToStore.push(boneSegment)
-	this.systemicPartEditor = systemicPartEditor
+	console.log(dataToStore)
 	this.dataSet = dataSet
 	this.dataToStore = dataToStore
+	this.classSelector = classSelector
 	
 	/* 
 	 * The default is the complete 
 	 */
 	
-	this.contianer = html.div("boneSegmentContainer")
-	this.completenessSelector = UI.selector(completenessSet);
-	this.deleteButton = new Button("delete", (this.deleteFunction).bind(this))
+	this.container = html.div("boneSegmentContainer")
+	this.completenessSelector = UI.classSelector(completenessSet);
+	this.deleteButton = new Button("del", (this.deleteRoutine).bind(this))
+	
+	this.assemble()
 }
 
 BoneSegmentField.prototype = {
@@ -34,12 +37,13 @@ BoneSegmentField.prototype = {
 		this.container
 				.append(UI.listPoint())
 				.append(html.div().text(this.dataSet.label))
-				.append(this.completnessSelector())
+				.append(this.completenessSelector)
+				.append(this.deleteButton.container)
 	},
 
 	deleteRoutine : function(){
 		
-		DataLibrary.removeObjectFromArrayByKey(this.dataToStore, "uri", this.dataSet.uri)
+		DataLib.removeObjectFromArrayByKey(this.dataToStore, "uri", this.dataSet.uri)
 		this.container.remove()
 	}
 }

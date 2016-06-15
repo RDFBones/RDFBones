@@ -1,0 +1,23 @@
+
+
+.subContainer {
+	
+	padding-left : 20px;
+}
+
+.selectorContainer  {
+	
+	display : flex;
+	align-items : center;
+	height : 28px;
+	font-size : 15px;
+	border-bottom : 1px solid;
+}
+
+.boneSegmentContainer {
+	
+	display : flex;
+	align-items : center;
+	height : 28px;
+}
+

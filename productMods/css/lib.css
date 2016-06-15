@@ -1,23 +1,30 @@
+.listPoint {
+	width: 4px;
+	height: 4px;
+	border-radius: 3px;
+	border: 3px solid;
+	margin-left : 12px;
+}
+
 /****************************************************
 *** Text with add button afterwards
 *****************************************************/
-
 .addFieldContainer {
-	display : flex;
-	align-items : center;
-	height : 30px;
-	font-size : 18px;
+	display: flex;
+	align-items: center;
+	height: 30px;
+	font-size: 18px;
 }
 
 .addFieldText {
-	display : inline-block;
-	margin-left : 8px;
-	font-size : 18px;
+	display: inline-block;
+	margin-left: 8px;
+	font-size: 18px;
 }
 
 .addFieldImg {
-	display : inline-block;
-	margin-left : 8px;
+	display: inline-block;
+	margin-left: 8px;
 }
 
 .moduleTitle {
@@ -39,20 +46,19 @@
 	left: 0;
 	right: 0;
 	overflow: hidden;
-	z-index: 1;
-	//background-color: rgba(0, 0, 0, 0.4);
+	z-index: 1; //
+	background-color: rgba(0, 0, 0, 0.4);
 }
 
 .fullScreenInner {
-	opacity : 1;
-	background-color : white;
+	opacity: 1;
+	background-color: white;
 	position: fixed;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	padding: 3px;
 	border: 2px solid black;
-	
 }
 
 .hoverCursor:hover {
@@ -61,22 +67,21 @@
 }
 
 .generalButton {
-	margin-left : 10px;
-	display : inline-block;
+	margin-left: 10px;
+	display: inline-block;
 	border: 1px solid black;
 	border-radius: 3px;
 	padding: 2px 5px;
-	background-color : #9D9696;
+	background-color: #9D9696;
 }
 
 .enabledButton {
-	opacity : 1;
+	opacity: 1;
 }
 
 .disabledButton {
-	opacity : 0.4;	
+	opacity: 0.4;
 }
-
 
 .redBorder {
 	border: 1px solid red;
@@ -103,7 +108,7 @@
 }
 
 .table {
-	display : table;
+	display: table;
 }
 
 .floatRight {
@@ -115,7 +120,7 @@
 }
 
 .margin10 {
-	margin : 10px;
+	margin: 10px;
 }
 
 /****************************************************
@@ -134,5 +139,5 @@
 }
 
 .height100 {
-	height : 100%;
+	height: 100%;
 }

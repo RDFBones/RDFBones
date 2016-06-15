@@ -4,7 +4,8 @@ var ClassSelector = function(dataToStore, dataSet) {
 	this.dataSet = dataSet
 	this.dataToStore = dataToStore
 	
-	this.container = html.div("selectorContainer")
+	this.container = html.div("table")
+	this.selectorContainer = html.div("selectorContainer")
 	this.subContainer = html.div("subContainer")
 	
 	this.selectorField = UI.classSelector(dataSet)
@@ -21,8 +22,9 @@ ClassSelector.prototype = {
 
 	assemble : function() {
 		this.container
-			.append(this.selectorField)
-			.append(this.button.container)
+			.append(this.selectorContainer
+				.append(this.selectorField)
+				.append(this.button.container))
 			.append(this.subContainer)
 	},
 
