@@ -42,14 +42,14 @@ public class AnatomicalModelLoader extends VitroAjaxController {
     case "systemicParts":
       String[] inputParam = {"inputClassUri"};
       String[] uris = {"inputClass", "boneDivision", "subClass"};
-      String[] literals = {"inputClassLabel", "boneDivisionLabel", "subClassLabel"};
+      String[] literals = {"inputLabel", "boneDivisionLabel", "subClassLabel"};
       
       result = this.performQuery(systemicQuery, inputParam, uris, literals);
       break;
     case "subClasses" :
       String[] inputParam1 = {"inputClassUri"};
-      String[] uris1 = {"inputClass", "boneDivision", "systemicPart"};
-      String[] literals1 ={"inputClassLabel", "boneDivisionLabel", "systemicPartLabel"};
+      String[] uris1 = { "boneDivision", "systemicPart"};
+      String[] literals1 ={ "boneDivisionLabel", "systemicPartLabel"};
       
       result = this.performQuery(subClassesQuery, inputParam1, uris1, literals1);
       
@@ -92,12 +92,11 @@ public class AnatomicalModelLoader extends VitroAjaxController {
   }
   
   private static String systemicQuery =
-      "select ?inputClass ?inputLabel ?boneDivision ?boneDivisionLabel ?subClass ?subClassLabel "
+      "select ?inputClass ?inputClassLabel ?boneDivision ?boneDivisionLabel ?subClass ?subClassLabel "
           + "  where {  "
           + "  ?boneDivision          rdfs:label             ?boneDivisionLabel ."
           + "  ?boneDivision          rdfs:subClassOf        ?restriction .  "
           + "  ?restriction           owl:onProperty         <http://purl.obolibrary.org/obo/fma#systemic_part_of>   .  "
-          + "  ?inputClass            rdfs:label             ?inputLabel . " 
           + "  ?restriction           owl:someValuesFrom     ?inputClass .   "
           + "  ?subClass              rdfs:subClassOf        ?boneDivision ."
           + "  ?subClass              rdfs:label             ?subClassLabel ."
@@ -106,7 +105,7 @@ public class AnatomicalModelLoader extends VitroAjaxController {
           ;
 
   private static String subClassesQuery =
-      "select ?inputClass ?inputLabel ?boneDivision ?boneDivisionLabel ?systemicPart ?systemicPartLabel "
+      "select ?boneDivision ?boneDivisionLabel ?systemicPart ?systemicPartLabel "
           + "  where {  "
           + "  ?boneDivision           rdfs:subClassOf         ?inputClass . "
           + "  ?inputClass             rdfs:label              ?inputLabel . " 
