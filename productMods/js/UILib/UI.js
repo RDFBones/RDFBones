@@ -1,15 +1,31 @@
 var UI = {
-
+		
+		
+	assemble : function(mainContainer, containers, order){
+		
+		
+		var containerBuffer = []
+		containerBuffer[0] = mainContainer
+		$.each(containers, function(i, container){
+			if( order[i] < 0){
+				container.hide()
+				order[i] = Math.floor(-order[i])
+			}
+			containerBuffer[order[i]].append(container)
+			containerBuffer[order[i] + 1] = container
+		})
+	},
+		
 	/***************************************************************************
 	 * Horizontal general img
 	 **************************************************************************/
 
-	getWaitGif : function(){
-		return ImgUI.libImg("loading","largeImg")
+	getWaitGif : function() {
+		return ImgUI.libImg("loading", "largeImg")
 	},
-	
+
 	getHorizontalDiv : function() {
-		
+
 	},
 
 	getHorizontalImg : function(src) {
@@ -27,7 +43,7 @@ var UI = {
 	getFullScreenInner : function() {
 		return html.div("fullScreenInner").css("display", "table")
 	},
-	
+
 	getFullScreenInner : function(width) {
 		return html.div("fullScreenInner").css("width", width)
 	},
@@ -38,9 +54,9 @@ var UI = {
 	},
 
 	textlibImg : function(msg, type) {
-		return html.div("verticalMiddleContainer")
-				.append(html.div("inline margin20").text(msg))
-				.append(ImgUI.libImgCont(type, "inline"))
+		return html.div("verticalMiddleContainer").append(
+				html.div("inline margin20").text(msg)).append(
+				ImgUI.libImgCont(type, "inline"))
 	},
 
 	verticalAlignedDiv : function(text, _class) {
@@ -84,14 +100,15 @@ var UI = {
 	 **************************************************************************/
 
 	getFieldWithAddButton : function(value, clickFunction) {
-		return html.getNewDiv("addFieldContainer").append(html.getNewDiv("addFieldText").text(value))
-				.append(ImgUI.libImg("add", "addFieldImg").click(clickFunction))
+		return html.getNewDiv("addFieldContainer").append(
+				html.getNewDiv("addFieldText").text(value)).append(
+				ImgUI.libImg("add", "addFieldImg").click(clickFunction))
 	},
 
-	getTextButton : function(text){
+	getTextButton : function(text) {
 		return html.div("generalButton enabledButton").text(text)
 	},
-	
+
 	/***************************************************************************
 	 * Checkbox with text
 	 **************************************************************************/
@@ -123,5 +140,40 @@ var UI = {
 
 	showInline : function(div) {
 		div.css("display", "inline-block")
+	},
+
+	/*
+	 * ClassSelector
+	 */
+	classSelector : function(dataSet) {
+		this.selectorField = html.getSelectorField().addClass("inline")
+
+		$.each(dataSet, (function(index, data) {
+			$("<option/>", {
+				value : data.uri,
+				text : data.label,
+			}).appendTo(this.selectorField)
+		}).bind(this))
+		return this.selectorField
+	},
+
+	dataSetSelector : function(dataSet, setData){
+		
+		this.setData = setData
+		var ths = this
+		return UI.classSelector(dataSet)
+			.change(function(){
+				console.log(setData)
+				ths.setData = $(this).val()
+				console.log(setData)
+			})
+	},
+	
+	listPoint : function() {
+		return html.div("listPoint")
+	},
+	
+	removeFieldFromSelector : function(selector, value){
+		selector.find('option[value=' + value +"]").remove()
 	}
 }

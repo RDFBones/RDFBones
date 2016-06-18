@@ -25,7 +25,7 @@ EditButton.prototype = {
 			}
 		}).bind(this))
 		
-		var href = baseUrl + "/customPageLoad?"
+		var href = baseUrl + "entryForm?"
 		$.each(paramMap, function(key, value){
 			href += key + "=" + value
 		})
