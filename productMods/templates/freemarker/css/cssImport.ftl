@@ -5,6 +5,10 @@
 	<link rel="stylesheet" type="text/css" href="${urls.base}/css/moduleLoader/treeView.css">	
 	<link rel="stylesheet" type="text/css" href="${urls.base}/css/moduleLoader/View.css">	
 	
+	<link rel="stylesheet" type="text/css" href="${urls.base}/css/skeletalInventoryCEF/boneSegmentField.css">	
+	<link rel="stylesheet" type="text/css" href="${urls.base}/css/skeletalInventoryCEF/classSelector.css">	
+	<link rel="stylesheet" type="text/css" href="${urls.base}/css/skeletalInventoryCEF/systemicPartSelector.css">	
+	
 	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/pageElements/AddNew.css">	
 	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/pageElements/DataTable.css">	
 	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/pageElements/Tab.css">	

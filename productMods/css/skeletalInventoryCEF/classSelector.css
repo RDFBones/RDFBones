@@ -1,0 +1,71 @@
+
+.headerContainer {
+	display: flex;
+	align-items: center;
+	height: 35px;
+	width : 600px;
+	border-bottom: 1px solid;		
+}
+
+
+.titleTable {
+	display : table;
+	font-size : 16px;
+	border-bottom: 1px solid;
+	padding : 5px;		
+}
+
+.headerText {
+	font-size : 18px;
+	margin-left : 6px;
+}
+
+.subContainer {
+	padding-left: 20px;
+}
+
+.rightAligned {
+	margin-left: auto;
+	margin-right : 8px;
+}
+
+.middleSpan {
+	display: flex;
+	align-items: center;	
+	margin : 5px;
+}
+
+.boneSegmentContainer {
+	display: flex;
+	align-items: center;
+	height: 28px;
+}
+
+
+.disabledContainer {
+	opacity : 0.4;	
+}
+
+.namedTitle {
+	font-size : 15px;
+	margin : 3px 10px;
+	display : inline-block;
+}
+
+.selectorContainer {
+	margin : 3px 10px;
+}
+
+
+.inlineContainer {
+	display : inline-block;
+}
+
+.saveContainer {
+	display: flex;
+	align-items: center;	
+	margin-top : 10px;
+	border-top : 1px solid;	
+	width : 600px;
+	padding : 4px;
+}
