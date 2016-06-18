@@ -15,8 +15,12 @@ Button.prototype = {
 		}
 	},	
 	
+	show : function(){
+		this.container.css("display", "block")
+	},
+	
 	hide : function(){
-		this.container.hide()
+		this.container.css("display","none")
 	},
 	
 	disable : function(){
@@ -35,3 +39,12 @@ var LinkButton = function(type){
 }
 
 LinkButton.prototype = Object.create(Button.prototype)
+
+
+var CustomButton = function(type, returnFunction, customClass){
+
+	Button.call(this, type, returnFunction)
+	this.container.addClass(customClass)
+}
+
+CustomButton.prototype = Object.create(Button.prototype)

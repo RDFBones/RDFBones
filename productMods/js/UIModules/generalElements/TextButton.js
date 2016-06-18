@@ -1,10 +1,12 @@
 
 
-var TextButton = function(text, returnFunction){
+var TextButton = function(text, returnFunction, style){
+	
 	
 	this.enabled = true
 	this.returnFunction = returnFunction
-	this.container = UI.getTextButton(text).click((this.clickEvent).bind(this))
+	this.container = UI.getTextButton(text).addClass(style)
+		.click((this.clickEvent).bind(this))
 }
 
 TextButton.prototype = {
