@@ -29,8 +29,8 @@ PageElementLoader.prototype = {
 				//If we are here then everything were loaded
 				console.log("Ready")
 				console.log(pageData)
-				pageLoader.loadPage()
-			} 
+				PageAssembler.loadPage()
+			}
 		},
 	
 		getElements : function(){
