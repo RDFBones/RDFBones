@@ -4,47 +4,51 @@ var completenessSet =[
     { uri : "incomplete", label : "Incomplete"}
 ]
 
-var BoneSegmentField = function(classSelector, dataSet, dataToStore){
+var BoneSegmentField = function(systemicPartSelector, dataSet, dataToStore){
 	
-	/*
-	 * Here we create a dataset already
-	 */
-	
-	var boneSegment = new Object()
-	boneSegment.uri = dataSet.uri
-	boneSegment.type = "new"
-	boneSegment.completeness = "complete"
-	dataToStore.push(boneSegment)
-	console.log(dataToStore)
-	this.dataSet = dataSet
-	this.dataToStore = dataToStore
-	this.classSelector = classSelector
-	
-	/* 
-	 * The default is the complete 
-	 */
-	
-	this.container = html.div("boneSegmentContainer")
-	this.completenessSelector = UI.classSelector(completenessSet);
+	this.systemicPartSelector = systemicPartSelector
+	this.setDataObject(dataSet, dataToStore)
+
+	//UI
+	this.container = html.div("boneSegmentFieldContainer")
+	this.listPoint = UI.listPoint()
+	this.classNameContainer = html.div("classNameContainer").text(this.dataSet.label)
+	this.completenessSelector = new DataSetterSelectorField(completenessSet, this.dataObject, "completeness");
 	this.deleteButton = new Button("del", (this.deleteRoutine).bind(this))
-	
 	this.assemble()
 }
 
 BoneSegmentField.prototype = {
 		
 	assemble : function(){
-		this.container
-				.append(UI.listPoint())
-				.append(html.div().text(this.dataSet.label))
-				.append(this.completenessSelector)
-				.append(this.deleteButton.container)
+		UI.assemble(this.container, [
+		        this.listPoint,
+				this.classNameContainer,
+				this.completenessSelector.container,
+				this.deleteButton.container],
+				[0, 0, 0, 0 ])
+		
 	},
 
+	setDataObject : function(dataSet, dataToStore){
+		this.dataSet = dataSet
+		this.dataToStore = dataToStore
+		this.dataObject = new Object()
+		this.dataObject.uri = dataSet.uri
+		this.dataObject.label = dataSet.label
+		this.dataObject.type = "new"
+		this.dataObject.completeness = completenessSet[0].uri
+		dataToStore.push(this.dataObject)
+	},
+	
 	deleteRoutine : function(){
 		
 		DataLib.removeObjectFromArrayByKey(this.dataToStore, "uri", this.dataSet.uri)
-		this.container.remove()
+		this.systemicPartSelector.reset()
+	},
+	
+	setCompleteNess : function(value){
+		this.dataObject.completeness = value
 	}
 }
 

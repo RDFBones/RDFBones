@@ -1,36 +1,52 @@
 
-var SystemicPartSelector = function(classSelector, dataSet, dataToStore) {
+var SystemicPartSelector = function(classSelector, classDef, dataToStore) {
 
-	this.dataSet = dataSet
+	
+	this.classDef = classDef
 	this.classSelector = classSelector
-	this.dataToStore = dataToStore
-	this.title = dataSet[0].label
-	this.container = html.div("table")
-	this.selectorContainer = html.div("selectorContainer")
-	this.subContainer = html.div("subContainer")
-	this.selectorField = UI.classSelector(dataSet)
-	this.button = new Button("add", (this.returnFunction).bind(this))
-	this.allComplete = new TextButton("Add all as complete", null)
+	this.dataToStore = dataToStore	
+	
+	this.notAdded = true
+
+	this.container = html.div("namedContainer")
+	this.selectContainer = html.span("middle")
+		this.titleContainer = html.div("namedTitle").text(classDef.label)
+		this.button = new Button("add", (this.addInstance).bind(this))
+		this.subContainer = html.div("inlineContainer")
+
 	this.assemble()
 }
 
 SystemicPartSelector.prototype = {
 
 	assemble : function() {
-		this.container.append(
-				this.selectorContainer.append(this.selectorField).append(
-						this.button.container).append(this.allComplete))
-				.append(this.subContainer)
+
+		UI.assemble(this.container,[
+		    this.selectContainer,
+		    	this.titleContainer,
+		    	this.button.container,
+		    this.subContainer],
+			[0, 1, 1, 0])
 	},
+	
+	addInstance : function() {
 
-	returnFunction : function() {
-
-		// Search for the selected class
-		$.each(this.dataSet, (function(index, value) {
-			if (value.uri == this.selectorField.val()) {
-				this.subContainer.append(new BoneSegmentField(
-						this.classSelector, value, this.dataToStore).container)
-			}
-		}).bind(this))
+		this.notAdded = false
+		this.selectContainer.hide()
+		this.subContainer.append(new BoneSegmentField(
+				this, this.classDef, this.dataToStore).container)
+		this.classSelector.refresh()
+	},
+	
+	reset : function(){
+		this.notAdded = true
+		this.selectContainer.show()
+		this.subContainer.empty()
+		this.classSelector.refresh()
+	},
+	
+	
+	deleteSection : function(){
+		
 	}
 }

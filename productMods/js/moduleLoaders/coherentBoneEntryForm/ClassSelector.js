@@ -1,19 +1,28 @@
 
 var ClassSelector = function(dataToStore, dataSet) {
 
-	this.dataSet = dataSet
+	
+	this.originalDataSet = dataSet
+	this.dataSet = this.originalDataSet
 	this.dataToStore = dataToStore
+	this.systemicPartSelectors = []
 	
 	this.container = html.div("table")
-	this.selectorContainer = html.div("selectorContainer")
+	
+	this.headerContainer = html.div("headerContainer")
+	this.header = html.div("headerText").text("Select Bone Division")
+	this.exitButton = new CustomButton("del", (this.exitRoutine).bind(this), "rightAligned")
+	
+	this.selectorContainer = html.span("middleSpan margin10")
+	this.selectorField = UI.classSelector(dataSet)
+	this.button = new Button("add", (this.selectBoneDivision).bind(this))
+	
+	this.saveContainer = html.div("saveContainer")
+	this.saveButton =  new TextButton("Save", (this.saveRoutine).bind(this))
+	this.cancelButton =  new TextButton("Cancel", (this.cancelRoutine).bind(this), "rightAligned")
+
 	this.subContainer = html.div("subContainer")
 	
-	this.selectorField = UI.classSelector(dataSet)
-
-	this.button = new Button("add", (this.returnFunction).bind(this))
-	this.dataToStore = dataToStore
-
-	this.systemicPartSelectors = []
 	this.assemble()
 	this.getCardinality()
 }
@@ -21,13 +30,21 @@ var ClassSelector = function(dataToStore, dataSet) {
 ClassSelector.prototype = {
 
 	assemble : function() {
-		this.container
-			.append(this.selectorContainer
-				.append(this.selectorField)
-				.append(this.button.container))
-			.append(this.subContainer)
+		
+		UI.assemble(this.container, [
+			this.headerContainer, 
+				this.header,
+				this.exitButton.container,
+			this.selectorContainer,
+				this.selectorField,
+				this.button.container,
+			this.subContainer,
+			this.saveContainer,
+				this.saveButton.container,
+				this.cancelButton.container],
+			[0, 1, -1, 0, 1, 1, 0, 0, -1, 1])
 	},
-
+	
 	getCardinality : function() {
 
 		$.each(this.dataSet, (function(index, value) {
@@ -37,42 +54,50 @@ ClassSelector.prototype = {
 		}).bind(this))
 	},
 
-	loadSelector : function() {
-
-		$.each(this.dataSet, (function() {
-
-		}).bind(this))
+	exitRoutine : function(){
+		
+		this.selectorContainer.show()
+		this.header.text("Select Bone Division")
+		this.exitButton.hide()
+		this.subContainer.empty()
+		this.saveButton.hide()
+		$.each(this.systemicPartSelectors, function(i, selector){
+			selector.reset()
+		})
+		this.dataToStore = []
+		this.systemicPartSelectors = []
 	},
-
-	loadButton : function() {
-
-	},
-
-	addNewInstance : function() {
-
-	},
-
-	returnFunction : function() {
+	
+	selectBoneDivision : function() {
 		/*
 		 * Search for the element in the list which were set
 		 */
+		console.log(this.dataSet)
 		$.each(this.dataSet, (function(index, value) {
 			if (value.uri == this.selectorField.val()) {
 				var toStore = new Object()
 				toStore.uri = value.uri
 				toStore.systemicParts = []
 				this.dataToStore.push(toStore)
+				this.setTitle(value.label)
 				this.loadSubObject(value)
+				return false
 			}
 		}).bind(this))
-		this.button.hide()
 	},
 
+	setTitle : function(label){
+		this.exitButton.show()
+		this.selectorContainer.hide()
+		this.header.text(label)
+	},
+	
 	/*
 	 * DataSet is the bone division descriptor which has the field systemic parts
 	 */
 	loadSubObject : function(dataSet) {
 		
+		console.log(dataSet)
 		// It is already an object
 		this.dataToStore.uri = this.selectorField.val()
 		this.dataToStore.systemicParts = []
@@ -80,6 +105,9 @@ ClassSelector.prototype = {
 		/*
 		 * If the systemic part has a subClass then multiple value has to be createds
 		 */
+		
+		this.subContainer.append(this.titleCont = html.div("titleTable").text("Add bone segment"))
+		
 		if (dataSet.systemicParts[0].subClasses != undefined) {
 
 			// We create to classSelector
@@ -89,23 +117,91 @@ ClassSelector.prototype = {
 				var extendWith = new Object()
 				extendWith.uri = value.uri
 				extendWith.label = value.label
-				value.subClasses.unshift(extendWith)
+
+				//Cloneing the array
+				var obj = $.extend({}, value.subClasses)
+				var subClasses = Object.keys(obj).map(function (key) {return obj[key]})
 				
-				// Value is the list of possible classes to select
+				console.log(subClasses)
+				subClasses.unshift(extendWith)
+
 				this.systemicPartSelectors.push(new NamedSystemicPartSelector(
-						this, value.subClasses, this.dataToStore.systemicParts))
+						this, subClasses, this.dataToStore.systemicParts))
 			}).bind(this))
+				this.appendFields()
 		} else {
 			// Here we can add only one
-			this.systemicPartSelectors.push(new SystemicPartSelector(this, dataSet.systemicParts, this.dataToStore.systemicParts))
+			$.each(dataSet.systemicParts, (function(index, value) {
+				this.systemicPartSelectors.push(new SystemicPartSelector(
+						this, value, this.dataToStore.systemicParts))
+			}).bind(this))
+			this.appendFields()
+			this.addAddAllField()
 		}
-		
+	},
+
+	appendFields : function(){
 		$.each(this.systemicPartSelectors, (function(i, sysSel){
 			this.subContainer.append(sysSel.container)
 		}).bind(this))
+		this.addAllButton = undefined
+		this.saveButton.show().disable()
 	},
-
-	addedSystemicPart : function() {
+	
+	addAddAllField : function(){
+		this.addAllButton = new TextButton(
+				"Add all", (this.addAll).bind(this))
+		this.subContainer.append(this.addAllButton.container)
+	},
+	
+	addAll : function(){
+		$.each(this.systemicPartSelectors, function(i, sysSel){
+			if(sysSel.notAdded){
+				sysSel.addInstance()
+			}
+		})
+	},
+	
+	refresh : function(){
+		
+		var thereIsNotAdded = false
+		var thereIsAdded = false
+		$.each(this.systemicPartSelectors, function(i, sysSel){
+			if(sysSel.notAdded){
+				thereIsNotAdded = true
+			} else {
+				thereIsAdded = true
+			}
+		})
+		this.refreshSaveButton(thereIsAdded)
+		if(this.addAllButton != undefined){
+			this.refreshAddAllButton(thereIsNotAdded)
+		}
+	},
+	
+	refreshSaveButton : function(thereIsAdded){
+		
+		if(thereIsAdded){
+			this.saveButton.enable()
+		} else {
+			this.saveButton.disable()
+		}
+	},
+	
+	refreshAddAllButton : function(thereIsNotAdded){
+		
+		if(thereIsNotAdded){
+			this.addAllButton.enable()
+		} else {
+			this.addAllButton.disable()
+		}
+	},
+	
+	saveRoutine : function(){
+		
+	},
+	
+	cancelRoutine : function(){
 		
 	}
 }
