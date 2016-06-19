@@ -4,14 +4,24 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+
+
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.dataOperation.TripleCreator;
 
 public class Triple {
 
+  
+  private static final long serialVersionUID = 1L;
+  private static final Log log = LogFactory.getLog(Triple.class);
+  
+  
   public String subject;
   public String predicate;
   public String object;
@@ -66,13 +76,28 @@ public class Triple {
   public void createTriples(TripleCreator creator, String key, JSONObject obj)
     throws JSONException {
 
+    
+    this.logMe();
     // The variable coming from the TripleCreator class has to be loaded to the
     if (obj.get("type").equals("new")) {
-      System.out.println("NewTriple");
+     log.info("NewTriple");
       creator.createInstance(obj);
+    } else {
+      log.info("error");
     }
+    
     this.fixUri = obj.getString("uri");
-
+    /*
+     * Check if the uri is not a variable in the object
+     */
+    Iterator<String> keys1 = obj.keys();
+    while (keys1.hasNext()) {
+      String k = keys1.next();
+      if (k.equals(key)) {
+        this.fixUri = obj.getJSONObject(k).getString("uri");
+      }
+    }
+    
     // Second check if any of the fields of the obj or global variable is equal
     // to the
 
@@ -87,16 +112,16 @@ public class Triple {
           /*
            * This default triples can create more triple at the same time
            */
-          System.out.println("Array");
+         log.info("Array");
           for (int i = 0; i < obj.getJSONArray(k).length(); i++) {
-            System.out.println("Array  " + i);
+           log.info("Array  " + i);
             JSONObject object = (JSONObject) obj.getJSONArray(k).get(i);
-            System.out.println(object.toString());
+           log.info(object.toString());
             this.createTriple(creator, object);
             creator.process(object, this.newVarName);
           }
         } else { // It is a JSONObject
-          System.out.println("Object");
+          log.info("Object");
           JSONObject object = (JSONObject) obj.get(k);
           this.createTriple(creator, object);
           creator.process(object, this.newVarName);
@@ -104,12 +129,12 @@ public class Triple {
       }
     }
     if (!found) {
-      System.out.println("not found");
-      System.out.println(this.newVarName);
+     log.info("not found");
+     log.info(this.newVarName);
       if(creator.inputData.has(this.newVarName)){
-        System.out.println("global");
+       log.info("global");
         String uri = creator.inputData.getString(this.newVarName); 
-        System.out.println(uri);
+       log.info(uri);
         JSONObject glob = new JSONObject();
         glob.put("uri", uri);
         glob.put("type", "existing");
@@ -130,6 +155,11 @@ public class Triple {
     } else {
       creator.createTriple(this.fixUri, this.predicate, obj.getString("uri"));
     }
+  }
+  
+  public void logMe(){
+    
+    log.info(this.subject + "  " + this.predicate + "  " + this.object);
   }
 
 }
