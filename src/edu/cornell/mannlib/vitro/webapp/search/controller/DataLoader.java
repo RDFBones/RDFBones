@@ -22,7 +22,7 @@ import edu.cornell.mannlib.vitro.webapp.controller.ajax.VitroAjaxController;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.N3Utils;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
 
-public class AnatomicalModelLoader extends VitroAjaxController {
+public class DataLoader extends VitroAjaxController {
 
   private static final Log log = LogFactory
       .getLog(PageConfigurationLoader.class);
@@ -39,20 +39,12 @@ public class AnatomicalModelLoader extends VitroAjaxController {
     log.info("itt");
     switch (vreq.getParameter("queryType")) {
 
-    case "systemicParts":
+    case "coherentBones":
       String[] inputParam = {"inputClassUri"};
       String[] uris = {"inputClass", "boneDivision", "subClass"};
       String[] literals = {"inputClassLabel", "boneDivisionLabel", "subClassLabel"};
       
-      result = this.performQuery(systemicQuery, inputParam, uris, literals);
-      break;
-    case "subClasses" :
-      String[] inputParam1 = {"inputClassUri"};
-      String[] uris1 = { "boneDivision", "systemicPart"};
-      String[] literals1 ={ "boneDivisionLabel", "systemicPartLabel"};
-      
-      result = this.performQuery(subClassesQuery, inputParam1, uris1, literals1);
-      
+      result = this.performQuery(CoherentQuery, inputParam, uris, literals);
       break;
 
     default:
@@ -91,31 +83,24 @@ public class AnatomicalModelLoader extends VitroAjaxController {
     return QueryUtils.getQueryVars(resultSet, uris, literals);
   }
   
-  private static String systemicQuery =
-      "select ?inputClass ?inputClassLabel ?boneDivision ?boneDivisionLabel ?subClass ?subClassLabel "
-          + "  where {  "
-          + "  ?boneDivision          rdfs:label             ?boneDivisionLabel ."
-          + "  ?boneDivision          rdfs:subClassOf        ?restriction .  "
-          + "  ?restriction           owl:onProperty         <http://purl.obolibrary.org/obo/fma#systemic_part_of>   .  "
-          + "  ?restriction           owl:someValuesFrom     ?inputClass .   "
-          + "  ?inputClass            rdfs:label            ?inputClassLabel . " 
-          + "  ?subClass              rdfs:subClassOf        ?boneDivision ."
-          + "  ?subClass              rdfs:label             ?subClassLabel ."
-          + "  FILTER( ?inputClass  =  ?inputClassUri ) ."
-          + "}"
-          ;
 
-  private static String subClassesQuery =
-      "select ?boneDivision ?boneDivisionLabel ?systemicPart ?systemicPartLabel "
-          + "  where {  "
-          + "  ?boneDivision           rdfs:subClassOf         ?inputClass . "
-          + "  ?inputClass             rdfs:label              ?inputLabel . " 
-          + "  ?boneDivision           rdfs:label              ?boneDivisionLabel . "
-          + "  ?systemicPart           rdfs:label              ?systemicPartLabel . "
-          + "  ?systemicPart           rdfs:subClassOf         ?restriction .   "
-          + "  ?restriction            owl:onProperty          <http://purl.obolibrary.org/obo/fma#systemic_part_of> .  "
-          + "  ?restriction            owl:someValuesFrom      ?boneDivision ."
-          + "  FILTER( ?inputClass  =  ?inputClassUri ) . "
-          + "  }";
+  private static String[] BoneQueryInputUris = { "skeletalInventory" };
+  private static String[] BoneQueryUris = { "boneUri", "completeness",
+      "classUri" };
+  private static String[] BoneQueryLiterals = { "label", "description", "classLabel"};
+
+  private static String[] CoherentQueryPrefixes = { "obo", "rdfs", "rdfbones",
+      "rdf", "vitro" };
+  
+  
+  private static String CoherentQuery = ""
+      + "SELECT ?boneDivision (COUNT(?boneOrgan) as ?boneOrganCount) \n"
+      + " WHERE \n "  
+      + "   { "
+      + "    ?completeness    obo:BFO_0000050       ?skeletalInventory . \n"
+      + "    ?completeness    obo:IAO_0000136       ?boneSement . \n"
+      + "    ?boneSegment     obo:regional_part_of  ?boneOrgan  . \n"
+      + "    ?boneOrgan       obo:systemic_part_of  ?boneDivision  . \n"
+      + "   } GROUP BY ?boneDivision \n";
 
 }
