@@ -37,7 +37,9 @@ BoneSegmentField.prototype = {
 		this.dataObject.uri = dataSet.uri
 		this.dataObject.label = dataSet.label
 		this.dataObject.type = "new"
-		this.dataObject.completeness = completenessSet[0].uri
+		this.dataObject.comp2State = new Object() 
+		this.dataObject.comp2State.uri = completenessSet[0].uri
+		this.dataObject.comp2State.type = "existing"
 		dataToStore.push(this.dataObject)
 	},
 	

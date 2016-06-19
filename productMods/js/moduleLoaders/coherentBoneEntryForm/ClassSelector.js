@@ -75,10 +75,10 @@ ClassSelector.prototype = {
 		console.log(this.dataSet)
 		$.each(this.dataSet, (function(index, value) {
 			if (value.uri == this.selectorField.val()) {
-				var toStore = new Object()
-				toStore.uri = value.uri
-				toStore.systemicParts = []
-				this.dataToStore.push(toStore)
+				
+				this.dataToStore.uri = value.uri
+				this.dataToStore.type = "new"
+				this.dataToStore.boneOrgan = []
 				this.setTitle(value.label)
 				this.loadSubObject(value)
 				return false
@@ -99,8 +99,7 @@ ClassSelector.prototype = {
 		
 		console.log(dataSet)
 		// It is already an object
-		this.dataToStore.uri = this.selectorField.val()
-		this.dataToStore.systemicParts = []
+
 
 		/*
 		 * If the systemic part has a subClass then multiple value has to be createds
@@ -126,14 +125,14 @@ ClassSelector.prototype = {
 				subClasses.unshift(extendWith)
 
 				this.systemicPartSelectors.push(new NamedSystemicPartSelector(
-						this, subClasses, this.dataToStore.systemicParts))
+						this, subClasses, this.dataToStore.boneOrgan))
 			}).bind(this))
 				this.appendFields()
 		} else {
 			// Here we can add only one
 			$.each(dataSet.systemicParts, (function(index, value) {
 				this.systemicPartSelectors.push(new SystemicPartSelector(
-						this, value, this.dataToStore.systemicParts))
+						this, value, this.dataToStore.boneOrgan))
 			}).bind(this))
 			this.appendFields()
 			this.addAddAllField()
@@ -199,9 +198,26 @@ ClassSelector.prototype = {
 	
 	saveRoutine : function(){
 		
+		var toSend = { 
+				individual : "http://example.org/individual",
+				boneDivision : this.dataToStore
+		}
+		console.log(toSend)
+		$.ajax({
+			
+			type: 'POST',
+			context : this,
+			dataType: 'json',
+			url : baseUrl + "dataInput",
+			data : "dataToStore=" + JSON.stringify(toSend)
+			
+			}).done(function(msg){
+			new TripleDebug(msg)
+		})
 	},
 	
 	cancelRoutine : function(){
 		
 	}
 }
+
