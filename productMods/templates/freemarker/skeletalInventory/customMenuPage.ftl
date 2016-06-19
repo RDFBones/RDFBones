@@ -16,7 +16,7 @@
 		$(document).ready(function(){
 				pageData["pageConfig"] = new Object()
 				pageData["pageConfig"]["pageElements"] = skInventoryMenuElements
-				pageLoader.loadPage()
+				PageAssembler.loadPage()
 		})
 </script>
 

@@ -7,6 +7,8 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/UILib/ImgUI.js"></script>',	
 	'<script type="text/javascript" src="${urls.base}/js/UILib/UI.js"></script>')}
 
+${scripts.add(
+	'<script type="text/javascript" src="${urls.base}/js/debug/TripleDebug.js"></script>')}
 	
 ${scripts.add(
     '<script type="text/javascript" src="${urls.base}/js/controllers/DataController.js"></script>',
@@ -15,8 +17,17 @@ ${scripts.add(
 
 
 ${scripts.add(
+	'<script type="text/javascript" src="${urls.base}/js/configData/configData.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/configData/cefConfigData.js"></script>')}
+
+${scripts.add(
+	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/coherentBoneEntryForm/NamedSystemicPartSelector.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/coherentBoneEntryForm/SystemicPartSelector.js"></script>',	
+	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/coherentBoneEntryForm/BoneSegmentField.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/coherentBoneEntryForm/ClassSelector.js"></script>')}
+
+${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/lib/AJAXController.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/lib/configData.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/lib/InstanceOffer.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/lib/ImageInstanceOffer.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/lib/InstanceOfferLibrary.js"></script>')}
@@ -29,13 +40,13 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/lib/dataOperation/treeData.js"></script>')}
 
 ${scripts.add(
-	'<script type="text/javascript" src="${urls.base}/js/UIModules/Button.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/UIModules/TextButton.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/UIModules/ExistingSelector.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/UIModules/ImageEditor.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/UIModules/LiteralEditor.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/UIModules/PopUpController.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/UIModules/SelectorField.js"></script>')}
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/generalElements/Button.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/generalElements/TextButton.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/generalElements/ExistingSelector.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/generalElements/ImageEditor.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/generalElements/LiteralEditor.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/generalElements/PopUpController.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/generalElements/SelectorField.js"></script>')}
 
 ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/DataTable.js"></script>',	
@@ -48,18 +59,16 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/EditButton.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/PageLink.js"></script>')}
 
+
 ${scripts.add(
-	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/pageElementLoading/PageElementLoader.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/PageElementLoader.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/DataOperation.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/PageDataLoader.js"></script>')}
+
+${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/pageElementLoading/CustomElementLoader.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/pageElementLoading/PageLoaderMap.js"></script>')}
-
-${scripts.add(
-	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/pageLoader.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/treeLoader.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/treeLoaderUI.js"></script>')}
-
-
-
+	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/pageElementLoading/PageLoaderMap.js"></script>', 
+	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/pageElementLoading/PageAssembler.js"></script>')}
 
 ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/previewJS/js/lightbox.js"></script>')}

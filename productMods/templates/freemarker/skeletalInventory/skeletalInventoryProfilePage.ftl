@@ -3,6 +3,9 @@
 	
 	<div id = "pageContent">
 	</div>
+	<div id = "debugContainer">
+	</div>
+	
 	<script>
 	
 		var imgSrc = "${urls.base}/images/general/"
@@ -13,6 +16,8 @@
 		})
 	</script>
 
+${scripts.add(
+	'<script type="text/javascript" src="${urls.base}/js/configData/skeletalInventoryPageConfig.js"></script>')}
 
 	<a href = "/vivo/entryFormLoad?individual=12345567&classUri=http://purl.obolibrary.org/obo/FMA_71339">
 		Tarsal Bones <img src="/vivo/images/general/add.png" class = "addFieldImg enabledImg">
@@ -20,7 +25,7 @@
 	<a href = "/vivo/entryFormLoad?individual=12345567&classUri=http://purl.obolibrary.org/obo/FMA_71340">
 		Metetarsal Bones <img src="/vivo/images/general/add.png" class = "addFieldImg enabledImg">
 	</a>	
-	<a href = "/vivo/entryFormLoad?individual=12345567&classUri=http://purl.obolibrary.org/obo/FMA_71340">
+	<a href = "/vivo/entryFormLoad?individual=12345567&classUri=http://purl.obolibrary.org/obo/FMA_24140">
 		Lower Limb <img src="/vivo/images/general/add.png" class = "addFieldImg enabledImg">
 	</a>
 	
