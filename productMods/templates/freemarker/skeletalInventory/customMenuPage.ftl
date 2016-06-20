@@ -1,23 +1,15 @@
 <#include "cssImport.ftl">
-
-
-
-<div id="pageContent">
-</div>
-
-<div id = "errorMsg">
-
-</div>
+<#include "JS_PageInit.ftl">			
+<#include "containers.ftl">	
 
 <script>
-		var imgSrc = "${urls.base}/images/general/"
-		var baseUrl = "${urls.base}/"
-		var pageData = new Object()
 		$(document).ready(function(){
-				pageData["pageConfig"] = new Object()
-				pageData["pageConfig"]["pageElements"] = skInventoryMenuElements
-				PageAssembler.loadPage()
-		})
+				new PageInit()
+		})	
 </script>
+${scripts.add(
+		'<script type="text/javascript" src="${urls.base}/js/customConfigData/skeletalInvMenuPageConfig.js"></script>')}
 
 <#include "scriptImport.ftl">
+
+

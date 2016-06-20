@@ -14,7 +14,9 @@
 	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/pageElements/Tab.css">	
 	
 	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/BoneEditor.css">	
-	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/LiteralEditor.css">	
+	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/LiteralEditor.css">
 	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/ImageEditor.css">
 	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/SubboneEditor.css">
 	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/SingleElements.css">
+	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/PopUpController.css">
+	

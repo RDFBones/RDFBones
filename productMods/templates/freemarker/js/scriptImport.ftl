@@ -16,9 +16,6 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/controllers/UIController.js"></script>')}
 
 
-${scripts.add(
-	'<script type="text/javascript" src="${urls.base}/js/configData/configData.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/configData/cefConfigData.js"></script>')}
 
 ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/coherentBoneEntryForm/NamedSystemicPartSelector.js"></script>',
@@ -61,14 +58,18 @@ ${scripts.add(
 
 
 ${scripts.add(
-	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/PageElementLoader.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/DataOperation.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/PageDataLoader.js"></script>')}
+	'<script type="text/javascript" src="${urls.base}/js/pageInit/SWMAP.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/pageInit/pageAssembly/PageElementMap.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/pageInit/pageAssembly/PageAssembler.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/pageInit/pageElementLoading/PageElementLoader.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/pageInit/pageElementLoading/CustomElementLoader.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/pageInit/pageElementLoading/PageElementLoaderMap.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/pageInit/DataOperation.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/pageInit/PageDataLoader.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/pageInit/PageInit.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/previewJS/js/lightbox.js"></script>')}
 
-${scripts.add(
-	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/pageElementLoading/CustomElementLoader.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/pageElementLoading/PageLoaderMap.js"></script>', 
-	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/pageElementLoading/PageAssembler.js"></script>')}
+
 
 ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/previewJS/js/lightbox.js"></script>')}
