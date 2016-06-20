@@ -16,11 +16,10 @@ var PageAssembler = {
 			}
 		} else {
 			var pageElementBuffer = []
-			$.each(pageData["pageConfig"]["pageElements"], function(index, element) {
+			$.each(pageData.pageElements, function(index, element) {
 				pageElementBuffer.push(new PageElementMap[element.type](element).container)
 			})
 			$("#pageContent").append(pageElementBuffer)
-			
 		}
 	},	
 }
