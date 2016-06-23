@@ -203,21 +203,21 @@ ClassSelector.prototype = {
 				boneDivision : this.dataToStore
 		}
 		console.log(toSend)
+		PopUpController.init()
 		$.ajax({
-			
 			type: 'POST',
 			context : this,
 			dataType: 'json',
 			url : baseUrl + "dataInput",
 			data : "dataToStore=" + JSON.stringify(toSend)
-			
 			}).done(function(msg){
-			new TripleDebug(msg)
+				window.location = baseUrl + "customPageLoad?uri=" + pageData.individual
+				//new TripleDebug(msg)
 		})
 	},
 	
 	cancelRoutine : function(){
-		
+		window.location = baseUrl + "customPageLoad?uri=" + pageData.individual
 	}
 }
 
