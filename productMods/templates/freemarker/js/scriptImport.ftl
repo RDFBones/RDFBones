@@ -1,7 +1,6 @@
 ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/lib/jquery-1.11.3.min.js"></script>')}
 
-
 ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/UILib/html.js"></script>',	
 	'<script type="text/javascript" src="${urls.base}/js/UILib/ImgUI.js"></script>',	
@@ -14,8 +13,6 @@ ${scripts.add(
     '<script type="text/javascript" src="${urls.base}/js/controllers/DataController.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/controllers/Controller.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/controllers/UIController.js"></script>')}
-
-
 
 ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/coherentBoneEntryForm/NamedSystemicPartSelector.js"></script>',
@@ -46,6 +43,7 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/generalElements/SelectorField.js"></script>')}
 
 ${scripts.add(
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/Container.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/DataTable.js"></script>',	
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/LinkDataTable.js"></script>',	
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/DataContainer.js"></script>',
@@ -69,7 +67,8 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/pageInit/PageInit.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/previewJS/js/lightbox.js"></script>')}
 
-
+${scripts.add(
+	'<script type="text/javascript" src="${urls.base}/js/pageDataOperations/DataOperationMap.js"></script>')}
 
 ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/previewJS/js/lightbox.js"></script>')}

@@ -3,15 +3,16 @@
 <#include "containers.ftl">			
 
 <script>
+	/*
 	pageData.pageUri = "http://softwareOntology.com/skeletalInventoryPage"
+	*/
+	pageData.boneDivisionPageUri = "1234567"
 	$(document).ready(function(){
 		new PageInit()
 	})
 </script>
 
-${scripts.add(
-	'<script type="text/javascript" src="${urls.base}/js/customConfigData/skeletalInventoryPageDataOperation.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/customConfigData/skeletalInventoryPageQueries.js"></script>')}
+
 
 	<a href = "/vivo/entryFormLoad?individual=12345567&classUri=http://purl.obolibrary.org/obo/FMA_71339">
 		Tarsal Bones <img src="/vivo/images/general/add.png" class = "addFieldImg enabledImg">
@@ -38,3 +39,8 @@ ${scripts.add(
 	</a>
 
 <#include "scriptImport.ftl">
+
+${scripts.add(
+	'<script type="text/javascript" src="${urls.base}/js/customConfigData/skeletalInventoryProfilePage/query.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/customConfigData/skeletalInventoryProfilePage/data.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/customConfigData/skeletalInventoryProfilePage/pageConfig.js"></script>')}
