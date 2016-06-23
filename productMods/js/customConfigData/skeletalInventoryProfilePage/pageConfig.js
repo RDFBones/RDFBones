@@ -1,11 +1,10 @@
 
-
-pageData.pageConfig = [
+pageData.pageElements = [
         
      {
     	 uri : "",
-    	 type : sw.dataContainer,
-    	 data : [
+    	 type : sw.container,
+    	 localData : [
     	    { 
     	    	type : sw.constant,
     	    	value : "Viscerocranium",
@@ -14,20 +13,18 @@ pageData.pageConfig = [
     	    	type : sw.constant,
     	    	value : "Viscerocranium",
     	    	name : "boneLabel",
-    	    }, {
-    	    	
-    	    }  
+    	    }
     	 ],
     	 elements : [
     	    {
-    	    	type : "addNewButton",
+    	    	type : sw.addNew,
     	    	textValue : {
     	    		type : sw.local,
     	    		name : "boneLabel"
     	    	}
     	    }, {
-    	    	type : "dataTable",
-    	    	dataToDiplay : {
+    	    	type : sw.dataTable,
+    	    	dataToDisplay : {
 	    	    	type : sw.selectOperationResult,
 	    	    	dataToSelect : {
 	    	    		type : sw.global,
@@ -49,12 +46,10 @@ pageData.pageConfig = [
     	    	  }  
     	    	]
     	    }    
-    	    
     	 ]
      }, {  
-    	 uri : "",
-    	 type : sw.dataContainer,
-    	 data : [
+    	 type : sw.container,
+    	 localData : [
     	    { 
     	    	type : sw.constant,
     	    	value : "Neurocranium",
@@ -63,20 +58,18 @@ pageData.pageConfig = [
     	    	type : sw.constant,
     	    	value : "Neurocranium",
     	    	name : "label",
-    	    }, {
-    	    	
-    	    }  
+    	    }
     	 ],
     	 elements : [
     	    {
-    	    	type : "addNewButton",
+    	    	type : sw.addNew,
     	    	textValue : {
     	    		type : sw.local,
-    	    		name : "boneLabel"
+    	    		name : "label"
     	    	}
     	    }, {
-    	    	type : "dataTable",
-    	    	dataToDiplay : {
+    	    	type : sw.dataTable,
+    	    	dataToDisplay : {
 	    	    	type : sw.selectOperationResult,
 	    	    	dataToSelect : {
 	    	    		type : sw.global,
