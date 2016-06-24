@@ -10,11 +10,6 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/debug/TripleDebug.js"></script>')}
 
 ${scripts.add(
-    '<script type="text/javascript" src="${urls.base}/js/controllers/DataController.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/controllers/Controller.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/controllers/UIController.js"></script>')}
-
-${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/coherentBoneEntryForm/NamedSystemicPartSelector.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/coherentBoneEntryForm/SystemicPartSelector.js"></script>',	
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/coherentBoneEntryForm/BoneSegmentField.js"></script>',
