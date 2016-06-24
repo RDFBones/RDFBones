@@ -11,8 +11,12 @@ var DataOperationMap = {
       toReturn = ""
       container = cont;
       while (container.parent !== void 0) {
-        if (container.parent.localData[pageData.key] !== void 0) {
-          toReturn = container.parent.localData[pageData.key]
+        if (container.parent.localData !== void 0) {
+        	if(container.parent.localData[pageData.key] !== undefined){
+        		toReturn = container.parent.localData[pageData.key]
+        	} else {
+        		container.container.parent
+        	}
           break;
         } else {
           container = container.parent;

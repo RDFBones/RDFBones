@@ -43,6 +43,12 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/generalElements/SelectorField.js"></script>')}
 
 ${scripts.add(
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/buttonLink/ParentButtonLink.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/buttonLink/AddButtonLink.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/buttonLink/EditButtonLink.js"></script>')}
+
+
+${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/Container.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/DataTable.js"></script>',	
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/LinkDataTable.js"></script>',	
@@ -51,8 +57,7 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/AddNew.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/TabContainer.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/LiteralField.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/EditButton.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/PageLink.js"></script>')}
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/EditButton.js"></script>')}
 
 
 ${scripts.add(
