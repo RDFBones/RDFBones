@@ -20,7 +20,7 @@ pageData.pageElements = [
     	    	type : sw.addNew,
     	    	textValue : {
     	    		type : sw.local,
-    	    		name : "boneLabel"
+    	    		key : "boneLabel"
     	    	}
     	    }, {
     	    	type : sw.dataTable,
@@ -30,7 +30,7 @@ pageData.pageElements = [
 	    	    		type : sw.global,
 	    	    		name : "coherentBones",		
 	    	    	},
-	    	    	selectField : "boneDivision",
+	    	    	selectField : "type",
 	    	    	selectCriteria : {
 	    	    		type : sw.local,
 	    	    		key : "boneUri",
@@ -39,11 +39,13 @@ pageData.pageElements = [
     	    	dataFields : [
     	    	  {  
     	    		  type : sw.literalField,
-    	    		  name : "label", 
+    	    		  key : "label", 
+    	    		  title : "Label",
     	    	  },{
     	    		  type : sw.literalField,
-    	    		  name : "boneOrgans",
-    	    	  }  
+    	    		  key : "boneOrgans",
+    	    		  title : "Number of Bone Organs",
+    	    	  }
     	    	]
     	    }    
     	 ]
@@ -65,7 +67,7 @@ pageData.pageElements = [
     	    	type : sw.addNew,
     	    	textValue : {
     	    		type : sw.local,
-    	    		name : "label"
+    	    		key : "label"
     	    	}
     	    }, {
     	    	type : sw.dataTable,
@@ -75,7 +77,7 @@ pageData.pageElements = [
 	    	    		type : sw.global,
 	    	    		name : "coherentBones",		
 	    	    	},
-	    	    	selectField : "boneDivision",
+	    	    	selectField : "type",
 	    	    	selectCriteria : {
 	    	    		type : sw.local,
 	    	    		key : "boneUri",
@@ -84,11 +86,13 @@ pageData.pageElements = [
     	    	dataFields : [
     	    	  {  
     	    		  type : sw.literalField,
-    	    		  name : "label", 
+    	    		  key : "label", 
+    	    		  title : "Label",
     	    	  },{
     	    		  type : sw.literalField,
-    	    		  name : "boneOrgans",
-    	    	  }  
+    	    		  key : "boneOrgans",
+    	    		  title : "Number of Bone Organs"
+    	    	  }
     	    	]
     	    }    
     	    

@@ -7,8 +7,8 @@ var DataOperationMap = {
       return pageData.value;
     },
     "http://softwareOntology.com/local": function(cont, pageData) {
-      var container, toReturn;
-      toReturn = "";
+      var container
+      toReturn = ""
       container = cont;
       while (container.parent !== void 0) {
         if (container.parent.localData[pageData.key] !== void 0) {
