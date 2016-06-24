@@ -3,10 +3,18 @@
 
 var PopUpController = {
 	
+	init : function(){
+		
+		this.container = html.div("popUpOuter")
+		this.innerContainer = html.div("popUpInner")
+		this.innerContainer.append(ImgUI.libImg("loading", "loadingImg"))
+		$("#popUpContainer").append(this.container.append(this.innerContainer))
+	},
+		
 	initWaiting : function(){
 		this.container = UI.getFullScreenContainer()
 		this.innerContainer = UI.getFullScreenInnerMiddle(500)
-		this.innerContainer.append(ImgUI.horizontalLibImg("loading", "large"))
+		this.innerContainer.append(ImgUI.horizontalLibImg("loading", ""))
 		this.container.append(this.innerContainer)
 		$("#popUpContainer").append(this.container)
 	},
@@ -23,4 +31,5 @@ var PopUpController = {
 			this.container.remove()
 		}).bind(this), 500)
 	}
+	
 }

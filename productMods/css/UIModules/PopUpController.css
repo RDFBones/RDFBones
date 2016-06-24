@@ -1,0 +1,24 @@
+
+.loadingImg {
+	height : 150px;
+	width : auto;
+	background : black;
+}
+
+.popUpOuter {
+	position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background : black;
+    opacity : 0.7;
+}
+
+.popUpInner {
+	position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 3px;
+}
