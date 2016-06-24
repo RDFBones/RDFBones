@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import edu.cornell.mannlib.vitro.webapp.beans.DataPropertyStatementImpl;
 import edu.cornell.mannlib.vitro.webapp.beans.ObjectPropertyStatementImpl;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.dao.DataPropertyStatementDao;
@@ -33,7 +34,7 @@ public class TripleCreator {
   private ObjectPropertyStatementDao objectDao;
   private PropertyInstanceDao propDao;
   private NewURIMaker newUri;
-  
+
     public TripleCreator(JSONObject json, VitroRequest vreq) throws JSONException{
      
       this.dataDao = vreq.getWebappDaoFactory().getDataPropertyStatementDao();
@@ -47,6 +48,8 @@ public class TripleCreator {
       
       this.tripleDefinition = createTestTriples();
       this.triplesToCreate = new ArrayList<Triple>();
+      this.dataTriplesToCreate = new ArrayList<Triple>();
+
       this.inputData = json;
 
       for(Triple triple : this.tripleDefinition){
@@ -91,26 +94,35 @@ public class TripleCreator {
           }
         }
       }
-      
     }
-  
+
     public JSONObject inputData;
     List<Triple> tripleDefinition;
     List<Triple> triplesToCreate;
-    
+    List<Triple> dataTriplesToCreate;
     
     public void createInstance(JSONObject obj) throws JSONException{
 
       try {
         String uri = this.newUri.getUnusedNewURI("");
         this.triplesToCreate.add(new Triple(uri, "rdf:type", obj.getString("uri")));
+        String label = new String(); 
+        if(obj.has("label")){
+          Object lab = obj.get("label");
+          if(lab instanceof JSONObject){
+            
+          } else { //It is just a string
+            label = lab + " " + uri.substring(uri.length() - 3);
+            this.dataTriplesToCreate.add(new Triple(uri, "rdfs:label", label));
+            log.info(label);
+          }
+        }
         obj.put("type", "existing");
         obj.put("uri", uri);
       } catch (InsertException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
-
     }
     
     public void process(JSONObject obj, String varName) throws JSONException{
@@ -222,6 +234,13 @@ public class TripleCreator {
         log.info(triple.subject + "  " + triple.predicate + " " + triple.object);
         this.objectDao.insertNewObjectPropertyStatement(
             new ObjectPropertyStatementImpl(
+                    triple.subject, N3Utils.getOnlyPredicate(triple.predicate),triple.object));
+      }
+      
+      for(Triple triple : this.dataTriplesToCreate){
+        log.info(triple.subject + "  " + triple.predicate + " " + triple.object);
+        this.dataDao.insertNewDataPropertyStatement(
+            new DataPropertyStatementImpl(
                     triple.subject, N3Utils.getOnlyPredicate(triple.predicate),triple.object));
       }
     }

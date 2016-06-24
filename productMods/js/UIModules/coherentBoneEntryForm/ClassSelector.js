@@ -77,6 +77,7 @@ ClassSelector.prototype = {
 			if (value.uri == this.selectorField.val()) {
 				
 				this.dataToStore.uri = value.uri
+				this.dataToStore.label = value.label
 				this.dataToStore.type = "new"
 				this.dataToStore.boneOrgan = []
 				this.setTitle(value.label)
@@ -199,7 +200,7 @@ ClassSelector.prototype = {
 	saveRoutine : function(){
 		
 		var toSend = { 
-				individual : "http://example.org/individual",
+				individual : pageData.individual,
 				boneDivision : this.dataToStore
 		}
 		console.log(toSend)
