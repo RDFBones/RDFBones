@@ -8,3 +8,9 @@ var LiteralField = function(fieldData, configData){
 }
 
 
+var LiteralFieldMiddle = function(fieldData, configData){
+	
+	this.container = html.div("literalFieldMiddle").text(fieldData[configData.key])
+}
+
+

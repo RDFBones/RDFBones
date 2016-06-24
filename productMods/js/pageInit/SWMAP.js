@@ -7,6 +7,7 @@ var sw = {
 		addNew : swPrefix + "AddNew",
 		dataField : swPrefix + "DataField",
 		literalField : swPrefix + "LiteralField",
+		literalFieldMiddle : swPrefix + "LiteralFieldMiddle",
 		editButton : swPrefix + "EditButton",
 		linkDataTable : swPrefix + "LinkDataTable",
 		selectorAddField : swPrefix + "SelectorAddField",

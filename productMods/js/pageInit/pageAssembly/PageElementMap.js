@@ -11,6 +11,7 @@ PageElementMap[sw.selectorAddField] = SelectorAddField
 
 var RowElementMap = new Object()
 
-RowElementMap[sw.editButton] = EditButton
+RowElementMap[sw.editButton] = EditButtonLink
 RowElementMap[sw.literalField] = LiteralField
+RowElementMap[sw.literalFieldMiddle] = LiteralFieldMiddle
 
