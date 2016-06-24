@@ -13,6 +13,10 @@ var html = {
 		return $("<div/>").addClass(classes)
 	},
 	
+	div : function(classes, text) {
+		return $("<div/>").addClass(classes).text(text)
+	},
+	
 	getNewDiv : function() {
 		return $("<div/>")
 	},

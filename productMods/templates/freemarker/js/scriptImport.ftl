@@ -2,13 +2,13 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/lib/jquery-1.11.3.min.js"></script>')}
 
 ${scripts.add(
-	'<script type="text/javascript" src="${urls.base}/js/UILib/html.js"></script>',	
-	'<script type="text/javascript" src="${urls.base}/js/UILib/ImgUI.js"></script>',	
-	'<script type="text/javascript" src="${urls.base}/js/UILib/UI.js"></script>')}
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/UILib/html.js"></script>',	
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/UILib/ImgUI.js"></script>',	
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/UILib/UI.js"></script>')}
 
 ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/debug/TripleDebug.js"></script>')}
-	
+
 ${scripts.add(
     '<script type="text/javascript" src="${urls.base}/js/controllers/DataController.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/controllers/Controller.js"></script>',
