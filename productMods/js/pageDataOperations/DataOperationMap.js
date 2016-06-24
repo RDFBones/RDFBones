@@ -3,9 +3,10 @@
 
 
 var DataOperationMap = {
-    "http://softwareOntology.com/Constant": function(container, pageData) {
-      return pageData.value;
+    "http://softwareOntology.com/Constant": function(container, data) {
+      return data.value;
     },
+    
     "http://softwareOntology.com/local": function(cont, pageData) {
       var container
       toReturn = ""
@@ -14,10 +15,10 @@ var DataOperationMap = {
         if (container.parent.localData !== void 0) {
         	if(container.parent.localData[pageData.key] !== undefined){
         		toReturn = container.parent.localData[pageData.key]
+                break;
         	} else {
-        		container.container.parent
+        		container = container.parent
         	}
-          break;
         } else {
           container = container.parent;
         }
@@ -25,7 +26,7 @@ var DataOperationMap = {
       return toReturn;
     },
     "http://softwareOntology.com/global": function(cont, configData) {
-    	return pageData[configData.name]
+    	return pageData[configData.key]
     },
     "http://softwareOntology.com/selectOperationResult" : function(cont, configData){
     	

@@ -8,11 +8,11 @@ pageData.pageElements = [
     	    { 
     	    	type : sw.constant,
     	    	value : "Viscerocranium",
-    	    	name : "boneUri",
+    	    	key : "boneUri",
     	    }, {
     	    	type : sw.constant,
     	    	value : "Viscerocranium",
-    	    	name : "boneLabel",
+    	    	key : "boneLabel",
     	    }
     	 ],
     	 elements : [
@@ -21,14 +21,26 @@ pageData.pageElements = [
     	    	textValue : {
     	    		type : sw.local,
     	    		key : "boneLabel"
-    	    	}
+    	    	},
+    	    	linkDataInputs : [
+		    	  {
+		    		type : sw.local,
+	  	    		key : "boneUri",
+	  	    		varName : "classUri",
+		    	  }, {
+		    		type : sw.global,
+	  	    		key : "individual",
+	  	    		//varName : "classUri",
+		    	  }
+    	    	],
+    	    	mapping : "entryFormLoad",
     	    }, {
     	    	type : sw.dataTable,
     	    	dataToDisplay : {
 	    	    	type : sw.selectOperationResult,
 	    	    	dataToSelect : {
 	    	    		type : sw.global,
-	    	    		name : "coherentBones",		
+	    	    		key : "coherentBones",		
 	    	    	},
 	    	    	selectField : "type",
 	    	    	selectCriteria : {
@@ -55,11 +67,11 @@ pageData.pageElements = [
     	    { 
     	    	type : sw.constant,
     	    	value : "Neurocranium",
-    	    	name : "boneUri",
+    	    	key : "boneUri",
     	    }, {
     	    	type : sw.constant,
     	    	value : "Neurocranium",
-    	    	name : "label",
+    	    	key : "boneLabel",
     	    }
     	 ],
     	 elements : [
@@ -67,15 +79,28 @@ pageData.pageElements = [
     	    	type : sw.addNew,
     	    	textValue : {
     	    		type : sw.local,
-    	    		key : "label"
-    	    	}
+    	    		key : "boneLabel"
+    	    	},
+    	    	linkDataInputs : [
+		    	  {
+		    		type : sw.local,
+	  	    		key : "boneUri",
+	  	    		varName : "classUri",
+		    	  },  {
+		    		type : sw.global,
+	  	    		key : "individual",
+	  	    		//varName : "classUri",
+		    	  }
+		    	],
+    	    	mapping : "entryFormLoad",
+
     	    }, {
     	    	type : sw.dataTable,
     	    	dataToDisplay : {
 	    	    	type : sw.selectOperationResult,
 	    	    	dataToSelect : {
 	    	    		type : sw.global,
-	    	    		name : "coherentBones",		
+	    	    		key : "coherentBones",		
 	    	    	},
 	    	    	selectField : "type",
 	    	    	selectCriteria : {
