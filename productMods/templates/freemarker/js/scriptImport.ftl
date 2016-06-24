@@ -15,10 +15,10 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/controllers/UIController.js"></script>')}
 
 ${scripts.add(
-	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/coherentBoneEntryForm/NamedSystemicPartSelector.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/coherentBoneEntryForm/SystemicPartSelector.js"></script>',	
-	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/coherentBoneEntryForm/BoneSegmentField.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/moduleLoaders/coherentBoneEntryForm/ClassSelector.js"></script>')}
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/coherentBoneEntryForm/NamedSystemicPartSelector.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/coherentBoneEntryForm/SystemicPartSelector.js"></script>',	
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/coherentBoneEntryForm/BoneSegmentField.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/coherentBoneEntryForm/ClassSelector.js"></script>')}
 
 ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/lib/AJAXController.js"></script>',
@@ -56,8 +56,7 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/SelectorAddField.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/AddNew.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/TabContainer.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/LiteralField.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/EditButton.js"></script>')}
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/LiteralField.js"></script>')}
 
 
 ${scripts.add(

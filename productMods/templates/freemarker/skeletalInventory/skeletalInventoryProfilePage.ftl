@@ -13,7 +13,7 @@
 </script>
 
 
-
+<!--
 	<a href = "/vivo/entryFormLoad?individual=12345567&classUri=http://purl.obolibrary.org/obo/FMA_71339">
 		Tarsal Bones <img src="/vivo/images/general/add.png" class = "addFieldImg enabledImg">
 	</a>
@@ -37,7 +37,7 @@
 	<a href = "/vivo/entryFormLoad?individual=12345567&classUri=http://purl.obolibrary.org/obo/FMA_71337">
 		Phalanges of hand <img src="/vivo/images/general/add.png" class = "addFieldImg enabledImg">
 	</a>
-
+-->
 <#include "scriptImport.ftl">
 
 ${scripts.add(

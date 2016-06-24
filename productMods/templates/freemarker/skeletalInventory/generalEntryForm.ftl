@@ -16,7 +16,7 @@
 </script>
 
 ${scripts.add(
-	'<script type="text/javascript" src="${urls.base}/js/customConfigData/coherentCEFQueries.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/customConfigData/coherentCEF.js"></script>')}
+	'<script type="text/javascript" src="${urls.base}/js/customConfigData/coherentCEF/coherentCEFQueries.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/customConfigData/coherentCEF/coherentCEF.js"></script>')}
 
 <#include "scriptImport.ftl">
