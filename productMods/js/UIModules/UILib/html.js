@@ -97,6 +97,10 @@ var html = {
 		return $("<a/>").attr("href", href)
 	},
 	
+	link : function(href, _class){
+		return $("<a/>").attr("href", href).addClass(_class)
+	},
+	
 	form : function(){
 		return $("<form/>")
 	},
