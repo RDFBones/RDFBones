@@ -26,6 +26,13 @@
 	width : 200px;
 }
 
+.literalFieldMiddle {
+	text-align : center;
+	display : inline-block;
+	margin : 5px;
+	width : 200px;
+}
+
 .linkTableRow:hover {
 	background-color : #B0B0B0;
 	display : table;
