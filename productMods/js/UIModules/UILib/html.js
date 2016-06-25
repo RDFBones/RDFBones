@@ -95,5 +95,18 @@ var html = {
 	
 	link : function(href){
 		return $("<a/>").attr("href", href)
-	}
+	},
+	
+	form : function(){
+		return $("<form/>")
+	},
+	
+	fileUpload : function(){
+		return $("<input/>").attr("type", "file")
+	},
+	
+	fileUpload : function(id){
+		return $("<input/>").attr("type", "file").attr("id", id)
+	},
+	
 }

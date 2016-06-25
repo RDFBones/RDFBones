@@ -29,6 +29,10 @@ var ImgUI = {
 	libImg : function(type, _class) {
 		return html.getImg(ImgSrc[type], _class)
 	},
+
+	libImgS : function(type, size){
+		html.getImg(ImgSrc[type], size + "Img")
+	},
 	
 	/***************************************************************************
 	 * Horizontal Lib Img
@@ -58,10 +62,12 @@ var ImgUI = {
 		return ImgUI.generalImgCont(ImgSrc[type], _class)
 	},
 
-	libImgCont : function(type, _class, size) {
+	libImgSize : function(type, _class, size) {
 		return ImgUI.generalImgCont(ImgSrc[type], _class, size)
 	},
-
+	
+	
+	
 	/***************************************************************************
 	 * General Img with container
 	 **************************************************************************/
