@@ -1,0 +1,8 @@
+  SELECT ?boneDivision (COUNT(?boneOrgan) as ?boneOrganCount) 
+       WHERE { 
+         { 
+          ?completeness    obo:BFO_0000050       ?skeletalInventory . 
+          ?completeness    obo:IAO_0000136       ?boneSement . 
+          ?boneSegment     obo:regional_part_of  ?boneOrgan  . 
+          ?boneOrgan       obo:systemic_part_of  ?boneDivision  . 
+         } GROUP BY ?boneDivision 
