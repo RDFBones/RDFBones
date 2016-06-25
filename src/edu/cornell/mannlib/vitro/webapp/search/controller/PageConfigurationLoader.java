@@ -101,7 +101,8 @@ public class PageConfigurationLoader extends VitroAjaxController {
           +   "  ?dataField      rdf:type    ?type ."
           +   "  ?dataField      sw:num      ?num . "
           +   "  OPTIONAL { ?dataField       sw:title    ?title } ."
-          +   "  OPTIONAL { ?dataField    sw:dataKey   ?dataKey } ." 
+          +   "  OPTIONAL { ?dataField      sw:dataKey   ?dataKey } ." 
+          +   "  OPTIONAL { ?dataField      sw:localData  ?localData } ."
           +   " } ORDER BY ASC(?num)  ";  
         
         result = this.performQuery(dataFieldQuery, dataFieldInputParam, dataFieldUris, dataFieldLiterals);
@@ -124,7 +125,24 @@ public class PageConfigurationLoader extends VitroAjaxController {
         
         result = this.performQuery(linkDataInputQuery, linkDataInputParam, linkDataInputUris, linkDataInputLiterals);
         break;
-        default : break;
+
+      
+        case "localData" :
+          
+          String[] localDataInputParam = {"subject"};
+          String[] localDataUris = {"localData", "type"};
+          String[] localDataLiterals = {"dataKey"};
+          
+          String linkDataInputQuery1 = "SELECT ?linkDataInput ?type ?dataKey" 
+            +   " WHERE {  "
+            +   "  ?subject   sw:localData    ?localData ."
+            +   "  ?localData rdf:type        ?type  ."
+            +   "  ?localData sw:dataKey      ?dataKey . "     
+            +   " }  ";  
+          
+          result = this.performQuery(linkDataInputQuery1, localDataInputParam, localDataUris, localDataLiterals);
+          break;
+          default : break;
       }
       
       if (result.size() > 0) {
