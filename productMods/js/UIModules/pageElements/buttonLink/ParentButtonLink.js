@@ -5,7 +5,8 @@ var ParentButtonLink = function(parent, configData, type){
 	this.parent = parent
 	this.configData = configData
 	
-	this.container = html.link(this.getButtonUrl())
+	url = this.getButtonUrl()
+	this.container = html.link(url)
 	this.button = new LinkButton(type)
 	this.container.append(this.button.container)	
 }
@@ -17,16 +18,17 @@ ParentButtonLink.prototype = {
 			$.each(this.configData.linkDataInputs, (function(i, data){
 				
 				if(data.varName != undefined){
-					paramMap[data.varName] = DataOperationMap[data.type](this, data)
+					paramMap[data.varName] = getData(this, data)
 				} else {
-					paramMap[data.varName] = DataOperationMap[data.type](this, data)
+					paramMap[data.key] = getData(this, data)
 				}	
 			}).bind(this))
 			
 			var href = baseUrl + this.configData.mapping + "?"
 			$.each(paramMap, function(key, value){
-				href += key + "=" + value
+				href += key + "=" + value + "&"
 			})
+			href = href.substring(0, href.length - 1)
 			return href
 		}
 }

@@ -35,14 +35,7 @@ DataTable.prototype.loadTableData = function() {
 DataTable.prototype.displayData = function(data) {
 	var column = []
 	$.each(data, (function(i, fieldData) {
-		// Iterate on each field now
-		var row = html.div("tableRow")
-		$.each(this.configData.dataFields, function(j, configData) {
-			row.append(new RowElementMap[configData.type](fieldData, configData).container)
-		})
-		column.push(row)
+		column.push(new Row(this.configData, fieldData).container)
 	}).bind(this))
 	this.content.append(column)
 }
-
-// console.log(DataTable.prototype)

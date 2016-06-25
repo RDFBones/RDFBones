@@ -1,16 +1,19 @@
 
 
 
-var LiteralField = function(fieldData, configData){
+var LiteralField = function(parent, configData){
 	
+	this.parent =  parent
 	//this.value = data[configData.dataKey]
-	this.container = html.div("literalField").text(fieldData[configData.key])
+	this.container = html.div("literalField").text(getData(this, configData.value))
 }
 
 
 var LiteralFieldMiddle = function(fieldData, configData){
 	
-	this.container = html.div("literalFieldMiddle").text(fieldData[configData.key])
+	this.parent =  parent
+	//this.value = data[configData.dataKey]
+	this.container = html.div("literalField").text(getData(this, configData.value))
 }
 
 
