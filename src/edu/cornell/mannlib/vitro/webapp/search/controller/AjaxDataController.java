@@ -218,7 +218,7 @@ public class AjaxDataController extends VitroAjaxController {
      private static String[] ImageUploadOutputParams = {};
 
      private static String[] ImageUploadObjectTriplesAdd = {
-        "?subject rdfbones:isDepiceted ?imageIndividual",
+        "?subject rdfbones:isDepicted ?imageIndividual",
         "?imageIndividual rdf:type bibo:Image",
         "?fileIndividual rdf:type vitro-public:File",
         "?imageIndividual http://vivo.mydomain.edu/individual/hasFile ?fileIndividual",
