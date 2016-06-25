@@ -1009,6 +1009,33 @@
     <url-pattern>/customPageLoad</url-pattern>
   </servlet-mapping>
    
+  <servlet>
+    <servlet-name>DataInput</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.DataInput</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DataInput</servlet-name>
+    <url-pattern>/dataInput</url-pattern>
+  </servlet-mapping>
+   
+  <servlet>
+    <servlet-name>DataLoader</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.DataLoader</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DataLoader</servlet-name>
+    <url-pattern>/dataLoader</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ProfilePage</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.ProfilePageLoader</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProfilePage</servlet-name>
+    <url-pattern>/profilePage</url-pattern>
+  </servlet-mapping>
+  
    <servlet>
     <servlet-name>EntryFormLoader</servlet-name>
     <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.EntryFormLoader</servlet-class>

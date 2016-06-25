@@ -13,15 +13,10 @@ import edu.cornell.mannlib.vitro.webapp.controller.freemarker.FreemarkerHttpServ
 import edu.cornell.mannlib.vitro.webapp.controller.freemarker.responsevalues.ResponseValues;
 import edu.cornell.mannlib.vitro.webapp.controller.freemarker.responsevalues.TemplateResponseValues;
 
-public class PageLoader extends FreemarkerHttpServlet{
+public class ProfilePageLoader extends FreemarkerHttpServlet{
   
   private static final long serialVersionUID = 1L;   
-  private static final Log log = LogFactory.getLog(PageLoader.class.getName());
-  
-  private static final int INDIVIDUALS_PER_PAGE = 30;
-  private static final int MAX_PAGES = 40;  // must be even
-  
-  private static final String TEMPLATE_DEFAULT = "generalEntryForm.ftl";
+  private static final Log log = LogFactory.getLog(ProfilePageLoader.class.getName());
 
   @Override
   protected ResponseValues processRequest(VitroRequest vreq) {
@@ -37,12 +32,18 @@ public class PageLoader extends FreemarkerHttpServlet{
     Map<String, Object> body = new HashMap<String, Object>();
     
     switch(pageUri){
-      case "boneDivisionProfilePage" :
-        templateName = "boneDivisionProfilePage.ftl";
+      case "skeletalInventory" :
+        templateName = "skeletalInventory.ftl";
+        body.put("individual", vreq.getParameter("skeletalInventory"));
+        body.put("skeletalInventory", vreq.getParameter("skeletalInventory"));
+        break;
+        
+      case "boneDivision" :
+        templateName = "boneDivision.ftl";
         body.put("individual", vreq.getParameter("boneDivision"));
         body.put("skeletalInventory", vreq.getParameter("individual"));
         break;
-       default : break;
+      default : break;
     }
     return new TemplateResponseValues(templateName, body);
   }
