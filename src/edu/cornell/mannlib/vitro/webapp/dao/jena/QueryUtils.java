@@ -46,7 +46,9 @@ public class QueryUtils {
         if(uris != null){
           for(String uri : uris){
             //og.info(uri);
-            resultMap.put(uri, sol.get(uri).asResource().getURI());
+            if(sol.get(uri) != null){
+              resultMap.put(uri, sol.get(uri).asResource().getURI());
+            }
           }
         }
         if(literals != null){
