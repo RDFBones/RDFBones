@@ -50,6 +50,7 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/LabelEditor.js"></script>',	
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/LinkDataTable.js"></script>',	
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/DataContainer.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/ImagesField.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/SelectorAddField.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/AddNew.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/TabContainer.js"></script>',

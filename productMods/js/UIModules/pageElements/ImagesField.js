@@ -1,159 +1,128 @@
-var ImageEditor = function(boneEditor){
-	this.boneEditor = boneEditor
-	this.container = html.getNewDiv()
-	this.container.append(this.getTitleDiv("Images"))
-	this.outerContainer = this.getOuterContainer()
-	this.innerContainer = this.getInnerContainer()
+var ImagesField = function(parent, configData) {
+
 	
-	this.waitGif = new SmallWaitingGif()
-	this.noImageMsg = html.getNewDiv("margin10").text("There is no image loaded to this bone")
+	//We do not use the input params at all
+	this.images = []
 	
-	this.imageUpload = html.getForm()
-		.attr("id", "imageForm").attr("enctype","multipart/form-data")
-		.append(html.getFileUploadId("datafile")
-				.attr("name", "datafile")
-				.addClass("uploadField"))
-		
-	this.submitButton = this.getSubmitButton()
-	
-	html.getNewDiv("button1")
-		.text("Upload")
-		.click(ImageEditor.submitImage)
-		
-	this.container
-			.append(this.outerContainer
-					.append(this.innerContainer))
-					.append(html.getNewDiv("newLine"))
-			.append(this.noImageMsg.hide())
-			.append(this.imageUpload)
-			.append(this.submitButton)
-			.append(html.getNewDiv("newLine"))
+	this.container = html.div()
+
+	this.title = html.div("title").text("Images");
+
+	this.outerContainer = html.div("imgEditOuterContainer")
+	this.innerContainer = html.div("imagesInnerContainer")
+
+	this.waitGif = ImgUI.libImgS("wait", "small")
+
+	this.noImageMsg = html.getNewDiv("margin10").text(
+			"There is no image loaded to this bone")
+
+	this.form = html.form().attr("id", "imageForm").attr("enctype","multipart/form-data")
+	this.fileUpload = html.fileUpload("datafile").attr("name", "datafile")
+						.addClass("uploadField")
+	this.submitButton = new TextButton("Upload", (this.submit).bind(this), "inline")
+
+	this.assemble()
+	this.queryImages()
 }
 
-ImageEditor.prototype.show = function(data){
-	this.boneData = data
-	this.container.show()
-	this.showWaitGif();
-	var _this = this
-	if(data.image == null){
-		//Query them
+ImagesField.prototype = {
+
+	assemble : function() {
+
+		UI.assemble(this.container, [ 
+		  this.title,
+		  this.outerContainer,
+		  	this.innerContainer,
+		  		this.waitGif,
+		  this.noImageMsg,
+		  this.form,
+		  	this.fileUpload,
+		  this.submitButton.container,
+		], [0, 0, 1, 2, 0, 0, 1, 0])
+	},
+
+	queryImages : function() {
+
+		this.container.show()
+		this.showWaitGif()
 		$.ajax({
 			url : baseUrl + "ajaxQuery",
+			dataType : "json",
 			data : {
 				dataOperation : "imagesOfIndividual",
-				subject : _this.boneData.uri,
+				subject : pageData.individual
 			}
-		}).done(function(msg){
-			var result = $.parseJSON(msg)
-			console.log(result)
-			_this.boneData.images = []
-			console.log(_this)
-			if(!("noResult" in result)){
-			//if(result.noResult == null){
-				$.each(result, function(index, value){
-					//I have to cut the last / element
-					console.log("Image " + value)
-					_this.boneData.images.push(
-							baseUrl.substring(0, baseUrl.length - 1) + value.downloadLocation)
-				})
-			}
-			console.log(_this.boneData)
-			_this.refreshImages()
-		})
-	} else {
-		this.refreshImages()
-	}
-}
+		}).done(
+				(function(result) {
 
-ImageEditor.prototype.showWaitGif = function(){
-	this.innerContainer.append(this.waitGif)
-}
+					this.images = []
+					if (!("noResult" in result)) {
+						// if(result.noResult == null){
+						$.each(result, (function(index, value) {
+							this.images.push(baseUrl.substring(0,
+									baseUrl.length - 1)
+									+ value.downloadLocation)
+						}).bind(this))
+					}
+					this.refreshImages()
+				}).bind(this))
+	},
 
-ImageEditor.prototype.refreshImages = function(){
-	this.innerContainer.empty()
-	var _this = this
-	if(this.boneData.images.length > 0){
-		console.log("Existing images")
-		this.outerContainer.show()
-		this.noImageMsg.hide()
-		$.each(this.boneData.images, function(index, img){
-			console.log(img)
-			_this.innerContainer.append(
-					_this.getImg(img))
-		})
-	} else {
-		this.outerContainer.hide()
-		this.noImageMsg.show()
-	}
-}
+	showWaitGif : function() {
+		this.innerContainer.prepend(this.waitGif)
+	},
+	
+	refreshImages : function() {
+		this.innerContainer.empty()
+		if (this.images.length > 0) {
+			this.outerContainer.show()
+			this.noImageMsg.hide()
+			this.showWaitGif();
+			$.each(this.images, (function(index, img) {
+				this.innerContainer.append(this.getImgElement(img))
+			}).bind(this))
+		} else {
+			this.outerContainer.hide()
+			this.noImageMsg.show()
+		}
+	},
 
-ImageEditor.prototype.getSubmitButton = function(){
-	var _this = this
-	console.log(this.boneData)
-	return html.getNewDiv("button1")
-				.text("Upload")
-				.click(function(){
-					
+	submit : function() {
+
+		this.showWaitGif()
 		var fd = new FormData(document.getElementById("imageForm"));
 		$.ajax({
-		  url : baseUrl + "ajaxFile",
-		  type: "POST",
-		  data: fd,
-		  processData: false,  // tell jQuery not to process the data
-		  contentType: false   // tell jQuery not to set contentType
-		}).done(function(msg){
-			var result = $.parseJSON(msg)
-			result["subject"] = _this.boneData.uri
-			result["dataOperation"] = "saveImage"
-			console.log(result)
-			//I have to cut the last / element
-			if(parent.images == null ){
-				parent.images = []
-			}
-			_this.boneData.images.unshift(
-					baseUrl.substring(0, baseUrl.length - 1) + result.downloadLocation)
-			$.ajax({
-			  url : baseUrl + "ajaxData",
-			  data: result
-			}).done(function(msg){
-				_this.refreshImages()
-			})
-		})
-	})		
-}
+			url : baseUrl + "ajaxFile",
+			type : "POST",
+			data : fd,
+			processData : false, // tell jQuery not to process the
+			// data
+			contentType : false
+		// tell jQuery not to set contentType
+		}).done(
+				/*
+				 * The second part of the loading process
+				 */
+				(function(msg) {
+					var result = $.parseJSON(msg)
+					result["subject"] = pageData.individual
+					result["dataOperation"] = "saveImage"
+					
+					this.images.unshift(baseUrl.substring(0,
+							baseUrl.length - 1)
+							+ result.downloadLocation)
+					$.ajax({
+						url : baseUrl + "ajaxData",
+						data : result
+					}).done((function(msg) {
+						this.refreshImages()
+					}).bind(this))
+				}).bind(this))
+	},
 
-ImageEditor.prototype.getTitleDiv = function(title) {
-	this.titleDiv = html.getNewDiv("moduleTitle").text(title)
-	return this.titleDiv
-}
+	getImgElement : function(src) {
+		return html.getNewDiv("boneImageContainer").append(
+				html.getPreviewImage(src, "boneImage", "viewer"))
+	},
 
-ImageEditor.prototype.getOuterContainer = function(){
-	this.innerContainer = html.getNewDiv("imgEditOuterContainer")
-	return this.innerContainer
-}
-
-ImageEditor.prototype.getInnerContainer = function(){
-	return html.getNewDiv("imagesInnerContainer")
-}
-
-ImageEditor.prototype.getImg = function(src) {
-	return html.getNewDiv("boneImageContainer").append(
-			html.getPreviewImage(src, "boneImage","viewer"))
-}
-
-ImageEditor.prototype.getEditImg = function(src, index){
-	return html.getNewDiv("imageContainer")
-			.append(html.getPreviewImage(testImgSource + src, "previewImg", index))
-			.append(html.getNewDiv("imgCheckBoxContainer")
-					.append(html.getCheckBox()))
-	/*	<div class = "imageContainer">
-			<img src="" class = "image">
-			<div class = "imgCheckBoxContainer">
-				<input type = "checkbox"/>
-			</div>	
-		</div> 	*/
-}
-	
-ImageEditor.prototype.getNewLine = function() {
-		return html.getNewDiv("newLine")
 }

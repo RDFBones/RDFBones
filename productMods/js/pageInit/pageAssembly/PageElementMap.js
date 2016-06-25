@@ -7,11 +7,11 @@ PageElementMap[sw.addNew] = AddNew
 PageElementMap[sw.dataTable] = DataTable
 PageElementMap[sw.linkDataTable] = LinkDataTable
 PageElementMap[sw.selectorAddField] = SelectorAddField
-
+PageElementMap[sw.labelEditor] = LabelEditor
+PageElementMap[sw.imagesField] = ImagesField
 
 var RowElementMap = new Object()
 
 RowElementMap[sw.editButton] = EditButtonLink
 RowElementMap[sw.literalField] = LiteralField
 RowElementMap[sw.literalFieldMiddle] = LiteralFieldMiddle
-

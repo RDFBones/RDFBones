@@ -15,5 +15,6 @@ var sw = {
 		local : swPrefix + "local",
 		constant : swPrefix + "Constant",
 		selectOperationResult : swPrefix + "selectOperationResult",
-		
+		labelEditor : swPrefix + "labelEditor",
+		imagesField : swPrefix + "ImagesField",
 }
