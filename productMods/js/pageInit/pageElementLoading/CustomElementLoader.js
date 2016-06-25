@@ -3,7 +3,7 @@ var TabContainerLoader = function(root, dataObject){
 	
 	this.dataObject = dataObject
 	this.root = root
-	this.varName = "tab"
+	this.varName = ["tab"]
 	this.setVars()
 	console.log("tabContainerLoader")
 }
@@ -13,7 +13,7 @@ TabContainerLoader.prototype = Object.create(PageElementLoader.prototype)
 var TabLoader = function(root, dataObject){
 	this.dataObject = dataObject
 	this.root = root
-	this.varName = "element"
+	this.varName = ["element"]
 	this.setVars()
 	console.log("tabLoader")
 }
@@ -24,7 +24,7 @@ var DataContainerLoader = function(root, dataObject){
 	
 	this.dataObject = dataObject
 	this.root = root
-	this.varName = "dataField"
+	this.varName = ["dataField", "localData"]
 	this.setVars()
 	console.log("dataContainerLoader")
 }
@@ -36,7 +36,7 @@ var EditButtonLoader = function(root, dataObject){
 	
 	this.dataObject = dataObject
 	this.root = root
-	this.varName = "linkDataInput"
+	this.varName = ["linkDataInput"]
 	this.setVars()
 	console.log("editButtonLoader")
 }
@@ -48,7 +48,7 @@ var LiteralLoader = function(root, dataObject){
 	
 	this.root = root
 	this.dataObject = dataObject	
-	this.varName = "literal"
+	this.varName = ["literal"]
 	this.setVars()
 	console.log("literalLoader")
 }
@@ -63,7 +63,7 @@ LiteralLoader.prototype.getElements = function(){
 var LinkDataInputLoader = function(root, dataObject){
 	this.root = root
 	this.dataObject = dataObject	
-	this.varName = "buttonData"
+	this.varName = ["buttonData"]
 	this.setVars()
 	console.log("linkDataInputLoader")
 }
