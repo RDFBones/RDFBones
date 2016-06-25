@@ -7,7 +7,7 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/UILib/UI.js"></script>')}
 
 ${scripts.add(
-	'<script type="text/javascript" src="${urls.base}/js/debug/TripleDebug.js"></script>')}
+	'<script type="text/javascript" src="${urls.base}/js/lib/debug/TripleDebug.js"></script>')}
 
 ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/coherentBoneEntryForm/NamedSystemicPartSelector.js"></script>',
@@ -45,7 +45,9 @@ ${scripts.add(
 
 ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/Container.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/Row.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/DataTable.js"></script>',	
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/LabelEditor.js"></script>',	
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/LinkDataTable.js"></script>',	
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/DataContainer.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/SelectorAddField.js"></script>',
