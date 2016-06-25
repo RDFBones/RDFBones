@@ -2,7 +2,8 @@
 var DataTable = function(configData, parent) {
 
 	Container.call(this, configData, parent)
-
+	
+	
 	this.container.addClass("dataTable")
 
 	this.header = html.div("tableHeader")
@@ -13,10 +14,14 @@ var DataTable = function(configData, parent) {
 }
 
 DataTable.prototype = Object.create(Container.prototype)
-console.log(DataTable.prototype)
+
+DataTable.prototype.getRow = function(){
+	
+	return Row
+}
 
 DataTable.prototype.setElements = function() {
-
+	
 },
 
 DataTable.prototype.loadTableHeader = function() {
@@ -36,6 +41,7 @@ DataTable.prototype.displayData = function(data) {
 	var column = []
 	$.each(data, (function(i, fieldData) {
 		column.push(new Row(this.configData, fieldData).container)
+	
 	}).bind(this))
 	this.content.append(column)
 }
