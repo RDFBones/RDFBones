@@ -51,15 +51,17 @@ Tab.prototype = {
 	initContent : function(){
 		this.content = html.div()
 		var tmp = []
-		if(this.tabDef.elements.length != 0){
-			$.each(this.tabDef.elements, function(i, element){
-				tmp.push(new PageElementMap[element.type](element).container)
-			})
-			this.content.append(tmp)
-		} else {
-			console.log("jdsjkdsdskj")
-			this.content = html.div().text("There is no content")
+		
+		if(this.tabDef.elements !== undefined){
+			if(this.tabDef.elements.length != 0){
+				$.each(this.tabDef.elements, function(i, element){
+					tmp.push(new PageElementMap[element.type](element).container)
+				})
+				this.content.append(tmp)
+				return true
+			}
 		}
+		this.content = html.div().text("There is no content")
 	},
 
 	showContent : function(){
