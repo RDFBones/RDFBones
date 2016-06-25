@@ -5,7 +5,6 @@ pageData.skeletalInventories = [
 	    { uri : "http://example.org/individual", label : "Test Inventory", type : "Primary Skeletal Inventory"},
 	]
 
-
 pageData.pageElements = [
     {
     	uri : "http://softwareOntology.com/addField1",
@@ -27,14 +26,22 @@ pageData.pageElements = [
     	uri : "http://softwareOntology.com/existingInventories",
      	type : "http://softwareOntology.com/LinkDataTable",
     	title : "Existing Skeletal Inventories",
-    	dataKey : "skeletalInventories",
+    	dataToDisplay : {
+    		type : sw.global,
+    		key : "skeletalInventories",
+    	},
     	linkDataInputs : [
     		 { 
-    			 type : "http://softwareOntology.com/local",
-    			 uri : "http://softwareOntology.com/dataInput1",
-    			 dataKey : "uri",
+    			 type : sw.local,
+    			 key : "uri",
+    			 varName  : "skeletalInventory",
+    		 },{
+    			 type : sw.constant,
+    			 value : "skeletalInventory",
+    			 varName : "pageUri"
     		 }
 	    ],
+	    mapping : "profilePage",
 	    dataFields : [
              {
             	 title : "Label",
