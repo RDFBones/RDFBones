@@ -40,14 +40,14 @@ public class AnatomicalModelLoader extends VitroAjaxController {
     switch (vreq.getParameter("queryType")) {
 
     case "systemicParts":
-      String[] inputParam = {"inputClassUri"};
+      String[] inputParam = {"classUri"};
       String[] uris = {"inputClass", "boneDivision", "subClass"};
       String[] literals = {"inputClassLabel", "boneDivisionLabel", "subClassLabel"};
       
       result = this.performQuery(systemicQuery, inputParam, uris, literals);
       break;
     case "subClasses" :
-      String[] inputParam1 = {"inputClassUri"};
+      String[] inputParam1 = {"classUri"};
       String[] uris1 = { "boneDivision", "systemicPart"};
       String[] literals1 ={ "boneDivisionLabel", "systemicPartLabel"};
       
@@ -101,7 +101,7 @@ public class AnatomicalModelLoader extends VitroAjaxController {
           + "  ?inputClass            rdfs:label            ?inputClassLabel . " 
           + "  ?subClass              rdfs:subClassOf        ?boneDivision ."
           + "  ?subClass              rdfs:label             ?subClassLabel ."
-          + "  FILTER( ?inputClass  =  ?inputClassUri ) ."
+          + "  FILTER( ?inputClass  =  ?classUri ) ."
           + "}"
           ;
 
@@ -115,7 +115,7 @@ public class AnatomicalModelLoader extends VitroAjaxController {
           + "  ?systemicPart           rdfs:subClassOf         ?restriction .   "
           + "  ?restriction            owl:onProperty          <http://purl.obolibrary.org/obo/fma#systemic_part_of> .  "
           + "  ?restriction            owl:someValuesFrom      ?boneDivision ."
-          + "  FILTER( ?inputClass  =  ?inputClassUri ) . "
+          + "  FILTER( ?inputClass  =  ?classUri ) . "
           + "  }";
 
 }

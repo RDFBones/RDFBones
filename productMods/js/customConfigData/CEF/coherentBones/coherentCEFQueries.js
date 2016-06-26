@@ -1,26 +1,26 @@
 pageData.queries = [ {
 	type : "query",
 	parameters : [ {
-		type : "global",
+		type : sw.global,
 		varName : "classUri",
-		name : "inputClassUri"
+		key : "classUri"
 	}, {
-		type : "local",
+		type : sw.constant,
 		value : "systemicParts",
-		name : "queryType"
+		varName : "queryType"
 	} ],
 	mapping : "anatomicalModelLoader",
 	toVariable : "boneDivisions1",
 }, {
 	type : "query",
 	parameters : [ {
-		type : "global",
+		type : sw.local,
 		varName : "classUri",
-		name : "inputClassUri"
+		key : "classUri"
 	}, {
-		type : "local",
+		type : sw.constant,
 		value : "subClasses",
-		name : "queryType"
+		varName : "queryType"
 	} ],
 	mapping : "anatomicalModelLoader",
 	toVariable : "boneDivisions2",
