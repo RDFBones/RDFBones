@@ -12,8 +12,12 @@ addCoherent = {
 	}, {
 		type : sw.global,
 		key : "individual",
+	},{
+		type : sw.constant,
+		key : "pageUri",
+		value : "coherentBones",
 	} ],
-	mapping : "entryFormLoad",
+	mapping : "pageLoader",
 }
 
 coherentDataTable = {
@@ -51,13 +55,27 @@ coherentDataTable = {
 			{
 				type : sw.local,
 				key : "boneDivision",
+				varName : "individual",
 			}, {
 				type : sw.global,
 				key : "individual",
+				varName : "skeletalInventory",
 			}, {
 				type : sw.constant,
 				key : "pageUri",
-				value : "boneDivisionProfilePage",
+				value : "coherentBones",
+			}, {
+				type : sw.local,
+				key : "boneDivision",
+				varName : "existingBoneDivision",
+			}, {
+				type : sw.local,
+				key : "type",
+				varName : "existingBoneDivisionType",
+			}, {
+				type : sw.local,
+				key : "boneUri",
+				varName : "classUri",
 			}
 		],
 		mapping : "pageLoader",
