@@ -1,4 +1,3 @@
-
 var ClassSelector = function(dataToStore, dataSet) {
 
 	
@@ -22,6 +21,9 @@ var ClassSelector = function(dataToStore, dataSet) {
 	this.cancelButton =  new TextButton("Cancel", (this.cancelRoutine).bind(this), "rightAligned")
 
 	this.subContainer = html.div("subContainer")
+	
+	this.addAllButton = new TextButton(
+				"Add all", (this.addAll).bind(this))
 	
 	if(pageData.existingBoneDivision != undefined){
 		this.assembleForExisting()
@@ -174,8 +176,8 @@ ClassSelector.prototype = {
 					this.systemicPartSelectors.push(new NamedSystemicPartSelector(
 							this, subClasses, this.dataToStore.boneOrgan))
 				}
-			}).bind(this))
 				this.appendFields()
+			}).bind(this))
 		} else {
 			// Here we can add only one
 			$.each(dataSet.systemicParts, (function(index, value) {
@@ -197,16 +199,20 @@ ClassSelector.prototype = {
 	},
 
 	appendFields : function(){
-		$.each(this.systemicPartSelectors, (function(i, sysSel){
-			this.subContainer.append(sysSel.container)
-		}).bind(this))
-		this.addAllButton = undefined
-		this.saveButton.show().disable()
+		if(this.systemicPartSelectors.length > 0){
+			$.each(this.systemicPartSelectors, (function(i, sysSel){
+				this.subContainer.append(sysSel.container)
+			}).bind(this))
+			//this.addAllButton = undefined
+			this.addAll.hide()
+			this.saveButton.show().disable()
+		} else {
+			this.addAllButton.hide()
+			this.subContainer.append(html.div("margin10").text("The bone division is complete!"))
+		}
 	},
 	
 	addAddAllField : function(){
-		this.addAllButton = new TextButton(
-				"Add all", (this.addAll).bind(this))
 		this.subContainer.append(this.addAllButton.container)
 	},
 	
