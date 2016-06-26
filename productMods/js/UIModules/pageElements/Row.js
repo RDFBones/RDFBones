@@ -1,15 +1,20 @@
 
 
-var Row = function(configData, localData){
+var Row = function(parent, configData, localData){
 	
-	this.container = html.div("rowContainer")
+	this.parent = parent
 	this.configData = configData
 	this.localData = localData
+	this.container = this.getContainer()
 	this.initFields()
 }
 
 Row.prototype = {
 		
+	getContainer : function(){
+		return html.div("rowContainer")
+	},
+
 	initFields : function(){
 		buf = []
 		$.each(this.configData.dataFields, (function(j, configData) {

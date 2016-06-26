@@ -38,10 +38,14 @@ DataTable.prototype.loadTableData = function() {
 },
 
 DataTable.prototype.displayData = function(data) {
-	var column = []
-	$.each(data, (function(i, fieldData) {
-		column.push(new Row(this.configData, fieldData).container)
-	
-	}).bind(this))
-	this.content.append(column)
+	if(data.length > 0){
+		var column = []
+		$.each(data, (function(i, fieldData) {
+			column.push(new Row(this, this.configData, fieldData).container)
+		
+		}).bind(this))
+		this.content.append(column)
+	}
+
+	this.content.append(html.div("msg").text("There is no entry to show!"))
 }

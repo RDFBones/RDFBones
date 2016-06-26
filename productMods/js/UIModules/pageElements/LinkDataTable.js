@@ -11,7 +11,7 @@ LinkDataTable.prototype.displayData = function(data) {
 	$.each(data, (function(i, fieldData) {
 		
 		//column.push(new this.getRow()(this.configData, fieldData).container)
-		column.push(new LinkRow(this.configData, fieldData).container)
+		column.push(new LinkRow(this, this.configData, fieldData).container)
 	
 	}).bind(this))
 	this.content.append(column)

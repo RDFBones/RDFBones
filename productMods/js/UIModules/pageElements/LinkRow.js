@@ -1,8 +1,8 @@
 
 
-var LinkRow = function(configData, localData){
+var LinkRow = function(parent, configData, localData){
 	
-	Row.call(this, configData, localData)
+	Row.call(this, parent, configData, localData)
 }
 
 LinkRow.prototype = Object.create(Row.prototype)
