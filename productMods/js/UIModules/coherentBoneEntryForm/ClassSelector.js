@@ -18,17 +18,24 @@ var ClassSelector = function(dataToStore, dataSet) {
 	this.button = new Button("add", (this.selectBoneDivision).bind(this))
 	
 	this.saveContainer = html.div("saveContainer")
-	this.saveButton =  new TextButton("Save", (this.saveRoutine).bind(this))
+	this.saveButton =  new TextButton("Save", (this.saveRoutine).bind(this)).disable()
 	this.cancelButton =  new TextButton("Cancel", (this.cancelRoutine).bind(this), "rightAligned")
 
 	this.subContainer = html.div("subContainer")
 	
-	this.assemble()
+	if(pageData.existingBoneDivision != undefined){
+		this.assembleForExisting()
+		this.selectExistingBoneDivision()
+	} else {
+		this.assemble()
+	}
+	
 	this.getCardinality()
 }
 
 ClassSelector.prototype = {
 
+		
 	assemble : function() {
 		
 		UI.assemble(this.container, [
@@ -42,7 +49,17 @@ ClassSelector.prototype = {
 			this.saveContainer,
 				this.saveButton.container,
 				this.cancelButton.container],
-			[0, 1, -1, 0, 1, 1, 0, 0, -1, 1])
+			[0, 1, -1, 0, 1, 1, 0, 0, 1, 1])
+	},
+
+	assembleForExisting : function(){
+		
+		UI.assemble(this.container, [
+     			this.subContainer,
+     			this.saveContainer,
+     				this.saveButton.container,
+     				this.cancelButton.container],
+     			[0, 0, 1, 1])
 	},
 	
 	getCardinality : function() {
@@ -68,11 +85,25 @@ ClassSelector.prototype = {
 		this.systemicPartSelectors = []
 	},
 	
+	selectExistingBoneDivision : function(){
+		
+		$.each(this.dataSet, (function(index, value) {
+			if (value.uri == pageData.existingBoneDivisionType) {
+				
+				this.dataToStore.uri = pageData.existingBoneDivision
+				this.dataToStore.type = "existing"
+				this.dataToStore.boneOrgan = []
+				this.setTitle(value.label)
+				this.loadSubObject(value)
+				return false
+			}
+		}).bind(this))
+	},
+	
 	selectBoneDivision : function() {
 		/*
 		 * Search for the element in the list which were set
 		 */
-		console.log(this.dataSet)
 		$.each(this.dataSet, (function(index, value) {
 			if (value.uri == this.selectorField.val()) {
 				
@@ -122,18 +153,43 @@ ClassSelector.prototype = {
 				var obj = $.extend({}, value.subClasses)
 				var subClasses = Object.keys(obj).map(function (key) {return obj[key]})
 				
-				console.log(subClasses)
 				subClasses.unshift(extendWith)
-
-				this.systemicPartSelectors.push(new NamedSystemicPartSelector(
-						this, subClasses, this.dataToStore.boneOrgan))
+				
+				if(pageData.existingBoneOrgans != undefined){
+					$.each(subClasses, function(i, subClass){
+						var found = false
+						$.each(pageData.existingBoneOrgans, function(i, boneOrgan){
+							if(subClasses.uri == boneOrgan.type){
+								found = true
+								return false
+							}
+						})
+						if(!found){
+							this.systemicPartSelectors.push(new NamedSystemicPartSelector(
+									this, subClasses, this.dataToStore.boneOrgan))
+							return false
+						}
+					})
+				} else {
+					this.systemicPartSelectors.push(new NamedSystemicPartSelector(
+							this, subClasses, this.dataToStore.boneOrgan))
+				}
 			}).bind(this))
 				this.appendFields()
 		} else {
 			// Here we can add only one
 			$.each(dataSet.systemicParts, (function(index, value) {
-				this.systemicPartSelectors.push(new SystemicPartSelector(
-						this, value, this.dataToStore.boneOrgan))
+				
+				if(pageData.existingBoneOrgans != undefined){
+					if(pageData.existingBoneOrgans.getObjectByKey("type", value.uri) == null){
+						this.systemicPartSelectors.push(new SystemicPartSelector(
+								this, value, this.dataToStore.boneOrgan))
+					}
+				} else {
+					this.systemicPartSelectors.push(new SystemicPartSelector(
+							this, value, this.dataToStore.boneOrgan))
+				}
+
 			}).bind(this))
 			this.appendFields()
 			this.addAddAllField()
@@ -212,13 +268,16 @@ ClassSelector.prototype = {
 			url : baseUrl + "dataInput",
 			data : "dataToStore=" + JSON.stringify(toSend)
 			}).done(function(msg){
-				window.location = baseUrl + "customPageLoad?uri=" + pageData.individual
-				//new TripleDebug(msg)
+				window.location = baseUrl 
+					+ "pageLoader?skeletalInventory=" + pageData.individual
+					+ "&pageUri=skeletalInventory"
 		})
 	},
 	
 	cancelRoutine : function(){
-		window.location = baseUrl + "customPageLoad?uri=" + pageData.individual
+		window.location = baseUrl 
+				+ "pageLoader?skeletalInventory=" + pageData.individual
+				+ "&pageUri=skeletalInventory"
 	}
 }
 

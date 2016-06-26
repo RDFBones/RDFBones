@@ -17,4 +17,5 @@ var sw = {
 		selectOperationResult : swPrefix + "selectOperationResult",
 		labelEditor : swPrefix + "labelEditor",
 		imagesField : swPrefix + "ImagesField",
+		existence : swPrefix + "Existence",
 }

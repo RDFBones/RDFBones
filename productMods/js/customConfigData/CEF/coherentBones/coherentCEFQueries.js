@@ -1,5 +1,4 @@
 pageData.queries = [ {
-	type : "query",
 	parameters : [ {
 		type : sw.global,
 		varName : "classUri",
@@ -12,9 +11,8 @@ pageData.queries = [ {
 	mapping : "anatomicalModelLoader",
 	toVariable : "boneDivisions1",
 }, {
-	type : "query",
 	parameters : [ {
-		type : sw.local,
+		type : sw.global,
 		varName : "classUri",
 		key : "classUri"
 	}, {
@@ -24,4 +22,25 @@ pageData.queries = [ {
 	} ],
 	mapping : "anatomicalModelLoader",
 	toVariable : "boneDivisions2",
+}, {
+	
+	requirement : {
+		type : sw.existence,
+		variable : {
+			type : sw.global,
+			key : "existingBoneDivision",
+		}
+	},
+
+	parameters : [ {
+		type : sw.global,
+		varName : "boneDivision",
+		key : "existingBoneDivision"
+	}, {
+		type : sw.constant,
+		value : "boneOrgans",
+		varName : "queryType",
+	} ],
+	mapping : "dataLoader",
+	toVariable : "existingBoneOrgans",	
 } ]
