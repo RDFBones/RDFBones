@@ -84,15 +84,26 @@ public class AjaxDataController extends VitroAjaxController {
         switch(vreq.getParameter("dataOperation")){
 
         case "editLiteral":
-              N3Utils.setInputMap(inputMap, EditLiteralInputParams, vreq);
-              N3Utils.setOutputMap(outputMap, EditLiteralOutputParams, inputMap);
-              this.dataTriplesAdd= N3Utils.subInputMap(inputMap, EditLiteralDataTriplesAdd);
-              this.dataTriplesRemove = N3Utils.subInputMap(inputMap, EditLiteralDataTriplesRemove);
+              N3Utils.setInputMap(inputMap, EditDataInputParams, vreq);
+              N3Utils.setOutputMap(outputMap, EditDataOutputParams, inputMap);
+              this.dataTriplesAdd= N3Utils.subInputMap(inputMap, EditTriplesAdd);
+              this.dataTriplesRemove = N3Utils.subInputMap(inputMap, EditTriplesRemove);
               log.info("editLiteral");
               this.removeData();
               this.addData();
-              log.info("afterDataoperatio");
+              log.info("afterDataoperation");
               break;
+        
+        case "editObject":
+          N3Utils.setInputMap(inputMap, EditDataInputParams, vreq);
+          N3Utils.setOutputMap(outputMap, EditDataOutputParams, inputMap);
+          this.objectTriplesAdd= N3Utils.subInputMap(inputMap, EditTriplesAdd);
+          this.objectTriplesRemove = N3Utils.subInputMap(inputMap, EditTriplesRemove);
+          log.info("editLiteral");
+          this.removeData();
+          this.addData();
+          log.info("afterDataoperation");
+          break;
               
         case "saveImage" :
               log.info("SaveImage");
@@ -197,14 +208,14 @@ public class AjaxDataController extends VitroAjaxController {
      /*
       * EditLiteral
       */
-     private static String[] EditLiteralInputParams = 
+     private static String[] EditDataInputParams = 
          {"subjectUri", "predicate", "oldValue", "newValue"};
-     private static String[] EditLiteralOutputParams = {};
+     private static String[] EditDataOutputParams = {};
 
-     private static String[] EditLiteralDataTriplesRemove = {
+     private static String[] EditTriplesRemove = {
            "?subjectUri ?predicate ?oldValue"
      };
-     private static String[] EditLiteralDataTriplesAdd = {
+     private static String[] EditTriplesAdd = {
           "?subjectUri ?predicate ?newValue"
      };
      
