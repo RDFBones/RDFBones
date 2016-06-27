@@ -7,18 +7,20 @@ var OnPageEditor = function(configData){
 	this.subject = getData1(configData.subject)
 	this.predicate = getData1(configData.predicate)
 
+	this.noData = false
+	
 	this.setContainers()
 	
 	this.container = html.div()
-	this.editContainer = html.div()
-	this.valueContainer = html.div()
+	this.editContainer = html.div("margin10")
+	this.valueContainer = html.div("margin10")
 	
 	this.editButton = new Button("edit", (this.edit).bind(this))
 	
-	this.saveButton = new Button("ok1", (this.cancel).bind(this))
-	this.cancelButton = new Button("del", (this.saveChange).bind(this))
+	this.saveButton = new Button("ok1", (this.saveRoutine).bind(this))
+	this.cancelButton = new Button("del", (this.cancel).bind(this))
 	
-	this.wait = ImgUI.libSize("waitBar", "small")
+	this.wait = ImgUI.libImg("waitBar", "margin10")
 	
 	this.loadData()
 }
@@ -37,7 +39,7 @@ OnPageEditor.prototype = {
 		     	this.saveButton.container,
 		     	this.cancelButton.container,
 		     this.wait,
-		], [0, 0, 1, 1, -0.1, 1, 1, 1, -0,1])	
+		], [0, 0, 1, 1, -0.1, 1, 1, 1, -0.1])	
 	},	
 		
 	loadData : function(){
@@ -54,8 +56,10 @@ OnPageEditor.prototype = {
 		}).done((function(result){
 			if(result.noResult != undefined){
 				this.value = "There is no data uploaded"
+				this.noData = true
 			} else {
-				this.value = result.object
+				this.value = result[0].object
+				this.setEditField()
 			}
 			this.setEditField()
 			this.setValueField()
@@ -64,25 +68,40 @@ OnPageEditor.prototype = {
 		}).bind(this))
 	},
 	
-	saveChange : function(){
+	saveRoutine : function(){
+		
+		if(this.validChange()){
+			var type = "edit"
+				if(this.noData){
+					type = "add"
+					this.noData = false
+				}
+			
+				
+				this.saveChange(type)
+		} else {
+			this.errorMsg()
+		}	
+	},
+	
+	saveChange : function(type){
 		
 		if(this.value != this.getValue()){
-			this.value = this.getValue()
-			this.setValueDiv()
-			this.wait()
+			this.setWait()
 			$.ajax({
 				url : baseUrl + "ajaxData",
 				context : this,
 				dataType : "json",
 				data : {
-					dataOperation : "edit" + this.type,
+					dataOperation : type + this.type,
 					subject : this.subject,
 					predicate : this.predicate,
-					oldValue : this.object,
-					newValue : this.newValue,
+					oldValue : this.value,
+					newValue : this.getValue(),
 				}
 			}).done((function(result){
-				this.setValue()
+				this.value = this.getValue()
+				this.setValueField()
 				this.done()
 			}).bind(this))
 		} else {
@@ -92,10 +111,6 @@ OnPageEditor.prototype = {
 	
 	setValueField : function(){
 		this.valueField.text(this.value)
-	},
-	
-	setEditField : function(){
-		this.editField.text(this.value)
 	},
 	
 	setWait : function(){
