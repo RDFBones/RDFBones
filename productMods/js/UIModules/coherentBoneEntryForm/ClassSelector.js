@@ -23,7 +23,7 @@ var ClassSelector = function(dataToStore, dataSet) {
 	this.subContainer = html.div("subContainer")
 	
 	this.addAllButton = new TextButton(
-				"Add all", (this.addAll).bind(this))
+				"Add all", (this.addAll).bind(this)).hide()
 	
 	if(pageData.existingBoneDivision != undefined){
 		this.assembleForExisting()
@@ -41,17 +41,18 @@ ClassSelector.prototype = {
 	assemble : function() {
 		
 		UI.assemble(this.container, [
-			this.headerContainer, 
+			this.headerContainer,
 				this.header,
 				this.exitButton.container,
 			this.selectorContainer,
 				this.selectorField,
 				this.button.container,
 			this.subContainer,
+			this.addAllButton.container,
 			this.saveContainer,
 				this.saveButton.container,
 				this.cancelButton.container],
-			[0, 1, -1, 0, 1, 1, 0, 0, 1, 1])
+			[0, 1, -1, 0, 1, 1, 0, 0, 0, 1, 1])
 	},
 
 	assembleForExisting : function(){
@@ -80,6 +81,7 @@ ClassSelector.prototype = {
 		this.exitButton.hide()
 		this.subContainer.empty()
 		this.saveButton.hide()
+		this.addAllButton.hide()
 		$.each(this.systemicPartSelectors, function(i, selector){
 			selector.reset()
 		})
@@ -173,11 +175,11 @@ ClassSelector.prototype = {
 						}
 					})
 				} else {
-					this.systemicPartSelectors.push(new NamedSystemicPartSelector(
-							this, subClasses, this.dataToStore.boneOrgan))
+						this.systemicPartSelectors.push(new NamedSystemicPartSelector(
+								this, subClasses, this.dataToStore.boneOrgan))	
 				}
-				this.appendFields()
 			}).bind(this))
+			this.appendFields()
 		} else {
 			// Here we can add only one
 			$.each(dataSet.systemicParts, (function(index, value) {
@@ -204,7 +206,7 @@ ClassSelector.prototype = {
 				this.subContainer.append(sysSel.container)
 			}).bind(this))
 			//this.addAllButton = undefined
-			this.addAll.hide()
+			this.addAllButton.hide()
 			this.saveButton.show().disable()
 		} else {
 			this.addAllButton.hide()
@@ -213,7 +215,7 @@ ClassSelector.prototype = {
 	},
 	
 	addAddAllField : function(){
-		this.subContainer.append(this.addAllButton.container)
+		this.addAllButton.show()
 	},
 	
 	addAll : function(){
