@@ -1,8 +1,8 @@
 pageData.queries = [
 		{   
 			parameters : [
-				{ type : "local", name : "queryType", value : "coherentBones" },
-				{ type : "global", varName : "individual", name : "skeletalInventory" },
+				{ type : sw.constant, varName : "queryType", value : "coherentBones" },
+				{ type : sw.global, varName : "skeletalInventory", key : "individual" },
 			],
 			mapping : "dataLoader",
 			toVariable : "coherentBones",

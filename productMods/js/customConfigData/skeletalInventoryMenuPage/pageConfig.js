@@ -41,7 +41,7 @@ pageData.pageElements = [
     			 varName : "pageUri"
     		 }
 	    ],
-	    mapping : "profilePage",
+	    mapping : "pageLoader",
 	    dataFields : [
              {
             	 title : "Label",

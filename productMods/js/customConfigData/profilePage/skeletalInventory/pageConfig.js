@@ -52,22 +52,18 @@ coherentDataTable = {
 	}, {
 		type : sw.editButton,
 		linkDataInputs : [
-			{
-				type : sw.local,
-				key : "boneDivision",
-				varName : "individual",
-			}, {
+		    {
 				type : sw.global,
 				key : "individual",
 				varName : "skeletalInventory",
 			}, {
 				type : sw.constant,
 				key : "pageUri",
-				value : "coherentBones",
+				value : "boneDivision",
 			}, {
 				type : sw.local,
 				key : "boneDivision",
-				varName : "existingBoneDivision",
+				varName : "individual",
 			}, {
 				type : sw.local,
 				key : "type",
