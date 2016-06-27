@@ -100,8 +100,8 @@ public class AjaxDataController extends VitroAjaxController {
           this.objectTriplesAdd= N3Utils.subInputMap(inputMap, EditTriplesAdd);
           this.objectTriplesRemove = N3Utils.subInputMap(inputMap, EditTriplesRemove);
           log.info("editLiteral");
-          this.removeData();
-          this.addData();
+          this.removeObject();
+          this.addObject();
           log.info("afterDataoperation");
           break;
          

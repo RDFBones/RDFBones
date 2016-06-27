@@ -76,6 +76,9 @@ pageData.pageElements = [
 			}, {
 				type : sw.local,
 				key : "completeness",
+			}, {
+				type : sw.local,
+				key : "completenessState",
 			}
 		],
 		mapping : "pageLoader",
