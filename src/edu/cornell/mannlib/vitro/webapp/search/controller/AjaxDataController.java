@@ -110,7 +110,6 @@ public class AjaxDataController extends VitroAjaxController {
           N3Utils.setOutputMap(outputMap, EditDataOutputParams, inputMap);
           this.dataTriplesAdd= N3Utils.subInputMap(inputMap, EditTriplesAdd);
           log.info("editLiteral");
-          this.removeData();
           this.addData();
           log.info("afterDataoperation");
           break;
@@ -120,8 +119,7 @@ public class AjaxDataController extends VitroAjaxController {
           N3Utils.setOutputMap(outputMap, EditDataOutputParams, inputMap);
           this.objectTriplesAdd= N3Utils.subInputMap(inputMap, EditTriplesAdd);
           log.info("editLiteral");
-          this.removeData();
-          this.addData();
+          this.addObject();
           log.info("afterDataoperation");
           break;      
         case "saveImage" :
