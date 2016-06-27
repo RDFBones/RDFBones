@@ -11,15 +11,15 @@ var ImagesField = function(parent, configData) {
 	this.outerContainer = html.div("imgEditOuterContainer")
 	this.innerContainer = html.div("imagesInnerContainer")
 
-	this.waitGif = ImgUI.libImgS("wait", "small")
+	this.waitGif = ImgUI.libImg("waitBar", "margin10")
 
 	this.noImageMsg = html.getNewDiv("margin10").text(
 			"There is no image loaded to this bone")
 
-	this.form = html.form().attr("id", "imageForm").attr("enctype","multipart/form-data")
+	this.form = html.form("margin10").attr("id", "imageForm").attr("enctype","multipart/form-data")
 	this.fileUpload = html.fileUpload("datafile").attr("name", "datafile")
 						.addClass("uploadField")
-	this.submitButton = new TextButton("Upload", (this.submit).bind(this), "inline")
+	this.submitButton = new TextButtonSmall("Upload", (this.submit).bind(this), "uploadImgButton")
 
 	this.assemble()
 	this.queryImages()
@@ -37,8 +37,8 @@ ImagesField.prototype = {
 		  this.noImageMsg,
 		  this.form,
 		  	this.fileUpload,
-		  this.submitButton.container,
-		], [0, 0, 1, 2, 0, 0, 1, 0])
+		  	this.submitButton.container,
+		], [0, 0, 1, -2, 0, 0, 1, 1])
 	},
 
 	queryImages : function() {
