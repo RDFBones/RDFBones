@@ -16,7 +16,9 @@ LiteralEditor.prototype.setContainers = function(){
 }
 
 LiteralEditor.prototype.setEditField = function(){
-	this.editField.val(this.value)
+	if(!this.noData){
+		this.editField.val(this.value)
+	}
 },
 
 LiteralEditor.prototype.getValue = function(){
