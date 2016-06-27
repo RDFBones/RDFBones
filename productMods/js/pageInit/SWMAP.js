@@ -18,4 +18,8 @@ var sw = {
 		labelEditor : swPrefix + "labelEditor",
 		imagesField : swPrefix + "ImagesField",
 		existence : swPrefix + "Existence",
+		onPageEditor : swPrefix + "OnPageEditor",
+		literalEditor : swPrefix + "LiteralEditor",
+		textEditor : swPrefix + "TextEditor",
+		selectEditor : swPrefix + "SelectEditor",
 }

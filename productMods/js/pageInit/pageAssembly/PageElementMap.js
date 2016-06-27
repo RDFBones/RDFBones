@@ -9,6 +9,11 @@ PageElementMap[sw.linkDataTable] = LinkDataTable
 PageElementMap[sw.selectorAddField] = SelectorAddField
 PageElementMap[sw.labelEditor] = LabelEditor
 PageElementMap[sw.imagesField] = ImagesField
+PageElementMap[sw.onPageEditor] = OnPageEditor
+PageElementMap[sw.literalEditor] = LiteralEditor
+PageElementMap[sw.selectEditor] = SelectEditor
+PageElementMap[sw.textEditor] = TextEditor
+
 
 var RowElementMap = new Object()
 
