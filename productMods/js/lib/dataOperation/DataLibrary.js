@@ -36,6 +36,8 @@ var DataLib = {
 		return this.or(this.getType(variable), values)
 	},
 	
+	
+	
 	removeObjectFromArrayByKey : function(array, key, value){
 
 		$.each(array, function(index, object){
@@ -71,6 +73,51 @@ var DataLib = {
 		}
 		
 		return str 
-	}
+	},
 	
+	joinArrays : function(array1, key1, array2, key2){
+		
+		var found = false
+		$.each(array1, function(i, val1){
+			$.each(array2, function(i, val2){
+				if(val1[key1] ==  val2[key2]){
+					found = true
+					return false
+				}
+			})
+			if(found){
+				return false
+			}
+		})
+		return found
+	},
+	
+	assembleUrl : function(configData){
+		
+		var paramMap = new Object()
+		$.each(configData, function(i, data){
+			
+			if(data.varName != undefined){
+				paramMap[data.varName] = encodeURIComponent(getData1(data))
+			} else {
+				paramMap[data.key] = encodeURIComponent(getData1(data))
+			}	
+		})
+		
+		var href = baseUrl + this.configData.mapping + "?"
+		$.each(paramMap, function(key, value){
+			href += key + "=" + value + "&"
+		})
+		href = href.substring(0, href.length - 1)
+		return href
+	},
+	
+	getUrl : function(object){
+		
+		var url = ""
+		$.each(object, function(key, value){
+			url += key + "=" + value + "&"
+		})
+		return url = url.substring(0, url.length - 1)
+	}
 }
