@@ -7,10 +7,13 @@ var ImgSrc = {
 		del : this.folder + "del.png",
 		done : this.folder + "done.png",
 		done32 : this.folder + "done32.png",
+		check : this.folder + "check-mark.png",
 		edit : this.folder + "edit.png",
 		loading : this.folder + "loading.gif",
 		minus : this.folder + "minus.png",
 		modify : this.folder + "modify.png",
+		waitBar : this.folder + "waitBar.gif",
+		ok1 : this.folder + "okk.png",
 		ok : this.folder + "ok.png",
 		plus : this.folder + "plus.png",
 		jump : this.folder + "jump.png",
@@ -30,8 +33,8 @@ var ImgUI = {
 		return html.getImg(ImgSrc[type], _class)
 	},
 
-	libImgS : function(type, size){
-		html.getImg(ImgSrc[type], size + "Img")
+	libSize : function(type, size){
+		return html.getImg(ImgSrc[type], size + "Img")
 	},
 	
 	/***************************************************************************

@@ -22,3 +22,8 @@
 .uploadField {
 	margin-top : 5px;
 }
+
+.uploadImgButton {
+	
+	display : inline-block;
+}

@@ -106,7 +106,7 @@ var UI = {
 	},
 
 	getTextButton : function(text) {
-		return html.div("generalButton enabledButton").text(text)
+		return html.div("enabledButton").text(text)
 	},
 
 	/***************************************************************************
@@ -175,5 +175,9 @@ var UI = {
 	
 	removeFieldFromSelector : function(selector, value){
 		selector.find('option[value=' + value +"]").remove()
+	},
+	
+	waitBar : function(){
+		
 	}
 }
