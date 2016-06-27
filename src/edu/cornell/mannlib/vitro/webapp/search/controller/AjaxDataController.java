@@ -104,7 +104,26 @@ public class AjaxDataController extends VitroAjaxController {
           this.addData();
           log.info("afterDataoperation");
           break;
-              
+         
+        case "addLiteral":
+          N3Utils.setInputMap(inputMap, EditDataInputParamsAdd, vreq);
+          N3Utils.setOutputMap(outputMap, EditDataOutputParams, inputMap);
+          this.dataTriplesAdd= N3Utils.subInputMap(inputMap, EditTriplesAdd);
+          log.info("editLiteral");
+          this.removeData();
+          this.addData();
+          log.info("afterDataoperation");
+          break;
+    
+        case "addObject":
+          N3Utils.setInputMap(inputMap, EditDataInputParamsAdd, vreq);
+          N3Utils.setOutputMap(outputMap, EditDataOutputParams, inputMap);
+          this.objectTriplesAdd= N3Utils.subInputMap(inputMap, EditTriplesAdd);
+          log.info("editLiteral");
+          this.removeData();
+          this.addData();
+          log.info("afterDataoperation");
+          break;      
         case "saveImage" :
               log.info("SaveImage");
               N3Utils.setInputMap(inputMap,ImageUploadInputParams, vreq);
@@ -208,17 +227,19 @@ public class AjaxDataController extends VitroAjaxController {
      /*
       * EditLiteral
       */
+      private static String[] EditDataInputParamsAdd = 
+      {"subject", "predicate", "newValue"};
+    
      private static String[] EditDataInputParams = 
-         {"subjectUri", "predicate", "oldValue", "newValue"};
+         {"subject", "predicate", "oldValue", "newValue"};
      private static String[] EditDataOutputParams = {};
 
      private static String[] EditTriplesRemove = {
-           "?subjectUri ?predicate ?oldValue"
+           "?subject ?predicate ?oldValue"
      };
      private static String[] EditTriplesAdd = {
-          "?subjectUri ?predicate ?newValue"
+          "?subject ?predicate ?newValue"
      };
-     
      
      /*
       * Image Upload
