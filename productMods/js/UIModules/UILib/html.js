@@ -81,6 +81,19 @@ var html = {
 		return $("<input>").attr("type", "text")
 	},
 	
+	textBox : function(_class){
+		return $("<input>").attr("type", "text").css("height", "18px").
+			css("width", "230px").addClass(_class)
+	},
+	
+	textAreaC : function(_class){
+		return $("<textarea>").attr("rows", 4).attr("cols", 50).addClass(_class)
+	},
+	
+	textArea : function(rows, cols){
+		return $("<textarea>").attr("rows", rows).attr("cols", cols)
+	},
+	
 	getInput : function(type){
 		return $("<input>").attr("type", type)
 	},
@@ -103,6 +116,10 @@ var html = {
 	
 	form : function(){
 		return $("<form/>")
+	},
+	
+	form : function(_class){
+		return $("<form/>").addClass(_class)
 	},
 	
 	fileUpload : function(){

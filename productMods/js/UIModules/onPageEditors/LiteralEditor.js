@@ -45,21 +45,16 @@ LiteralEditor.prototype.errorMsg = function(){
 	alert("Please add a value")
 }
 
-
-
-
-
 var TextEditor = function(parent, configData){
 
-	this.type = "literal"
-	OnPageEditor.call(this, parent, configData)
+	LiteralEditor.call(this, parent, configData)
 }
 
-TextEditor.prototype = Object.create(OnPageEditor.prototype)
+TextEditor.prototype = Object.create(LiteralEditor.prototype)
 
 TextEditor.prototype.setContainers = function(){
 	
-	this.valueField = html.div("margin5")
-	this.editField = html.textArea("margin5")
+	this.valueField = html.div("inline")
+	this.editField = html.textAreaC("margin5")
 }
 

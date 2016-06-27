@@ -26,7 +26,7 @@ pageData.pageElements = [
 		value : "rdfs:label",
 	}
 }, {
-	type : sw.literalEditor,
+	type : sw.textEditor,
 	title : {
 		type : sw.constant,
 		value : "Description",
