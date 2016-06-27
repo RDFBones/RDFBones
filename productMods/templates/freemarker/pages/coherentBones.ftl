@@ -12,9 +12,6 @@
 </script>
 
 
-<div>
-	KutyaMutya
-</div>
 ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/customConfigData/CEF/coherentBones/coherentCEFQueries.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/customConfigData/CEF/coherentBones/coherentCEF.js"></script>')}
