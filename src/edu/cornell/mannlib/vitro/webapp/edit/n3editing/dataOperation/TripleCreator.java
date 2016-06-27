@@ -34,14 +34,25 @@ public class TripleCreator {
   private ObjectPropertyStatementDao objectDao;
   private PropertyInstanceDao propDao;
   private NewURIMaker newUri;
-
+  
+  public JSONObject inputData;
+  List<Triple> tripleDefinition;
+  List<Triple> triplesToCreate;
+  List<Triple> dataTriplesToCreate;
+  
+  private Map<String, String> returnParams;
+  
     public TripleCreator(JSONObject json, VitroRequest vreq) throws JSONException{
      
+
+
       this.dataDao = vreq.getWebappDaoFactory().getDataPropertyStatementDao();
       this.objectDao = vreq.getWebappDaoFactory().getObjectPropertyStatementDao();
       this.propDao = vreq.getWebappDaoFactory().getPropertyInstanceDao();
       
       this.newUri = new NewURIMakerVitro(vreq.getWebappDaoFactory());
+      
+      this.returnParams = new HashMap<String, String>();
       
       Map<String,String> inputMap = new HashMap<String,String>();
       Map<String,String> outputMap = new HashMap<String,String>();
@@ -62,6 +73,9 @@ public class TripleCreator {
           }
         }
       }
+      
+      log.info(json.toString());
+       
     }
     
     public JSONArray getTriples() throws JSONException{
@@ -95,11 +109,6 @@ public class TripleCreator {
         }
       }
     }
-
-    public JSONObject inputData;
-    List<Triple> tripleDefinition;
-    List<Triple> triplesToCreate;
-    List<Triple> dataTriplesToCreate;
     
     public void createInstance(JSONObject obj) throws JSONException{
 
