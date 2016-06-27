@@ -13,7 +13,50 @@ pageData.options = [ {
 }, ]
 
 pageData.pageElements = [
-
+     {
+  	   type : sw.linkField,
+  	   title : {
+  		   type : sw.constant,
+  		   value : "SkeletalInventory"
+  	   },
+  	   label : {
+  		   type : sw.constant,
+  		   value : "Test Inventory"
+  	   },
+  	   linkDataInputs : [
+  		   {
+  				type : sw.constant,
+  				key : "pageUri",
+  				value : "skeletalInventory",
+  			},{
+  				type : sw.global,
+  				key : "skeletalInventory",
+  			},
+  	   ],
+  	   mapping : "pageLoader"
+      },   {
+	   type : sw.linkField,
+	   title : {
+		   type : sw.constant,
+		   value : "Bone division"
+	   },
+	   label : {
+		   type : sw.constant,
+		   value : "boneDivision"
+	   },
+	   linkDataInputs : [
+		   {
+				type : sw.constant,
+				key : "pageUri",
+				value : "boneDivision",
+			},{
+				type : sw.global,
+				key : "boneDivision",
+				varName : "individual",
+			},
+	   ],
+	   mapping : "pageLoader"
+    },
 {
 	type : sw.literalEditor,
 	title : {

@@ -5,7 +5,28 @@ var individual = {
 
 pageData.pageElements = [
 
- {
+    {
+	   type : sw.linkField,
+	   title : {
+		   type : sw.constant,
+		   value : "SkeletalInventory"
+	   },
+	   label : {
+		   type : sw.constant,
+		   value : "Test Inventory"
+	   },
+	   linkDataInputs : [
+		   {
+				type : sw.constant,
+				key : "pageUri",
+				value : "skeletalInventory",
+			},{
+				type : sw.global,
+				key : "skeletalInventory",
+			},
+	   ],
+	   mapping : "pageLoader"
+    }, {
 	   type : sw.literalEditor,
 	   title : {
 			   type : sw.constant,
@@ -31,11 +52,18 @@ pageData.pageElements = [
 		value : "coherentBones",
 	}, {
 		type : sw.global,
-		key : "individual",
-		varName : "existingBoneDivision",
+		key : "skeletalInventory",
+		varName : "individual",
 	}, {
 		type : sw.global,
-		key : "skeletalInventory",
+		key : "existingBoneDivisionType",
+	}, {
+		type : sw.global,
+		key : "classUri",
+	}, {
+		type : sw.global,
+		key : "individual",
+		varName : "existingBoneDivision",
 	}
 ],
 	mapping : "pageLoader",
@@ -70,6 +98,10 @@ pageData.pageElements = [
 				type : sw.local,
 				key : "boneOrgan",
 				varName : "individual",
+			},{
+				type : sw.global,
+				key : "individual",
+				varName : "boneDivision",
 			}, {
 				type : sw.local,
 				key : "completenessState",
@@ -79,6 +111,9 @@ pageData.pageElements = [
 			}, {
 				type : sw.local,
 				key : "completenessState",
+			}, {
+				type : sw.global,
+				key : "skeletalInventory",
 			}
 		],
 		mapping : "pageLoader",
