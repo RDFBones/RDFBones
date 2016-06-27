@@ -72,6 +72,9 @@ pageData.pageElements = [
 				varName : "individual",
 			}, {
 				type : sw.local,
+				key : "completenessState",
+			}, {
+				type : sw.local,
 				key : "completeness",
 			}
 		],

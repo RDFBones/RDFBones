@@ -13,22 +13,23 @@ SelectEditor.prototype = Object.create(OnPageEditor.prototype)
 
 SelectEditor.prototype.setContainers = function(){
 	
-	this.valueField = html.div("valueField")
+	this.valueField = html.div("inline")
 	this.editField = UI.classSelector(this.options)
 }
 
 SelectEditor.prototype.getValue = function(){
-	
 	return this.editField.val()
 }
+
 
 SelectEditor.prototype.setEditField = function(){
 	this.editField.val(this.value)
 }
 
 SelectEditor.prototype.setValueField = function(){
-	this.valueField.set(this.options.getObjectByKey("uri", this.value).label)
+	this.valueField.text(this.options.getObjectByKey("uri", this.value).label)
 }
+
 
 
 

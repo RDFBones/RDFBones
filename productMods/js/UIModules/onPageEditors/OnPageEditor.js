@@ -2,6 +2,7 @@
 
 var OnPageEditor = function(configData){
 	
+	this.configData = configData
 	this.title = html.div("title").text(getData1(configData.title))
 	
 	this.subject = getData1(configData.subject)
@@ -27,7 +28,6 @@ var OnPageEditor = function(configData){
 
 OnPageEditor.prototype = {
 		
-		
 	assemble : function(){
 		UI.assemble(this.container, [
 		     this.title,
@@ -44,28 +44,35 @@ OnPageEditor.prototype = {
 		
 	loadData : function(){
 		
-		$.ajax({
-			url : baseUrl + "ajaxQuery",
-			context : this,
-			dataType : "json",
-			data : {
-				dataOperation : "get" + this.type,
-				subject : this.subject,
-				predicate : this.predicate,
-			}
-		}).done((function(result){
-			if(result.noResult != undefined){
-				this.value = "There is no data uploaded"
-				this.noData = true
-			} else {
-				this.value = result[0].object
+		
+		if(this.configData.existingValue === undefined){
+			$.ajax({
+				url : baseUrl + "ajaxQuery",
+				context : this,
+				dataType : "json",
+				data : {
+					dataOperation : "get" + this.type,
+					subject : this.subject,
+					predicate : this.predicate,
+				}
+			}).done((function(result){
+				if(result.noResult != undefined){
+					this.value = "There is no data uploaded"
+					this.noData = true
+				} else {
+					this.value = result[0].object
+				}
 				this.setEditField()
-			}
+				this.setValueField()
+				this.assemble()
+				
+			}).bind(this))			
+		} else {
+			this.value = getData1(this.configData.existingValue)
 			this.setEditField()
 			this.setValueField()
 			this.assemble()
-			
-		}).bind(this))
+		}
 	},
 	
 	saveRoutine : function(){
@@ -134,4 +141,8 @@ OnPageEditor.prototype = {
 
 		this.valueContainer.show()
 	},
+	
+	validChange : function(){
+		return true
+	}
 }
