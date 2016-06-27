@@ -105,7 +105,8 @@ OnPageEditor.prototype = {
 				this.done()
 			}).bind(this))
 		} else {
-			done()
+			this.editContainer.hide()
+			this.done()
 		}
 	},
 	
@@ -130,6 +131,7 @@ OnPageEditor.prototype = {
 	
 	done : function(){
 		this.wait.hide()
+
 		this.valueContainer.show()
 	},
 }
