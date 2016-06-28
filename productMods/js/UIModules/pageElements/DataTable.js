@@ -3,9 +3,7 @@ var DataTable = function(configData, parent) {
 
 	Container.call(this, configData, parent)
 	
-	
 	this.container.addClass("dataTable")
-
 	this.header = html.div("tableHeader")
 	this.content = html.div("contentContainer")
 	this.loadTableHeader()

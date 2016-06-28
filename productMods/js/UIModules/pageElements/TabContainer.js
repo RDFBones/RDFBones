@@ -24,32 +24,33 @@ TabContainer.prototype = {
 			var tab = new Tab(this, tab) 
 			this.tabs.push(tab)
 			this.tabContainer.append(tab.container)
+			this.contentContainer.append(tab.content)
 			if(index == 0){
-				tab.showContent()
+				this.selected = tab
+				this.selected.init()
 			}
 		}).bind(this))
 	},
 	
-	deselectAll : function(){
-		$.each(this.tabs, function(i, tab){
-			tab.deselect()
-		})
+	select : function(tab){
+		this.selected.deselect()
+		this.selected = tab
 	}
 }
 
-var Tab = function(tabCont, tabDef){
+var Tab = function(tabContainer, tabDef){
 	
-	this.tabCont = tabCont
+	this.tabContainer = tabContainer
 	this.tabDef = tabDef
 	this.container = html.div("tab").text(tabDef.tabTitle).
-		click((this.showContent).bind(this))
+		click((this.select).bind(this))
 	this.initContent()
 }
 
 Tab.prototype = {
 		
 	initContent : function(){
-		this.content = html.div()
+		this.content = html.div().hide()
 		var tmp = []
 		
 		if(this.tabDef.elements !== undefined){
@@ -63,19 +64,19 @@ Tab.prototype = {
 		}
 		this.content = html.div().text("There is no content")
 	},
-
-	showContent : function(){
-		this.tabCont.deselectAll()
-		this.select()
-		this.tabCont.contentContainer.empty()
-		this.tabCont.contentContainer.append(this.content)
+	
+	init : function(){
+		this.container.addClass("selectedTab")
+		this.content.show()
 	},
 	
 	select : function(){
-		this.container.addClass("selectedTab")
+		this.init()
+		this.tabContainer.select(this)
 	},
 	
 	deselect : function(){
 		this.container.removeClass("selectedTab")
+		this.content.hide()
 	}
 }
