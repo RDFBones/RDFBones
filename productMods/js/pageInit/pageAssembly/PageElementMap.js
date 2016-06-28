@@ -13,6 +13,7 @@ PageElementMap[sw.onPageEditor] = OnPageEditor
 PageElementMap[sw.literalEditor] = LiteralEditor
 PageElementMap[sw.selectEditor] = SelectEditor
 PageElementMap[sw.textEditor] = TextEditor
+PageElementMap[sw.linkField] = LinkField
 
 
 var RowElementMap = new Object()

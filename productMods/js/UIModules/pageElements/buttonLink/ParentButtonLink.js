@@ -18,9 +18,9 @@ ParentButtonLink.prototype = {
 			$.each(this.configData.linkDataInputs, (function(i, data){
 				
 				if(data.varName != undefined){
-					paramMap[data.varName] = getData(this, data)
+					paramMap[data.varName] = encodeURIComponent(getData(this, data))
 				} else {
-					paramMap[data.key] = getData(this, data)
+					paramMap[data.key] = encodeURIComponent(getData(this, data))
 				}	
 			}).bind(this))
 			

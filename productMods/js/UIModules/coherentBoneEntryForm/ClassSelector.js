@@ -25,7 +25,7 @@ var ClassSelector = function(dataToStore, dataSet) {
 	this.addAllButton = new TextButton(
 				"Add all", (this.addAll).bind(this)).hide()
 	
-	if(pageData.existingBoneDivision != undefined){
+	if(pageData.existingBoneDivisionType != undefined){
 		this.assembleForExisting()
 		this.selectExistingBoneDivision()
 	} else {
@@ -160,20 +160,11 @@ ClassSelector.prototype = {
 				subClasses.unshift(extendWith)
 				
 				if(pageData.existingBoneOrgans != undefined){
-					$.each(subClasses, function(i, subClass){
-						var found = false
-						$.each(pageData.existingBoneOrgans, function(i, boneOrgan){
-							if(subClasses.uri == boneOrgan.type){
-								found = true
-								return false
-							}
-						})
-						if(!found){
-							this.systemicPartSelectors.push(new NamedSystemicPartSelector(
-									this, subClasses, this.dataToStore.boneOrgan))
-							return false
-						}
-					})
+
+					if(!DataLib.joinArrays(subClasses, "uri", pageData.existingBoneOrgans, "type")){
+						this.systemicPartSelectors.push(new NamedSystemicPartSelector(
+								this, subClasses, this.dataToStore.boneOrgan))
+					}
 				} else {
 						this.systemicPartSelectors.push(new NamedSystemicPartSelector(
 								this, subClasses, this.dataToStore.boneOrgan))	
@@ -275,17 +266,26 @@ ClassSelector.prototype = {
 			dataType: 'json',
 			url : baseUrl + "dataInput",
 			data : "dataToStore=" + JSON.stringify(toSend)
-			}).done(function(msg){
-				window.location = baseUrl 
-					+ "pageLoader?skeletalInventory=" + pageData.individual
-					+ "&pageUri=skeletalInventory"
-		})
+			}).done((function(msg){
+				
+				var urlObject = {
+					pageUri : "boneDivision",
+					individual : msg.object.boneDivision.uri,
+					skeletalInventory : pageData.individual,
+					existingBoneDivisionType : this.dataToStore.uri,
+					classUri : pageData.classUri,
+				}
+				window.location = baseUrl
+					+ "pageLoader?" + DataLib.getUrl(urlObject)
+		}).bind(this))
 	},
 	
 	cancelRoutine : function(){
-		window.location = baseUrl 
+		
+	window.location = baseUrl 
 				+ "pageLoader?skeletalInventory=" + pageData.individual
 				+ "&pageUri=skeletalInventory"
 	}
 }
+
 

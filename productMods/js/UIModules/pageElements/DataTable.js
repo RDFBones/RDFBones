@@ -45,7 +45,8 @@ DataTable.prototype.displayData = function(data) {
 		
 		}).bind(this))
 		this.content.append(column)
+	} else {
+		this.content.append(html.div("msg").text("There is no entry to show!"))
 	}
 
-	this.content.append(html.div("msg").text("There is no entry to show!"))
 }

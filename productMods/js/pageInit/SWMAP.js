@@ -22,4 +22,5 @@ var sw = {
 		literalEditor : swPrefix + "LiteralEditor",
 		textEditor : swPrefix + "TextEditor",
 		selectEditor : swPrefix + "SelectEditor",
+		linkField : swPrefix + "LinkField",
 }

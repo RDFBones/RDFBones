@@ -76,7 +76,7 @@ public class DataInput extends VitroAjaxController {
         */
         
         JSONObject json = new JSONObject();
-        JSONArray toSend = new JSONArray();
+        JSONObject toSend = new JSONObject();
 
         log.info(vreq.getParameter("dataToStore"));
         TripleCreator tripleCreate = null;
@@ -86,7 +86,10 @@ public class DataInput extends VitroAjaxController {
           log.info(json.get("individual"));
           
           tripleCreate = new TripleCreator(json, vreq);
-          toSend = tripleCreate.getTriples();
+         
+          toSend.put("object", tripleCreate.inputData);  
+          toSend.put("triples" ,tripleCreate.getTriples());
+       
         } catch (JSONException e1) {
           // TODO Auto-generated catch block
           e1.printStackTrace();

@@ -83,8 +83,6 @@ OnPageEditor.prototype = {
 					type = "add"
 					this.noData = false
 				}
-			
-				
 				this.saveChange(type)
 		} else {
 			this.errorMsg()

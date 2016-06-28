@@ -62,7 +62,7 @@ public class DataLoader extends VitroAjaxController {
       break;
     case "boneOrgans" :
       String[] inputParam2 = { "boneDivision" };
-      String[] uris2 = {"boneOrgan", "type", "completenessState"};
+      String[] uris2 = {"boneOrgan", "type", "completenessState", "completeness"};
       String[] literals2 = {"typeLabel", "completenessLabel"};
       result = this.performQuery(BoneOrganQuery, inputParam2, uris2, literals2);
     default:
@@ -118,7 +118,7 @@ public class DataLoader extends VitroAjaxController {
 
   private static String BoneOrganQuery =
       ""
-          + "SELECT ?boneOrgan ?typeLabel ?type ?completenessState ?completenessLabel \n"
+          + "SELECT ?boneOrgan ?typeLabel ?type ?completeness ?completenessState ?completenessLabel \n"
           + " WHERE \n " 
           + "   { "
           + "    ?boneOrgan       obo:systemic_part_of  ?boneDivision  . \n"

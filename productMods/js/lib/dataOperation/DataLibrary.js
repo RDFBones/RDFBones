@@ -95,7 +95,7 @@ var DataLib = {
 	assembleUrl : function(configData){
 		
 		var paramMap = new Object()
-		$.each(configData, function(i, data){
+		$.each(configData.linkDataInputs, function(i, data){
 			
 			if(data.varName != undefined){
 				paramMap[data.varName] = encodeURIComponent(getData1(data))
@@ -104,7 +104,7 @@ var DataLib = {
 			}	
 		})
 		
-		var href = baseUrl + this.configData.mapping + "?"
+		var href = baseUrl + configData.mapping + "?"
 		$.each(paramMap, function(key, value){
 			href += key + "=" + value + "&"
 		})

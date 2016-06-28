@@ -13,22 +13,37 @@ import edu.cornell.mannlib.vitro.webapp.controller.freemarker.responsevalues.Tem
 
 public class EntryFormLoader extends FreemarkerHttpServlet{
   
-  private static final long serialVersionUID = 1L;   
+  private static final long serialVersionUID = 1L;
   private static final Log log = LogFactory.getLog(CustomPageLoadController.class.getName());
   
   private static final int INDIVIDUALS_PER_PAGE = 30;
   private static final int MAX_PAGES = 40;  // must be even
   
-  private static final String TEMPLATE_DEFAULT = "generalEntryForm.ftl";
 
   @Override
   protected ResponseValues processRequest(VitroRequest vreq) {
-    String templateName = TEMPLATE_DEFAULT;
-    log.info("here we are");
+    
+    
+    String templateName = new String();
     Map<String, Object> body = new HashMap<String, Object>();
-    body.put("classUri", vreq.getParameter("classUri"));
-    body.put("individual", vreq.getParameter("individual"));
-    log.info(body.toString());
+
+    String entryFormType = vreq.getParameter("entryFormType");
+
+    switch(entryFormType){
+    
+    case "coherentBones" : 
+      templateName = "coherentBones.ftl";
+      body.put("classUri", vreq.getParameter("classUri"));
+      body.put("individual", vreq.getParameter("individual"));
+      break;
+      
+    case "boneDivisions" :
+      templateName = "systemicParts.ftl";
+      body.put("classUri", vreq.getParameter("classUri"));
+      body.put("individual", vreq.getParameter("individual"));
+      break;
+    }
+    
     return new TemplateResponseValues(templateName, body);
   }
   

@@ -1,6 +1,5 @@
 
 
-
 var DataContainer = function(tableConfig){
 	
 	this.tableConfig = tableConfig

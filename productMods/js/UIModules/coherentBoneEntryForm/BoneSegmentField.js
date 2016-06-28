@@ -1,7 +1,7 @@
 
 var completenessSet =[
-    { uri : "complete", label : "Complete"},
-    { uri : "incomplete", label : "Incomplete"}
+    { uri : "http://w3id.org/rdfbones/core#complete", label : "complete"},
+    { uri : "http://w3id.org/rdfbones/core#partlyPresent", label : "partly present"},
 ]
 
 var BoneSegmentField = function(systemicPartSelector, dataSet, dataToStore){
@@ -13,7 +13,7 @@ var BoneSegmentField = function(systemicPartSelector, dataSet, dataToStore){
 	this.container = html.div("boneSegmentFieldContainer")
 	this.listPoint = UI.listPoint()
 	this.classNameContainer = html.div("classNameContainer").text(this.dataSet.label)
-	this.completenessSelector = new DataSetterSelectorField(completenessSet, this.dataObject, "completeness");
+	this.completenessSelector = new DataSetterSelectorField(completenessSet, this.dataObject.comp2State, "uri");
 	this.deleteButton = new Button("del", (this.deleteRoutine).bind(this))
 	this.assemble()
 }
