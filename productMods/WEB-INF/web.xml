@@ -1028,12 +1028,12 @@
   </servlet-mapping>
   
   <servlet>
-    <servlet-name>ProfilePage</servlet-name>
-    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.ProfilePageLoader</servlet-class>
+    <servlet-name>PageLoader</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.PageLoader</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>ProfilePage</servlet-name>
-    <url-pattern>/profilePage</url-pattern>
+    <servlet-name>PageLoader</servlet-name>
+    <url-pattern>/pageLoader</url-pattern>
   </servlet-mapping>
   
    <servlet>
