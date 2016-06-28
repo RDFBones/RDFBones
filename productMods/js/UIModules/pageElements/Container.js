@@ -22,9 +22,10 @@ Container.prototype = {
 	},
 
 	setElements : function(){
-		
-		$.each(this.configData.elements, (function(i, element){
-			this.container.append(new PageElementMap[element.type](element,this).container)
-		}).bind(this))
+		if(this.configData.elements != undefined){
+			$.each(this.configData.elements, (function(i, element){
+				this.container.append(new PageElementMap[element.type](element,this).container)
+			}).bind(this))			
+		}
 	},
 }
