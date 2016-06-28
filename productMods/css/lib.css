@@ -150,3 +150,9 @@ select {
 .height100 {
 	height: 100%;
 }
+
+
+#pageContent{
+	width : 900px;
+	display : table;	
+}

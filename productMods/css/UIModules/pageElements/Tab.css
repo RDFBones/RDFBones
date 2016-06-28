@@ -1,26 +1,21 @@
 
 
-.tabContainerCont {
-	display: table;
-	
-}
 
 .contentContainer{
-	display : table;
-	padding : 7px;
+	//display : table;
+	margin : 10px;
+	padding : 3px;
 	border : 1px solid #D3D3D3;	
 }
 
-
 .tabContainer {
-	margin-top : 20px;		
-	
+	margin : 8px;		
 }
 
 .tab {
 	display : inline-block;
-	margin : 3px;
 	padding : 5px;
+	margin : 2px;
 	background-color :  #D0D0D0;
 }
 
