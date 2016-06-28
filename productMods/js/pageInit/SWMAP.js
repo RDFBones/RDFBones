@@ -4,7 +4,7 @@ var sw = {
 		tabContainer :  swPrefix + "TabContainer",
 		tab : swPrefix + "Tab",
 		dataTable : swPrefix + "DataTable",
-		addNew : swPrefix + "AddNew",
+		dataField : swPrefix + "DataField",
 		dataField : swPrefix + "DataField",
 		literalField : swPrefix + "LiteralField",
 		literalFieldMiddle : swPrefix + "LiteralFieldMiddle",

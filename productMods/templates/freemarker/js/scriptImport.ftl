@@ -57,7 +57,7 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/DataContainer.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/ImagesField.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/SelectorAddField.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/AddNew.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/DataField.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/LinkField.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/TabContainer.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageElements/LiteralField.js"></script>')}
