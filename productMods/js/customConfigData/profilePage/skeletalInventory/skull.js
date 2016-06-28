@@ -1,0 +1,44 @@
+neurocranium = {
+		type : sw.container,
+		localData : [
+				{
+					type : sw.constant,
+					value : "http://purl.obolibrary.org/obo/FMA_53672",
+					key : "boneUri",
+				},{
+					type : sw.constant,
+					value : "Neurocranium",
+					key : "boneLabel",
+				},{
+					type : sw.constant,
+					value : [ "http://purl.obolibrary.org/obo/FMA_53672"],
+					key : "classSelection"
+				} ],
+		elements : [ coherentData]
+	}	
+
+viscerocranium = {
+		type : sw.container,
+		localData : [
+				{
+					type : sw.constant,
+					value : "http://purl.obolibrary.org/obo/FMA_53673",
+					key : "boneUri",
+				},{
+					type : sw.constant,
+					value : "Viscerocranium",
+					key : "boneLabel",
+				},{
+					type : sw.constant,
+					value : [ "http://purl.obolibrary.org/obo/FMA_53673"],
+					key : "classSelection"
+				} ],
+		elements : [ coherentData]
+	}
+
+
+skullTab = {
+	type : sw.tab,
+	tabTitle : "Skull",
+	elements : [neurocranium, viscerocranium]
+}
