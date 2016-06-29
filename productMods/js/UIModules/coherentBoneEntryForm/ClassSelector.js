@@ -1,9 +1,8 @@
-var ClassSelector = function(dataToStore, dataSet) {
+var ClassSelector = function() {
 
+	this.dataToStore = new Object()
 	
-	this.originalDataSet = dataSet
-	this.dataSet = this.originalDataSet
-	this.dataToStore = dataToStore
+	this.dataSet = pageData.boneDivisions
 	this.systemicPartSelectors = []
 	
 	this.container = html.div("table")
@@ -13,7 +12,7 @@ var ClassSelector = function(dataToStore, dataSet) {
 	this.exitButton = new CustomButton("del", (this.exitRoutine).bind(this), "rightAligned")
 	
 	this.selectorContainer = html.span("middleSpan margin10")
-	this.selectorField = UI.classSelector(dataSet)
+	this.selectorField = UI.classSelector(this.dataSet)
 	this.button = new Button("add", (this.selectBoneDivision).bind(this))
 	
 	this.saveContainer = html.div("saveContainer")
@@ -31,7 +30,6 @@ var ClassSelector = function(dataToStore, dataSet) {
 	} else {
 		this.assemble()
 	}
-	
 	this.getCardinality()
 }
 
@@ -53,6 +51,7 @@ ClassSelector.prototype = {
 				this.saveButton.container,
 				this.cancelButton.container],
 			[0, 1, -1, 0, 1, 1, 0, 0, 0, 1, 1])
+	
 	},
 
 	assembleForExisting : function(){
@@ -63,6 +62,7 @@ ClassSelector.prototype = {
      				this.saveButton.container,
      				this.cancelButton.container],
      			[0, 0, 1, 1])
+   
 	},
 	
 	getCardinality : function() {
