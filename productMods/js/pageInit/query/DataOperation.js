@@ -1,113 +1,143 @@
 
 var DataOperation = {
-		
-	perform : function(pageInit){
-		
-		if(pageData.dataOperations != undefined){
-			$.each(pageData.dataOperations, (function(index, operation){
-				
-				switch(operation.type){
-				
-				case "grouping" : 
-					this.group(operation.processes, 0, pageData)
+
+	perform : function(pageInit) {
+
+		if (pageData.dataOperations != undefined) {
+			$.each(pageData.dataOperations, (function(index, operation) {
+
+				switch (operation.type) {
+
+				case "grouping":
+					this.group(operation.processes, 0,
+							pageData[operation.processes[0].inputVariable])
+					break
+				case "groupList":
+					this.groupList(operation.processes, pageData)
 					break;
-				case "mergeArrays" :
+				case "mergeArrays":
 					this.mergeArrays(operation)
 					break;
-				case "a" : 
+				case "a":
 					this.selection(operation)
 					break
-				default : break;
+				case sw.arrayOfObjectArray:
+					pageData[operation.toVariable] = getData1(operation)
+				default:
+					break;
 				}
 			}).bind(this))
 		}
 		pageInit.done()
 	},
-	
-	selection : function(operation){
-	
+
+	selection : function(operation) {
+
 		var result = []
-		$.each(pageData[operation.input], function(index, value){
-			if(value[operation.onField] == operation.filterValue){
+		$.each(pageData[operation.input], function(index, value) {
+			if (value[operation.onField] == operation.filterValue) {
 				result.push(value)
 			}
 		})
 		pageData[operation.toVariable] = result
 	},
 
-	mergeArrays : function(operation){
+	mergeArrays : function(operation) {
 
-		pageData[operation.output] = pageData[operation.arrays[0]].concat(pageData[operation.arrays[1]])
+		pageData[operation.output] = pageData[operation.arrays[0]]
+				.concat(pageData[operation.arrays[1]])
 	},
 
-	group : function(processArray, i,  inputObject){
-	
+	groupList : function(processArray, inputObject) {
+
+		$.each(inputObject[processArray[0].inputVariable], (function(index,
+				array) {
+			this.group(processArray, 0, array)
+		}).bind(this))
+	},
+
+	group : function(processArray, i, inputArray) {
+
 		var arr = []
 		var obj = new Object()
+
 		var process = processArray[i]
 
-		/*
-		 * Cache the vars that comes to the to field as object
-		 */
-		
 		var varsToGroup = []
-		$.each(inputObject[process.inputVariable][0], function(key, value){
-			if(key != process.by && process.within.indexOf(key) == -1){
+		$.each(inputArray[0], function(key, value) {
+			if (key != process.by && process.within.indexOf(key) == -1) {
 				varsToGroup.push(key)
-			}	
+			}
 		})
 
 		var obj = new Object()
-		
-		/*
-		 * Make an object from the array with uniqe keys
-		 */
-		
-		$.each(inputObject[process.inputVariable], function(i, data){
-			
-			if(obj[data[process.by]] === undefined){
-				
+
+
+
+		$.each(inputArray, function(i, data) {
+
+			if (obj[data[process.by]] === undefined) {
+
 				obj[data[process.by]] = new Object()
-				//Place the vars in the within arrays
-				$.each(process.within, function(j, _within){
+				// Place the vars in the within arrays
+				$.each(process.within, function(j, _within) {
 					obj[data[process.by]][_within] = data[_within]
 				})
 				obj[data[process.by]][process.to] = []
 			}
-			
-			//Iterate through the fields of it
+
+			// Iterate through the fields of it
 			var a = new Object()
-			$.each(varsToGroup, function(u, key){
+			$.each(varsToGroup, function(u, key) {
 				a[key] = data[key]
 			})
-			
+
 			obj[data[process.by]][process.to].push(a)
 		})
 		
-		/*
-		 * Back object to array
-		 */
-		inputObject[process.inputVariable] = []
-		$.each(obj, function(key, value){
+
+		inputArray.length = 0
+		$.each(obj, function(key, value) {
 			value[process.by] = key
-			
-			//Rename the fields according to the process defintion
-			$.each(value, function(dataKey, dataValue){
-				$.each(process.rename, function(r, rename){
-					if(rename.key == dataKey){
+
+			// Rename the fields according to the process defintion
+			$.each(value, function(dataKey, dataValue) {
+				$.each(process.rename, function(r, rename) {
+					if (rename.key == dataKey) {
 						delete value[dataKey]
 						value[rename.to] = dataValue
 					}
 				})
 			})
-			inputObject[process.inputVariable].push(value)
+			inputArray.push(value)
 		})
-		
-		if(processArray.length > i + 1){
-			i++
-			$.each(inputObject[process.inputVariable], function(index, object){
-				DataOperation.group(processArray, i, object)
-			})
+
+		i++
+		if(processArray[i] != undefined){
+			$.each(inputArray, function(index, object) {
+				DataOperation.group(processArray, i,
+						object[processArray[i].inputVariable])
+			})			
 		}
-	}	
+	},
+
+	"http://softwareOntology.com/fieldsOfArray" : function(config) {
+		pageData[config.toVariable] = getData1(config)
+	},
+
+	extraction : function(config) {
+
+		list = getData1(config)
+
+		if (config.what.type == sw.multipleArray) {
+			$.each()
+		} else { // Single Array
+
+		}
+		$.each(list, function(i, element) {
+
+		})
+	}
 }
+
+
