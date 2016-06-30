@@ -13,5 +13,3 @@ var PageAssembler = {
 			$("#pageContent").append(pageElementBuffer)
 	},	
 }
-
-
