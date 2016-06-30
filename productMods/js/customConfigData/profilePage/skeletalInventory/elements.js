@@ -13,10 +13,12 @@ coherentData = {
 		type : sw.global,
 		key : "individual",
 	}, {
-		type : sw.constant,
+		type : sw.local,
 		key : "pageUri",
-		value : "coherentBones",
-	} ],
+	}, {
+		type : sw.local,
+		key : "queryType",
+	}],
 	mapping : "pageLoader",
 	dataToDisplay : {
 		type : sw.selectOperationResult,
