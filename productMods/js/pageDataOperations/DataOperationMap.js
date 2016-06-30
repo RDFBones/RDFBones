@@ -31,11 +31,18 @@ var DataOperationMap = {
             container = container.parent;
           }
       }
+      if(toReturn == "" && pageData.defaultValue != undefined){
+    	  toReturn = pageData.defaultValue
+      }
       return toReturn; 
       
     },
     "http://softwareOntology.com/global": function(cont, configData) {
-    	return pageData[configData.key]
+    	if(pageData[configData.key] != undefined){
+    		return pageData[configData.key]	
+    	} else {
+    		return configData.defaultValue
+    	}
     },
         
     "http://softwareOntology.com/selectOperationResult" : function(cont, configData){
@@ -43,7 +50,7 @@ var DataOperationMap = {
     	var dataToSelect = DataOperationMap[configData.dataToSelect.type](cont, configData.dataToSelect)	
     	var selectCriteria = DataOperationMap[configData.selectCriteria.type](cont, configData.selectCriteria)	
     	var arr = []
-    	
+
     	$.each(dataToSelect, (function(index, object){
     		if(checkCriteria(object[configData.selectField], selectCriteria)){
     			arr.push(object)
