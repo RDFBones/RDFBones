@@ -40,7 +40,7 @@ pageData.pageElements = [
 }, {
 	type : sw.imagesField,
 }, {
-	type : sw.addNew,
+	type : sw.dataField,
 	textValue : {
 		type : sw.constant,
 		value : "Systemic Parts",
@@ -67,8 +67,6 @@ pageData.pageElements = [
 	}
 ],
 	mapping : "pageLoader",
-}, {
-	type : sw.dataTable,
 	dataToDisplay : {
 		type : sw.global,
 		key : "boneOrgans",
