@@ -15,6 +15,10 @@ Array.prototype.getObjectByKey = function(key, value){
 	return toReturn
 }
 
+Array.prototype.removeElement = function(value){
+	
+	this.splice(this.indexOf(value), 1)
+}
 
 Array.prototype.getObjectByKey = function(key, value){
 	

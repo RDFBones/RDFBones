@@ -23,12 +23,11 @@ pageData.queries = [ {
 	}, {
 		type : sw.constant,
 		value : "subClasses",
-		varName : "queryType"
+		varName : "queryType",
 	} ],
 	mapping : "anatomicalModelLoader",
 	toVariable : "boneDivisions2",
 }, {
-	
 	requirement : {
 		type : sw.existence,
 		variable : {

@@ -23,4 +23,7 @@ var sw = {
 		textEditor : swPrefix + "TextEditor",
 		selectEditor : swPrefix + "SelectEditor",
 		linkField : swPrefix + "LinkField",
+		fieldsOfArray : swPrefix + "fieldsOfArray",
+		customPage : swPrefix + "CustomPage",
+		field : swPrefix + "Field",
 }

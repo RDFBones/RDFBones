@@ -29,7 +29,6 @@ TextButton.prototype = {
 	
 	enable : function(){
 		this.enabled = true
-		console.log("enable")
 		this.container.removeClass("disabledButton").addClass("enabledButton")
 		return this
 	},
