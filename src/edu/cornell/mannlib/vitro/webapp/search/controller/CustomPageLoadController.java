@@ -45,7 +45,6 @@ public class CustomPageLoadController extends FreemarkerHttpServlet {
         
       
         String templateName = TEMPLATE_DEFAULT;
-         log.info("here we are");
         Map<String, Object> body = new HashMap<String, Object>();
         return new TemplateResponseValues(templateName, body);
     }

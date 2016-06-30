@@ -31,8 +31,7 @@ public class PageDataLoader extends VitroAjaxController {
 
       this.vreq = vreq;
       List<Map<String, String>> result = new ArrayList<Map<String, String>>();
-      
-      switch (vreq.getParameter("configType")) {
+            switch (vreq.getParameter("configType")) {
         
       case "pageElements" : 
             
@@ -79,7 +78,7 @@ public class PageDataLoader extends VitroAjaxController {
         
         result = this.performQuery(tabElementQuery, tabElementInputParam, tabElementUris, tabElementLiterals);
         break;
- 
+        
       case "dataFields" : 
         
         String[] dataFieldInputParam = {"subject"};
