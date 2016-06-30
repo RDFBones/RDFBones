@@ -60,7 +60,7 @@ public class DataLoader extends VitroAjaxController {
       String[] uris2 = {"boneOrgan", "type", "completenessState", "completeness"};
       String[] literals2 = {"typeLabel", "completenessLabel"};
       result = this.performQuery(BoneOrganQuery, inputParam2, uris2, literals2);
-
+      break;
     case "subClasses" : 
       
       String[] inputParam3 = { "classUri"};
@@ -71,7 +71,7 @@ public class DataLoader extends VitroAjaxController {
       
     case "coherentBones":
       String[] inputParam4 = { "skeletalInventory" };
-      String[] uris4 = { "uri", "boneOrgan" };
+      String[] uris4 = { "boneDivision", "type" };
       String[] literals4 = { "boneOrganCount", "label" };
       result = this.performQuery(CoherentQuery, inputParam4, uris4, literals4);
       break;
