@@ -65,18 +65,26 @@ var DataOperationMap = {
     "http://softwareOntology.com/Field" : function(cont, configData){
     	
     	of = getData1(configData.of)
-    	if(DataLib.getType(of) == "object"){
-    		return of[configData.key]
-    	} else if (DataLib.getType(of) == "array"){
+    	type = DataLib.getType(of)
+    	
+    	toReturn = null
+    	switch(DataLib.getType(of)){
+    	
+    	case "object" : 
+    		toReturn = of[getData1(configData.key)]
+    		break;
+    	case "array" : 
     		arr = []
         	$.each(of, function(index, object){
-        		arr = arr.concat(object[configData.key])
+        		arr = arr.concat(object[getData1(configData.key)])
         	})
-        	return arr
+        	toReturn =  arr
+        	break;
+    	default : break;
     	}
-    },
-  };
-
+    	return toReturn
+    }
+}
 
 var checkCriteria = function(value, selectCriteria){
 	
@@ -84,9 +92,10 @@ var checkCriteria = function(value, selectCriteria){
 		
 	case "array" : 
 		return DataLib.or(value, selectCriteria)
-		break
+		break;
 	case "data" : 
 		return value == selectCriteria
+		break;
 	}
 }
 

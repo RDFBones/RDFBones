@@ -13,9 +13,23 @@ pageData.queries = [
 		varName : "queryType",
 		value : "subClasses"
 	}, {
-		type : sw.global,
-		varName : "classUri",
-		key : "parentRegions"
+		type : sw.field,
+		of : {
+			type : sw.field,
+			of : {
+				type : sw.global,
+				key : "partlySymmetricBones"
+			}, 
+			key : {
+				type : sw.global,
+				key : "classUri"
+			},
+		},
+		key : {
+			type : sw.constant,
+			value : "parentRegions",
+		},
+		varName : "classUri"
 	}, ],
 	mapping : "dataLoader",
 	toVariable : "symmetricBoneOrgans",
@@ -27,8 +41,7 @@ pageData.queries = [
 		value : "sytemicPartsWithout"
 	}, {
 		type : sw.global,
-		varName : "classUri",
-		key : "mainClass"
+		key : "classUri",
 	}, ],
 	mapping : "dataLoader",
 	toVariable : "systemicParts",
@@ -64,7 +77,10 @@ pageData.dataOperations = [
 			type : sw.global,
 			key : "symmetricBoneOrgans",
 		},
-		key : "subClasses",
+		key : {
+			type : sw.constant,
+			value : "subClasses",
+		}
 	},
 	whatBy : "uri",
 } ]
