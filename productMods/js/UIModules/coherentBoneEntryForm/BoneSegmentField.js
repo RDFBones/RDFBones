@@ -21,16 +21,17 @@ var BoneSegmentField = function(systemicPartSelector, dataSet, dataToStore){
 BoneSegmentField.prototype = {
 		
 	assemble : function(){
+		
 		UI.assemble(this.container, [
 		        this.listPoint,
 				this.classNameContainer,
 				this.completenessSelector.container,
 				this.deleteButton.container],
 				[0, 0, 0, 0 ])
-		
 	},
 
 	setDataObject : function(dataSet, dataToStore){
+		
 		this.dataSet = dataSet
 		this.dataToStore = dataToStore
 		this.dataObject = new Object()
@@ -54,5 +55,18 @@ BoneSegmentField.prototype = {
 	}
 }
 
+var SymmetricBoneSegmentField = function(systemicPartSelector, dataSet, dataToStore){
+	
+	BoneSegmentField.call(this, systemicPartSelector, dataSet, dataToStore)
+}
+
+SymmetricBoneSegmentField.prototype = Object.create(BoneSegmentField.prototype)
 
 
+SymmetricBoneSegmentField.prototype.deleteRoutine = function(){
+	
+	DataLib.removeObjectFromArrayByKey(this.dataToStore, "uri", this.dataSet.uri)
+	this.systemicPartSelector.reset()
+	this.container.remove()
+	this.systemicPartSelector.resetUri(this.dataObject.uri)
+}
