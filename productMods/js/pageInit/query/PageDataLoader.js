@@ -2,6 +2,8 @@ var PageDataLoader = function(pageInit) {
 
 	this.pageInit = pageInit
 	this.cnt = 0
+	
+	this.cnt = new Object()
 	this.loadData()
 }
 
@@ -13,42 +15,98 @@ PageDataLoader.prototype = {
 			
 			$.each(pageData.queries, (function(i, query) {
 				
+				this.cnt[i] = new Object()
+				this.cnt[i].done = false
+				this.cnt[i].cnt = 0
+
 				if(!RequirementCheck(query)){
-					this.cnt++
+					this.cnt[i].done = true
 					return true
 				}
+				
 				var data = new Object()
-				$.each(query.parameters, function(j, parameter) {
+				
+				var multipleQuery = null
+				
+				$.each(query.parameters, (function(j, parameter) {
+					
+					if(DataLib.getType(getData1(parameter)) == "array"){
+						multipleQuery = getData1(parameter)
+						varName = parameter.varName
+					}
 					if(parameter.varName != undefined){
-						data[parameter.varName] = getData(undefined, parameter)
+						
+						data[parameter.varName] = getData1(parameter)
 					} else {
-						data[parameter.key] = getData(undefined, parameter)
+						data[parameter.key] = getData1(parameter)
 					}
-				})
-
-				$.ajax({
-					url : baseUrl + query.mapping,
-					data : data
-				}).done((function(msg) {
-					if (pageData[query.toVariable] === undefined) {
-						pageData[query.toVariable] = []
-					}
-					pageData[query.toVariable] = $.parseJSON(msg)
-					this.checkIfAllArrived()
-
 				}).bind(this))
+				
+				if(multipleQuery != null){
+					this.cnt[i].num = multipleQuery.length
+					$.each(multipleQuery, (function(k, element){
+						
+						if(DataLib.getType(element) == "object"){
+							data[varName] = element[query.objectArrayKey]
+						} else {
+							data[varName] = element
+						}
+						$.ajax({
+							dataType : "json",
+							url : baseUrl + query.mapping,
+							data : data
+						}).done((function(result) {
+							if (pageData[query.toVariable] === undefined) {
+								pageData[query.toVariable] = []
+							}
+							if(query.concatResultArrays != undefined){
+								pageData[query.toVariable] = pageData[query.toVariable].concat(result)
+							} else {
+								pageData[query.toVariable].push(result)
+							}
+							this.checkIfAllArrived(i)
+						}).bind(this))
+					}).bind(this))
+					
+				} else {
+					this.cnt[i].num = 1
+					$.ajax({
+						dataType : "json",
+						url : baseUrl + query.mapping,
+						data : data
+					}).done((function(result) {
+						if (pageData[query.toVariable] === undefined) {
+							pageData[query.toVariable] = []
+						}
+						pageData[query.toVariable] = result
+						this.checkIfAllArrived(i)
+					}).bind(this))
+				}
 			}).bind(this))
 		} else {
 			this.pageInit.done()
 		}
 	},
 
-	checkIfAllArrived : function() {
-		this.cnt++
-		if (this.cnt == pageData.queries.length) {
+	checkIfAllArrived : function(number) {
+			
+		this.cnt[number].cnt++;
+		
+		if(this.cnt[number].num == this.cnt[number].cnt){
+			this.cnt[number].done = true
+		}
+		var ok = true
+		$.each(this.cnt, function(i, value){
+			if( !value.done){
+				ok = false
+				return false
+			}
+		})
+		if(ok){
 			this.pageInit.done()
 		}
 	},
 	
-
+	
+	
 }
