@@ -2,6 +2,12 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/lib/jquery-1.11.3.min.js"></script>')}
 
 ${scripts.add(
+	'<script type="text/javascript" src="${urls.base}/js/customConfigData/lib/queries.js"></script>'
+	)}	
+
+
+
+${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/UILib/html.js"></script>',	
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/UILib/ImgUI.js"></script>',	
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/UILib/UI.js"></script>')}
@@ -10,9 +16,11 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/lib/debug/TripleDebug.js"></script>')}
 
 ${scripts.add(
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/coherentBoneEntryForm/SymmetricBoneOrganSelector.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/coherentBoneEntryForm/NamedSystemicPartSelector.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/coherentBoneEntryForm/SystemicPartSelector.js"></script>',	
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/coherentBoneEntryForm/BoneSegmentField.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/coherentBoneEntryForm/PartlySymmetricSystemicPartSelector.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/coherentBoneEntryForm/ClassSelector.js"></script>')}
 
 ${scripts.add(
