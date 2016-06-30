@@ -21,6 +21,9 @@ var DataOperation = {
 				case "a":
 					this.selection(operation)
 					break
+				case "extraction" :
+					this.extraction(operation)
+					break
 				case sw.arrayOfObjectArray:
 					pageData[operation.toVariable] = getData1(operation)
 				default:
@@ -72,8 +75,6 @@ var DataOperation = {
 
 		var obj = new Object()
 
-
-
 		$.each(inputArray, function(i, data) {
 
 			if (obj[data[process.by]] === undefined) {
@@ -110,8 +111,8 @@ var DataOperation = {
 				})
 			})
 			inputArray.push(value)
-		})
-
+		})	
+		
 		i++
 		if(processArray[i] != undefined){
 			$.each(inputArray, function(index, object) {
@@ -127,16 +128,23 @@ var DataOperation = {
 
 	extraction : function(config) {
 
-		list = getData1(config)
-
-		if (config.what.type == sw.multipleArray) {
-			$.each()
-		} else { // Single Array
-
+		from = getData1(config.from)
+		arrayToExtract = []
+		//array of object
+		what = getData1(config.what)
+		if(DataLib.getType(what[0]) == "object"){
+			arrayToExtract = what
+		} else { //array of array
+			//we have to concatenate the arrays
+			$.each(what, function(i, element){
+				arrayToExtract = arrayToExtract.concat(element)
+			})
 		}
-		$.each(list, function(i, element) {
-
+		
+		$.each(arrayToExtract, function(k, toExtract){
+			DataLib.removeObjectFromArrayByKey(from, config.fromBy, toExtract[config.whatBy])
 		})
+		
 	}
 }
 
