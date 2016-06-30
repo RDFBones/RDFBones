@@ -34,14 +34,16 @@ public class PageLoader extends FreemarkerHttpServlet {
     case "boneDivision":
       templateName = "boneDivision.ftl";
       break;
-
-    case "coherentBones":
-      templateName = "coherentBones.ftl";
+    case "partlySymmetricBoneDivision" :
+      templateName = "partlySymmetricBoneDivision.ftl";
+      break;
+    case "symmetricBoneDivision":
+      templateName = "symmetricBoneDivision.ftl";
       break;
     case "boneOrgan":
       templateName = "boneOrgan.ftl";
-
     default:
+      templateName = "notImplemented.ftl";
       break;
     }
 
