@@ -1,9 +1,13 @@
 
 
 
-var SymmetricBoneOrganSelector = function(sysPart, dataToStore){
+var SymmetricBoneOrganSelector = function(parent, sysPart, dataToStore){
 	
+	this.notAdded = true
+	this.parent = parent
 	this.container = html.div()
+	
+	
 	
 	this.sysPart = sysPart
 	this.dataToStore = dataToStore
@@ -35,40 +39,51 @@ SymmetricBoneOrganSelector.prototype = {
 		   this.systemicPartContainer],
 			[0, 1, 1, 1, 0])
 			
-		$("#pageContent").append(this.container)
 	},
 	
 	getSelectArray : function(){
 		
-		arr = this.sysPart.subClasses.slice()
+		this.arr = this.sysPart.subClasses.slice()
 		var object = {
 			uri : this.sysPart.uri,
 			label : this.sysPart.label,
 		}
-		arr.unshift(object)
-		return arr
+		this.arr.unshift(object)
+		return this.arr
 	},
 
 	checkAdding : function(){
 		
 		var val = this.selector.val()
-		if(val == this.sysPart.uri){
-			if(this.cnt < this.max - 1){
-				this.addSystemicPart(this.sysParts.getObjectByKey("uri", val))
-			} else {
-				alert("You are allowed to add maximal " + this.cnt + " bone organs!")
-			}
+		if(this.cnt == this.max){
+			alert("You are allowed to add maximal " + this.cnt + " bone organs!")
+		} else if  (this.addedSubClasses.indexOf(val) != -1){
+			alert("You are allowed to add only one from this bone organ!")
 		} else {
-			if(this.addedSubClasses.indexOf(value) == -1){
+			if(val != this.sysPart.uri){
 				this.addedSubClasses.push(val)
-				this.addSystemicPart(this.sysParts)
-			} else {
-				alert("You are allowed to add only one from this bone organ!")
 			}
+			this.addSystemicPart(this.arr.getObjectByKey("uri", val))
 		}
 	}, 
-
-	addSystemicParts : function(object){
-		this.sysContainer.push(new BoneSegmentField(this, this.dataToStore, object))
+	
+	reset : function(){
+		
+		this.cnt--
+		if(this.cnt == 0){
+			this.notAdded = true
+		}
+		this.parent.refresh()
 	},
+	
+	addSystemicPart : function(object){
+		this.notAdded = false
+		this.cnt++
+		this.systemicPartContainer.append(new SymmetricBoneSegmentField(this, object, this.dataToStore).container)
+		this.parent.refresh()
+	},
+	
+	resetUri : function(uri){
+		this.addedSubClasses.removeElement(uri)
+	}
 }
