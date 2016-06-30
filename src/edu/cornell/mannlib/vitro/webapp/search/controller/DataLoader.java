@@ -54,20 +54,54 @@ public class DataLoader extends VitroAjaxController {
 
       result = this.performQuery(Query, inputParam1, uris1, literals1);
       break;
-    case "coherentBones":
-      String[] inputParam = { "skeletalInventory" };
-      String[] uris = { "boneDivision", "type" };
-      String[] literals = { "boneOrganCount", "label" };
-      result = this.performQuery(CoherentQuery, inputParam, uris, literals);
-      break;
+
     case "boneOrgans" :
       String[] inputParam2 = { "boneDivision" };
       String[] uris2 = {"boneOrgan", "type", "completenessState", "completeness"};
       String[] literals2 = {"typeLabel", "completenessLabel"};
       result = this.performQuery(BoneOrganQuery, inputParam2, uris2, literals2);
-    default:
+
+    case "subClasses" : 
+      
+      String[] inputParam3 = { "classUri"};
+      String[] uris3 = {"uri", "inputClass"};
+      String[] literals3 = { "label", "inputClassLabel" };
+      result = this.performQuery(subClassQuery, inputParam3, uris3, literals3);
+      break; 
+      
+    case "coherentBones":
+      String[] inputParam4 = { "skeletalInventory" };
+      String[] uris4 = { "uri", "boneOrgan" };
+      String[] literals4 = { "boneOrganCount", "label" };
+      result = this.performQuery(CoherentQuery, inputParam4, uris4, literals4);
+      break;
+      
+    case "sytemicParts":
+      String[] inputParam5 = { "classUri" };
+      String[] uris5 = { "uri", "boneOrgan" };
+      String[] literals5 = { "label", "boneOrganLabel" };
+      result = this.performQuery(systemicQuery, inputParam5, uris5, literals5);
+      break;
+      
+    case "subClassesWithout" : 
+      
+      String[] inputParam6 = { "classUri"};
+      String[] uris6 = {"subclass"};
+      String[] literals6 = { "subclassLabel" };
+      result = this.performQuery(subClassQueryWithout, inputParam6, uris6, literals6);
+      break;  
+    case "sytemicPartsWithout":
+      String[] inputParam7 = { "classUri" };
+      String[] uris7 = { "uri" };
+      String[] literals7 = { "label"};
+      result = this.performQuery(systemicPartsWithout, inputParam7, uris7, literals7);
+      break;
+       
+      
+     default :
       break;
     }
+    
     log.info(result.toString());
     if (result.size() > 0) {
       JSONArray arrayToSend = new JSONArray();
@@ -129,4 +163,42 @@ public class DataLoader extends VitroAjaxController {
           + "    ?boneOrgan       vitro:mostSpecificType ?type .  \n"
           + "    ?type            rdfs:label            ?typeLabel . \n" 
           + " } ";
+  
+   private static String subClassQuery =
+       ""
+           + "SELECT ?inputClass ?inputClassLabel ?uri ?label \n"
+           + " WHERE { \n "
+           + "    ?uri          rdfs:subClassOf  ?inputClass . \n"
+           + "    ?uri          rdfs:label       ?label. \n "
+           + "    ?inputClass   rdfs:label       ?inputClassLabel . \n"
+           + "    FILTER( ?inputClass  =  ?classUri )"
+           + "}"; 
+   
+   private static String subClassQueryWithout =
+       ""
+           + "SELECT ?uri ?label \n"
+           + " WHERE {\n "
+           + "    ?uri       rdfs:subClassOf  ?classUri . \n"
+           + "    ?uri       rdfs:label       ?label . \n "
+           + "}"; 
+   
+   private static String systemicQuery = 
+       "select ?uri ?label ?boneOrgan ?boneOrganLabel "
+           + "  where {  "
+           + "  ?boneOrgan             rdfs:label             ?boneOrganLabel ."
+           + "  ?boneOrgan             rdfs:subClassOf        ?restriction . "
+           + "  ?restriction           owl:onProperty         <http://purl.obolibrary.org/obo/fma#systemic_part_of> . "
+           + "  ?restriction           owl:someValuesFrom     ?uri .   "
+           + "  ?uri                   rdfs:label             ?label . " 
+           + "  FILTER( ?uri  =  ?classUri ) ."
+           + "}";
+   
+   private static String systemicPartsWithout = 
+       "select ?uri ?label "
+           + "  where {  "
+           + "  ?uri                rdfs:label             ?label ."
+           + "  ?uri                rdfs:subClassOf        ?restriction . "
+           + "  ?restriction        owl:onProperty         <http://purl.obolibrary.org/obo/fma#systemic_part_of> . "
+           + "  ?restriction        owl:someValuesFrom     ?classUri .   "
+           + "}";
 }
