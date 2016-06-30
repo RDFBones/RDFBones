@@ -146,7 +146,7 @@ var UI = {
 	 * ClassSelector
 	 */
 	classSelector : function(dataSet) {
-		this.selectorField = html.getSelectorField().addClass("inline")
+		this.selectorField = html.getSelectorField().addClass("inline margin5H")
 
 		$.each(dataSet, (function(index, data) {
 			$("<option/>", {
