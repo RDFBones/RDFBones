@@ -3,7 +3,8 @@ forearm = {
 	type : sw.container,
 
 	localData : [
-
+	
+	   symmetricBoneSegment ,
 	{
 
 		type : sw.constant,
@@ -83,9 +84,10 @@ metacarpalbones = {
 	type : sw.container,
 
 	localData : [
-
+	             
+	    symmetricBoneSegment, 
 	{
-
+		
 		type : sw.constant,
 
 		value : "http://purl.obolibrary.org/obo/FMA_71335",
@@ -123,9 +125,8 @@ phalangesofhand = {
 	type : sw.container,
 
 	localData : [
-
+	             symmetricBoneSegment, 
 	{
-
 		type : sw.constant,
 
 		value : "http://purl.obolibrary.org/obo/FMA_71337",

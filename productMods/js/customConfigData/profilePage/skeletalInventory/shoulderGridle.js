@@ -7,7 +7,7 @@ pectoralGridle = {
 					key : "boneUri",
 				},{
 					type : sw.constant,
-					value : "Pectoral Gridle",
+					value : "Pectoral Girdle",
 					key : "boneLabel",
 				},{
 					type : sw.constant,
@@ -20,6 +20,6 @@ pectoralGridle = {
 
 shoulderGridleTab = {
 		type : sw.tab,
-		tabTitle : "Shoulder Gridle",
+		tabTitle : "Shoulder Girdle",
 		elements : [pectoralGridle]
 	}

@@ -1,6 +1,13 @@
+systemicQuery = {
+		type : sw.constant,
+		key : "queryType",
+		value : "systemicPartsWithout",
+}
+
 cervical = {
 		type : sw.container,
 		localData : [
+				partlySymmetricBoneSegment, 
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_24138",
@@ -13,13 +20,14 @@ cervical = {
 					type : sw.constant,
 					value : [ "http://purl.obolibrary.org/obo/FMA_24138"],
 					key : "classSelection"
-				} ],
+				}, systemicQuery ],
 		elements : [ coherentData]
 	}
 
 thoracic = {
 		type : sw.container,
 		localData : [
+				partlySymmetricBoneSegment, 
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_9140",
@@ -33,16 +41,17 @@ thoracic = {
 					value : [ "http://purl.obolibrary.org/obo/FMA_9140"],
 
 					key : "classSelection"
-				} ],
+				}, systemicQuery],
 		elements : [ coherentData]
 	}
 
 lumbar = {
 		type : sw.container,
 		localData : [
+				partlySymmetricBoneSegment, 
 				{
 					type : sw.constant,
-					value : "http://purl.obolibrary.org/obo/FMA_716203",
+					value : "http://purl.obolibrary.org/obo/FMA_16203",
 					key : "boneUri",
 				},{
 					type : sw.constant,
@@ -50,15 +59,23 @@ lumbar = {
 					key : "boneLabel",
 				},{
 					type : sw.constant,
-					value : [ "http://purl.obolibrary.org/obo/FMA_716203"],
+					value : [ "http://purl.obolibrary.org/obo/FMA_16203"],
 					key : "classSelection"
-				} ],
+				}, systemicQuery],
 		elements : [ coherentData]
 	}
+
+regionalQuery = {
+		type : sw.constant,
+		key : "queryType",
+		value : "regionalPartsWithout",
+}
+
 
 sacrum = {
 		type : sw.container,
 		localData : [
+		        partlySymmetricBoneSegment, 
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_16202",
@@ -71,13 +88,14 @@ sacrum = {
 					type : sw.constant,
 					value : [ "http://purl.obolibrary.org/obo/FMA_16202"],
 					key : "classSelection"
-				} ],
+				}, regionalQuery],
 		elements : [ coherentData]
 	}
 
 coccyx = {
 		type : sw.container,
 		localData : [
+		      	partlySymmetricBoneSegment ,
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_20229",
@@ -90,7 +108,9 @@ coccyx = {
 					type : sw.constant,
 					value : [ "http://purl.obolibrary.org/obo/FMA_20229"],
 					key : "classSelection"
-				} ],
+				}, 
+				regionalQuery
+				],
 		elements : [ coherentData]
 	}
 

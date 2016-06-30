@@ -4,6 +4,7 @@
 freelowerlimb = {
 		type : sw.container,
 		localData : [
+		      	   symmetricBoneSegment ,
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_21144",
@@ -26,6 +27,8 @@ freelowerlimb = {
 tarsalbones = {
 		type : sw.container,
 		localData : [
+		      	   symmetricBoneSegment ,
+
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_71339",
@@ -50,6 +53,8 @@ metatarsalbones = {
 		uri : "",
 		type : sw.container,
 		localData : [
+		      	   symmetricBoneSegment ,
+
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_71340",

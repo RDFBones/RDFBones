@@ -19,7 +19,6 @@ singleTab = {
 }
 
 tabContainer = {
-
 	type : sw.tabContainer,
 	tabs : [ coherentTab, singleTab ]
 }

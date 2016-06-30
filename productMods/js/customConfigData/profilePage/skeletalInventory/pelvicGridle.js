@@ -17,7 +17,6 @@ ribcage = {
 		elements : [ coherentData]
 	}
 
-
 thoraxTab = {
 	type : sw.tab,
 	tabTitle : "Thorax",

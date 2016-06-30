@@ -14,9 +14,8 @@ bonypelvis = {
 					value : [ "http://purl.obolibrary.org/obo/FMA_16580"],
 					key : "classSelection"
 				} ],
-		elements : [ coherentData]
+		elements : [coherentData]
 	}
-
 
 bonyPelvisTab = {
 	type : sw.tab,
