@@ -30,7 +30,6 @@ var ClassSelector = function() {
 	} else {
 		this.assemble()
 	}
-	this.getCardinality()
 }
 
 ClassSelector.prototype = {
@@ -63,15 +62,6 @@ ClassSelector.prototype = {
      				this.cancelButton.container],
      			[0, 0, 1, 1])
    
-	},
-	
-	getCardinality : function() {
-
-		$.each(this.dataSet, (function(index, value) {
-			if (value.systemicParts[0].subClasses != undefined) {
-				this.cardinality = value.systemicParts[0].subClasses.length
-			}
-		}).bind(this))
 	},
 
 	exitRoutine : function(){
