@@ -52,6 +52,29 @@ var DataOperationMap = {
     	return arr
     },
     
+    "http://softwareOntology.com/fieldsOfArray" : function(cont, configData){
+    	
+    	arr = []
+    	array = getData1(confiData.arrays)
+    	$.each(array, function(index, object){
+    		arr.push(object[configData.key])
+    	})
+    	return arr
+    },
+    
+    "http://softwareOntology.com/Field" : function(cont, configData){
+    	
+    	of = getData1(configData.of)
+    	if(DataLib.getType(of) == "object"){
+    		return of[configData.key]
+    	} else if (DataLib.getType(of) == "array"){
+    		arr = []
+        	$.each(of, function(index, object){
+        		arr = arr.concat(object[configData.key])
+        	})
+        	return arr
+    	}
+    },
   };
 
 
