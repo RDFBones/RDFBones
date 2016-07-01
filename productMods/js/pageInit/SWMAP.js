@@ -18,6 +18,8 @@ var sw = {
 		labelEditor : swPrefix + "labelEditor",
 		imagesField : swPrefix + "ImagesField",
 		existence : swPrefix + "Existence",
+		notNull : swPrefix + "NotNull",
+		notEmpty : swPrefix + "NotEmpty",
 		onPageEditor : swPrefix + "OnPageEditor",
 		literalEditor : swPrefix + "LiteralEditor",
 		textEditor : swPrefix + "TextEditor",

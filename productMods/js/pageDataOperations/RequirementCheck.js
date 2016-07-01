@@ -18,4 +18,21 @@ RequirementCheckMap = {
 			return false
 		}
 	},
+	
+	"http://softwareOntology.com/NotEmpty" : function(object){
+		
+		if(getData1(object.variable) != ""){
+			return true
+		} else {
+			return false
+		}
+	},
+	"http://softwareOntology.com/NotNull" : function(object){
+		
+		if(getData1(object.variable) != null){
+			return true
+		} else {
+			return false
+		}
+	}
 }
