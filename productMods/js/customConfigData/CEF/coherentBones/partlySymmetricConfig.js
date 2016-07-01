@@ -36,9 +36,8 @@ pageData.queries = [
 	concatResultArrays : "true",
 }, {
 	parameters : [ {
-		type : sw.constant,
-		varName : "queryType",
-		value : "sytemicPartsWithout"
+		type : sw.global,
+		key : "queryType",
 	}, {
 		type : sw.global,
 		key : "classUri",
