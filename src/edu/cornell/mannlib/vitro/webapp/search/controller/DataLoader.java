@@ -90,14 +90,24 @@ public class DataLoader extends VitroAjaxController {
       String[] literals6 = { "subclassLabel" };
       result = this.performQuery(subClassQueryWithout, inputParam6, uris6, literals6);
       break;  
-    case "sytemicPartsWithout":
+    case "systemicPartsWithout":
       String[] inputParam7 = { "classUri" };
       String[] uris7 = { "uri" };
       String[] literals7 = { "label"};
       result = this.performQuery(systemicPartsWithout, inputParam7, uris7, literals7);
       break;
-       
-      
+    case "regionalParts":
+      String[] inputParam8 = { "classUri" };
+      String[] uris8 = { "uri", "boneOrgan" };
+      String[] literals8 = { "label", "boneOrganLabel" };
+      result = this.performQuery(regionalQuery, inputParam8, uris8, literals8);
+      break;  
+    case "regionalPartsWithout":
+      String[] inputParam9 = { "classUri" };
+      String[] uris9 = { "uri" };
+      String[] literals9 = { "label"};
+      result = this.performQuery(regionalPartsWithout, inputParam9, uris9, literals9);
+      break;
      default :
       break;
     }
@@ -193,12 +203,32 @@ public class DataLoader extends VitroAjaxController {
            + "  FILTER( ?uri  =  ?classUri ) ."
            + "}";
    
+   private static String regionalQuery = 
+       "select ?uri ?label ?boneOrgan ?boneOrganLabel "
+           + "  where {  "
+           + "  ?boneOrgan             rdfs:label             ?boneOrganLabel ."
+           + "  ?boneOrgan             rdfs:subClassOf        ?restriction . "
+           + "  ?restriction           owl:onProperty         <http://purl.obolibrary.org/obo/fma#regional_part_of> . "
+           + "  ?restriction           owl:someValuesFrom     ?uri .   "
+           + "  ?uri                   rdfs:label             ?label . " 
+           + "  FILTER( ?uri  =  ?classUri ) ."
+           + "}";
+   
    private static String systemicPartsWithout = 
        "select ?uri ?label "
            + "  where {  "
            + "  ?uri                rdfs:label             ?label ."
            + "  ?uri                rdfs:subClassOf        ?restriction . "
            + "  ?restriction        owl:onProperty         <http://purl.obolibrary.org/obo/fma#systemic_part_of> . "
+           + "  ?restriction        owl:someValuesFrom     ?classUri .   "
+           + "}";
+   
+   private static String regionalPartsWithout = 
+       "select ?uri ?label "
+           + "  where {  "
+           + "  ?uri                rdfs:label             ?label ."
+           + "  ?uri                rdfs:subClassOf        ?restriction . "
+           + "  ?restriction        owl:onProperty         <http://purl.obolibrary.org/obo/fma#regional_part_of> . "
            + "  ?restriction        owl:someValuesFrom     ?classUri .   "
            + "}";
 }
