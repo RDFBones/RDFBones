@@ -19,6 +19,7 @@ singleQuery = [
 	} ],
 	mapping : "dataLoader",
 	toVariable : "singleNeurocranium",
+	concatResultArrays : true,
 }, {
 	parameters : [ singleBones, individual, {
 		type : sw.global,
@@ -27,6 +28,8 @@ singleQuery = [
 	} ],
 	mapping : "dataLoader",
 	toVariable : "singleViscerocranium",
+	concatResultArrays : true,
+
 }
 ]
 
