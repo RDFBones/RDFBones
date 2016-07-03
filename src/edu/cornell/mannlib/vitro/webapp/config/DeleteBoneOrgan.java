@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeleteBoneOrgan {
+public class DeleteBoneOrgan implements DeleteConfig{
 
   public static Map<String, String> predicateMap = new HashMap<String, String>(){{
       put("regionalPart", "obo:regional_part_of");

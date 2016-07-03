@@ -6,6 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.cornell.mannlib.vitro.webapp.config.DeleteBoneOrgan;
+import edu.cornell.mannlib.vitro.webapp.config.DeleteBoneOrganFromDivision;
+import edu.cornell.mannlib.vitro.webapp.config.DeleteConfig;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.controller.ajax.VitroAjaxController;
 import edu.cornell.mannlib.vitro.webapp.dao.DataPropertyStatementDao;
@@ -55,6 +57,7 @@ public class DeleteController extends VitroAjaxController {
     this.vreq = vreq;
     log.info("Arrived");
 
+    
     switch(vreq.getParameter("operation")) {
     
     case "deleteBoneOrgan" :
@@ -62,10 +65,18 @@ public class DeleteController extends VitroAjaxController {
         this.objectTriples = DeleteBoneOrgan.getObjectTriples();
         this.dataTriples = DeleteBoneOrgan.getDataTriples();
         this.predicateMap = DeleteBoneOrgan.predicateMap;
-        this.inputs = DeleteBoneOrgan.inputs;
+        this.inputs = DeleteBoneOrgan.inputs; 
         break;
-     default : 
-         break;
+     
+     case "deleteBoneOrganFromDivision" :
+         
+       this.objectTriples = DeleteBoneOrganFromDivision.getObjectTriples();
+       this.dataTriples = DeleteBoneOrganFromDivision.getDataTriples();
+       this.predicateMap = DeleteBoneOrganFromDivision.predicateMap;
+       this.inputs = DeleteBoneOrganFromDivision.inputs; 
+       break;
+       
+      default : break;
     }
     
     List<Map<String, String>> result = performQuery();
@@ -110,6 +121,7 @@ public class DeleteController extends VitroAjaxController {
   private List<Map<String, String>> performQuery(){
     
     String query = this.generateQuery();
+    log.info(query);
     query = N3Utils.setPrefixes(null, query);
     ResultSet resultSet = QueryUtils.getQueryResults(query, vreq);
     return QueryUtils.getQueryVars(resultSet, this.objectVars, this.dataVars); 
