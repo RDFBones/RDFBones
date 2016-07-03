@@ -35,19 +35,13 @@ public class DeleteController extends VitroAjaxController {
     // TODO Auto-generated method stub
     
     this.vreq = vreq;
-    log.info("DeleteController");
     
-    log.info(vreq.getParameter("operation"));
     switch(vreq.getParameter("operation")) {
     
     case "deleteBoneOrgan" :
-        log.info("inside");
         this.objectTriples = DeleteBoneOrgan.getObjectTriples();
-        log.info("1");
         this.dataTriples = DeleteBoneOrgan.getDataTriples();
-        log.info("2");
         this.predicateMap = DeleteBoneOrgan.predicateMap;
-        log.info("3");
         this.inputs = DeleteBoneOrgan.inputs;
         break;
      default : 
@@ -55,7 +49,6 @@ public class DeleteController extends VitroAjaxController {
     }
     
     List<Map<String, String>> result = performQuery();
-    log.info("after");
     
     JSONObject obj = new JSONObject();
     try {
