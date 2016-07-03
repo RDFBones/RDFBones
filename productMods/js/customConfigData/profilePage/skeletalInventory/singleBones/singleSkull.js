@@ -32,9 +32,9 @@ singleNeurocranium = {
 				}, {
 					type : sw.constant,
 					value : "singleNeurocranium",
-					varName : "dataKey",
+					key : "dataKey",
 				}],
-		elements : [ coherentData]
+		elements : [ singleBones]
 	}
 
 singleViscerocranium = {
@@ -42,14 +42,14 @@ singleViscerocranium = {
 		localData : [
 				{
 					type : sw.constant,
-					value : "Neurocranium",
+					value : "Viscerocranium",
 					key : "boneLabel",
 				}, {
 					type : sw.constant,
 					value : "singleViscerocranium",
-					varName : "dataKey",
+					key : "dataKey",
 				}],
-		elements : [ coherentData]
+		elements : [ singleBones]
 	}
 
 singleSkullTab = {
