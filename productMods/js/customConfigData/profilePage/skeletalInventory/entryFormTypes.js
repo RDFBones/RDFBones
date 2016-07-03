@@ -10,3 +10,9 @@ partlySymmetricBoneSegment = {
 	value : "partlySymmetricBoneDivision",
 	key : "pageUri",
 }
+
+singleBoneCEF = {
+	type : sw.constant,
+	value : "singleBoneCEF",
+	key : "pageUri",
+}

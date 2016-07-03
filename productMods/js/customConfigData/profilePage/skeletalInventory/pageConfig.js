@@ -1,3 +1,4 @@
+pageData.individual = "http://testIndividual"
 
 
 coherentTabContainer = {
@@ -12,10 +13,15 @@ coherentTab = {
 		elements : [ coherentTabContainer ]
 	}
 
+singleTabContainer = {
+		type : sw.tabContainer,
+		tabs : [ singleSkullTab ]
+	}
+
 singleTab = {
 	type : sw.tab,
 	tabTitle : "Single Bones",
-	elements : []
+	elements : [singleTabContainer]
 }
 
 tabContainer = {
