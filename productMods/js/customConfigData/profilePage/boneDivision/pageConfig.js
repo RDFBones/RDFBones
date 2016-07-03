@@ -115,5 +115,19 @@ pageData.pageElements = [
 			}
 		],
 		mapping : "pageLoader",
+	}, {	
+		type : sw.deleteButton,
+		linkDataInputs : [
+		    {
+				type : sw.local,
+				key : "boneOrgan",
+				varName : "individual",
+			}, {
+				type : sw.constant,
+				value : "deleteBoneOrgan",
+				key : "operation",
+			}
+		],
+		mapping : "delete",
 	} ]
 } ]
