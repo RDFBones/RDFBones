@@ -26,7 +26,7 @@ singleTab = {
 
 tabContainer = {
 	type : sw.tabContainer,
-	tabs : [ coherentTab, singleTab ]
+	tabs : [ coherentTab, singleTab ],
 }
 
 pageData.pageElements = [ tabContainer ]

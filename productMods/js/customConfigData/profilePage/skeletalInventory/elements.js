@@ -70,6 +70,19 @@ coherentData = {
 			varName : "classUri",
 		} ],
 		mapping : "pageLoader",
+	}, {	
+		type : sw.deleteButton,
+		linkDataInputs : [
+		    {
+				type : sw.local,
+				key : "boneDivision",
+			}, {
+				type : sw.constant,
+				value : "deleteBoneOrganFromDivision",
+				key : "operation",
+			}
+		],
+		mapping : "delete",
 	} ]
 }
 
@@ -140,5 +153,18 @@ singleBones = {
 				varName : "classUri",
 			} ],
 			mapping : "pageLoader",
+		}, {	
+			type : sw.deleteButton,
+			linkDataInputs : [
+			    {
+					type : sw.local,
+					key : "boneOrgan",
+				}, {
+					type : sw.constant,
+					value : "deleteBoneOrgan",
+					key : "operation",
+				}
+			],
+			mapping : "delete",
 		} ]
 	}
