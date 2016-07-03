@@ -49,7 +49,6 @@ public class ConstantNewInstance extends Triple{
     creator.process(obj, this.newVarName);
   }
  
-  
   public String getClassUri(TripleCreator creator, JSONObject obj){
     
     return this.classUri;

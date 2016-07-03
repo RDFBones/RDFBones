@@ -6,7 +6,7 @@ import java.util.Map;
 public class SPARQLQuery {
       
   
-  String queryText = new String();
+  public String queryText = new String();
   List<Map<String, String>> inputs;
   List<Map<String, String>> uris;
   List<Map<String, String>> literals;

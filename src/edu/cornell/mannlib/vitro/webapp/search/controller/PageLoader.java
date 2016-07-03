@@ -42,6 +42,8 @@ public class PageLoader extends FreemarkerHttpServlet {
       break;
     case "boneOrgan":
       templateName = "boneOrgan.ftl";
+    case "singlePhalanx":
+      templateName = "singlePhalanx.ftl";
     default:
       templateName = "notImplemented.ftl";
       break;

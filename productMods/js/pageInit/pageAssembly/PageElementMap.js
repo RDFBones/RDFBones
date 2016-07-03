@@ -19,5 +19,6 @@ PageElementMap[sw.linkField] = LinkField
 var RowElementMap = new Object()
 
 RowElementMap[sw.editButton] = EditButtonLink
+RowElementMap[sw.deleteButton] = DeleteButtonLink
 RowElementMap[sw.literalField] = LiteralField
 RowElementMap[sw.literalFieldMiddle] = LiteralFieldMiddle
