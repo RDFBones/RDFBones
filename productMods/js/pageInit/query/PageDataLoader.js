@@ -35,7 +35,6 @@ PageDataLoader.prototype = {
 						varName = parameter.varName
 					}
 					if(parameter.varName != undefined){
-						
 						data[parameter.varName] = getData1(parameter)
 					} else {
 						data[parameter.key] = getData1(parameter)
@@ -44,26 +43,40 @@ PageDataLoader.prototype = {
 				
 				if(multipleQuery != null){
 					this.cnt[i].num = multipleQuery.length
+					toVariable = false
 					$.each(multipleQuery, (function(k, element){
-						
+					
 						if(DataLib.getType(element) == "object"){
-							data[varName] = element[query.objectArrayKey]
+							data[varName] = element.value
+							toVariable = true
 						} else {
 							data[varName] = element
 						}
 						$.ajax({
 							dataType : "json",
 							url : baseUrl + query.mapping,
-							data : data
+							data : data,
 						}).done((function(result) {
-							if (pageData[query.toVariable] === undefined) {
-								pageData[query.toVariable] = []
-							}
-							if(query.concatResultArrays != undefined){
-								pageData[query.toVariable] = pageData[query.toVariable].concat(result)
-							} else {
-								pageData[query.toVariable].push(result)
-							}
+
+								if(toVariable){
+									if (pageData[query.toVariable] === undefined) {
+										pageData[query.toVariable] = new Object()
+									}
+									if(result.noResult === undefined){
+										pageData[query.toVariable][element.name] = result
+									}
+								} else {
+									if (pageData[query.toVariable] === undefined) {
+										pageData[query.toVariable] = []
+									}
+									if(result.noResult === undefined){
+										if(query.concatResultArrays != undefined){
+											pageData[query.toVariable] = pageData[query.toVariable].concat(result)
+										} else {
+											pageData[query.toVariable].push(result)
+										}								
+									}
+								}								
 							this.checkIfAllArrived(i)
 						}).bind(this))
 					}).bind(this))
