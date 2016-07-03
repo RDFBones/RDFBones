@@ -1,5 +1,28 @@
 
 
+phalangesOfFoot = {
+		type : sw.container,
+		localData : [
+		      	   symmetricBoneSegment ,
+				{
+					type : sw.constant,
+					value : "http://purl.obolibrary.org/obo/FMA_78512",
+					key : "boneUri",
+				},{
+					type : sw.constant,
+					value : "Set of phalanges of foot",
+					key : "boneLabel",
+				},{
+					type : sw.constant,
+					value : [ "http://purl.obolibrary.org/obo/FMA_78512",
+					          "http://purl.obolibrary.org/obo/FMA_231319",
+					          "http://purl.obolibrary.org/obo/FMA_231317"],
+					key : "classSelection"
+				} ],
+		elements : [ coherentData]
+	}
+
+
 
 freelowerlimb = {
 		type : sw.container,
@@ -17,7 +40,7 @@ freelowerlimb = {
 					type : sw.constant,
 					value : [ "http://purl.obolibrary.org/obo/FMA_21144",
 					          "http://purl.obolibrary.org/obo/FMA_21174",
-					          "http://purl.obolibrary.org/obo/FMA_21174"],
+					          "http://purl.obolibrary.org/obo/FMA_21175"],
 					key : "classSelection"
 				} ],
 		elements : [ coherentData]
@@ -79,5 +102,5 @@ metatarsalbones = {
 lowerLimbTab = {
 	type : sw.tab,
 	tabTitle : "Lower Limb",
-	elements : [freelowerlimb, tarsalbones, metatarsalbones]
+	elements : [phalangesOfFoot, freelowerlimb, tarsalbones, metatarsalbones]
 }

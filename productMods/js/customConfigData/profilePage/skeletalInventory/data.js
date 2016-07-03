@@ -1,2 +1,0 @@
-pageData.individual = "http://testIndividual"
-
