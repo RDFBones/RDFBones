@@ -8,11 +8,19 @@ import javax.servlet.http.HttpServletResponse;
 import edu.cornell.mannlib.vitro.webapp.config.DeleteBoneOrgan;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.controller.ajax.VitroAjaxController;
+import edu.cornell.mannlib.vitro.webapp.dao.DataPropertyStatementDao;
+import edu.cornell.mannlib.vitro.webapp.dao.ObjectPropertyStatementDao;
+import edu.cornell.mannlib.vitro.webapp.dao.PropertyInstanceDao;
+import edu.cornell.mannlib.vitro.webapp.dao.jena.N3Utils;
+import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.hp.hpl.jena.query.ResultSet;
+import com.sun.org.apache.xpath.internal.operations.VariableSafeAbsRef;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,9 +29,15 @@ import java.util.Map;
 
 public class DeleteController extends VitroAjaxController {
 
+  
+  private DataPropertyStatementDao dataDao;
+  private ObjectPropertyStatementDao objectDao;
+  private PropertyInstanceDao propDao;
  
   public List<String[]> dataTriples;
   public List<String[]> objectTriples;
+  public String[] objectVars;
+  public String[] dataVars;
   public String[] inputs;
   public Map<String, String> predicateMap;
   private VitroRequest vreq;
@@ -34,11 +48,17 @@ public class DeleteController extends VitroAjaxController {
     throws ServletException, IOException {
     // TODO Auto-generated method stub
     
-    this.vreq = vreq;
+    this.dataDao = vreq.getWebappDaoFactory().getDataPropertyStatementDao();
+    this.objectDao = vreq.getWebappDaoFactory().getObjectPropertyStatementDao();
+    this.propDao = vreq.getWebappDaoFactory().getPropertyInstanceDao();
     
+    this.vreq = vreq;
+    log.info("Arrived");
+
     switch(vreq.getParameter("operation")) {
     
     case "deleteBoneOrgan" :
+     
         this.objectTriples = DeleteBoneOrgan.getObjectTriples();
         this.dataTriples = DeleteBoneOrgan.getDataTriples();
         this.predicateMap = DeleteBoneOrgan.predicateMap;
@@ -49,6 +69,10 @@ public class DeleteController extends VitroAjaxController {
     }
     
     List<Map<String, String>> result = performQuery();
+    log.info(result.toString());
+
+    this.deleteDataTriples(result);
+    this.deleteObjectTriples(result);
     
     JSONObject obj = new JSONObject();
     try {
@@ -60,12 +84,35 @@ public class DeleteController extends VitroAjaxController {
     resp.getWriter().write(obj.toString());
   }
   
+  private void deleteDataTriples(List<Map<String, String>> queryResult){
+    
+    for(String[] triple : this.dataTriples){
+      for(Map<String, String> result : queryResult){
+        dataDao.deleteDataPropertyStatementsForIndividualByDataProperty(
+            result.get(triple[0]),
+            result.get(triple[1]));
+        log.info("Deleted : " + triple[0] + "  " + triple[1]);
+      }
+    }
+  }
+  
+  private void deleteObjectTriples(List<Map<String, String>> queryResult){
+    
+    for(String[] triple : this.objectTriples){
+      for(Map<String, String> result : queryResult){
+        this.propDao.deleteObjectPropertyStatement(
+            result.get(triple[0]),result.get(triple[1]), result.get(triple[2]));
+        log.info("Deleted : " + triple[0] + "  " + triple[1] + "  " + triple[2]);
+      }
+    }
+  }
+  
   private List<Map<String, String>> performQuery(){
     
     String query = this.generateQuery();
-    log.info(query);
-    
-    return null;
+    query = N3Utils.setPrefixes(null, query);
+    ResultSet resultSet = QueryUtils.getQueryResults(query, vreq);
+    return QueryUtils.getQueryVars(resultSet, this.objectVars, this.dataVars); 
   }
   
   private String generateQuery() {
@@ -76,8 +123,6 @@ public class DeleteController extends VitroAjaxController {
     String predicateFilters = this.getPredicateFilter();
     String objectFilters = this.getInputFilter();
     String where2 = new String("\n } \n");
-
-    log.info("generateQueryAfter");
     
     select = select.concat(where1).concat(queryTriples).concat(predicateFilters)
         .concat(objectFilters).concat(where2);
@@ -86,14 +131,20 @@ public class DeleteController extends VitroAjaxController {
   
   private String getSelect() {
 
-    ArrayList<String> variable = new ArrayList<String>();
-    for (String[] triple : this.dataTriples) {
-      for (String var : triple) {
-        if (!variable.contains(var)) {
-          variable.add(var);
+    List<String> variable = new ArrayList<String>();
+    this.dataVars = new String[dataTriples.size()];
+    for(int i = 0; i < this.dataTriples.size(); i++){
+      for(int j = 0; j < 3; j++){
+        if(j == 2){
+          this.dataVars[i] = this.dataTriples.get(i)[2];
+        } else {
+          if (!variable.contains(this.dataTriples.get(i)[i])) {
+            variable.add(this.dataTriples.get(i)[i]);
+          }
         }
       }
     }
+
     for (String[] triple : this.objectTriples) {
       for (String var : triple) {
         if (!variable.contains(var)) {
@@ -101,8 +152,19 @@ public class DeleteController extends VitroAjaxController {
         }
       }
     }
+  
+    int i = 0;
+    this.objectVars = new String[variable.size()];
+    for(String var : variable){
+      this.objectVars[i] = var;
+      i++;
+    }
+    
     String select = new String("SELECT ");
-    for (String var : variable) {
+    for (String var : this.objectVars) {
+      select += " ?" + var;
+    }
+    for (String var : this.dataVars) {
       select += " ?" + var;
     }
     return select;
