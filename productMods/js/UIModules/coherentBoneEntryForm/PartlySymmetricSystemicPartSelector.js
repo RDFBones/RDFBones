@@ -1,8 +1,5 @@
+var PartlySymmetricSystemicPartSelector = function() {
 
-
-
-var PartlySymmetricSystemicPartSelector = function(){
-	
 	this.sysParts = pageData.systemicParts
 	this.symmetricBoneOrgans = pageData.symmetricBoneOrgans
 	this.dataToStore = new Object()
@@ -14,87 +11,87 @@ var PartlySymmetricSystemicPartSelector = function(){
 	this.container = html.div()
 	this.title = html.div("titleTable").text("Add bone segment")
 	this.systemicPartContainer = html.div()
-	
+
 	this.saveContainer = html.div("saveContainer")
-	this.saveButton =  new TextButton("Save", (this.saveRoutine).bind(this)).disable()
-	this.cancelButton =  new TextButton("Cancel", (this.cancelRoutine).bind(this), "rightAligned")
-	
+	this.saveButton = new TextButton("Save", (this.saveRoutine).bind(this))
+			.disable()
+	this.cancelButton = new TextButton("Cancel", (this.cancelRoutine)
+			.bind(this), "rightAligned")
+
 	this.initSystemicParts()
 	this.assemble()
 }
 
 PartlySymmetricSystemicPartSelector.prototype = {
-		
-		
-	assemble : function(){
-		
-		UI.assemble(this.container, [
-		   this.title,
-		   this.systemicPartContainer,
-		   this.saveContainer,
-				this.saveButton.container,
-				this.cancelButton.container], 
-		    [0, 0, 0, 1, 1])
+
+	assemble : function() {
+
+		UI.assemble(this.container, [ this.title, this.systemicPartContainer,
+				this.saveContainer, this.saveButton.container,
+				this.cancelButton.container ], [ 0, 0, 0, 1, 1 ])
 	},
 
-	initSystemicParts : function(){
-		
+	initSystemicParts : function() {
+
 		this.systemicPartSelectors = []
-		$.each(this.sysParts, (function(index, sysPart){
-			this.systemicPartSelectors.push(new SystemicPartSelector(this, sysPart, this.dataToStore.boneOrgan))
+		$.each(this.sysParts, (function(index, sysPart) {
+			this.systemicPartSelectors.push(new SystemicPartSelector(this,
+					sysPart, this.dataToStore.boneOrgan))
 		}).bind(this))
 
-		$.each(this.symmetricBoneOrgans, (function(index, symsysPart){
-			this.systemicPartSelectors.push(new SymmetricBoneOrganSelector(this, symsysPart, this.dataToStore.boneOrgan))
+		$.each(this.symmetricBoneOrgans, (function(index, symsysPart) {
+			this.systemicPartSelectors.push(new SymmetricBoneOrganSelector(
+					this, symsysPart, this.dataToStore.boneOrgan))
 		}).bind(this))
 		this.appendContainers()
 	},
-	
-	appendContainers : function(){
+
+	appendContainers : function() {
 		buf = []
-		$.each(this.systemicPartSelectors, (function(index, sysSelector){
+		$.each(this.systemicPartSelectors, (function(index, sysSelector) {
 			buf.push(sysSelector.container)
 		}).bind(this))
 		this.systemicPartContainer.append(buf)
 	},
-	
-	saveRoutine : function(){
-		var toSend = { 
-				individual : pageData.individual,
-				boneDivision : this.dataToStore
+
+	saveRoutine : function() {
+		var toSend = {
+			individual : pageData.individual,
+			boneDivision : this.dataToStore
 		}
 		console.log(toSend)
 		PopUpController.init()
 		$.ajax({
-			type: 'POST',
+			type : 'POST',
 			context : this,
-			dataType: 'json',
+			dataType : 'json',
 			url : baseUrl + "dataInput",
 			data : "dataToStore=" + JSON.stringify(toSend)
-			}).done((function(msg){
-				
-				var urlObject = {
-					pageUri : "boneDivision",
-					individual : msg.object.boneDivision.uri,
-					skeletalInventory : pageData.individual,
-					existingBoneDivisionType : this.dataToStore.uri,
-					classUri : pageData.classUri,
-				}
-				window.location = baseUrl
-					+ "pageLoader?" + DataLib.getUrl(urlObject)
-		}).bind(this))
+		}).done(
+				(function(msg) {
+
+					var urlObject = {
+						pageUri : "boneDivision",
+						individual : msg.object.boneDivision.uri,
+						skeletalInventory : pageData.individual,
+						existingBoneDivisionType : this.dataToStore.uri,
+						classUri : pageData.classUri,
+					}
+					window.location = baseUrl + "pageLoader?"
+							+ DataLib.getUrl(urlObject)
+				}).bind(this))
 	},
-	
-	cancelRoutine : function(){
-		
+
+	cancelRoutine : function() {
+
 	},
-	
-	refresh : function(){
-		
+
+	refresh : function() {
+
 		var thereIsNotAdded = false
 		var thereIsAdded = false
-		$.each(this.systemicPartSelectors, function(i, sysSel){
-			if(sysSel.notAdded){
+		$.each(this.systemicPartSelectors, function(i, sysSel) {
+			if (sysSel.notAdded) {
 				thereIsNotAdded = true
 			} else {
 				thereIsAdded = true
@@ -102,13 +99,32 @@ PartlySymmetricSystemicPartSelector.prototype = {
 		})
 		this.refreshSaveButton(thereIsAdded)
 	},
-	
-	refreshSaveButton : function(thereIsAdded){
-		
-		if(thereIsAdded){
+
+	refreshSaveButton : function(thereIsAdded) {
+
+		if (thereIsAdded) {
 			this.saveButton.enable()
 		} else {
 			this.saveButton.disable()
 		}
 	},
+}
+
+CustomSystemicPartsSelector = function() {
+
+}
+
+PartlySymmetricSystemicPartSelector.prototype = Object
+		.create(PartlySymmetricSystemicPartSelector.prototype)
+
+PartlySymmetricSystemicPartSelector.prototype.initSystemicParts = function() {
+
+	this.dataToStore = []
+	this.systemicPartSelectors.push(new ConstanListBoneOrganSelector(this,
+			pageData.phalanxTypes, this.dataToStore));
+	$.each(pageData.toes, function(value, toe) {
+		this.systemicPartSelectors.push(new SingleBoneOrganSelector(this, toe,
+				this.dataToStore))
+	})
+	this.appendContainers()
 }

@@ -87,3 +87,30 @@ SymmetricBoneOrganSelector.prototype = {
 		this.addedSubClasses.removeElement(uri)
 	}
 }
+
+
+SingleBoneOrganSelector = function(){
+	
+	SymmetricBoneOrganSelector.call(this, parent, sysPart, dataToStore)
+}
+
+SingleBoneOrganSelector.prototype = Object.create(SymmetricBoneOrganSelector.prototype)
+
+SingleBoneOrganSelector.prototype.checkAdding = function(){
+	
+	var val = this.selector.val()
+	this.addSystemicPart(this.arr.getObjectByKey("uri", val))
+}
+
+ConstantListBoneOrganSelector = function(parent, sysPart, dataToStore){
+	
+	SingleBoneOrganSelector.call(this, parent, sysPart, dataToStore)
+}
+
+ConstantListBoneOrganSelector.prototype = Object.create(SingleBoneOrganSelector.prototype)
+
+ConstantListBoneOrganSelector.prototype.getSelectArray = function(){
+	
+	return this.sysPart
+}
+
