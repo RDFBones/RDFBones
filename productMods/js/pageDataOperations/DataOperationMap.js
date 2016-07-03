@@ -2,7 +2,11 @@
 
 var getData1 = function(dataDescriptor){
 	
-	return DataOperationMap[dataDescriptor.type](undefined, dataDescriptor)
+	if(DataLib.getType(dataDescriptor) == "object"){
+		return DataOperationMap[dataDescriptor.type](undefined, dataDescriptor)	
+	} else {
+		return dataDescriptor
+	}
 }
 
 var getData = function(element, dataDescriptor){
@@ -38,11 +42,16 @@ var DataOperationMap = {
       
     },
     "http://softwareOntology.com/global": function(cont, configData) {
-    	if(pageData[configData.key] != undefined){
-    		return pageData[configData.key]	
-    	} else {
+    	//if(pageData[configData.key] != undefined){
+    	if(DataLib.getType(configData.key) == "object"){
+    		return pageData[getData(cont, configData.key)]	
+        } else {
+    		return pageData[getData1(configData.key)]	
+        }
+    	/*
+    	 } else {
     		return configData.defaultValue
-    	}
+    	}*/
     },
         
     "http://softwareOntology.com/selectOperationResult" : function(cont, configData){
