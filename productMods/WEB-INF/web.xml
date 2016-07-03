@@ -1028,6 +1028,15 @@
   </servlet-mapping>
   
   <servlet>
+    <servlet-name>DeleteController</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.DeleteController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteController</servlet-name>
+    <url-pattern>/delete</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
     <servlet-name>PageLoader</servlet-name>
     <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.PageLoader</servlet-class>
   </servlet>
