@@ -6,7 +6,6 @@ ${scripts.add(
 	)}	
 
 
-
 ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/UILib/html.js"></script>',	
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/UILib/ImgUI.js"></script>',	
