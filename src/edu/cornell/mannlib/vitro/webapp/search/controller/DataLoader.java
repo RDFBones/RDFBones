@@ -28,7 +28,7 @@ public class DataLoader extends VitroAjaxController {
       .getLog(PageConfigurationLoader.class);
 
   VitroRequest vreq;
-
+  
   @Override
   protected void doRequest(VitroRequest vreq, HttpServletResponse response)
     throws IOException, ServletException {
@@ -108,8 +108,13 @@ public class DataLoader extends VitroAjaxController {
       String[] literals9 = { "label"};
       result = this.performQuery(regionalPartsWithout, inputParam9, uris9, literals9);
       break;
-     default :
-      break;
+     
+     case "singleBones" :
+       String[] inputParam10 = { "skeletalInventory", "inputType" };
+       String[] uris10 = {"boneOrgan", "type", "completenessState", "completeness"};
+       String[] literals10 = {"lable", "typeLabel", "completenessLabel"};
+       result = this.performQuery(singleBoneQuery, inputParam10, uris10, literals10);
+       break;  
     }
     
     log.info(result.toString());
@@ -138,7 +143,6 @@ public class DataLoader extends VitroAjaxController {
 
     readyQuery = N3Utils.setPrefixes(null, query);
     readyQuery = N3Utils.subInputUriQuery(readyQuery, inputParam, this.vreq);
-    log.info(readyQuery);
     resultSet = QueryUtils.getQueryResults(readyQuery, vreq);
     return QueryUtils.getQueryVars(resultSet, uris, literals);
   }
@@ -231,4 +235,21 @@ public class DataLoader extends VitroAjaxController {
            + "  ?restriction        owl:onProperty         <http://purl.obolibrary.org/obo/fma#regional_part_of> . "
            + "  ?restriction        owl:someValuesFrom     ?classUri .   "
            + "}";
+   
+   private static String singleBoneQuery = 
+       ""
+           + "SELECT ?boneOrgan ?label ?typeLabel ?type ?completeness ?completenessState ?completenessLabel \n"
+           + " WHERE \n " 
+           + "   { "
+           + "    ?boneOrgan          rdfs:label              ?label . \n "
+           + "    ?boneSegment        obo:regional_part_of    ?boneOrgan  . \n"
+           + "    ?completeness       obo:IAO_0000136         ?boneSegment . \n"
+           + "    ?completeness       obo:OBI_0000999         ?completenessState . \n" 
+           + "    ?completenessState  rdfs:label              ?completenessLabel . \n" 
+           + "    ?skeletalInventory  obo:BFO_0000051         ?completeness . \n"
+           + "    ?boneOrgan          rdf:type                ?inputType \n ."
+           + "    ?boneOrgan          vitro:mostSpecificType  ?type .  \n"
+           + "    ?type               rdfs:label              ?typeLabel . \n" 
+           + "    FILTER NOT EXISTS { ?boneOrgan       obo:systemic_part_of  ?boneDivision } . \n" 
+           + " } ";
 }
