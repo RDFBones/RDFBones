@@ -79,3 +79,9 @@
 	align-items : center;
 	height : 100%;
 }
+
+
+.enabledImg:hover {
+	cursor : pointer
+}
+
