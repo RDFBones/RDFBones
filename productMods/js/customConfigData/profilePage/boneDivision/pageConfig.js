@@ -121,10 +121,9 @@ pageData.pageElements = [
 		    {
 				type : sw.local,
 				key : "boneOrgan",
-				varName : "individual",
 			}, {
 				type : sw.constant,
-				value : "deleteBoneOrganFromDivision",
+				value : "deleteOrganFromDivision",
 				key : "operation",
 			}
 		],

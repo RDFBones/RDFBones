@@ -6,7 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.cornell.mannlib.vitro.webapp.config.DeleteBoneOrgan;
-import edu.cornell.mannlib.vitro.webapp.config.DeleteBoneOrganFromDivision;
+import edu.cornell.mannlib.vitro.webapp.config.DeleteDivisionFromOrgans;
+import edu.cornell.mannlib.vitro.webapp.config.DeleteOrganFromDivision;
 import edu.cornell.mannlib.vitro.webapp.config.DeleteConfig;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.controller.ajax.VitroAjaxController;
@@ -70,10 +71,18 @@ public class DeleteController extends VitroAjaxController {
      
      case "deleteBoneOrganFromDivision" :
          
-       this.objectTriples = DeleteBoneOrganFromDivision.getObjectTriples();
-       this.dataTriples = DeleteBoneOrganFromDivision.getDataTriples();
-       this.predicateMap = DeleteBoneOrganFromDivision.predicateMap;
-       this.inputs = DeleteBoneOrganFromDivision.inputs; 
+       this.objectTriples = DeleteOrganFromDivision.getObjectTriples();
+       this.dataTriples = DeleteOrganFromDivision.getDataTriples();
+       this.predicateMap = DeleteOrganFromDivision.predicateMap;
+       this.inputs = DeleteOrganFromDivision.inputs; 
+       break;
+      
+     case "deleteDivisionFromOrgans" :
+       
+       this.objectTriples = DeleteDivisionFromOrgans.getObjectTriples();
+       this.dataTriples = DeleteDivisionFromOrgans.getDataTriples();
+       this.predicateMap = DeleteDivisionFromOrgans.predicateMap;
+       this.inputs = DeleteDivisionFromOrgans.inputs; 
        break;
        
       default : break;

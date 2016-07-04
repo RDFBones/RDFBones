@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeleteBoneOrganFromDivision implements DeleteConfig{
+public class DeleteOrganFromDivision implements DeleteConfig{
 
   public static Map<String, String> predicateMap = new HashMap<String, String>(){{
       put("systemicPart", "obo:systemic_part_of");
   }
   };
  
-  public static String[] inputs = {"boneDivision"};
+  public static String[] inputs = {"boneOrgan"};
   
   public Map<String, String> getPredicateMap(){
     return predicateMap;

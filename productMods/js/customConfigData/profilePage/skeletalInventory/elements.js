@@ -78,7 +78,7 @@ coherentData = {
 				key : "boneDivision",
 			}, {
 				type : sw.constant,
-				value : "deleteBoneOrganFromDivision",
+				value : "deleteDivisionFromOrgans",
 				key : "operation",
 			}
 		],
@@ -120,14 +120,14 @@ singleBones = {
 			title : "Type",
 			value : {
 				type : sw.local,
-				key : "type",
+				key : "typeLabel",
 			}
 		}, {
-			type : sw.literalField,
-			title : "Label",
+			type : sw.literalFieldMiddle,
+			title : "Completeness",
 			value : {
 				type : sw.local,
-				key : "label",
+				key : "completenessLabel",
 			}
 		}, {
 			type : sw.editButton,
