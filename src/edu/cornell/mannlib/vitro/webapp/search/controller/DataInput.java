@@ -31,6 +31,8 @@ import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import edu.cornell.mannlib.vitro.webapp.application.ApplicationUtils;
 import edu.cornell.mannlib.vitro.webapp.beans.DataPropertyStatementImpl;
 import edu.cornell.mannlib.vitro.webapp.beans.ObjectPropertyStatementImpl;
+import edu.cornell.mannlib.vitro.webapp.config.AddCoherentBoneRegion;
+import edu.cornell.mannlib.vitro.webapp.config.AddSingleBone;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.controller.ajax.VitroAjaxController;
 import edu.cornell.mannlib.vitro.webapp.dao.DataPropertyStatementDao;
@@ -41,6 +43,7 @@ import edu.cornell.mannlib.vitro.webapp.dao.PropertyInstanceDao;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.N3Utils;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.NewURIMaker;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.dataOperation.TripleCreator;
+import edu.cornell.mannlib.vitro.webapp.edit.n3editing.tripleTypes.Triple;
 
 /**
  * AutocompleteController generates autocomplete content
@@ -75,17 +78,30 @@ public class DataInput extends VitroAjaxController {
         log.info(vreq.getParameter("dataToStore").toString());
         */
         
+        List<Triple> tripleToStore = null;
+       
+
         JSONObject json = new JSONObject();
         JSONObject toSend = new JSONObject();
 
-        log.info(vreq.getParameter("dataToStore"));
         TripleCreator tripleCreate = null;
         try {
           json = new JSONObject(vreq.getParameter("dataToStore"));
-
+            
           log.info(json.get("individual"));
+          log.info((String) json.get("operation"));
+          switch((String) json.get("operation")){
           
-          tripleCreate = new TripleCreator(json, vreq);
+          case "addCoherentBoneRegion" : 
+              tripleToStore = AddCoherentBoneRegion.getTriples();
+              break;
+          case "addSingleBoneRegion" :
+              tripleToStore = AddSingleBone.getTriples();
+              break;
+          default : break;
+          }
+          
+          tripleCreate = new TripleCreator(json, vreq, tripleToStore);
          
           toSend.put("object", tripleCreate.inputData);  
           toSend.put("triples" ,tripleCreate.getTriples());
