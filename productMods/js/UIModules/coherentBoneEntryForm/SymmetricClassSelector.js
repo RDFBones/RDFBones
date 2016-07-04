@@ -218,11 +218,14 @@ SymmetricClassSelector.prototype = {
 			data : "dataToStore=" + JSON.stringify(toSend)
 			}).done((function(msg){
 				
+				if(pageData.existingBoneDivisionType == undefined){
+					pageData.existingBoneDivisionType = this.dataToStore.uri
+				}
 				var urlObject = {
 					pageUri : "boneDivision",
 					individual : msg.object.boneDivision.uri,
 					skeletalInventory : pageData.individual,
-					existingBoneDivisionType : this.dataToStore.uri,
+					existingBoneDivisionType : pageData.existingBoneDivisionType,
 					classUri : pageData.classUri,
 				}
 				window.location = baseUrl
