@@ -109,7 +109,7 @@ PartlySymmetricSystemicPartSelector.prototype = {
 		}
 	},
 }
-
+/*
 CustomSystemicPartsSelector = function() {
 
 }
@@ -128,3 +128,4 @@ PartlySymmetricSystemicPartSelector.prototype.initSystemicParts = function() {
 	})
 	this.appendContainers()
 }
+*/
