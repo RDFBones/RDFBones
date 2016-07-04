@@ -15,7 +15,7 @@ coherentTab = {
 
 singleTabContainer = {
 		type : sw.tabContainer,
-		tabs : [ singleSkullTab ]
+		tabs : [ singleSkullTab, singleLowerLimbTab ]
 	}
 
 singleTab = {
