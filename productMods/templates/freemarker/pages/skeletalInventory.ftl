@@ -23,6 +23,7 @@ ${scripts.add(
 Single Bones
 -->
 ${scripts.add(
+	'<script type="text/javascript" src="${urls.base}/js/customConfigData/profilePage/skeletalInventory/singleBones/singleLowerLimb.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/customConfigData/profilePage/skeletalInventory/singleBones/singleSkull.js"></script>')}
 
 <!--
