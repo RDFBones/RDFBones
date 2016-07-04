@@ -245,6 +245,7 @@ ClassSelector.prototype = {
 	saveRoutine : function(){
 		
 		var toSend = { 
+				operation : "addCoherentBoneRegion",
 				individual : pageData.individual,
 				boneDivision : this.dataToStore
 		}
