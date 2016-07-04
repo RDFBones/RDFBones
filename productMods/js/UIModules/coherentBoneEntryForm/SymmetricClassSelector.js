@@ -1,4 +1,4 @@
-var ClassSelector = function() {
+var SymmetricClassSelector = function() {
 
 	this.dataToStore = new Object()
 	
@@ -32,7 +32,7 @@ var ClassSelector = function() {
 	}
 }
 
-ClassSelector.prototype = {
+SymmetricClassSelector.prototype = {
 
 		
 	assemble : function() {
@@ -50,7 +50,6 @@ ClassSelector.prototype = {
 				this.saveButton.container,
 				this.cancelButton.container],
 			[0, 1, -1, 0, 1, 1, 0, 0, 0, 1, 1])
-	
 	},
 
 	assembleForExisting : function(){
@@ -83,7 +82,6 @@ ClassSelector.prototype = {
 		
 		$.each(this.dataSet, (function(index, value) {
 			if (value.uri == pageData.existingBoneDivisionType) {
-				
 				this.dataToStore.uri = pageData.existingBoneDivision
 				this.dataToStore.type = "existing"
 				this.dataToStore.boneOrgan = []
@@ -119,66 +117,19 @@ ClassSelector.prototype = {
 	},
 	
 	/*
-	 * DataSet is the bone division descriptor which has the field systemic parts
+	 * DataSet is the bone division descriptor which has the field systemic
+	 * parts
 	 */
 	loadSubObject : function(dataSet) {
 		
-		console.log(dataSet)
-		// It is already an object
-
-
-		/*
-		 * If the systemic part has a subClass then multiple value has to be createds
-		 */
 		
 		this.subContainer.append(this.titleCont = html.div("titleTable").text("Add bone segment"))
-		
-		if (dataSet.systemicParts[0].subClasses != undefined) {
-
-			// We create to classSelector
-			$.each(dataSet.systemicParts, (function(index, value) {
-				
-				//The value in the subClass will be extended with actual systemic part
-				var extendWith = new Object()
-				extendWith.uri = value.uri
-				extendWith.label = value.label
-
-				//Cloneing the array
-				var obj = $.extend({}, value.subClasses)
-				var subClasses = Object.keys(obj).map(function (key) {return obj[key]})
-				
-				subClasses.unshift(extendWith)
-				
-				if(pageData.existingBoneOrgans != undefined){
-
-					if(!DataLib.joinArrays(subClasses, "uri", pageData.existingBoneOrgans, "type")){
-						this.systemicPartSelectors.push(new NamedSystemicPartSelector(
-								this, subClasses, this.dataToStore.boneOrgan))
-					}
-				} else {
-						this.systemicPartSelectors.push(new NamedSystemicPartSelector(
-								this, subClasses, this.dataToStore.boneOrgan))	
-				}
-			}).bind(this))
-			this.appendFields()
-		} else {
-			// Here we can add only one
-			$.each(dataSet.systemicParts, (function(index, value) {
-				
-				if(pageData.existingBoneOrgans != undefined){
-					if(pageData.existingBoneOrgans.getObjectByKey("type", value.uri) == null){
-						this.systemicPartSelectors.push(new SystemicPartSelector(
-								this, value, this.dataToStore.boneOrgan))
-					}
-				} else {
-					this.systemicPartSelectors.push(new SystemicPartSelector(
-							this, value, this.dataToStore.boneOrgan))
-				}
-
-			}).bind(this))
-			this.appendFields()
-			this.addAddAllField()
-		}
+		$.each(dataSet.systemicParts, (function(index, value) {
+			this.systemicPartSelectors.push(new SystemicPartAdder(this, 
+					pageData.existingBoneOrgans, this.dataToStore.boneOrgan, value))
+		}).bind(this))
+		this.appendFields();
+		//this.addAddAllField();
 	},
 
 	appendFields : function(){
@@ -186,7 +137,7 @@ ClassSelector.prototype = {
 			$.each(this.systemicPartSelectors, (function(i, sysSel){
 				this.subContainer.append(sysSel.container)
 			}).bind(this))
-			//this.addAllButton = undefined
+			// this.addAllButton = undefined
 			this.addAllButton.hide()
 			this.saveButton.show().disable()
 		} else {
@@ -196,8 +147,16 @@ ClassSelector.prototype = {
 	},
 	
 	addAddAllField : function(){
-		this.addAllButton.show()
-	},
+		var ok = true
+		$.each(this.dataSet, function(i, sys){
+			if(sys.subClasses != undefined){
+				ok = false
+			}
+		})
+		if(ok){
+			this.addAllButton.show()
+		}
+	}, 
 	
 	addAll : function(){
 		$.each(this.systemicPartSelectors, function(i, sysSel){
