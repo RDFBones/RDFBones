@@ -91,6 +91,19 @@ var DataLib = {
 		})
 		return found
 	},
+
+	joinTables : function(array1, key1, array2, key2){
+		
+		var join = []
+		$.each(array1, function(i, val1){
+			$.each(array2, function(i, val2){
+				if(val1[key1] ==  val2[key2]){
+					join.push(val1)
+				}
+			})
+		})
+		return join
+	},
 	
 	assembleUrl : function(configData){
 		

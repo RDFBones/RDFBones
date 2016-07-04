@@ -4,7 +4,7 @@
 var SystemicPartAdder = function(parent, existingBoneOrgans, dataToStore, dataSet){
 	
 	this.parent = parent
-	this.existingBoneDivisions = existingBoneOrgans
+	this.existingBoneOrgans = existingBoneOrgans
 	this.dataToStore = dataToStore
 	//This defines the class structure
 	this.dataSet = dataSet
@@ -66,26 +66,22 @@ SystemicPartAdder.prototype = {
 				//Check if it is selectable or constant bone organ
 				buf = []
 				//Always check the main
-				var match = this.existingBoneOrgans.getObjectByKey("uri", dataSet.uri)
+				var match = this.existingBoneOrgans.getObjectByKey("type", this.dataSet.uri)
 				if(match != null){
-					//If we have this type then we just add
-					//Hide selector container
-					this.selectorContainer.hide()
-					buf.push(new ExistingBoneOrganField(match).container)
+					this.addExistingSystemicPart(match)
 				}
 				
 				if(this.dataSet.subClasses != undefined){
-					
-					object = DataLib.joinTables(this.existingBoneOrgans, "uri", this.dataSet.subClasses, "uri")
+					object = DataLib.joinTables(this.existingBoneOrgans, "type", this.dataSet.subClasses, "uri")
 					//Fill the existing part array
-					$.each(object, function(i, obj){
-						buf.push(new ExistingBoneOrganField(obj).container)
-					})
+					$.each(object, (function(i, obj){
+						this.addedSubClasses.push(obj.type)
+						this.addExistingSystemicPart(obj)
+					}).bind(this))
 				}
 				this.selectedContainer.append(buf)
 			}
 		}
-
 	},
 	
 	checkAdding : function(){
@@ -127,10 +123,17 @@ SystemicPartAdder.prototype = {
 		this.parent.refresh()
 	},
 	
+	addExistingSystemicPart : function(object){
+		this.notAdded = false
+		this.cnt++
+		this.selectedContainer.append(new ExistingBoneOrganField(this, object, this.dataToStore).container)
+		this.parent.refresh()
+	},
+	
 	addSystemicPart : function(object){
 		this.notAdded = false
 		this.cnt++
-		this.selectedContainer.append(new BoneSegmentField(this, object, this.dataToStore).container)
+		this.selectedContainer.append(new BoneOrganField(this, object, this.dataToStore).container)
 		this.parent.refresh()
 	},	
 }

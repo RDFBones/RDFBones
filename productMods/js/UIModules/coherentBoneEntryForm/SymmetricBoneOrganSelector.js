@@ -7,8 +7,6 @@ var SymmetricBoneOrganSelector = function(parent, sysPart, dataToStore){
 	this.parent = parent
 	this.container = html.div()
 	
-	
-	
 	this.sysPart = sysPart
 	this.dataToStore = dataToStore
 	this.title = html.div("inline").text(this.sysPart.label)
@@ -79,7 +77,7 @@ SymmetricBoneOrganSelector.prototype = {
 	addSystemicPart : function(object){
 		this.notAdded = false
 		this.cnt++
-		this.systemicPartContainer.append(new SymmetricBoneSegmentField(this, object, this.dataToStore).container)
+		this.systemicPartContainer.append(new SymmetricBoneOrganField(this, object, this.dataToStore).container)
 		this.parent.refresh()
 	},
 	
