@@ -69,7 +69,7 @@ public class DeleteController extends VitroAjaxController {
         this.inputs = DeleteBoneOrgan.inputs; 
         break;
      
-     case "deleteBoneOrganFromDivision" :
+     case "deleteOrganFromDivision" :
          
        this.objectTriples = DeleteOrganFromDivision.getObjectTriples();
        this.dataTriples = DeleteOrganFromDivision.getDataTriples();
