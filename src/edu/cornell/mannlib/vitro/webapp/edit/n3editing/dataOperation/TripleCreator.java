@@ -1,4 +1,5 @@
 package edu.cornell.mannlib.vitro.webapp.edit.n3editing.dataOperation;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -25,133 +26,144 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.NewURIMaker;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.tripleTypes.*;
 import edu.cornell.mannlib.vitro.webapp.search.controller.SkeletalInventoryDataController;
 
-
 public class TripleCreator {
 
   private static final long serialVersionUID = 1L;
   private static final Log log = LogFactory.getLog(TripleCreator.class);
-    
+
   private DataPropertyStatementDao dataDao;
   private ObjectPropertyStatementDao objectDao;
   private PropertyInstanceDao propDao;
   private NewURIMaker newUri;
-  
+
   public JSONObject inputData;
   List<Triple> tripleDefinition;
   List<Triple> triplesToCreate;
   List<Triple> dataTriplesToCreate;
-  
+
   private Map<String, String> returnParams;
-  
-    public TripleCreator(JSONObject json, VitroRequest vreq) throws JSONException{
-     
 
-      this.dataDao = vreq.getWebappDaoFactory().getDataPropertyStatementDao();
-      this.objectDao = vreq.getWebappDaoFactory().getObjectPropertyStatementDao();
-      this.propDao = vreq.getWebappDaoFactory().getPropertyInstanceDao();
-      
-      this.newUri = new NewURIMakerVitro(vreq.getWebappDaoFactory());
-      
-      this.returnParams = new HashMap<String, String>();
-      
-      Map<String,String> inputMap = new HashMap<String,String>();
-      Map<String,String> outputMap = new HashMap<String,String>();
-      
-      this.tripleDefinition = AddCoherentBoneRegion.getTriples();
-      this.triplesToCreate = new ArrayList<Triple>();
-      this.dataTriplesToCreate = new ArrayList<Triple>();
+  public TripleCreator(JSONObject json, VitroRequest vreq, List<Triple> triples)
+    throws JSONException {
 
-      this.inputData = json;
+    this.dataDao = vreq.getWebappDaoFactory().getDataPropertyStatementDao();
+    this.objectDao =
+        vreq.getWebappDaoFactory().getObjectPropertyStatementDao();
+    this.propDao = vreq.getWebappDaoFactory().getPropertyInstanceDao();
 
-      for(Triple triple : this.tripleDefinition){
-        Iterator<String> keys = this.inputData.keys();
-        while(keys.hasNext()){
-          String key = keys.next();
-          if(triple.valid(key)){
-            log.info("inside");
-            triple.createTriples(this, key, (JSONObject) this.inputData.get(key));  
-          }
-        }
-      }
-      log.info(json.toString()); 
-    }
-    
-    public JSONArray getTriples() throws JSONException{
-      
-        JSONArray array = new JSONArray();
-        for(Triple triple : this.triplesToCreate){
-          
-          JSONObject json = new JSONObject();
-          json.put("subject", triple.subject);
-          json.put("predicate", triple.predicate);
-          json.put("object", triple.object);
-          array.put(json);
-        }
-        return array;
-    }
-    
-    public void createInstance(JSONObject obj) throws JSONException{
+    this.newUri = new NewURIMakerVitro(vreq.getWebappDaoFactory());
 
-      try {
-        String uri = this.newUri.getUnusedNewURI("");
-        this.triplesToCreate.add(new Triple(uri, "rdf:type", obj.getString("uri")));
-        String label = new String(); 
-        if(obj.has("label")){
-          Object lab = obj.get("label");
-          if(lab instanceof JSONObject){
-            
-          } else { //It is just a string
-            label = lab + " " + uri.substring(uri.length() - 3);
-            this.dataTriplesToCreate.add(new Triple(uri, "rdfs:label", label));
-            log.info(label);
-          }
-        }
-        obj.put("type", "existing");
-        obj.put("uri", uri);
-      } catch (InsertException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-    }
-    
-    public void process(JSONObject obj, String varName) throws JSONException{
+    this.returnParams = new HashMap<String, String>();
 
-      for(Triple triple : this.tripleDefinition){
-        if(triple.valid(varName)){
-          triple.createTriples(this, varName, obj);
-        }
-      }
-    }
-    
-    public void createTriple(String subject, String predicate, String object){
-       
-      this.triplesToCreate.add(new Triple(subject, predicate, object));
-    }
-    
-    public String getGlobalUri(String key) throws JSONException{
+    Map<String, String> inputMap = new HashMap<String, String>();
+    Map<String, String> outputMap = new HashMap<String, String>();
+
+    this.tripleDefinition = triples;
+    this.triplesToCreate = new ArrayList<Triple>();
+    this.dataTriplesToCreate = new ArrayList<Triple>();
+
+    this.inputData = json;
+
+    for (Triple triple : this.tripleDefinition) {
       Iterator<String> keys = this.inputData.keys();
       while (keys.hasNext()) {
-        String k = keys.next();
-        if (k.equals(key)) {
-          return this.inputData.getString(key);
+        String key = keys.next();
+        if (triple.valid(key)) {
+
+          if (this.inputData.get(key) instanceof JSONArray) {
+            for (int i = 0; i < this.inputData.getJSONArray(key).length(); i++) {
+              triple.createTriples(this, key, (JSONObject) this.inputData
+                  .getJSONArray(key).getJSONObject(i));
+            }
+          } else {
+            triple.createTriples(this, key,
+                (JSONObject) this.inputData.get(key));
+          }
         }
       }
-      return "";
     }
-    
-    public void storeTriples(){      
-      for(Triple triple : this.triplesToCreate){
-        log.info(triple.subject + "  " + triple.predicate + " " + triple.object);
-        this.objectDao.insertNewObjectPropertyStatement(
-            new ObjectPropertyStatementImpl(
-                    triple.subject, N3Utils.getOnlyPredicate(triple.predicate),triple.object));
+    log.info(json.toString());
+  }
+
+  public JSONArray getTriples() throws JSONException {
+
+    JSONArray array = new JSONArray();
+    for (Triple triple : this.triplesToCreate) {
+
+      JSONObject json = new JSONObject();
+      json.put("subject", triple.subject);
+      json.put("predicate", triple.predicate);
+      json.put("object", triple.object);
+      array.put(json);
+    }
+    return array;
+  }
+
+  public void createInstance(JSONObject obj) throws JSONException {
+
+    try {
+      String uri = this.newUri.getUnusedNewURI("");
+      this.triplesToCreate.add(new Triple(uri, "rdf:type", obj
+          .getString("uri")));
+      String label = new String();
+      if (obj.has("label")) {
+        Object lab = obj.get("label");
+        if (lab instanceof JSONObject) {
+
+        } else { // It is just a string
+          label = lab + " " + uri.substring(uri.length() - 3);
+          this.dataTriplesToCreate.add(new Triple(uri, "rdfs:label", label));
+          log.info(label);
+        }
       }
-      
-      for(Triple triple : this.dataTriplesToCreate){
-        log.info(triple.subject + "  " + triple.predicate + " " + triple.object);
-        this.dataDao.insertNewDataPropertyStatement(
-            new DataPropertyStatementImpl(
-                    triple.subject, N3Utils.getOnlyPredicate(triple.predicate),triple.object));
+      obj.put("type", "existing");
+      obj.put("uri", uri);
+    } catch (InsertException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  public void process(JSONObject obj, String varName) throws JSONException {
+
+    for (Triple triple : this.tripleDefinition) {
+      if (triple.valid(varName)) {
+        triple.createTriples(this, varName, obj);
       }
     }
+  }
+
+  public void createTriple(String subject, String predicate, String object) {
+
+    this.triplesToCreate.add(new Triple(subject, predicate, object));
+  }
+
+  public String getGlobalUri(String key) throws JSONException {
+    Iterator<String> keys = this.inputData.keys();
+    while (keys.hasNext()) {
+      String k = keys.next();
+      if (k.equals(key)) {
+        return this.inputData.getString(key);
+      }
+    }
+    return "";
+  }
+
+  public void storeTriples() {
+    for (Triple triple : this.triplesToCreate) {
+      log.info(triple.subject + "  " + triple.predicate + " " + triple.object);
+      this.objectDao
+          .insertNewObjectPropertyStatement(new ObjectPropertyStatementImpl(
+              triple.subject, N3Utils.getOnlyPredicate(triple.predicate),
+              triple.object));
+    }
+
+    for (Triple triple : this.dataTriplesToCreate) {
+      log.info(triple.subject + "  " + triple.predicate + " " + triple.object);
+      this.dataDao
+          .insertNewDataPropertyStatement(new DataPropertyStatementImpl(
+              triple.subject, N3Utils.getOnlyPredicate(triple.predicate),
+              triple.object));
+    }
+  }
 }
