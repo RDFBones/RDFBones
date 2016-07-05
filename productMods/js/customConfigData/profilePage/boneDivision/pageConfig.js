@@ -47,9 +47,9 @@ pageData.pageElements = [
 	},
 	linkDataInputs : [
 	{
-		type : sw.constant,
-		key : "pageUri",
-		value : "coherentBones",
+		type : sw.global,
+		varName : "pageUri",
+		key : "cefPageUri",
 	}, {
 		type : sw.global,
 		key : "skeletalInventory",
@@ -64,6 +64,10 @@ pageData.pageElements = [
 		type : sw.global,
 		key : "individual",
 		varName : "existingBoneDivision",
+	}, {
+		type : sw.global,
+		key : "existingBoneDivisionType",
+		varName : "classUri",
 	}
 ],
 	mapping : "pageLoader",

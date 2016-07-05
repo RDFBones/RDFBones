@@ -20,6 +20,10 @@ neurocranium = {
 					type : sw.constant,
 					value : [ "http://purl.obolibrary.org/obo/FMA_53672"],
 					key : "classSelection"
+				}, {
+					type : sw.constant,
+					value : "partlySymmetricBoneDivision",
+					key : "cefPageUri",
 				}, systemicQuery ],
 		elements : [ coherentData]
 	}	
@@ -40,6 +44,10 @@ viscerocranium = {
 					type : sw.constant,
 					value : [ "http://purl.obolibrary.org/obo/FMA_53673"],
 					key : "classSelection"
+				}, {
+					type : sw.constant,
+					value : "partlySymmetricBoneDivision",
+					key : "cefPageUri",
 				}, systemicQuery ] ,
 		elements : [ coherentData]
 	}

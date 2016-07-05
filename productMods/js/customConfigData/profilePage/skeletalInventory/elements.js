@@ -52,10 +52,13 @@ coherentData = {
 			type : sw.global,
 			key : "individual",
 			varName : "skeletalInventory",
-		}, {
+		},{
 			type : sw.constant,
-			key : "pageUri",
+			varName : "pageUri",
 			value : "boneDivision",
+		}, {
+			type : sw.local,
+			key : "cefPageUri",
 		}, {
 			type : sw.local,
 			key : "boneDivision",
@@ -100,6 +103,9 @@ singleBones = {
 		}, {
 			type : sw.global,
 			key : "individual",
+		}, {
+			type : sw.local,
+			key : "classUri",
 		}, {
 			type : sw.local,
 			key : "pageUri",
