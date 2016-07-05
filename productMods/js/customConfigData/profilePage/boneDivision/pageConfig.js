@@ -46,10 +46,14 @@ pageData.pageElements = [
 		value : "Systemic Parts",
 	},
 	linkDataInputs : [
-	{
+	/*{
 		type : sw.global,
 		varName : "pageUri",
 		key : "cefPageUri",
+	}*/{
+		type : sw.constant,
+		value : "partlySymmetricBoneDivision",
+		key : "pageUri",
 	}, {
 		type : sw.global,
 		key : "skeletalInventory",
