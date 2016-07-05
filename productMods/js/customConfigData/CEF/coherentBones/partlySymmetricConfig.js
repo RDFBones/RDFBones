@@ -1,6 +1,6 @@
 pageData.pageElements = [ {
 	type : sw.customPage,
-	pageLoader : PartlySymmetricSystemicPartSelector,
+	pageLoader : SystemicPartSelector,
 } ]
 
 pageData.queries = [
@@ -36,15 +36,54 @@ pageData.queries = [
 	concatResultArrays : "true",
 }, {
 	parameters : [ {
-		type : sw.global,
+		type : sw.constant,
 		key : "queryType",
+		value : "systemicPartsWithout"
 	}, {
 		type : sw.global,
 		key : "classUri",
 	}, ],
 	mapping : "dataLoader",
 	toVariable : "systemicParts",
-} ]
+}, {
+	parameters : [ {
+		type : sw.constant,
+		key : "queryType",
+		value : "existingBoneOrgan"
+	}, {
+		type : sw.global,
+		key : "existingBoneDivision",
+		varName : "boneDivision"
+	}, ],
+	mapping : "dataLoader",
+	toVariable : "systemicParts",
+	
+	requirement : {
+		type : sw.existence,
+		variable : {
+			type : sw.global,
+			key : "existingBoneDivision",
+		}
+	},
+}, {
+	parameters : [ {
+		type : sw.constant,
+		varName : "queryType",
+		value : "literal"
+	}, {
+		type : sw.global,
+		varName : "subject",
+		key : "classUri"
+	}, {
+		type : sw.constant,
+		varName : "predicate",
+		value : "http://www.w3.org/2000/01/rdf-schema#label"
+	} ],
+	singleData : true,
+	mapping : "dataLoader",
+	toVariable : "classLabel",
+	} 
+]
 
 pageData.dataOperations = [
 
@@ -82,4 +121,8 @@ pageData.dataOperations = [
 		}
 	},
 	whatBy : "uri",
+}, {
+	type : "mergeArrays",
+	arrays : [ "systemicParts", "symmetricBoneOrgans" ],
+	output : "systemicParts"
 } ]
