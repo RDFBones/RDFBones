@@ -30,7 +30,6 @@ public class PageLoader extends FreemarkerHttpServlet {
     case "skeletalInventory":
       templateName = "skeletalInventory.ftl";
       break;
-
     case "boneDivision":
       templateName = "boneDivision.ftl";
       break;
@@ -42,8 +41,13 @@ public class PageLoader extends FreemarkerHttpServlet {
       break;
     case "boneOrgan":
       templateName = "boneOrgan.ftl";
+      break;
     case "singlePhalanx":
       templateName = "singlePhalanx.ftl";
+      break;
+    case "symmetricSingleBone":
+      templateName = "symmetricSingleBone.ftl";
+      break;
     default:
       templateName = "notImplemented.ftl";
       break;
@@ -53,6 +57,8 @@ public class PageLoader extends FreemarkerHttpServlet {
     for (String key : vreq.getParameterMap().keySet()) {
       if (!key.equals("pageUri")) {
         params.put(key, vreq.getParameter(key));
+      } else {
+        params.put("inputPageUri", vreq.getParameter(key));
       }
     }
 
