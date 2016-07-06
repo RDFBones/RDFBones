@@ -46,21 +46,20 @@ pageData.pageElements = [
 		value : "Systemic Parts",
 	},
 	linkDataInputs : [
-	/*{
+	{
 		type : sw.global,
-		varName : "pageUri",
 		key : "cefPageUri",
-	}*/{
-		type : sw.constant,
-		value : "partlySymmetricBoneDivision",
-		key : "pageUri",
+		varName : "pageUri",
+		defaultValue : "partlySymmetricBoneDivision",
+	},{
+		type : sw.global,
+		key : "cefPageUri",
+		varName : "pageUri",
+		
 	}, {
 		type : sw.global,
 		key : "skeletalInventory",
 		varName : "individual",
-	}, {
-		type : sw.global,
-		key : "existingBoneDivisionType",
 	}, {
 		type : sw.global,
 		key : "classUri",
@@ -72,6 +71,9 @@ pageData.pageElements = [
 		type : sw.global,
 		key : "existingBoneDivisionType",
 		varName : "classUri",
+	}, {
+		type : sw.global,
+		key : "classUri",
 	}
 ],
 	mapping : "pageLoader",
@@ -120,6 +122,9 @@ pageData.pageElements = [
 			}, {
 				type : sw.global,
 				key : "skeletalInventory",
+			}, {
+				type : sw.global,
+				key : "classUri",
 			}
 		],
 		mapping : "pageLoader",
