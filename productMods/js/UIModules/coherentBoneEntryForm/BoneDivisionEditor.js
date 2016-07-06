@@ -85,14 +85,19 @@ BoneDivisionEditor.prototype = {
 				if (pageData.existingBoneDivisionType == undefined) {
 					pageData.existingBoneDivisionType = this.dataToStore.uri
 				}
+				
 				var urlObject = {
 					pageUri : "boneDivision",
-					cefPageUri : "partlySymmetricBoneDivision",
 					individual : msg.object.boneDivision.uri,
 					skeletalInventory : pageData.individual,
 					existingBoneDivisionType : pageData.existingBoneDivisionType,
 					classUri : pageData.classUri,
 				}
+				
+				if(pageData.pageUri != "phalanges"){
+					urlObject.cefPageUri = "phalanges"
+				}
+				
 				window.location = baseUrl
 						+ "pageLoader?"
 						+ DataLib.getUrl(urlObject)
@@ -129,46 +134,49 @@ BoneDivisionEditor.prototype = {
 
 var SymmetricBoneDivisionEditor = function() {
 
-	this.dataToStore = new Object()
+	
+	if (pageData.existingBoneDivision != undefined) {
 
-	this.dataSet = pageData.boneDivisions
-	this.systemicPartSelectors = []
-
-	this.container = html.div("table")
-
-	this.headerContainer = html.div("headerContainer")
-	this.header = html.div("headerText").text("Select Bone Division")
-	this.exitButton = new CustomButton("del", (this.exitRoutine).bind(this),
-			"rightAligned")
-
-	this.selectorContainer = html.span("middleSpan margin10")
-	this.selectorField = UI.classSelector(this.dataSet)
-	this.button = new Button("add", (this.selectBoneDivision).bind(this))
-
-	this.saveContainer = html.div("saveContainer")
-	this.saveButton = new TextButton("Save", (this.saveRoutine).bind(this))
-			.disable()
-	this.cancelButton = new TextButton("Cancel", (this.cancelRoutine)
-			.bind(this), "rightAligned")
-
-	this.subContainer = html.div("subContainer")
-
-	this.addAllButton = new TextButton("Add all", (this.addAll).bind(this))
-			.hide()
-
-	if (pageData.existingBoneDivisionType != undefined) {
-		this.assembleForExisting()
-		this.selectExistingBoneDivision()
+		BoneDivisionEditor.call(this)
+		
 	} else {
-		this.assemble()
-	}
+		
+		this.dataToStore = new Object()
+
+		this.dataSet = pageData.boneDivisions
+		this.systemicPartSelectors = []
+
+		this.container = html.div("table")
+
+		this.headerContainer = html.div("headerContainer")
+		this.header = html.div("headerText").text("Select Bone Division")
+		this.exitButton = new CustomButton("del", (this.exitRoutine).bind(this),
+				"rightAligned")
+
+		this.selectorContainer = html.span("middleSpan margin10")
+		this.selectorField = UI.classSelector(pageData.systemicParts)
+		this.button = new Button("add", (this.selectBoneDivision).bind(this))
+
+		this.saveContainer = html.div("saveContainer")
+		this.saveButton = new TextButton("Save", (this.saveRoutine).bind(this))
+				.disable()
+		this.cancelButton = new TextButton("Cancel", (this.cancelRoutine)
+				.bind(this), "rightAligned")
+
+		this.subContainer = html.div("subContainer")
+
+		this.addAllButton = new TextButton("Add all", (this.addAll).bind(this))
+				.hide()
+
+		this.myAssemble()
+	}	
 }
 
 SymmetricBoneDivisionEditor.prototype = Object.create(BoneDivisionEditor.prototype)
 
-$.extend(SymmetricClassSelector.prototype,
+$.extend(SymmetricBoneDivisionEditor.prototype,
 {
-		assemble : function() {
+		myAssemble : function() {
 
 			UI.assemble(this.container, [ this.headerContainer,
 					this.header, this.exitButton.container,
@@ -196,33 +204,16 @@ $.extend(SymmetricClassSelector.prototype,
 			this.systemicPartSelectors = []
 		},
 
-		selectExistingBoneDivision : function() {
-
-			$.each(this.dataSet,(function(index, value) {
-				if (value.uri == pageData.existingBoneDivisionType) {
-					this.dataToStore.uri = pageData.existingBoneDivisions
-					this.dataToStore.type = "existing"
-					this.dataToStore.boneOrgan = []
-					this.setTitle(value.label)
-					this.loadSubObject(value)
-					return false
-				}
-			}).bind(this))
-		},
-
 		selectBoneDivision : function() {
-			/*
-			 * Search for the element in the list which were set
-			 */
-			$.each(this.dataSet, (function(index, value) {
-				if (value.uri == this.selectorField.val()) {
 
+			$.each(pageData.systemicParts, (function(index, value) {
+				if (value.uri == this.selectorField.val()) {
 					this.dataToStore.uri = value.uri
 					this.dataToStore.label = value.label
 					this.dataToStore.type = "new"
 					this.dataToStore.boneOrgan = []
 					this.setTitle(value.label)
-					this.loadSubObject(value)
+					this.loadSubObject(value.systemicParts)
 					return false
 				}
 			}).bind(this))
@@ -234,22 +225,6 @@ $.extend(SymmetricClassSelector.prototype,
 			this.header.text(label)
 		},
 
-		/*
-		 * DataSet is the bone division descriptor which has the
-		 * field systemic parts
-		 */
-		/*
-		 * loadSubObject : function(dataSet) {
-		 * 
-		 * 
-		 * this.subContainer.append(this.titleCont =
-		 * html.div("titleTable").text("Add bone segment"))
-		 * $.each(dataSet.systemicParts, (function(index, value) {
-		 * this.systemicPartSelectors.push(new
-		 * SystemicPartAdder(this, pageData.existingBoneOrgans,
-		 * this.dataToStore.boneOrgan, value)) }).bind(this))
-		 * this.appendFields(); //this.addAddAllField(); },
-		 */
 		appendFields : function() {
 			if (this.systemicPartSelectors.length > 0) {
 				$.each(this.systemicPartSelectors, (function(i,
@@ -257,7 +232,6 @@ $.extend(SymmetricClassSelector.prototype,
 					this.subContainer.append(sysSel.container)
 				}).bind(this))
 				// this.addAllButton = undefined
-				this.addAllButton.hide()
 				this.saveButton.show().disable()
 			} else {
 				this.addAllButton.hide()
