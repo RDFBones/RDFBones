@@ -46,6 +46,7 @@ public class AnatomicalModelLoader extends VitroAjaxController {
       
       result = this.performQuery(systemicQuery, inputParam, uris, literals);
       break;
+
     case "subClasses" :
       String[] inputParam1 = {"classUri"};
       String[] uris1 = { "boneDivision", "systemicPart"};
@@ -54,7 +55,14 @@ public class AnatomicalModelLoader extends VitroAjaxController {
       result = this.performQuery(subClassesQuery, inputParam1, uris1, literals1);
       
       break;
-
+    case "regionalParts":
+      String[] inputParam2 = {"classUri"};
+      String[] uris2 = {"inputClass", "boneDivision", "subClass"};
+      String[] literals2 = {"inputClassLabel", "boneDivisionLabel", "subClassLabel"};
+     
+      result = this.performQuery(regionalQuery, inputParam2, uris2, literals2);
+      
+      break;  
     default:
       break;
     }
@@ -117,5 +125,19 @@ public class AnatomicalModelLoader extends VitroAjaxController {
           + "  ?restriction            owl:someValuesFrom      ?boneDivision ."
           + "  FILTER( ?inputClass  =  ?classUri ) . "
           + "  }";
+  
+  private static String regionalQuery =
+      "select ?inputClass ?inputClassLabel ?boneDivision ?boneDivisionLabel ?subClass ?subClassLabel "
+          + "  where {  "
+          + "  ?boneDivision          rdfs:label             ?boneDivisionLabel ."
+          + "  ?boneDivision          rdfs:subClassOf        ?restriction .  "
+          + "  ?restriction           owl:onProperty         <http://purl.obolibrary.org/obo/fma#regional_part_of>   .  "
+          + "  ?restriction           owl:someValuesFrom     ?inputClass .   "
+          + "  ?inputClass            rdfs:label             ?inputClassLabel . " 
+          + "  ?subClass              rdfs:subClassOf        ?boneDivision ."
+          + "  ?subClass              rdfs:label             ?subClassLabel ."
+          + "  FILTER( ?inputClass  =  ?classUri ) ."
+          + "}"
+          ;
 
 }
