@@ -45,13 +45,11 @@ var DataOperationMap = {
     	//if(pageData[configData.key] != undefined){
     	if(DataLib.getType(configData.key) == "object"){
     		return pageData[getData(cont, configData.key)]	
-        } else {
+        } else if (pageData[getData1(configData.key)] != undefined){
     		return pageData[getData1(configData.key)]	
-        }
-    	/*
-    	 } else {
+        } else {
     		return configData.defaultValue
-    	}*/
+        }
     },
         
     "http://softwareOntology.com/selectOperationResult" : function(cont, configData){
