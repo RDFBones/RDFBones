@@ -45,6 +45,9 @@ public class PageLoader extends FreemarkerHttpServlet {
     case "singlePhalanx":
       templateName = "singlePhalanx.ftl";
       break;
+    case "phalanges":
+      templateName = "phalanges.ftl";
+      break; 
     case "symmetricSingleBone":
       templateName = "symmetricSingleBone.ftl";
       break;
