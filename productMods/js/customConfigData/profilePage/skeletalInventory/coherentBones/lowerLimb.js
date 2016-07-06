@@ -3,8 +3,11 @@
 phalangesOfFoot = {
 		type : sw.container,
 		localData : [
-		      	   symmetricBoneSegment ,
-				{
+		      	{
+		      		type : sw.constant,
+		      		value : "phalanges",
+		      		key : "pageUri",
+		      	} ,{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_78512",
 					key : "boneUri",
@@ -18,7 +21,11 @@ phalangesOfFoot = {
 					          "http://purl.obolibrary.org/obo/FMA_231319",
 					          "http://purl.obolibrary.org/obo/FMA_231317"],
 					key : "classSelection"
-				} ],
+				}, {
+					type : sw.constant,
+					key : "cefPageUri",
+					value : "phalanges",
+				}],
 		elements : [ coherentData]
 	}
 
@@ -42,7 +49,7 @@ freelowerlimb = {
 					          "http://purl.obolibrary.org/obo/FMA_21174",
 					          "http://purl.obolibrary.org/obo/FMA_21175"],
 					key : "classSelection"
-				} ],
+				}],
 		elements : [ coherentData]
 	}
 
@@ -68,7 +75,7 @@ tarsalbones = {
 							"http://purl.obolibrary.org/obo/FMA_78509",
 							"http://purl.obolibrary.org/obo/FMA_78508" ],
 					key : "classSelection"
-				} ],
+				}],
 		elements : [ coherentData ]
 	}
 
@@ -94,7 +101,7 @@ metatarsalbones = {
 							"http://purl.obolibrary.org/obo/FMA_78511",
 							"http://purl.obolibrary.org/obo/FMA_78510" ],
 					key : "classSelection"
-				} ],
+				},],
 		elements : [ coherentData ]
 	}
 
