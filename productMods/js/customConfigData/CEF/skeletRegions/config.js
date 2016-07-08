@@ -111,6 +111,33 @@ var symmetricClassQuery = {
 		mergeResults : true,	
 	}
 
+var subClassesQuery = {
+		
+		type : "query",
+		queryType : "subClasses",
+		parameters : [
+			{
+				type : sw.field,
+				of : {
+					type : sw.field,
+					of : {
+						type : sw.global,
+						key : "partlySymmetricBones",
+					},
+					key : {
+						type : sw.local,
+						varName : "boneDivisions",
+						key : "uri",
+					},
+				},
+				key : "parentRegions",
+				parameterName : "classUri",
+			}
+		],
+		mergeResults : true,	
+	}
+
+
 pageData.variableSetting = [
      {
     	type : sw.setField,
@@ -167,10 +194,58 @@ testArray = [
         	type : "array",
         	operation : symmetricClassQuery,
           }
-      ]
+      ],[
+         {
+           	key : "skeletalDivision",
+           	of : "pageData",
+           	type : "object",
+           }, {
+         	key : "boneDivisions",
+         	of : "skeletalDivision",
+         	type : "array",
+           },{
+         	key : "symmetricClasses1",
+         	of : "boneDivisions",
+         	type : "array",
+         	operation : subClassesQuery,
+           }
+       ]
 ]
 
 
+
+extractionDef = {
+		
+	object : "pageData.skeletalDivisions.boneDivisions",
+	from : "systemicParts",
+	fromBy : "uri",
+	what : "symmetricBones",
+	whatBy : "uri",
+}
+//From the above defined dataSet, we have to generate the following array 
+//for the operation
+
+
+
+var generateArray = function(def){
+	
+	
+	var varArr =  def.object.split(".")
+	console.log(varArr)
+	var array = []
+	$.each(varArr, function(index, arr){
+
+		var a = new Object()
+		a.of = arr
+		a.key = varArr[index + 1]
+		
+		if(index  ==  varArr.length - 1){
+			a.key = def.from
+		}
+		array.push(a)
+	})
+	console.log(array)
+}
 
 stack = {
     

@@ -86,7 +86,10 @@ var PerformOperation = function(dataQueue, level, localData) {
 			case "query" :
 				performQuery(dataOperation, localData, dataQueue[level-1].key)
 				break;
-		}		
+			case "extraction" :
+				extract(dataOperation, localData, dataQueue[level-1].key)
+				break;				
+		}
 	}	
 }
 
@@ -98,7 +101,6 @@ var performQuery = function(dataOperation, localData, key){
 	$.each(dataOperation.parameters, function(i, param){
 		
 		data[param.parameterName] = evaluate(localData, param)
-		console.log(data[param.parameterName])
 		if(DataLib.getType(data[param.parameterName]) == "array"){
 			array = data[param.parameterName]
 			arrayParameterName = param.parameterName
@@ -118,6 +120,31 @@ var performQuery = function(dataOperation, localData, key){
 	}
 }
 
+
+/*
+var extract = function(fromList, whatList){
+	
+	from = evalutate(localData)
+	arrayToExtract = []
+	//array of object
+	what = getData1(config.what)
+	if(what === undefined){
+		return true
+	}
+	if(DataLib.getType(what[0]) == "object"){
+		arrayToExtract = what
+	} else { //array of array
+		//we have to concatenate the arrays
+		$.each(what, function(i, element){
+			arrayToExtract = arrayToExtract.concat(element)
+		})
+	}
+
+	$.each(arrayToExtract, function(k, toExtract){
+		DataLib.removeObjectFromArrayByKey(from, config.fromBy, toExtract[config.whatBy])
+	})
+}
+*/
 
 var sendQuery = function(data, dataToStore){
 	
@@ -175,6 +202,4 @@ var evaluate = function(localData, dataDef){
 }
 
 prepareLocalData(testArray[0], 0, localData)
-
-
 
