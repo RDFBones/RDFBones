@@ -53,7 +53,10 @@ var PerformOperation = function(dataQueue, level, localData) {
 				break;
 			case "extraction" :
 				extract(dataOperation, localData, dataQueue[level-1].key)
-				break;				
+				break;
+			case "group" :
+				group(dataOperation, localData, dataQueue[level-1].key)
+				break;			
 		}
 	}	
 }
@@ -66,8 +69,6 @@ var performQuery = function(dataOperation, localData, key){
 	$.each(dataOperation.parameters, function(i, param){
 		
 		data[param.name] = evaluate(localData, param.value)
-		console.log(param.name)
-		console.log(data[param.name])
 		if(DataLib.getType(data[param.name]) == "array"){
 			array = data[param.name]
 			arrayParameterName = param.name
@@ -87,38 +88,6 @@ var performQuery = function(dataOperation, localData, key){
 	}
 }
 
-
-
-var extract = function(dataOperation, localData, key){
-	
-	from = evalutate(localData, dataOperation.from)
-	arrayToExtract = []
-	//array of object
-	what = evaluate(localData, config.what)
-	
-	if(what === undefined){
-		return true
-	}
-	if(DataLib.getType(what[0]) == "object"){
-		arrayToExtract = what
-	} else { 
-		//array of array
-		//we have to concatenate the arrays
-		$.each(what, function(i, element){
-			arrayToExtract = arrayToExtract.concat(element)
-		})
-	}
-
-	$.each(arrayToExtract, function(k, toExtract){
-		DataLib.removeObjectFromArrayByKey(from, config.fromBy, toExtract[config.whatBy])
-	})
-	
-	if(dataOperation.toNewVariable != undefined){
-		dataToStore = localData[key]
-	} 
-	
-}
-
 var sendQuery = function(data, dataToStore){
 	
 	$.ajax({
@@ -131,6 +100,95 @@ var sendQuery = function(data, dataToStore){
 	})
 }
 
+var extract = function(dataOperation, localData, key){
+	
+	
+	if(dataOperation.toNewVariable != undefined){
+		from = $.extend({}, evaluate(localData, dataOperation.from))
+	} else {
+		from = evaluate(localData, dataOperation.from)
+	}
+	
+	//array of object
+	what = evaluate(localData, dataOperation.what)
+	
+	if(what === undefined){
+		return true
+	}
+	/* 
+	if(DataLib.getType(what[0]) == "object"){
+		arrayToExtract = what
+	} else { 
+		//array of array
+		//we have to concatenate the arrays
+		$.each(what, function(i, element){
+			arrayToExtract = arrayToExtract.concat(element)
+		})
+	} */ 
+	$.each(what, function(k, toExtract){
+		DataLib.removeObjectFromArrayByKey(from, dataOperation.fromBy, toExtract[dataOperation.whatBy])
+	})
+	if(dataOperation.toNewVariable != undefined){
+		dataToStore = localData[key]
+	}
+	checkReady()
+}
+
+var group = function(process, localData) {
+
+	var arr = []
+	var obj = new Object()
+
+	inputArray = evaluate(localData, process.input)
+	
+	var varsToGroup = []
+	$.each(inputArray[0], function(key, value) {
+		if (key != process.by && process.within.indexOf(key) == -1) {
+			varsToGroup.push(key)
+		}
+	})
+	
+	var obj = new Object()
+	$.each(inputArray, function(i, data) {
+
+		if (obj[data[process.by]] === undefined) {
+
+			obj[data[process.by]] = new Object()
+			// Place the vars in the within arrays
+			$.each(process.within, function(j, _within) {
+				obj[data[process.by]][_within] = data[_within]
+			})
+			obj[data[process.by]][process.to] = []
+		}
+
+		// Iterate through the fields of it
+		var a = new Object()
+		$.each(varsToGroup, function(u, key) {
+			a[key] = data[key]
+		})
+
+		obj[data[process.by]][process.to].push(a)
+	})
+	
+	inputArray.length = 0
+	$.each(obj, function(key, value) {
+		value[process.by] = key
+
+		if(process.rename != undefined){
+			// Rename the fields according to the process defintion
+			$.each(value, function(dataKey, dataValue) {
+				$.each(process.rename, function(r, rename) {
+					if (rename.key == dataKey) {
+						delete value[dataKey]
+						value[rename.to] = dataValue
+					}
+				})
+			})
+		}
+		inputArray.push(value)
+	})	
+}
+
 
 var current = 0
 var numOfOperation = 1
@@ -141,6 +199,7 @@ var checkReady = function(){
 	
 	current++ 
 	if(current == numOfOperation){
+		current = 0
 		numOfOperation = 1
 		opCounter++ 
 		if(opCounter < testArray.length){
@@ -148,6 +207,9 @@ var checkReady = function(){
 		}
 	}
 }
+
+
+
 
 localData = {
 	pageData : pageData
@@ -158,7 +220,11 @@ var evaluate = function(localData, dataDef){
 	
 	if(DataLib.getType(dataDef) != "object"){
 		var arr = dataDef.split(".")
-		return localData[arr[0]][arr[1]]
+		switch(arr.length){
+			case 1 : return localData[arr[0]]
+			case 2 : return  localData[arr[0]][arr[1]]
+		}
+		
 	} else { 
 		switch(dataDef.type){
 		
@@ -183,6 +249,8 @@ var testArray = []
 testArray[0] = generateArray(queryDef1)
 testArray[1] = generateArray(queryDef2)
 testArray[2] = generateArray(queryDef3)
+testArray[3] = generateArray(extractionDef)
+testArray[4] = generateArray(groupDef)
 
 prepareLocalData(testArray[0], 0, localData)
 

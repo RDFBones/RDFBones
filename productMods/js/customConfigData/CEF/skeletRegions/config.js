@@ -96,7 +96,7 @@ queryDef3 = {
 		operation : {
 			type : "query",
 			variable : "symmetricBones",
-			queryType : "subClassesWithout",
+			queryType : "subClasses",
 			parameters : [
 				{
 					value : {
@@ -120,10 +120,9 @@ queryDef3 = {
 		}
 }
 
-
 extractionDef = {
 		
-	object : "pageData.skeletalDivisions.boneDivisions",
+	object : "pageData.skeletalDivision.boneDivisions",
 	operation : {
 		type : "extraction",
 		from : "boneDivisions.systemicParts",
@@ -132,6 +131,28 @@ extractionDef = {
 		whatBy : "uri",
 	}
 }
+
+groupDef = {
+		
+		object : "pageData.skeletalDivision.boneDivisions",
+		operation : {
+			input : "boneDivisions.symmetricBones",
+			type : "group",
+			by : "inputClass",
+			within :["inputClassLabel"],
+			to : "subClasses",
+			rename : [
+			 {
+				 key : "inputClass",
+				 to : "uri",
+			 }, {
+				key : "inputClassLabel",
+				to : "label",
+			 }
+			]
+		}
+	}
+
 //From the above defined dataSet, we have to generate the following array 
 //for the operation
 
@@ -161,6 +182,9 @@ var generateArray = function(def){
 				} else {
 					a.type = "array"
 				}
+				break
+			case "group" :
+				a.key = def.operation.input	
 				break
 			}
 		}
