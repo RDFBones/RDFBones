@@ -95,22 +95,25 @@ queryDef3 = {
 		object : "pageData.skeletalDivision.boneDivisions",
 		operation : {
 			type : "query",
-			variable : "symmetricClasses",
+			variable : "symmetricBones",
 			queryType : "subClassesWithout",
 			parameters : [
 				{
-					type : sw.field,
-					of : {
+					value : {
 						type : sw.field,
 						of : {
-							type : sw.global,
-							key : "partlySymmetricBones",
+							type : sw.field,
+							of : {
+								type : sw.global,
+								key : "partlySymmetricBones",
+							},
+							key : "boneDivisions.uri",
 						},
 						key : {
-							value : "boneDivisions.uri",
+							type : sw.constant,
+							value : "parentRegions",
 						},
 					},
-					key : "parentRegions",
 					name : "classUri",
 				},
 			],
@@ -123,9 +126,9 @@ extractionDef = {
 	object : "pageData.skeletalDivisions.boneDivisions",
 	operation : {
 		type : "extraction",
-		from : "systemicParts",
+		from : "boneDivisions.systemicParts",
 		fromBy : "uri",
-		what : "symmetricBones",
+		what : "boneDivisions.symmetricBones",
 		whatBy : "uri",
 	}
 }

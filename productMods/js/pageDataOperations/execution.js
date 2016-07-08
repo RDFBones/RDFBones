@@ -65,7 +65,9 @@ var performQuery = function(dataOperation, localData, key){
 	array = null
 	$.each(dataOperation.parameters, function(i, param){
 		
-		data[param.name] = evaluate(localData, param)
+		data[param.name] = evaluate(localData, param.value)
+		console.log(param.name)
+		console.log(data[param.name])
 		if(DataLib.getType(data[param.name]) == "array"){
 			array = data[param.name]
 			arrayParameterName = param.name
@@ -89,15 +91,11 @@ var performQuery = function(dataOperation, localData, key){
 
 var extract = function(dataOperation, localData, key){
 	
-	
-	if(dataOperation.toNewVariable != undefined){
-		dataToStore = localData[key]
-	} 
-	
-	from = evalutate(localData, dataOperation)
+	from = evalutate(localData, dataOperation.from)
 	arrayToExtract = []
 	//array of object
-	what = getData1(config.what)
+	what = evaluate(localData, config.what)
+	
 	if(what === undefined){
 		return true
 	}
@@ -114,6 +112,11 @@ var extract = function(dataOperation, localData, key){
 	$.each(arrayToExtract, function(k, toExtract){
 		DataLib.removeObjectFromArrayByKey(from, config.fromBy, toExtract[config.whatBy])
 	})
+	
+	if(dataOperation.toNewVariable != undefined){
+		dataToStore = localData[key]
+	} 
+	
 }
 
 var sendQuery = function(data, dataToStore){
@@ -153,11 +156,9 @@ localData = {
 
 var evaluate = function(localData, dataDef){
 	
-	if(dataDef.type == undefined && DataLib.getType(dataDef) == "object"){
-		var arr = dataDef.value.split(".")
+	if(DataLib.getType(dataDef) != "object"){
+		var arr = dataDef.split(".")
 		return localData[arr[0]][arr[1]]
-	} if(DataLib.getType(dataDef) == "data"){
-		return dataDef
 	} else { 
 		switch(dataDef.type){
 		
@@ -167,6 +168,8 @@ var evaluate = function(localData, dataDef){
 			return evaluate(localData, dataDef.of)[evaluate(localData, dataDef.key)]
 		case "http://softwareOntology.com/global" :
 			return pageData[dataDef.key]
+		case "http://softwareOntology.com/Constant": 
+			return dataDef.value
 		case undefined : 
 			return localData[dataDef.varName][dataDef.key]
 		default :
