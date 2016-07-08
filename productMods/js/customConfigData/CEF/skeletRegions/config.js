@@ -84,7 +84,6 @@ var systemicPartsQuery2 = {
 		],
 	}
 
-
 var symmetricClassQuery = {
 		
 		type : "query",
@@ -159,7 +158,6 @@ testArray = [
     [{
     	key : "skeletalDivision",
       	of : "pageData",
-    	type : "object",
     }, {
     	of : "skeletalDivision",
     	key : "boneDivisions",
@@ -214,38 +212,92 @@ testArray = [
 
 
 
+queryDef1 = {
+		
+	object : "pageData.skeletalDivision",
+	operation : {
+		type : "query",
+		variable : "boneDivisions",
+		queryType : "systemicPartsWithout",
+		parameters : [
+			{
+				value : "skeletalDivision.uri",
+				name : "classUri",
+			}, 
+		]
+	}
+}
+
+queryDef2 = {
+		
+		object : "pageData.skeletalDivision.boneDivisions",
+		operation : {
+			type : "query",
+			variable : "systemicParts",
+			queryType : "systemicPartsWithout",
+			parameters : [
+				{
+					value : "boneDivisions.uri",
+					name : "classUri",
+				}, 
+			]
+		}
+	}
+
+
+
+
 extractionDef = {
 		
 	object : "pageData.skeletalDivisions.boneDivisions",
-	from : "systemicParts",
-	fromBy : "uri",
-	what : "symmetricBones",
-	whatBy : "uri",
+	operation : {
+		type : "extraction",
+		from : "systemicParts",
+		fromBy : "uri",
+		what : "symmetricBones",
+		whatBy : "uri",
+	}
 }
 //From the above defined dataSet, we have to generate the following array 
 //for the operation
 
-
-
 var generateArray = function(def){
 	
-	
 	var varArr =  def.object.split(".")
-	console.log(varArr)
 	var array = []
 	$.each(varArr, function(index, arr){
 
 		var a = new Object()
 		a.of = arr
 		a.key = varArr[index + 1]
-		
 		if(index  ==  varArr.length - 1){
-			a.key = def.from
+			switch(def.operation.type){
+			
+			case "extraction" :
+				if(def.operation.toNewVariable != undefined){
+					a.key = def.operation.toNewVariable
+				} else {
+					a.key = def.operation.from	
+				}
+			break
+			case "query" :
+				a.key = def.operation.variable	
+				if(def.operation.singleData != undefined){
+					a.type = "object"
+				} else {
+					a.type = "array"
+				}
+				break
+			}
 		}
+		a.operation = def.operation
 		array.push(a)
 	})
-	console.log(array)
+	return array
 }
+
+generateArray(extractionDef)
+
 
 stack = {
     
