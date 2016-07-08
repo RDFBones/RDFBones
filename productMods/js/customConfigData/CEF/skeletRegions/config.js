@@ -58,160 +58,6 @@ pageData.skeletalDivision = {
 	label : "Skull",
 }
 
-var systemicPartsQuery1 = {
-		
-		type : "query",
-		queryType : "systemicPartsWithout",
-		parameters : [
-			{
-				key : "uri",
-				varName : "skeletalDivision",
-				parameterName : "classUri",
-			}, 
-		],
-	}
-
-var systemicPartsQuery2 = {
-		
-		type : "query",
-		queryType : "systemicPartsWithout",
-		parameters : [
-			{
-				key : "uri",
-				varName : "boneDivisions",
-				parameterName : "classUri",
-			}, 
-		],
-	}
-
-var symmetricClassQuery = {
-		
-		type : "query",
-		queryType : "subClassesWithout",
-		parameters : [
-			{
-				type : sw.field,
-				of : {
-					type : sw.field,
-					of : {
-						type : sw.global,
-						key : "partlySymmetricBones",
-					},
-					key : {
-						type : sw.local,
-						varName : "boneDivisions",
-						key : "uri",
-					},
-				},
-				key : "parentRegions",
-				parameterName : "classUri",
-			}
-		],
-		mergeResults : true,	
-	}
-
-var subClassesQuery = {
-		
-		type : "query",
-		queryType : "subClasses",
-		parameters : [
-			{
-				type : sw.field,
-				of : {
-					type : sw.field,
-					of : {
-						type : sw.global,
-						key : "partlySymmetricBones",
-					},
-					key : {
-						type : sw.local,
-						varName : "boneDivisions",
-						key : "uri",
-					},
-				},
-				key : "parentRegions",
-				parameterName : "classUri",
-			}
-		],
-		mergeResults : true,	
-	}
-
-
-pageData.variableSetting = [
-     {
-    	type : sw.setField,
-    	of : "skeletalDivison",
-    	key : "boneDivisions",
-    	operation : systemicPartsQuery1,
-    }, {
-    	type : sw.setField,
-    	of : "boneDivisions",
-    	key : "systemicParts",
-    	operation : systemicPartsQuery2,	
-    }
-]
-
-
-
-// I already have the array in the pageData.skeletalDivision.systemicParts
-testArray = [
-    [{
-    	key : "skeletalDivision",
-      	of : "pageData",
-    }, {
-    	of : "skeletalDivision",
-    	key : "boneDivisions",
-    	type : "array",
-    	operation : systemicPartsQuery1,
-    }], [
-      {
-      	key : "skeletalDivision",
-      	of : "pageData",
-      	type : "object",
-      }, {
-    	key : "boneDivisions",
-    	of : "skeletalDivision",
-    	type : "array",
-      },{
-    	key : "systemicParts",
-    	of : "boneDivisions",
-    	type : "array",
-    	operation : systemicPartsQuery2,
-      }], [
-          {
-          	key : "skeletalDivision",
-          	of : "pageData",
-          	type : "object",
-          }, {
-        	key : "boneDivisions",
-        	of : "skeletalDivision",
-        	type : "array",
-          },{
-        	key : "symmetricClasses",
-        	of : "boneDivisions",
-        	type : "array",
-        	operation : symmetricClassQuery,
-          }
-      ],[
-         {
-           	key : "skeletalDivision",
-           	of : "pageData",
-           	type : "object",
-           }, {
-         	key : "boneDivisions",
-         	of : "skeletalDivision",
-         	type : "array",
-           },{
-         	key : "symmetricClasses1",
-         	of : "boneDivisions",
-         	type : "array",
-         	operation : subClassesQuery,
-           }
-       ]
-]
-
-
-
 queryDef1 = {
 		
 	object : "pageData.skeletalDivision",
@@ -244,7 +90,32 @@ queryDef2 = {
 		}
 	}
 
-
+queryDef3 = {
+		
+		object : "pageData.skeletalDivision.boneDivisions",
+		operation : {
+			type : "query",
+			variable : "symmetricClasses",
+			queryType : "subClassesWithout",
+			parameters : [
+				{
+					type : sw.field,
+					of : {
+						type : sw.field,
+						of : {
+							type : sw.global,
+							key : "partlySymmetricBones",
+						},
+						key : {
+							value : "boneDivisions.uri",
+						},
+					},
+					key : "parentRegions",
+					name : "classUri",
+				},
+			],
+		}
+}
 
 
 extractionDef = {
