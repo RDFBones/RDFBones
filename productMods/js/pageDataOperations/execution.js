@@ -1,26 +1,19 @@
 
 var prepareLocalData = function(dataQueue, level, localData) {
 
-	if(localData[dataQueue[level].of][dataQueue[level].key] === undefined){
+	if(dataQueue[level].operation != undefined){
 		
-		//Here we set the reference in the parent object
-		if(dataQueue[level].type == "object"){
-			localData[dataQueue[level].of][dataQueue[level].key] = new Object()
-		} else { //Array
-			localData[dataQueue[level].of][dataQueue[level].key] = []
-		}
-		
-		//Here the localData object gets the referene so that we can access it
-		localData[dataQueue[level].key] = localData[dataQueue[level].of][dataQueue[level].key]
-		
-		level++;
+		if(localData[dataQueue[level].of][dataQueue[level].key] === undefined){
+			if(dataQueue[level].type == "object"){
+				localData[dataQueue[level].of][dataQueue[level].key] = new Object()
+			} else { //Array
+				localData[dataQueue[level].of][dataQueue[level].key] = []
+			}
+		}		
+		localData[dataQueue[level].key] = localData[dataQueue[level].of][dataQueue[level].key]			
 		PerformOperation(dataQueue, level, localData)
-		
 	} else {
-		
-		//Here we do not need to set the reference
 		levelPlus = level + 1
-		//switch (dataQueue[level].type) {
 		switch(DataLib.getType(localData[dataQueue[level].of][dataQueue[level].key])){
 			case "array":
 			arr = localData[dataQueue[level].of][dataQueue[level].key]
@@ -28,46 +21,42 @@ var prepareLocalData = function(dataQueue, level, localData) {
 			$.each(arr, function(i, value){
 				newLocalData = $.extend({}, localData)
 				newLocalData[dataQueue[level].key] = value 
-				PerformOperation(dataQueue, levelPlus, newLocalData)
+				prepareLocalData(dataQueue, levelPlus, newLocalData)
 			})
 			break;
 		case "object" :
 			localData[dataQueue[level].key] = localData[dataQueue[level].of][dataQueue[level].key]
 			level++
-			PerformOperation(dataQueue, level, localData)
-			break;
+			prepareLocalData(dataQueue, level, localData)
+			break;			
 		}
 	}
 }	
 
-
 var PerformOperation = function(dataQueue, level, localData) {
 
-	if(dataQueue.length > level){
-		prepareLocalData(dataQueue, level, localData)
-	} else {
-		dataOperation = dataQueue[level - 1].operation
-		switch(dataOperation.type){
-			case "query" :
-				performQuery(dataOperation, localData, dataQueue[level-1].key)
-				break;
-			case "extraction" :
-				extract(dataOperation, localData, dataQueue[level-1].key)
-				break;
-			case "group" :
-				group(dataOperation, localData, dataQueue[level-1].key)
-				break;			
-		}
+	dataOperation = dataQueue[level].operation
+	//We create a reference
+	localData.dataToStore = localData[dataQueue[level].key]
+	switch(dataOperation.type){
+		case "query" :
+			performQuery(dataOperation, localData)
+			break;
+		case "extraction" :
+			extract(dataOperation, localData)
+			break;
+		case "group" :
+			group(dataOperation, localData)
+			break;			
 	}	
 }
 
 
-var performQuery = function(dataOperation, localData, key){
+var performQuery = function(dataOperation, localData){
 	
 	var data = new Object()
 	array = null
 	$.each(dataOperation.parameters, function(i, param){
-		
 		data[param.name] = evaluate(localData, param.value)
 		if(DataLib.getType(data[param.name]) == "array"){
 			array = data[param.name]
@@ -76,14 +65,13 @@ var performQuery = function(dataOperation, localData, key){
 		}
 	})
 	data.queryType = dataOperation.queryType
-	dataToStore = localData[key]
 	
 	if(array == null){
-		sendQuery(data, dataToStore)
+		sendQuery(data, localData.dataToStore)
 	} else {
 		$.each(array, function(i, value){
 			data[arrayParameterName] = value
-			sendQuery(data, dataToStore)
+			sendQuery(data, localData.dataToStore)
 		})
 	}
 }
@@ -100,18 +88,18 @@ var sendQuery = function(data, dataToStore){
 	})
 }
 
-var extract = function(dataOperation, localData, key){
+var extract = function(dataOperation, localData){
 	
 	
 	if(dataOperation.toNewVariable != undefined){
 		from = $.extend({}, evaluate(localData, dataOperation.from))
 	} else {
-		from = evaluate(localData, dataOperation.from)
+		console.log(localData)
+		//from = evaluate(localData, dataOperation.from)
+		from = localData.dataToStore
 	}
 	
-	//array of object
 	what = evaluate(localData, dataOperation.what)
-	
 	if(what === undefined){
 		return true
 	}
@@ -128,9 +116,6 @@ var extract = function(dataOperation, localData, key){
 	$.each(what, function(k, toExtract){
 		DataLib.removeObjectFromArrayByKey(from, dataOperation.fromBy, toExtract[dataOperation.whatBy])
 	})
-	if(dataOperation.toNewVariable != undefined){
-		dataToStore = localData[key]
-	}
 	checkReady()
 }
 
@@ -139,7 +124,7 @@ var group = function(process, localData) {
 	var arr = []
 	var obj = new Object()
 
-	inputArray = evaluate(localData, process.input)
+	inputArray = localData.dataToStore
 	
 	var varsToGroup = []
 	$.each(inputArray[0], function(key, value) {
@@ -209,8 +194,6 @@ var checkReady = function(){
 }
 
 
-
-
 localData = {
 	pageData : pageData
 }
@@ -221,7 +204,9 @@ var evaluate = function(localData, dataDef){
 	if(DataLib.getType(dataDef) != "object"){
 		var arr = dataDef.split(".")
 		switch(arr.length){
-			case 1 : return localData[arr[0]]
+			case 1 : 
+				console.log(localData.dataToStore[arr[0]])
+				return localData.dataToStore[arr[0]]
 			case 2 : return  localData[arr[0]][arr[1]]
 		}
 		
@@ -252,5 +237,6 @@ testArray[2] = generateArray(queryDef3)
 testArray[3] = generateArray(extractionDef)
 testArray[4] = generateArray(groupDef)
 
+console.log(testArray)
 prepareLocalData(testArray[0], 0, localData)
 

@@ -50,8 +50,6 @@ pageData.partlySymmetricBones = {
 }
 
 
-
-
 pageData.skeletalDivision = {
 		
 	uri : "http://purl.obolibrary.org/obo/FMA_46565",
@@ -60,10 +58,9 @@ pageData.skeletalDivision = {
 
 queryDef1 = {
 		
-	object : "pageData.skeletalDivision",
+	object : "pageData.skeletalDivision.boneDivisions",
 	operation : {
 		type : "query",
-		variable : "boneDivisions",
 		queryType : "systemicPartsWithout",
 		parameters : [
 			{
@@ -75,11 +72,9 @@ queryDef1 = {
 }
 
 queryDef2 = {
-		
-		object : "pageData.skeletalDivision.boneDivisions",
+		object : "pageData.skeletalDivision.boneDivisions.systemicParts",
 		operation : {
 			type : "query",
-			variable : "systemicParts",
 			queryType : "systemicPartsWithout",
 			parameters : [
 				{
@@ -92,10 +87,9 @@ queryDef2 = {
 
 queryDef3 = {
 		
-		object : "pageData.skeletalDivision.boneDivisions",
+		object : "pageData.skeletalDivision.boneDivisions.symmetricBones",
 		operation : {
 			type : "query",
-			variable : "symmetricBones",
 			queryType : "subClasses",
 			parameters : [
 				{
@@ -122,10 +116,9 @@ queryDef3 = {
 
 extractionDef = {
 		
-	object : "pageData.skeletalDivision.boneDivisions",
+	object : "pageData.skeletalDivision.boneDivisions.systemicParts",
 	operation : {
 		type : "extraction",
-		from : "boneDivisions.systemicParts",
 		fromBy : "uri",
 		what : "boneDivisions.symmetricBones",
 		whatBy : "uri",
@@ -133,10 +126,8 @@ extractionDef = {
 }
 
 groupDef = {
-		
-		object : "pageData.skeletalDivision.boneDivisions",
+		object : "pageData.skeletalDivision.boneDivisions.symmetricBones",
 		operation : {
-			input : "boneDivisions.symmetricBones",
 			type : "group",
 			by : "inputClass",
 			within :["inputClassLabel"],
@@ -160,35 +151,17 @@ var generateArray = function(def){
 	
 	var varArr =  def.object.split(".")
 	var array = []
-	$.each(varArr, function(index, arr){
-
+	$.each(varArr, function(index, variable){
 		var a = new Object()
-		a.of = arr
+		a.of = variable
 		a.key = varArr[index + 1]
-		if(index  ==  varArr.length - 1){
-			switch(def.operation.type){
-			
-			case "extraction" :
-				if(def.operation.toNewVariable != undefined){
-					a.key = def.operation.toNewVariable
-				} else {
-					a.key = def.operation.from	
-				}
-			break
-			case "query" :
-				a.key = def.operation.variable	
-				if(def.operation.singleData != undefined){
-					a.type = "object"
-				} else {
-					a.type = "array"
-				}
-				break
-			case "group" :
-				a.key = def.operation.input	
-				break
-			}
-		}
-		a.operation = def.operation
+		if(index  ==  varArr.length - 2){
+			//The last object in the row
+			a.operation = def.operation
+			a.type = "array"
+			array.push(a)
+			return false
+		} 
 		array.push(a)
 	})
 	return array
