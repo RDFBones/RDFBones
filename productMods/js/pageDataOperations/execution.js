@@ -1,24 +1,4 @@
 
-var generateArray = function(def){
-	
-	var varArr =  def.object.split(".")
-	var array = []
-	$.each(varArr, function(index, variable){
-		var a = new Object()
-		a.of = variable
-		a.key = varArr[index + 1]
-		if(index  ==  varArr.length - 2){
-			//The last object in the row
-			a.operation = def.operation
-			a.type = "array"
-			array.push(a)
-			return false
-		} 
-		array.push(a)
-	})
-	return array
-}
-
 var prepareLocalData = function(dataQueue, level, localData) {
 
 	if(dataQueue[level].operation != undefined){
@@ -139,6 +119,10 @@ var extract = function(dataOperation, localData){
 	checkReady()
 }
 
+var merge = function(process, localData){
+	$.merge(localData.dataToStore, evalute(localData, process.what))
+}
+
 var group = function(process, localData) {
 
 	var arr = []
@@ -254,8 +238,9 @@ var testArray = []
 testArray[0] = generateArray(queryDef1)
 testArray[1] = generateArray(queryDef2)
 testArray[2] = generateArray(queryDef3)
-testArray[3] = generateArray(extractionDef)
-testArray[4] = generateArray(groupDef)
+testArray[3] = generateArray(queryDef4)
+testArray[4] = generateArray(extractionDef)
+testArray[5] = generateArray(groupDef)
 
 console.log(testArray)
 prepareLocalData(testArray[0], 0, localData)

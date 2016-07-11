@@ -33,6 +33,7 @@ import edu.cornell.mannlib.vitro.webapp.beans.DataPropertyStatementImpl;
 import edu.cornell.mannlib.vitro.webapp.beans.ObjectPropertyStatementImpl;
 import edu.cornell.mannlib.vitro.webapp.config.AddCoherentBoneRegion;
 import edu.cornell.mannlib.vitro.webapp.config.AddSingleBone;
+import edu.cornell.mannlib.vitro.webapp.config.AddSkeletalRegion;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.controller.ajax.VitroAjaxController;
 import edu.cornell.mannlib.vitro.webapp.dao.DataPropertyStatementDao;
@@ -97,6 +98,9 @@ public class DataInput extends VitroAjaxController {
               break;
           case "addSingleBoneRegion" :
               tripleToStore = AddSingleBone.getTriples();
+              break; 
+          case "addSkeletalRegion" :
+              tripleToStore = AddSkeletalRegion.getTriples();
               break;
           default : break;
           }
