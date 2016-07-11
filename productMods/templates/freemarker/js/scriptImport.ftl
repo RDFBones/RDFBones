@@ -15,11 +15,8 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/lib/debug/TripleDebug.js"></script>')}
 
 ${scripts.add(
-	'<script type="text/javascript" src="${urls.base}/js/UIModules/coherentBoneEntryForm/SymmetricBoneOrganSelector.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/coherentBoneEntryForm/SystemicPartAdder.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/coherentBoneEntryForm/BoneOrganField.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/UIModules/coherentBoneEntryForm/SystemicPartSelector.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/UIModules/coherentBoneEntryForm/PartlySymmetricSystemicPartSelector.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/coherentBoneEntryForm/BoneDivisionEditor.js"></script>')}
 
 ${scripts.add(
