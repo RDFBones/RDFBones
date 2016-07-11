@@ -71,7 +71,6 @@ select {
 	display: inline-block;
 	border: 1px solid black;
 	border-radius: 3px;
-	padding: 2px 5px;
 	background-color: #9D9696;
 }
 
@@ -163,4 +162,12 @@ select {
 #pageContent{
 	width : 900px;
 	display : table;	
+}
+
+.inlineContainer {
+	display: inline-block;
+}
+
+.inlineContainer >  * {
+   display: inline-block;
 }

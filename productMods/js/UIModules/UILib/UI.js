@@ -1,8 +1,6 @@
 var UI = {
 		
-		
 	assemble : function(mainContainer, containers, order){
-		
 		
 		var containerBuffer = []
 		containerBuffer[0] = mainContainer
@@ -179,5 +177,13 @@ var UI = {
 	
 	waitBar : function(){
 		
-	}
+	},
+	
+	inlineCont : function(){
+		return html.div("inlineContainer")
+	},
+	
+	inlineCont : function(_class){
+		return html.div("inlineContainer " + _class)
+	}	
 }

@@ -16,7 +16,7 @@ pageData.skeletalDivision = {
 			    	label : "hyioidbone1",
 			     	uri : "123456",
 			     	type : 'http://purl.obolibrary.org/obo/FMA_52749',
-			     	completeness : "123sdkdl",
+			     	completeness : "http://w3id.org/rdfbones/core#partlyPresent",
 			       }
 			 ], 
 		},
@@ -45,11 +45,9 @@ pageData.skeletalDivision = {
 			label : 'Mandible',
 			uri : 'http://purl.obolibrary.org/obo/FMA_52748',
 		}, {
-
 			label : 'Vomer',
 			uri : 'http://purl.obolibrary.org/obo/FMA_9710',
 		}, {
-
 			label : 'Sphenoid bone',
 			uri : 'http://purl.obolibrary.org/obo/FMA_52736',
 		}, {
@@ -230,3 +228,7 @@ pageData.skeletalDivision = {
 
 	],
 }
+
+pageData.pageElements = []
+pageData.queries = []
+

@@ -37,3 +37,11 @@
 	float : left;
 	margin : 5px;
 }
+
+.subContainer {
+	padding-left : 20px;
+}
+
+.titleContainer1 {
+	border-bottom : 1px solid;
+}
