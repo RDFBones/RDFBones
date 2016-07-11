@@ -123,7 +123,7 @@ var CoherentSkeletalRegion = function(parent, parentData, descriptor) {
 }
 
 
-CoherentSkeletalRegion.prototypeObject.create(SkeletalRegion.prototype)
+CoherentSkeletalRegion.prototype = Object.create(SkeletalRegion.prototype)
 
 $.extend(CoherentSkeletalRegion.prototype = {
 
@@ -185,8 +185,7 @@ var BoneDivisionEditor = function() {
 }
 
 BoneDivisionEditor.prototype = Object.create(SubBoneDivisionEditor.prototype)
-$
-		.extend(
+$.extend(
 				BoneDivisionEditor.prototype,
 				{
 
