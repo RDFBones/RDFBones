@@ -1,4 +1,24 @@
 
+var generateArray = function(def){
+	
+	var varArr =  def.object.split(".")
+	var array = []
+	$.each(varArr, function(index, variable){
+		var a = new Object()
+		a.of = variable
+		a.key = varArr[index + 1]
+		if(index  ==  varArr.length - 2){
+			//The last object in the row
+			a.operation = def.operation
+			a.type = "array"
+			array.push(a)
+			return false
+		} 
+		array.push(a)
+	})
+	return array
+}
+
 var prepareLocalData = function(dataQueue, level, localData) {
 
 	if(dataQueue[level].operation != undefined){
