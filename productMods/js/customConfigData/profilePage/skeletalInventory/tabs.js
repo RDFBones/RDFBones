@@ -1,6 +1,7 @@
 pageData.individual = "http://testIndividual"
 
 
+	
 coherentTabContainer = {
 	type : sw.tabContainer,
 	tabs : [ skullTab, shoulderGridleTab, upperLimbTab, vertebralColumnTab,
@@ -9,7 +10,7 @@ coherentTabContainer = {
 
 coherentTab = {
 		type : sw.tab,
-		tabTitle : "Coherent Bone Regions",
+		tabTitle : "Coherent Skeletal Regions",
 		elements : [ coherentTabContainer ]
 	}
 
@@ -26,7 +27,7 @@ singleTab = {
 
 skeletalDivision = {
 		type : sw.tab,
-		tabTitle : "Skeletal  Division",
+		tabTitle : "Skeletal Subdivision",
 		elements : skeletalRegionElements,
 	}
 
