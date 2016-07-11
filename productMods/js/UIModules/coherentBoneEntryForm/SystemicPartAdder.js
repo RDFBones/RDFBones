@@ -1,10 +1,11 @@
 
 
 
-var SystemicPartAdder = function(parent, existingBoneOrgans, dataToStore, dataSet){
+var SystemicPartAdder = function(parent, dataToStore, dataSet){
 	
 	this.parent = parent
-	this.existingBoneOrgans = existingBoneOrgans
+	
+	
 	this.dataToStore = dataToStore
 	//This defines the class structure
 	this.dataSet = dataSet
@@ -22,19 +23,32 @@ var SystemicPartAdder = function(parent, existingBoneOrgans, dataToStore, dataSe
 	this.singleSelect = true
 	
 	this.container = html.div()
-	this.selectorContainer = html.div()
+	this.selectorContainer = html.div("inlineContainer")
 	this.selectedContainer = html.div()
 	this.title = html.div("inline").text(this.dataSet.label)
 	this.addButton = new Button("add", (this.checkAdding).bind(this))
-	
+	this.list = new Button("list", (this.selectExisting).bind(this)).hide()
 	this.setSelectorField()
-	this.initSelected()
+	this.checkExisting()
+	this.checkOfferExisting()
 	this.assemble()
 }
 
 
 SystemicPartAdder.prototype = {
 		
+
+	assemble : function(){
+		UI.assemble(this.container, [
+         			this.selectorContainer,
+         				this.title,
+         				this.selector,
+         				this.addButton.container,
+         				this.list.container, 
+         			this.selectedContainer],
+         			[0, 1, 1, 1, 1, 0])
+	},
+	
 	setSelectorField : function(){
 		
 		if(this.dataSet.subClasses != undefined){
@@ -43,11 +57,11 @@ SystemicPartAdder.prototype = {
 			 * Here we assemble the selector 
 			 */
 			this.arr = this.dataSet.subClasses.slice()
-			var object = {
+			this.object = {
 				uri : this.dataSet.uri,
 				label : this.dataSet.label,
 			}
-			this.arr.unshift(object)	
+			this.arr.unshift(this.object)	
 			this.selector = UI.classSelector(this.arr)
 			this.max = this.dataSet.subClasses.length
 		} else {
@@ -55,45 +69,66 @@ SystemicPartAdder.prototype = {
 		}
 	},
 	
-	assemble : function(){
-		UI.assemble(this.container, [
-         			this.selectorContainer,
-         				this.title,
-         				this.selector,
-         				this.addButton.container,
-         			this.selectedContainer],
-         			[0, 1, 1, 1, 0])
-	},
-	
-	initSelected : function(){
+	checkExisting : function(){
 		
-		if(this.existingBoneOrgans != undefined){
-			if(this.existingBoneOrgans.length != 0){
-				//Check if it is selectable or constant bone organ
-				buf = []
-				//Always check the main
-				var match = this.existingBoneOrgans.getObjectByKey("type", this.dataSet.uri)
-				if(match != null){
+		if(this.parent.descriptor.existing != undefined){
+
+			this.existingBoneOrgans = []
+			if(this.singleSelect){
+				var obj = this.parent.descriptor.existing.systemicParts.getObjectByKey("uri", this.dataSet.uri)
+				if(obj != null){
+					this.existingBoneOrgans.push(obj)
 					this.addExistingSystemicPart(match)
-					if(this.singleSelect){
-						this.selectorContainer.hide()
-					}
+					this.selectorContainer.hide()
+				}	
+			} else {
+				var obj = this.parent.descriptor.existing.systemicParts.getObjectByKey("uri", this.dataSet.uri)
+				if(obj != null){
+					this.existingBoneOrgans.push(obj)
+					this.addExistingSystemicPart(match)
 				}
 				
-				if(this.dataSet.subClasses != undefined){
-					object = DataLib.joinTables(this.existingBoneOrgans, "type", this.dataSet.subClasses, "uri")
-					//Fill the existing part array
-					$.each(object, (function(i, obj){
-						this.addedSubClasses.push(obj.type)
-						this.addExistingSystemicPart(obj)
-					}).bind(this))
-				}
-				this.selectedContainer.append(buf)
+				object = DataLib.joinTables(
+						this.parent.descriptor.existing.systemicParts, "type",
+						this.dataSet.subClasses, "uri")
+				//Fill the existing part array
+				$.each(object, (function(i, obj){
+					this.addedSubClasses.push(obj.type)
+					this.addExistingSystemicPart(obj)
+				}).bind(this))				
 			}
 		}
 	},
 	
-	checkAdding : function(){
+
+	checkOfferExisting : function(){
+		
+		if(this.parent.descriptor.existingToSelect != undefined){
+			
+			if(this.singleSelect){
+				tmp = []
+				tmp.push(this.dataSet)
+				this.dataToOffer = DataLib.joinTables(this.parent.descriptor.existingToSelect, "type", tmp, "uri")
+			} else {
+				this.dataToOffer = DataLib.joinTables(this.parent.descriptor.existingToSelect, "type", this.arr, "uri")
+			}
+			if(this.dataToOffer.length > 0){
+				this.list.show()
+			}
+		} 
+	},
+	
+	addAll : function(){
+		
+		if(this.singleSelect){
+			checkAdding(true)
+		} else {
+			this.selector.val(this.object.uri)
+			checkAdding(true)
+		}
+	},
+	
+	checkAdding : function(without){
 		
 		if(this.singleSelect){
 			this.addSystemicPart(this.dataSet)
@@ -102,12 +137,18 @@ SystemicPartAdder.prototype = {
 			//Check the number of element
 			val = this.selector.val()
 			if(this.cnt == this.max){
-				alert("You are allowed to add maximal " + this.cnt + " bone organs!")
+				if(without === undefined){
+					alert("You are allowed to add maximal " + this.cnt + " bone organs!")
+				}
 			} else if  (this.addedSubClasses.indexOf(val) != -1){
-				alert("You are allowed to add only one from this bone organ!")
+				if(without === undefined){
+					alert("You are allowed to add only one from this bone organ!")
+				}
 			} else {
 				if(val != this.dataSet.uri){
-					console.log(this.addedSubClasses)
+					if(without === undefined){
+						console.log(this.addedSubClasses)
+					}
 					this.addedSubClasses.push(val)
 				}
 				this.addSystemicPart(this.arr.getObjectByKey("uri", val))
@@ -145,6 +186,12 @@ SystemicPartAdder.prototype = {
 		this.selectedContainer.append(new BoneOrganField(this, object, this.dataToStore).container)
 		this.parent.refresh()
 	},	
+	
+	
+	selectExisting : function(){
+		console.log(this.dataToOffer)
+	}
+	
 }
 
 var SingleBoneOrganAdder = function(){
