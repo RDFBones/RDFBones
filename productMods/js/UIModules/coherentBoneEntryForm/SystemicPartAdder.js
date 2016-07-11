@@ -1,5 +1,6 @@
 
 
+
 var SystemicPartAdder = function(parent, existingBoneOrgans, dataToStore, dataSet){
 	
 	this.parent = parent
@@ -8,6 +9,13 @@ var SystemicPartAdder = function(parent, existingBoneOrgans, dataToStore, dataSe
 	//This defines the class structure
 	this.dataSet = dataSet
 
+	
+	/*
+	 * The dataSet input parameter can have a existingToSelect field as well
+	 * We care about later.
+	 */
+	
+	this.notAdded = true
 	//Counter
 	this.cnt = 0
 	this.addedSubClasses = []
@@ -26,7 +34,6 @@ var SystemicPartAdder = function(parent, existingBoneOrgans, dataToStore, dataSe
 
 
 SystemicPartAdder.prototype = {
-		
 		
 	setSelectorField : function(){
 		
@@ -68,6 +75,9 @@ SystemicPartAdder.prototype = {
 				var match = this.existingBoneOrgans.getObjectByKey("type", this.dataSet.uri)
 				if(match != null){
 					this.addExistingSystemicPart(match)
+					if(this.singleSelect){
+						this.selectorContainer.hide()
+					}
 				}
 				
 				if(this.dataSet.subClasses != undefined){

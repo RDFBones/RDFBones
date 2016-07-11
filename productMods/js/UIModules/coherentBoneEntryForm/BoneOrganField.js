@@ -75,7 +75,6 @@ ExistingBoneOrganField.prototype.getCompletenessSelector = function() {
 		label : this.dataSet.completenessLabel,
 		uri : "doesNotMatter",
 	}]
-	console.log(obj)
 	return new DataSetterSelectorField(obj, null, "uri")
 }
 
