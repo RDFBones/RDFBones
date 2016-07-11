@@ -53,7 +53,13 @@ pageData.pageElements = [
 				type : sw.global,
 				key : "boneDivision",
 				varName : "individual",
-			},
+			}, {
+				type : sw.global,
+  				key : "skeletalInventory",
+			},{
+				type : sw.global,
+				key : "classUri",
+			}
 	   ],
 	   mapping : "pageLoader"
     },

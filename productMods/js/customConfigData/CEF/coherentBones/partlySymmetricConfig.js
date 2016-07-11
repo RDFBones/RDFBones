@@ -1,6 +1,6 @@
 pageData.pageElements = [ {
 	type : sw.customPage,
-	pageLoader : SystemicPartSelector,
+	pageLoader : BoneDivisionEditor,
 } ]
 
 pageData.queries = [
@@ -49,14 +49,14 @@ pageData.queries = [
 	parameters : [ {
 		type : sw.constant,
 		key : "queryType",
-		value : "existingBoneOrgan"
+		value : "boneOrgans"
 	}, {
 		type : sw.global,
 		key : "existingBoneDivision",
 		varName : "boneDivision"
 	}, ],
 	mapping : "dataLoader",
-	toVariable : "systemicParts",
+	toVariable : "existingBoneOrgans",
 	
 	requirement : {
 		type : sw.existence,

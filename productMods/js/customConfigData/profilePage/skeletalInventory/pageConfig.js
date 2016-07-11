@@ -24,9 +24,15 @@ singleTab = {
 	elements : [singleTabContainer]
 }
 
+skeletalDivision = {
+		type : sw.tab,
+		tabTitle : "Skeletal  Division",
+		elements : skeletalRegionElements,
+	}
+
 tabContainer = {
 	type : sw.tabContainer,
-	tabs : [ coherentTab, singleTab ],
+	tabs : [skeletalDivision, coherentTab, singleTab ],
 }
 
 pageData.pageElements = [ tabContainer ]

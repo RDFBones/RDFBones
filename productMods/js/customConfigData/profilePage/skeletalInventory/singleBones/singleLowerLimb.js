@@ -8,6 +8,10 @@ singlePhalanx = {
 		key : "boneLabel",
 	}, {
 		type : sw.constant,
+		value : "someThingDifferent",
+		key : "pageUri",
+	},{
+		type : sw.constant,
 		value : "singlePhalanx",
 		key : "dataKey",
 	} ],
@@ -22,6 +26,10 @@ singleTarsal = {
 		type : sw.constant,
 		value : "Tarsal Bones",
 		key : "boneLabel",
+	},{
+		type : sw.constant,
+		value : "symmetricSingleBone",
+		key : "pageUri",
 	}, {
 		type : sw.constant,
 		value : "singleTarsal",
@@ -38,6 +46,14 @@ singleMetaTarsal = {
 		type : sw.constant,
 		value : "Metatarsal Bones",
 		key : "boneLabel",
+	},{
+		type : sw.constant,
+		value : "symmetricSingleBone",
+		key : "pageUri",
+	},{
+		type : sw.constant,
+		value : "http://purl.obolibrary.org/obo/FMA_71340",
+		key : "classUri",
 	}, {
 		type : sw.constant,
 		value : "singleMetaTarsal",
@@ -53,8 +69,6 @@ pageData.lowerLimbSkeletonClasses = [
             "http://purl.obolibrary.org/obo/FMA_24476", //Tibia
             "http://purl.obolibrary.org/obo/FMA_24479" //Fibula
             ]
-
-
 
 singleLowerLimbSkeleton = {
 		type : sw.container,

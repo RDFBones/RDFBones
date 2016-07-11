@@ -114,6 +114,27 @@ queryDef3 = {
 		}
 }
 
+queryDef4 = {
+		
+		object : "pageData.skeletalDivision.boneDivisions.existing",
+		operation : {
+			type : "query",
+			queryType : "filteredCoherentBones",
+			parameters : [
+				{
+					name : "boneDivisionType",
+					value : "boneDivisions.uri"
+				}, {
+					name : "skeletalInventory",
+					value : {
+						type : sw.constant,
+						value : "http://testIndividual",
+					}
+				}
+			],
+		}
+}
+
 extractionDef = {
 		
 	object : "pageData.skeletalDivision.boneDivisions.systemicParts",
@@ -124,6 +145,26 @@ extractionDef = {
 		whatBy : "uri",
 	}
 }
+
+groupDef = {
+		object : "pageData.skeletalDivision.boneDivisions.existing",
+		operation : {
+			type : "group",
+			by : "boneDivision",
+			within :["boneDivisionLabel"],
+			to : "systemicParts",
+			rename : [
+			 {
+				 key : "boneDivision",
+				 to : "uri",
+			 }, {
+				key : "boneDivisionLabel",
+				to : "label",
+			 }
+			]
+		}
+	}
+
 
 groupDef = {
 		object : "pageData.skeletalDivision.boneDivisions.symmetricBones",
@@ -143,6 +184,16 @@ groupDef = {
 			]
 		}
 	}
+
+mergeDefinition = {
+		
+		object : "pageData.skeletalDivision.boneDivisions.systemicParts",
+		operation : {
+			type : "merge",
+			what : "boneDivisions.symmetricBones"
+		}
+	}
+
 
 //From the above defined dataSet, we have to generate the following array 
 //for the operation

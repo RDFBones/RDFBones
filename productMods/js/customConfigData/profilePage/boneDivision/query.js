@@ -7,4 +7,4 @@ pageData.queries = [
 			mapping : "dataLoader",
 			toVariable : "boneOrgans",
 		}
-	]
+		]

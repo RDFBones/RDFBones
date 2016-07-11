@@ -16,7 +16,7 @@ pageData.pageElements = [
 		   value : "Test Inventory"
 	   },
 	   linkDataInputs : [
-	        {
+		   {
 				type : sw.constant,
 				key : "pageUri",
 				value : "skeletalInventory",
@@ -143,3 +143,4 @@ pageData.pageElements = [
 		mapping : "delete",
 	} ]
 } ]
+

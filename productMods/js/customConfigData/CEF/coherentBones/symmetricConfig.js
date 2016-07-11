@@ -1,6 +1,6 @@
 pageData.pageElements = [ {
 	type : sw.customPage,
-	pageLoader : SymmetricClassSelector,
+	pageLoader : SymmetricBoneDivisionEditor,
 } ]
 
 pageData.queries = [ {
@@ -10,7 +10,7 @@ pageData.queries = [ {
 		key : "classUri"
 	}, {
 		type : sw.constant,
-		value : " ",
+		value : "systemicParts",
 		varName : "queryType"
 	} ],
 	mapping : "anatomicalModelLoader",
@@ -119,5 +119,5 @@ pageData.dataOperations = [
 }, {
 	type : "mergeArrays",
 	arrays : [ "boneDivisions1", "boneDivisions2" ],
-	output : "boneDivisions"
+	output : "systemicParts"
 } ]

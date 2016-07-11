@@ -44,6 +44,7 @@ carpalbones = {
 	type : sw.container,
 
 	localData : [
+	      	   symmetricBoneSegment ,
 
 	{
 
