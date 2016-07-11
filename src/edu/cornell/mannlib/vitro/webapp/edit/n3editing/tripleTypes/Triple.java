@@ -28,23 +28,29 @@ public class Triple {
   public String newVarName;
   public String fixUri;
   public boolean inverse;
-  public boolean fromObject;
+  
+  public String from;
+  //public boolean fromObject;
+  //public boolean fromBoth;
 
   public Triple(String subject, String predicate, String object) {
     this.subject = subject;
     this.predicate = predicate;
     this.object = object;
-    this.fromObject = false;
     this.newVarName = this.object;
   }
 
   public Triple(String subject, String predicate, String object,
-      boolean fromObject) {
+      String from) {
     this.subject = subject;
     this.predicate = predicate;
     this.object = object;
-    this.fromObject = fromObject;
-    this.newVarName = this.subject;
+    this.from = from;
+    if(this.from.equals("subject")){
+      this.newVarName = this.object;
+    } else { 
+      this.newVarName = this.subject;
+    }
   }
 
   public List<Triple> getTripleToCreate() {
@@ -58,19 +64,27 @@ public class Triple {
     /*
      * Key is the starting variable to the triple
      */
-    if (this.fromObject) {
-      if (key.equals(this.object)) {
+    
+    switch(this.from){
+    
+    case "all" :
         return true;
-      } else {
+    case "object" :
+        if (key.equals(this.object)) {
+          return true;
+        } else {
+          return false;
+        }
+    case "subject":
+        if (key.equals(this.subject)) {
+          return true;
+        } else {
+          return false;
+        }
+     default :
         return false;
-      }
-    } else {
-      if (key.equals(this.subject)) {
-        return true;
-      } else {
-        return false;
-      }
     }
+    
   }
 
   public void createTriples(TripleCreator creator, String key, JSONObject obj)
@@ -150,10 +164,16 @@ public class Triple {
       creator.createInstance(obj);
     }
 
-    if (this.fromObject) {
+    switch(this.from){
+      
+    case "object" : 
       creator.createTriple(obj.getString("uri"), this.predicate, this.fixUri);
-    } else {
+      break;
+    case "subject" :
       creator.createTriple(this.fixUri, this.predicate, obj.getString("uri"));
+      break;
+    default :
+      break;
     }
   }
   

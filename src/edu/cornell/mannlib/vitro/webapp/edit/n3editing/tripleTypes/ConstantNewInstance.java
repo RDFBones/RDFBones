@@ -13,7 +13,7 @@ public class ConstantNewInstance extends Triple{
     this.classUri = classUri;
   }
   
-  public ConstantNewInstance(String subject, String predicate, String object, String classUri, boolean fromObject) {
+  public ConstantNewInstance(String subject, String predicate, String object, String classUri, String fromObject) {
     super(subject, predicate, object, fromObject);
     // TODO Auto-generated constructor stub
     this.classUri = classUri;

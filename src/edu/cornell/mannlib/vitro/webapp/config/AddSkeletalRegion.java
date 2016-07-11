@@ -1,4 +1,3 @@
-
 package edu.cornell.mannlib.vitro.webapp.config;
 
 import java.util.ArrayList;
@@ -11,12 +10,16 @@ import org.json.JSONObject;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.dataOperation.SPARQLQuery;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.tripleTypes.*;
 
-public class AddSingleBone {
+public class AddSkeletalRegion {
 
   public static List<Triple> getTriples() {
 
     List<Triple> triples = new ArrayList<Triple>();
 
+    triples.add(new Triple("boneDivision", "obo:systemic_part_of",
+        "skeletalDivision", "object"));
+    triples.add(new Triple("boneOrgan", "obo:systemic_part_of",
+        "boneDivision", "object"));
     triples.add(new ConstantNewInstance("boneSegment", "obo:regional_part_of",
         "boneOrgan", "http://w3id.org/rdfbones/core#EntireBone", "object"));
     triples.add(new ConstantNewInstance("completeness",
@@ -28,7 +31,8 @@ public class AddSingleBone {
         "http://purl.obolibrary.org/obo/BFO_0000051", "completeness", "object"));
     return triples;
   }
-
+  
+  
   public static JSONObject createTestJSON() throws JSONException {
 
     JSONObject arrived = new JSONObject();

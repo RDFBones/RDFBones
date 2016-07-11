@@ -17,11 +17,10 @@ public class QueryDependentNewInstance extends ConstantNewInstance {
   }
 
   public QueryDependentNewInstance(String subject, String predicate,
-      String object, SPARQLQuery query, boolean fromSubject) {
-      super(subject, predicate, object, "null", fromSubject);
+      String object, SPARQLQuery query, String from) {
+      super(subject, predicate, object, "null", from);
       this.queryToGetVar = query;
   }
-
   
   public SPARQLQuery queryToGetVar;
   
