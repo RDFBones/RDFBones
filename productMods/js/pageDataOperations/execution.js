@@ -1,3 +1,23 @@
+var generateArray = function(def){
+	
+	var varArr =  def.object.split(".")
+	var array = []
+	$.each(varArr, function(index, variable){
+		var a = new Object()
+		a.of = variable
+		a.key = varArr[index + 1]
+		if(index  ==  varArr.length - 2){
+			//The last object in the row
+			a.operation = def.operation
+			a.type = "array"
+			array.push(a)
+			return false
+		} 
+		array.push(a)
+	})
+	return array
+}
+
 
 var prepareLocalData = function(dataQueue, level, localData) {
 
@@ -48,6 +68,9 @@ var PerformOperation = function(dataQueue, level, localData) {
 		case "group" :
 			group(dataOperation, localData)
 			break;			
+		case "merge" :
+			merge(dataOperation, localData)
+			break;
 	}	
 }
 
@@ -120,7 +143,8 @@ var extract = function(dataOperation, localData){
 }
 
 var merge = function(process, localData){
-	$.merge(localData.dataToStore, evalute(localData, process.what))
+	$.merge(localData.dataToStore, evaluate(localData, process.what))
+	checkReady()
 }
 
 var group = function(process, localData) {
@@ -176,6 +200,7 @@ var group = function(process, localData) {
 		}
 		inputArray.push(value)
 	})	
+	checkReady()
 }
 
 
@@ -193,6 +218,8 @@ var checkReady = function(){
 		opCounter++ 
 		if(opCounter < testArray.length){
 			prepareLocalData(testArray[opCounter], 0, localData)	
+		} else {
+			$("#pageContent").append(new SkeletalRegion().container)
 		}
 	}
 }
@@ -238,10 +265,10 @@ var testArray = []
 testArray[0] = generateArray(queryDef1)
 testArray[1] = generateArray(queryDef2)
 testArray[2] = generateArray(queryDef3)
-testArray[3] = generateArray(queryDef4)
-testArray[4] = generateArray(extractionDef)
-testArray[5] = generateArray(groupDef)
+testArray[3] = generateArray(extractionDef)
+testArray[4] = generateArray(groupDef)
+testArray[5] = generateArray(mergeDefinition)
 
 console.log(testArray)
-prepareLocalData(testArray[0], 0, localData)
+//prepareLocalData(testArray[0], 0, localData)
 
