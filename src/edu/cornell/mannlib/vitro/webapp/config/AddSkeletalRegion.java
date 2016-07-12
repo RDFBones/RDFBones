@@ -16,10 +16,10 @@ public class AddSkeletalRegion {
 
     List<Triple> triples = new ArrayList<Triple>();
 
-    triples.add(new Triple("boneDivision", "obo:systemic_part_of",
-        "skeletalDivision", "object"));
+    triples.add(new Triple("coherentSkeletalDivision", "obo:systemic_part_of",
+        "skeletalSubdivision", "object"));
     triples.add(new Triple("boneOrgan", "obo:systemic_part_of",
-        "boneDivision", "object"));
+        "coherentSkeletalDivision", "object"));
     triples.add(new ConstantNewInstance("boneSegment", "obo:regional_part_of",
         "boneOrgan", "http://w3id.org/rdfbones/core#EntireBone", "object"));
     triples.add(new ConstantNewInstance("completeness",
