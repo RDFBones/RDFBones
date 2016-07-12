@@ -90,7 +90,13 @@ var performQuery = function(dataOperation, localData){
 	data.queryType = dataOperation.queryType
 	
 	if(array == null){
-		sendQuery(data, localData.dataToStore)
+		
+		if(dataOperation.singleQuery != undefined){
+			sendSingleQuery(data, localData.dataToStore)
+		} else {
+			sendQuery(data, localData.dataToStore)
+		}		
+		
 	} else {
 		$.each(array, function(i, value){
 			data[arrayParameterName] = value
@@ -107,6 +113,18 @@ var sendQuery = function(data, dataToStore){
 		data : data,
 	}).done(function(result){
 		$.merge(dataToStore, result)
+		checkReady()
+	})
+}
+
+var sendSingleQuery = function(data, dataToStore){
+	
+	$.ajax({
+		dataType : "json",
+		url : baseUrl + "dataLoader",
+		data : data,
+	}).done(function(result){
+		dataToStore = result[0].object
 		checkReady()
 	})
 }
@@ -268,7 +286,9 @@ testArray[2] = generateArray(queryDef3)
 testArray[3] = generateArray(extractionDef)
 testArray[4] = generateArray(groupDef)
 testArray[5] = generateArray(mergeDefinition)
+testArray[6] = generateArray(labelQuery)
+
 
 console.log(testArray)
-//prepareLocalData(testArray[0], 0, localData)
+prepareLocalData(testArray[0], 0, localData)
 

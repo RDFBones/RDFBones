@@ -3,12 +3,12 @@ pageData.skeletalDivision = {
 
 	uri : 'http://purl.obolibrary.org/obo/FMA_46565',
 	label : 'Skull',
-	systemicParts : [ {
+	boneDivisions : [ {
 		
 		label : 'Viscerocranium',
 		uri : 'http://purl.obolibrary.org/obo/FMA_53673',
+		/*
 		existing : {
-			
 			  label : "viscerocranium1",
 			  uri : "123456",
 			  systemicParts : [
@@ -16,27 +16,24 @@ pageData.skeletalDivision = {
 			    	label : "hyioidbone1",
 			     	uri : "123456",
 			     	type : 'http://purl.obolibrary.org/obo/FMA_52749',
-			     	completeness : "http://w3id.org/rdfbones/core#partlyPresent",
+			     	comp2State : "http://w3id.org/rdfbones/core#partlyPresent",
+			     	
 			       }
 			 ], 
 		},
-		
+		*/
 		//This is not considered if we have existing
-		existingToAdd : [
-		                 
+		existingToSelect : [
+		   {
+				type : "http://purl.obolibrary.org/obo/FMA_52740",
+				uri : "123545",
+				label : "Ethomid",
+		   }             
 		],
 		
 		systemicParts : [ {
-
 			label : 'Hyoid bone',
 			uri : 'http://purl.obolibrary.org/obo/FMA_52749',
-			existingToAdd : [
-	     			{
-	     				type : "http://purl.obolibrary.org/obo/FMA_52740",
-	     				uri : "123545",
-	     				label : "Ethomid",
-	     			}
-	     		],
 		}, {
 
 			label : 'Ethmoid',
@@ -156,38 +153,11 @@ pageData.skeletalDivision = {
 			label : 'Zygomatic bone',
 			uri : 'http://purl.obolibrary.org/obo/FMA_52747',
 		},
-
 		],
 	}, {
 
 		label : 'Neurocranium',
 		uri : 'http://purl.obolibrary.org/obo/FMA_53672',
-		systemicParts : [ {
-
-			label : 'Frontal bone',
-			uri : 'http://purl.obolibrary.org/obo/FMA_52734',
-		}, {
-
-			label : 'Occipital bone',
-			uri : 'http://purl.obolibrary.org/obo/FMA_52735',
-		},{
-			subClasses : [ {
-
-				label : 'Right parietal bone',
-				uri : 'http://purl.obolibrary.org/obo/FMA_52788',
-			}, {
-
-				label : 'Left parietal bone',
-				uri : 'http://purl.obolibrary.org/obo/FMA_52789',
-			},
-
-			],
-			label : 'Parietal bone',
-			uri : 'http://purl.obolibrary.org/obo/FMA_9613',
-		},
-
-		],
-		
 		existingToSelect : [
 			{
 				uri : "12345",
@@ -195,10 +165,6 @@ pageData.skeletalDivision = {
 				systemicParts : [],
 			}, 
 		], 
-	
-	},{
-		label : 'TestoCranium',
-		uri : 'http://purl.obolibrary.org/obo/FMA_53672',
 		systemicParts : [ {
 
 			label : 'Frontal bone',
@@ -222,13 +188,9 @@ pageData.skeletalDivision = {
 			label : 'Parietal bone',
 			uri : 'http://purl.obolibrary.org/obo/FMA_9613',
 		},
+
 		],
-
-	}
-
-	],
+	}],
 }
 
-pageData.pageElements = []
-pageData.queries = []
-
+$("#pageContent").append(new SkeletalRegion().container)

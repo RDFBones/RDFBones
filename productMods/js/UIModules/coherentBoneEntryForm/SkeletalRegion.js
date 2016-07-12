@@ -68,7 +68,7 @@ $.extend(SkeletalRegion.prototype, {
 				
 				var urlObject = {
 					pageUri : "boneDivision",
-					individual : msg.object.boneDivision.uri,
+					individual : msg.object.coherentSkeletalDivision.uri,
 					skeletalInventory : pageData.individual,
 					existingBoneDivisionType : pageData.existingBoneDivisionType,
 					classUri : pageData.classUri,
