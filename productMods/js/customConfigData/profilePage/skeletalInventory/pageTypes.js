@@ -1,7 +1,7 @@
 
-skeletalRegionCEF = {
+skeletalSubDivisionCEF = {
 	type : sw.constant,
-	value : "skeletalRegionCEF",
+	value : "skeletalSubdivisionCEF",
 	key : "pageUri",
 }
 
