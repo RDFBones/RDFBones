@@ -77,6 +77,10 @@ var html = {
 		return $("<input>").attr("type", "checkbox")
 	},
 	
+	checkBox : function(){
+		return $("<input>").attr("type", "checkbox")
+	},
+	
 	getTextBox : function(){
 		return $("<input>").attr("type", "text")
 	},
