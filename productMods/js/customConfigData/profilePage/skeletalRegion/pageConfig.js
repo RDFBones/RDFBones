@@ -65,15 +65,12 @@ pageData.pageElements = [
 	}, {
 		type : sw.global,
 		key : "individual",
-		varName : "existingBoneDivision",
+		varName : "existingSkeletSubdivision",
 	}, {
 		type : sw.global,
-		key : "existingBoneDivisionType",
+		key : "existingSkeletSubdivisionType",
 		varName : "classUri",
-	}, {
-		type : sw.global,
-		key : "classUri",
-	}
+	}, 
 ],
 	mapping : "pageLoader",
 	dataToDisplay : {
@@ -89,10 +86,10 @@ pageData.pageElements = [
 		}
 	}, {
 		type : sw.literalFieldMiddle,
-		title : "Completeness",
+		title : "Number of bone organs",
 		value : {
 			type : sw.local,
-			key : "completenessLabel",
+			key : "boneOrganCount",
 		}
 	}, {	
 		type : sw.editButton,

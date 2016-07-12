@@ -1,4 +1,4 @@
-skeletalRegionData = {
+skeletalSubdivisionData = {
 		
 	type : sw.dataField,
 	textValue : {
@@ -24,7 +24,7 @@ skeletalRegionData = {
 		type : sw.selectOperationResult,
 		dataToSelect : {
 			type : sw.global,
-			key : "skeletalRegions",
+			key : "skeletalSubdivision",
 		},
 		selectField : "type",
 		selectCriteria : {
@@ -41,10 +41,12 @@ skeletalRegionData = {
 		}
 	}, {
 		type : sw.literalFieldMiddle,
-		title : "Number of Bone Coherent Bone Bones",
+		title : "Number of Coherent Skeletal Regions",
 		value : {
 			type : sw.local,
-			key : "boneDivisionCount",
+			key : "coherentSkeletalRegionCount",
+			//key : "skeletalSubdivision",
+
 		}
 	}, {
 		type : sw.editButton,
@@ -55,13 +57,13 @@ skeletalRegionData = {
 		},{
 			type : sw.constant,
 			varName : "pageUri",
-			value : "skeletalDivision",
+			value : "skeletalSubdivision",
 		}, {
 			type : sw.local,
 			key : "cefPageUri",
 		}, {
 			type : sw.local,
-			key : "boneDivision",
+			key : "skeletalSubdivision",
 			varName : "individual",
 		}, {
 			type : sw.local,

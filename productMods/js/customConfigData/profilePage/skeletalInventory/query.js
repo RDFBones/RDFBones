@@ -77,4 +77,20 @@ coherentQuery = [ {
 	toVariable : "coherentBones",
 } ]
 
-pageData.queries = coherentQuery.concat(singleQuery)
+
+skeletalSubDivisionQuery = [ {
+	parameters : [ {
+		type : sw.constant,
+		varName : "queryType",
+		value : "skeletalSubdivision"
+	}, {
+		type : sw.global,
+		varName : "skeletalInventory",
+		key : "individual"
+	}, ],
+	mapping : "dataLoader",
+	toVariable : "skeletalSubdivision",
+} ]
+
+
+pageData.queries = coherentQuery.concat(singleQuery).concat(skeletalSubDivisionQuery)

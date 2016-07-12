@@ -6,7 +6,7 @@ skeletalRegionElements = [
 	{
 		type : sw.container,
 		localData : [
-		        skeletalRegionCEF, 
+		        skeletalSubDivisionCEF, 
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_46565",
@@ -19,12 +19,16 @@ skeletalRegionElements = [
 					type : sw.constant,
 					value : ["http://purl.obolibrary.org/obo/FMA_46565"],
 					key : "classSelection"
-				} ],
-		elements : [ skeletalRegionData]
+				}, {
+					type : sw.constant,
+					value : "skeletalSubdivisionCEF",
+					key : "cefPageUri",
+				}],
+		elements : [ skeletalSubdivisionData]
 	}, {
 		type : sw.container,
 		localData : [
-		        skeletalRegionCEF, 
+		        skeletalSubDivisionCEF, 
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_13478",
@@ -38,7 +42,7 @@ skeletalRegionElements = [
 					value : ["http://purl.obolibrary.org/obo/FMA_13478"],
 					key : "classSelection"
 				} ],
-		elements : [ skeletalRegionData]
+		elements : [ skeletalSubdivisionData]
 	}
 ]
 
