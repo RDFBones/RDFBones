@@ -132,8 +132,17 @@ select {
 }
 
 .margin5H {
+	margin: 0 5px;
+}
+
+.margin10H {
 	margin: 0 10px;
 }
+
+.margin15H {
+	margin: 0 15px;
+}
+
 
 .margin10 {
 	margin: 10px;
