@@ -55,7 +55,6 @@ pageData.pageElements = [
 		type : sw.global,
 		key : "cefPageUri",
 		varName : "pageUri",
-		
 	}, {
 		type : sw.global,
 		key : "skeletalInventory",
@@ -136,7 +135,7 @@ pageData.pageElements = [
 				key : "boneOrgan",
 			}, {
 				type : sw.constant,
-				value : "deleteOrganFromDivision",
+				value : "deleteCoherentFromSubivision",
 				key : "operation",
 			}
 		],
