@@ -147,6 +147,34 @@ public class DataLoader extends VitroAjaxController {
         String[] literals14 = { "boneDivisionLabel" , "label"};
         result = this.performQuery(FilteredCoherentQuery, inputParam14, uris14, literals14);
         break;  
+       
+      case "skeletalSubdivision":
+        String[] inputParam15 = { "skeletalInventory" };
+        String[] uris15 = { "skeletalSubdivision", "type" };
+        String[] literals15 = { "coherentSkeletalRegionCount", "label" };
+        result = this.performQuery(SkeletalSubdivision, inputParam15, uris15, literals15);
+        break;   
+        
+      case "coherentBonesOfSubdivision":
+        String[] inputParam16 = { "skeletalInventory", "skeletalSubdivision"};
+        String[] uris16 = { "coherentSkeletalRegion", "type" };
+        String[] literals16 = { "boneOrganCount", "label", "typeLabel" };
+        result = this.performQuery(CoherenBonesOfSubdivision, inputParam16, uris16, literals16);
+        break; 
+        
+      case "existingCoherentSubdivision":
+        String[] inputParam17 = { "skeletalInventory", "existingSkeletalSubdivision", "inputType"};
+        String[] uris17 = { "coherentSkeletalRegion", "type" };
+        String[] literals17 = { "boneOrganCount", "label", "typeLabel" };
+        result = this.performQuery(ExistingCoherentSubDivision, inputParam17, uris17, literals17);
+        break;     
+        
+      case "existingCoherentSubdivisionToAdd":
+        String[] inputParam18 = { "skeletalInventory", "existingSkeletalSubdivision", "inputType"};
+        String[] uris18 = { "coherentSkeletalRegion", "type" };
+        String[] literals18 = { "boneOrganCount", "label", "typeLabel" };
+        result = this.performQuery(ExistingCoherentSubDivision, inputParam18, uris18, literals18);
+        break;    
         
       default :
         break;
@@ -178,6 +206,7 @@ public class DataLoader extends VitroAjaxController {
 
     readyQuery = N3Utils.setPrefixes(null, query);
     readyQuery = N3Utils.subInputUriQuery(readyQuery, inputParam, this.vreq);
+    log.info(readyQuery);
     resultSet = QueryUtils.getQueryResults(readyQuery, vreq);
     return QueryUtils.getQueryVars(resultSet, uris, literals);
   }
@@ -187,6 +216,52 @@ public class DataLoader extends VitroAjaxController {
       + "    ?subject    ?predicate   ?object . \n"
       + "   }  \n";
 
+  private static String SkeletalSubdivision =
+      ""
+          + "SELECT ?skeletalSubdivision ?label ?type (COUNT(?coherentSkeletalRegion) as ?coherentSkeletalRegionCount) \n"
+          + " WHERE \n " 
+          + "   { "
+          + "    ?skeletalInventory obo:BFO_0000051         ?completeness . \n"
+          + "    ?completeness      obo:IAO_0000136           ?boneSegment . \n"
+          + "    ?boneSegment       obo:regional_part_of      ?boneOrgan  . \n"
+          + "    ?boneOrgan         obo:systemic_part_of      ?coherentSkeletalRegion  . \n"
+          + "    ?coherentSkeletalRegion       obo:systemic_part_of  ?skeletalSubdivision  . \n"
+          + "    ?skeletalSubdivision    rdfs:label            ?label . \n"
+          + "    ?skeletalSubdivision    vitro:mostSpecificType   ?type .  \n"
+          + "   } GROUP BY ?skeletalSubdivision ?coherentSkeletalRegion ?label ?type \n";
+  
+  
+  private static String CoherenBonesOfSubdivision =
+      ""
+          + "SELECT ?coherentSkeletalRegion ?label ?type ?typeLabel (COUNT(?boneOrgan) as ?boneOrganCount) \n"
+          + " WHERE \n " 
+          + "   { "
+          + "    ?skeletalInventory       obo:BFO_0000051         ?completeness . \n"
+          + "    ?completeness              obo:IAO_0000136           ?boneSegment . \n"
+          + "    ?boneSegment            obo:regional_part_of      ?boneOrgan  . \n"
+          + "    ?boneOrgan                 obo:systemic_part_of      ?coherentSkeletalRegion  . \n"
+          + "    ?coherentSkeletalRegion       obo:systemic_part_of  ?skeletalSubdivision  . \n"
+          + "    ?coherentSkeletalRegion    rdfs:label            ?label . \n"
+          + "    ?coherentSkeletalRegion    vitro:mostSpecificType   ?type .  \n"
+          + "    ?type    rdfs:label            ?typeLabel . \n"
+          + "   } GROUP BY ?coherentSkeletalRegion  ?label ?type ?typeLabel \n";
+  
+  private static String ExistingCoherentSubDivision =
+      ""
+          + "SELECT ?coherentSkeletalRegion ?label ?type ?typeLabel (COUNT(?boneOrgan) as ?boneOrganCount) \n"
+          + " WHERE \n " 
+          + "   { "
+          + "    ?skeletalInventory       obo:BFO_0000051         ?completeness . \n"
+          + "    ?completeness              obo:IAO_0000136           ?boneSegment . \n"
+          + "    ?boneSegment            obo:regional_part_of      ?boneOrgan  . \n"
+          + "    ?boneOrgan                 obo:systemic_part_of      ?coherentSkeletalRegion  . \n"
+          + "    ?coherentSkeletalRegion       obo:systemic_part_of  ?skeletalSubdivision  . \n"
+          + "    ?coherentSkeletalRegion    rdfs:label            ?label . \n"
+          + "    ?coherentSkeletalRegion    vitro:mostSpecificType   ?type .  \n"
+          + "    ?type    rdfs:label            ?typeLabel . \n"
+          + "   } GROUP BY ?coherentSkeletalRegion  ?label ?type ?typeLabel \n";
+  
+  
   private static String CoherentQuery =
       ""
           + "SELECT ?boneDivision ?label ?type (COUNT(?boneOrgan) as ?boneOrganCount) \n"

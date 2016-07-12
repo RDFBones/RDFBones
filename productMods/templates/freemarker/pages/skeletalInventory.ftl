@@ -95,5 +95,5 @@ ${scripts.add(
 General Page
 -->	
 ${scripts.add(
-	'<script type="text/javascript" src="${urls.base}/js/customConfigData/profilePage/skeletalInventory/pageConfig.js"></script>'
+	'<script type="text/javascript" src="${urls.base}/js/customConfigData/profilePage/skeletalInventory/tabs.js"></script>'
 	'<script type="text/javascript" src="${urls.base}/js/customConfigData/profilePage/skeletalInventory/query.js"></script>')}

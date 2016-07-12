@@ -52,7 +52,7 @@ BoneOrganField.prototype = {
 
 		DataLib.removeObjectFromArrayByKey(this.dataToStore, "uri",
 				this.dataSet.uri)
-		this.systemicPartSelector.reset(this.dataObject.uri)
+		this.systemicPartSelector.reset(this.dataObject.uri, this)
 		this.container.remove()
 	},
 
@@ -72,7 +72,7 @@ ExistingBoneOrganField.prototype = Object.create(BoneOrganField.prototype)
 
 ExistingBoneOrganField.prototype.getCompletenessSelector = function() {
 	var obj = [{
-		label : this.dataSet.completenessLabel,
+		label : completenessSet.getObjectByKey("uri", this.dataSet.comp2State).label,
 		uri : "doesNotMatter",
 	}]
 	return new DataSetterSelectorField(obj, null, "uri")
