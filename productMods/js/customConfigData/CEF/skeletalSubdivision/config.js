@@ -48,7 +48,7 @@ pageData.partlySymmetricBones = {
 }
 
 pageData.skeletalDivision = {
-	uri : "http://purl.obolibrary.org/obo/FMA_46565",
+	uri : pageData.classUri,
 	label : "Skull",
 }
 

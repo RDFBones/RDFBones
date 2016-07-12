@@ -1,3 +1,25 @@
+labelQuery = {
+		
+	object : "pageData.skeletalDivision.label",
+	operation : {
+		type : "query",
+		queryType : "literal",
+		singleQuery : true,
+		parameters : [
+  			{
+  				value : "skeletalDivision.uri",
+  				name : "subject",
+  			}, {
+  				value : {
+  					type : sw.constant,
+  					value : "http://www.w3.org/2000/01/rdf-schema#label", 
+  				},
+  				name : "predicate",
+   			}
+  		]
+	}
+}
+
 queryDef1 = {
 		
 	object : "pageData.skeletalDivision.boneDivisions",
@@ -62,6 +84,7 @@ queryDef4 = {
 		operation : {
 			type : "query",
 			queryType : "filteredCoherentBones",
+			requirement : true,
 			parameters : [
 				{
 					name : "boneDivisionType",
@@ -76,6 +99,29 @@ queryDef4 = {
 			],
 		}
 }
+
+queryDef5 = {
+		
+		object : "pageData.skeletalDivision.boneDivisions.existingToSelect",
+		operation : {
+			type : "query",
+			queryType : "filteredCoherentBones",
+			parameters : [
+				{
+					name : "boneDivisionType",
+					value : "boneDivisions.uri"
+				}, {
+					name : "skeletalInventory",
+					value : {
+						type : sw.constant,
+						value : "http://testIndividual",
+					}
+				}
+			],
+		}
+}
+
+
 
 extractionDef = {
 		
