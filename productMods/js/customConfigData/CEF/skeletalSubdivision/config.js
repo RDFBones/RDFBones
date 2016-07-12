@@ -20,11 +20,9 @@ pageData.partlySymmetricBones = {
 
 	//Cervical Vertebral Column
 	"http://purl.obolibrary.org/obo/FMA_24138" : {
-
 		parentRegions : [ "http://purl.obolibrary.org/obo/FMA_9915" ]
 	},
 	
-
 	//Thoracic Vertebral Column
 	"http://purl.obolibrary.org/obo/FMA_9140" : {
 
@@ -49,9 +47,7 @@ pageData.partlySymmetricBones = {
 	},
 }
 
-
 pageData.skeletalDivision = {
-		
 	uri : "http://purl.obolibrary.org/obo/FMA_46565",
 	label : "Skull",
 }
@@ -60,23 +56,3 @@ pageData.skeletalDivision = {
 
 //From the above defined dataSet, we have to generate the following array 
 //for the operation
-
-var generateArray = function(def){
-	
-	var varArr =  def.object.split(".")
-	var array = []
-	$.each(varArr, function(index, variable){
-		var a = new Object()
-		a.of = variable
-		a.key = varArr[index + 1]
-		if(index  ==  varArr.length - 2){
-			//The last object in the row
-			a.operation = def.operation
-			a.type = "array"
-			array.push(a)
-			return false
-		} 
-		array.push(a)
-	})
-	return array
-}
