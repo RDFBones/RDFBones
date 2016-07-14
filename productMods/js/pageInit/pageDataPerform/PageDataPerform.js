@@ -20,14 +20,15 @@ PageDataPerform.prototype = {
 			new CheckDataOperation("pageData", pageData).dataOperations
 	    
 		console.log(this.operationArray)
-		if(newQueryDefinition != undefined){
+		if(typeof newQueryDefinition != "undefined"){
+			console.log(typeof newQueryDefinition)
 			$.merge(this.operationArray, newQueryDefinition)
 		}
 		this.array = []
 		$.each(this.operationArray, (function(i, element){
 			this.array.push(this.generateArray(element))
 		}).bind(this))
-		
+		//this.numOfOperation = this.array.length
 	},
 		
 	perform	: function(){
@@ -67,13 +68,14 @@ PageDataPerform.prototype = {
 
 		if(dataQueue[level].operation != undefined){
 			
-			if(localData[dataQueue[level].of][dataQueue[level].key] === undefined){
+			//if(localData[dataQueue[level].of][dataQueue[level].key] === undefined){
 				if(dataQueue[level].type == "object"){
 					localData[dataQueue[level].of][dataQueue[level].key] = new Object()
 				} else { //Array
 					localData[dataQueue[level].of][dataQueue[level].key] = []
 				}
-			}		
+			//} 
+			
 			localData[dataQueue[level].key] = localData[dataQueue[level].of][dataQueue[level].key]			
 			this.performOperation(dataQueue, level, localData)
 		} else {
@@ -290,7 +292,7 @@ PageDataPerform.prototype = {
 				var localData = {
 						pageData : pageData,
 				}
-				this.prepareLocalData(this.operationArray[this.opCounter], 0, localData)	
+				this.prepareLocalData(this.array[this.opCounter], 0, localData)	
 			} else {
 				this.pageInit.done()
 			}
