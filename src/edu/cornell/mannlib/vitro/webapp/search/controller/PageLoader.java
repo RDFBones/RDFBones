@@ -20,47 +20,9 @@ public class PageLoader extends FreemarkerHttpServlet {
   protected ResponseValues processRequest(VitroRequest vreq) {
 
     String templateName = new String();
-    String pageUri = vreq.getParameter("pageUri");
-
-    /*
-     * Right now we just hard code the different page data configurations but
-     * later it has to be loaded from the triples.
-     */
-    switch (pageUri) {
-    case "skeletalInventory":
-      templateName = "skeletalInventory.ftl";
-      break;
-    case "boneDivision":
-      templateName = "boneDivision.ftl";
-      break;
-    case "partlySymmetricBoneDivision" :
-      templateName = "partlySymmetricBoneDivision.ftl";
-      break;
-    case "symmetricBoneDivision":
-      templateName = "symmetricBoneDivision.ftl";
-      break;
-    case "boneOrgan":
-      templateName = "boneOrgan.ftl";
-      break;
-    case "singlePhalanx":
-      templateName = "singlePhalanx.ftl";
-      break;
-    case "phalanges":
-      templateName = "phalanges.ftl";
-      break; 
-    case "symmetricSingleBone":
-      templateName = "symmetricSingleBone.ftl";
-      break;
-    case "skeletalSubdivisionCEF":
-      templateName = "skeletalSubdivisionCEF.ftl";
-      break;  
-    case "skeletalSubdivision":
-      templateName = "skeletalSubdivision.ftl";
-      break;
-    default:
-      templateName = "notImplemented.ftl";
-      break;
-    }
+    templateName = vreq.getParameter("pageUri") + ".ftl";
+    
+    
 
     Map<String, String> params = new HashMap<String, String>();
     for (String key : vreq.getParameterMap().keySet()) {
