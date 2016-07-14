@@ -175,7 +175,14 @@ public class DataLoader extends VitroAjaxController {
         String[] literals18 = { "boneOrganCount", "label", "typeLabel" };
         result = this.performQuery(ExistingCoherentSubDivision, inputParam18, uris18, literals18);
         break;    
-        
+      
+      case "subClass2":
+        String[] inputParam19 = {"classUri"};
+        String[] uris19 = { "uri" };
+        String[] literals19 = { "label" };
+        result = this.performQuery(subClass2, inputParam19, uris19, literals19);
+        break; 
+
       default :
         break;
     }
@@ -216,6 +223,14 @@ public class DataLoader extends VitroAjaxController {
       + "    ?subject    ?predicate   ?object . \n"
       + "   }  \n";
 
+  private static String subClass2 = "SELECT DISTINCT ?uri ?label  "
+      + " WHERE { " 
+      + " ?uri       rdfs:subClassOf   ?inputClass . "
+      + " ?uri       rdfs:label        ?label . "
+      + " ?subClass1 rdfs:subClassOf   ?uri . "
+      + " FILTER( ?inputClass  =  ?classUri )  " 
+      + " } ";
+  
   private static String SkeletalSubdivision =
       ""
           + "SELECT ?skeletalSubdivision ?label ?type (COUNT(?coherentSkeletalRegion) as ?coherentSkeletalRegionCount) \n"

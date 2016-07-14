@@ -19,16 +19,13 @@ PageDataPerform.prototype = {
 		this.operationArray = 
 			new CheckDataOperation("pageData", pageData).dataOperations
 	    
-		console.log(this.operationArray)
 		if(typeof newQueryDefinition != "undefined"){
-			console.log(typeof newQueryDefinition)
 			$.merge(this.operationArray, newQueryDefinition)
 		}
 		this.array = []
 		$.each(this.operationArray, (function(i, element){
 			this.array.push(this.generateArray(element))
 		}).bind(this))
-		console.log(this.array)
 	},
 		
 	perform	: function(){
@@ -55,7 +52,11 @@ PageDataPerform.prototype = {
 			if(index  ==  varArr.length - 2){
 				//The last object in the row
 				a.operation = def.operation
-				a.type = "array"
+				if(def.operation.type != undefined){
+					a.type = def.operation.type
+				} else {
+					a.type = "array"
+				}
 				array.push(a)
 				return false
 			} 
@@ -102,7 +103,6 @@ PageDataPerform.prototype = {
 			case "object" :
 				
 				localData[dataQueue[level].key] = localData[dataQueue[level].of][dataQueue[level].key]
-				console.log(dataQueue[level + 1].key)
 				if(dataQueue[level + 1].key == "keys" ){
 					var levelPlus = level + 1
 					$.each(localData[dataQueue[level].key], (function(key, value){
@@ -130,7 +130,7 @@ PageDataPerform.prototype = {
 		localData["this"] = localData[dataQueue[level - 1].key]
 		switch(dataOperation.dataOperation){
 			case "query" :
-				this.performQuery(dataOperation, localData)
+				this.performQuery(dataOperation, localData, dataQueue, level)
 				break;
 			case "extraction" :
 				this.extract(dataOperation, localData)
@@ -144,7 +144,7 @@ PageDataPerform.prototype = {
 		}	
 	}, 
 
-	 performQuery : function(dataOperation, localData){
+	 performQuery : function(dataOperation, localData, dataQueue, level){
 		
 		var data = new Object()
 		array = null
@@ -160,13 +160,11 @@ PageDataPerform.prototype = {
 		data.queryType = dataOperation.queryType
 		
 		if(array == null){
-			
 			if(dataOperation.singleQuery != undefined){
-				this.sendSingeQuery(data, localData.dataToStore)
+				this.sendSingleQuery(data, localData["this"], dataQueue[level].key)
 			} else {
 				this.sendQuery(data, localData.dataToStore)
 			}		
-			
 		} else {
 			$.each(array, (function(i, value){
 				data[arrayParameterName] = value
@@ -187,14 +185,14 @@ PageDataPerform.prototype = {
 		}).bind(this))
 	},
 
-	sendSingleQuery : function(data, dataToStore){
+	sendSingleQuery : function(data, object, key){
 		
 		$.ajax({
 			dataType : "json",
 			url : baseUrl + "dataLoader",
 			data : data,
 		}).done((function(result){
-			dataToStore = result[0].object
+			object[key] = result[0].object
 			this.checkReady()
 		}).bind(this))
 	},
@@ -204,7 +202,6 @@ PageDataPerform.prototype = {
 		if(dataOperation.toNewVariable != undefined){
 			from = $.extend({}, this.evaluate(localData, dataOperation.from))
 		} else {
-			console.log(localData)
 			//from = this.evaluate(localData, dataOperation.from)
 			from = localData.dataToStore
 		}

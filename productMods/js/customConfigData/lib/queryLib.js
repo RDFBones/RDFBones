@@ -4,6 +4,34 @@ inputClass = {
     name : "classUri",
 }
 
+labelQuery = {	
+		
+	dataOperation : "query",
+	queryType : "literal",
+	type : "literal",
+	singleQuery : true,
+	parameters : [
+			{
+				value : "this.uri",
+				name : "subject",
+			}, {
+				value : {
+					type : sw.constant,
+					value : "http://www.w3.org/2000/01/rdf-schema#label", 
+				},
+				name : "predicate",
+			}
+	]
+}
+
+
+subClass = {
+	
+	dataOperation : "query",
+	queryType : "subClassesWithout",
+	parameters : [inputClass]
+}
+
 extract = {
       dataOperation : "extraction",
       what :  "this.symmetricClasses",
@@ -22,10 +50,10 @@ group = {
 	within : ["inputClassLabel"],
 	to : "subClasses",
 	rename : [{
-		name : "inputClass",
+		key : "inputClass",
 		to : "uri"
 	}, {
-		name : "inputClassLabel",
+		key : "inputClassLabel",
 		to : "label"
 	}]
 }
@@ -77,3 +105,10 @@ partlySymmetric1 = {
    symmetricClasses$1 : group,
    systemicParts$2 : merge,
 } 
+
+subClass2 = {
+	dataOperation : "query",
+	queryType : "subClass2",
+	parameters : [inputClass], 
+	subClasses : subClass
+}
