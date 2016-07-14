@@ -1,4 +1,14 @@
-
+var type = function(someVar){
+	if ((typeof someVar) == "object") {
+		if(DataLib.isArray(someVar)){
+			return "array"
+		} else {
+			return "object"
+		}
+	} else {
+		return "data" 
+	}
+}
 
 var DataLib = {
 		
