@@ -3,9 +3,9 @@
 
 var PageDataPerform = function(pageInit){
 	
-	var current = 0
-	var numOfOperation = 1
-	var opCounter = 0
+	this.current = 0
+	this.numOfOperation = 1
+	this.opCounter = 0
     this.pageInit = pageInit
     
     this.prepare()
@@ -39,7 +39,7 @@ PageDataPerform.prototype = {
 			console.log(this.array[0])
 			this.prepareLocalData(this.array[0], 0, localData)	
 		} else {
-			this.pageInit.next()
+			this.pageInit.done()
 		}
 	},
    
@@ -81,7 +81,7 @@ PageDataPerform.prototype = {
 			switch(DataLib.getType(localData[dataQueue[level].of][dataQueue[level].key])){
 				case "array":
 				arr = localData[dataQueue[level].of][dataQueue[level].key]
-				numOfOperation += arr.length - 1
+				this.numOfOperation += arr.length - 1
 				$.each(arr, (function(i, value){
 					newLocalData = $.extend({}, localData)
 					newLocalData[dataQueue[level].key] = value 
@@ -284,15 +284,15 @@ PageDataPerform.prototype = {
 		this.current++ 
 		if(this.current == this.numOfOperation){
 			this.current = 0
-			numOfOperation = 1
-			opCounter++ 
-			if(opCounter < testArray.length){
+			this.numOfOperation = 1
+			this.opCounter++ 
+			if(this.opCounter < this.array.length){
 				var localData = {
 						pageData : pageData,
 				}
-				this.prepareLocalData(this.operationArray[opCounter], 0, localData)	
+				this.prepareLocalData(this.operationArray[this.opCounter], 0, localData)	
 			} else {
-				this.pageInit.next()
+				this.pageInit.done()
 			}
 		}
 	},
