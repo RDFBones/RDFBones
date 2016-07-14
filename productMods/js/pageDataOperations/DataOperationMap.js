@@ -58,11 +58,13 @@ var DataOperationMap = {
     	var selectCriteria = DataOperationMap[configData.selectCriteria.type](cont, configData.selectCriteria)	
     	var arr = []
 
-    	$.each(dataToSelect, (function(index, object){
-    		if(checkCriteria(object[configData.selectField], selectCriteria)){
-    			arr.push(object)
-    		}
-    	}).bind(this))
+    	if(dataToSelect != undefined){
+    		$.each(dataToSelect, (function(index, object){
+        		if(checkCriteria(object[configData.selectField], selectCriteria)){
+        			arr.push(object)
+        		}
+        	}).bind(this))
+        } 
     	return arr
     },
     
