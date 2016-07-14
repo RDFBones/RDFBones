@@ -1,26 +1,9 @@
-
-
-
-var SystemicPartAdder = function(parent, dataToStore, dataSet){
-	
-	this.parent = parent
+var SingleBoneOrganAdder = function(dataToStore, dataSet){
 	
 	
 	this.dataToStore = dataToStore
 	//This defines the class structure
 	this.dataSet = dataSet
-	this.generalBoneOrgans = []
-
-	
-	/*
-	 * The dataSet input parameter can have a existingToSelect field as well
-	 * We care about later.
-	 */
-	
-	this.notAdded = true
-	//Counter
-	this.cnt = 0
-	this.addedSubClasses = []
 	this.singleSelect = true
 	
 	this.container = html.div()
@@ -28,15 +11,15 @@ var SystemicPartAdder = function(parent, dataToStore, dataSet){
 	this.selectedContainer = html.div()
 	this.title = html.div("inline").text(this.dataSet.label)
 	this.addButton = new Button("add", (this.checkAdding).bind(this))
-	this.list = new Button("list", (this.selectExisting).bind(this)).hide()
-	this.setSelectorField()
-	this.checkExisting()
-	this.checkOfferExisting()
-	this.assemble()
+	this.init()
 }
 
-
-SystemicPartAdder.prototype = {
+SingleBoneOrganAdder.prototype = {
+	
+	init : function(){
+		this.setSelectorField()
+		this.assemble()
+	},
 		
 	assemble : function(){
 		UI.assemble(this.container, [
@@ -44,9 +27,8 @@ SystemicPartAdder.prototype = {
          				this.title,
          				this.selector,
          				this.addButton.container,
-         				this.list.container, 
          			this.selectedContainer],
-         			[0, 1, 1, 1, 1, 0])
+         			[0, 1, 1, 1, 0])
 	},
 	
 	setSelectorField : function(){
@@ -68,6 +50,60 @@ SystemicPartAdder.prototype = {
 			this.max = 1
 		}
 	},
+	
+	checkAdding : function(){
+
+		var object
+		if(this.singleSelect){
+			object = this.dataSet
+			this.selectedContainer.append(new BoneOrganField(this, object, this.dataToStore, true).container)
+		} else {
+			val = this.selector.val()
+			object = this.arr.getObjectByKey("uri", val)
+			this.selectedContainer.append(new BoneOrganField(this, object, this.dataToStore).container)
+		}
+	},
+	
+	reset : function(){
+		
+	}
+}
+
+var SystemicPartAdder = function(parent, dataToStore, dataSet){
+	
+	this.parent = parent
+	this.generalBoneOrgans = []
+	this.notAdded = true
+	//Counter
+	this.cnt = 0
+	this.addedSubClasses = []
+	this.list = new Button("list", (this.selectExisting).bind(this)).hide()
+	
+	SingleBoneOrganAdder.call(this, dataToStore, dataSet)
+}
+
+
+SystemicPartAdder.prototype = {
+	
+		
+	init : function(){
+		this.setSelectorField()
+		this.checkExisting()
+		this.checkOfferExisting()
+		this.assemble()
+	},
+		
+	assemble : function(){
+		UI.assemble(this.container, [
+         			this.selectorContainer,
+         				this.title,
+         				this.selector,
+         				this.addButton.container,
+         				this.list.container, 
+         			this.selectedContainer],
+         			[0, 1, 1, 1, 1, 0])
+	},
+	
 	
 	checkExisting : function(){
 		
@@ -99,7 +135,6 @@ SystemicPartAdder.prototype = {
 			}
 		}
 	},
-	
 
 	checkOfferExisting : function(){
 		
@@ -190,7 +225,6 @@ SystemicPartAdder.prototype = {
 		this.notComplete = true
 		this.parent.refresh()
 	},
-
 	
 	addExistingSystemicPart : function(object){
 		
@@ -230,27 +264,17 @@ SystemicPartAdder.prototype = {
 	
 	selectExisting : function(){
 		console.log(this.dataToOffer)
-	}
-	
+	},
+
 }
 
-var SingleBoneOrganAdder = function(){
-	
-	SystemicPartAdder.call(this, parent, existingBoneOrgans, dataToStore, dataSet)
-}
-
-SingleBoneOrganAdder.prototype = Object.create(SystemicPartAdder.prototype)
 
 
-SingleBoneOrganAdder.prototype.checkAdding = function(){
-	
-	if(this.singleSelect){
-		this.addSystemicPart(this.arr.getObjectByKey("uri", this.dataSet))
-	} else {
-		val = this.selector.val()
-		this.addSystemicPart(this.arr.getObjectByKey("uri", this.arr.getObjectByKey("uri", val)))
-	}
-}
+
+
+
+
+
 
 
 
