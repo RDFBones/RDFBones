@@ -4,7 +4,7 @@
 <script>
 	
 	var beforePageInit = function(){
-		pageData.partlySymmetricBones = {
+			pageData.partlySymmetricBones = {
 
 			//Neurocranium
 			"http://purl.obolibrary.org/obo/FMA_53672" : {
@@ -12,6 +12,7 @@
 				parentRegions : [ "http://purl.obolibrary.org/obo/FMA_9613" ]
 			},
 		
+			
 			//Viscerocranium
 			"http://purl.obolibrary.org/obo/FMA_53673" : {
 		
@@ -25,13 +26,23 @@
 			},
 		}
 		
+		pageData.pageElements = [ {
+			type : sw.customPage,
+			pageLoader : SingleBoneCEFController
+		} ]
+		
 		
 		pageData.classesToSelect = {
 			uri : "http://purl.obolibrary.org/obo/FMA_46565", 
 			subClasses : partlySymmetric1, 
-			UItype : "partlySymmetric",
+			uiType : "partlySymmetric",
 		} 
 	}
 	
 </script>
-		
+
+${scripts.add(
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/coherentBoneEntryForm/BoneOrganField.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/coherentBoneEntryForm/SystemicPartAdder.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageControllers/singleBonePage/PartlySymmetricSingleBones.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/UIModules/pageControllers/singleBonePage/SingleBoneCEFController.js"></script>')}
