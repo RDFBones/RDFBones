@@ -28,7 +28,7 @@ PageDataPerform.prototype = {
 		$.each(this.operationArray, (function(i, element){
 			this.array.push(this.generateArray(element))
 		}).bind(this))
-		//this.numOfOperation = this.array.length
+		console.log(this.array)
 	},
 		
 	perform	: function(){
@@ -68,13 +68,22 @@ PageDataPerform.prototype = {
 
 		if(dataQueue[level].operation != undefined){
 			
-			//if(localData[dataQueue[level].of][dataQueue[level].key] === undefined){
+			if(localData[dataQueue[level].of][dataQueue[level].key] === undefined){
 				if(dataQueue[level].type == "object"){
 					localData[dataQueue[level].of][dataQueue[level].key] = new Object()
 				} else { //Array
 					localData[dataQueue[level].of][dataQueue[level].key] = []
 				}
-			//} 
+			} else {
+				if(localData[dataQueue[level].of][dataQueue[level].key].dataOperation != undefined){
+					if(dataQueue[level].type == "object"){
+						localData[dataQueue[level].of][dataQueue[level].key] = new Object()
+					} else { //Array
+						localData[dataQueue[level].of][dataQueue[level].key] = []
+					}
+				}
+				//console.log(dataQueue[level].of + "   "  + dataQueue[level].key)
+			}
 			
 			localData[dataQueue[level].key] = localData[dataQueue[level].of][dataQueue[level].key]			
 			this.performOperation(dataQueue, level, localData)
@@ -144,7 +153,7 @@ PageDataPerform.prototype = {
 			if(DataLib.getType(data[param.name]) == "array"){
 				array = data[param.name]
 				arrayParameterName = param.name
-				numOfOperation += array.length - 1
+				this.numOfOperation += array.length - 1
 			}
 		}).bind(this))
 		
@@ -159,10 +168,10 @@ PageDataPerform.prototype = {
 			}		
 			
 		} else {
-			$.each(array, function(i, value){
+			$.each(array, (function(i, value){
 				data[arrayParameterName] = value
 				this.sendQuery(data, localData.dataToStore)
-			})
+			}).bind(this))
 		}
 	},
 	

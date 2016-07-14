@@ -5,19 +5,33 @@ inputClass = {
 }
 
 extract = {
-      type : "extract",
-      what :  "this.systemicClassQuery",
+      dataOperation : "extraction",
+      what :  "this.symmetricClasses",
       fromBy : "uri",
-      whatBy : "subClassUri", 
+      whatBy : "uri", 
    }
 
 merge = {
-	type : "merge",    
-	variables : [this.systemicParts],	
+	dataOperation : "merge",    
+	what : "this.symmetricClasses",
+}
+
+group = {
+	dataOperation : "group",
+	by : "inputClass",
+	within : ["inputClassLabel"],
+	to : "subClasses",
+	rename : [{
+		name : "inputClass",
+		to : "uri"
+	}, {
+		name : "inputClassLabel",
+		to : "label"
+	}]
 }
 
 symmetricBonesQuery = {
-	type : "query",
+	dataOperation : "query",
 	queryType : "subClasses",
 	parameters : [
 		{
@@ -29,7 +43,7 @@ symmetricBonesQuery = {
 						type : sw.global,
 						key : "partlySymmetricBones",
 					},
-					key : "boneDivisions.uri",
+					key : "this.uri",
 				},
 				key : {
 					type : sw.constant,
@@ -50,11 +64,7 @@ systemicPartsQuery = {
 partlySymmetric2 = {
 		   dataOperation : "query",
 		   queryType : "systemicPartsWithout",
-		   parameters : [inputClass], 
-		   systemicParts : systemicPartsQuery,
-		   symmetricClasses : symmetricBonesQuery,
-		   systemicParts : extract,
-		   systemicParts : merge, 
+		   parameters : [inputClass], 		 
 		}
 
 partlySymmetric1 = { 
@@ -62,4 +72,8 @@ partlySymmetric1 = {
    queryType : "systemicPartsWithout", 
    parameters : [inputClass], 
    systemicParts : partlySymmetric2,  
+   symmetricClasses : symmetricBonesQuery,
+   systemicParts$1 : extract,
+   symmetricClasses$1 : group,
+   systemicParts$2 : merge,
 } 
