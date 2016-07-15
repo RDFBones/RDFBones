@@ -53,8 +53,37 @@ viscerocranium = {
 	}
 
 
+singleSkull = {
+	
+	type : sw.container,
+	localData : [
+	        {
+	        	type : sw.constant,
+	        	value : "singleSkull",
+	        	key : "pageUri",
+	        }, {
+	        	type : sw.constant,
+	        	value : "singleSkull",
+	        	key : "dataKey",
+	        }, {
+	        	type : sw.constant,
+	        	key : "skeletalDivisionClass",
+	        	value : FMA + "45565",
+	        },{
+				type : sw.constant,
+				value : "Single Bone Organs of Skull",
+				key : "boneLabel",
+			}, {
+				type : sw.constant,
+				value : "singleSkull",
+				key : "cefPageUri",
+			}, systemicQuery ] ,
+	elements : [ singleBones ]
+}
+
+
 skullTab = {
 	type : sw.tab,
 	tabTitle : "Skull",
-	elements : [neurocranium, viscerocranium]
+	elements : [neurocranium, viscerocranium, singleSkull]
 }

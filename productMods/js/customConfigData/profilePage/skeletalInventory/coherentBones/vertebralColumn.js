@@ -114,8 +114,33 @@ coccyx = {
 		elements : [ coherentData]
 	}
 
+
+singleVertebra = {
+		
+		type : sw.container,
+		localData : [
+		        {
+		        	type : sw.constant,
+		        	value : "singleVertebra",
+		        	key : "pageUri",
+		        }, {
+		        	type : sw.constant,
+		        	value : "singleVertebra",
+		        	key : "dataKey",
+		        }, {
+		        	type : sw.constant,
+		        	key : "skeletalDivisionClass",
+		        	value : FMA + "9914",
+		        },{
+					type : sw.constant,
+					value : "Single Bone Organs of Vertebra",
+					key : "boneLabel",
+				}] ,
+		elements : [ singleBones ]
+	}
+
 vertebralColumnTab = {
 		type : sw.tab,
 		tabTitle : "Vertebral Column",
-		elements : [cervical, thoracic, lumbar, sacrum, coccyx]
+		elements : [cervical, thoracic, lumbar, sacrum, coccyx, singleVertebra]
 	}

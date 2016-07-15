@@ -160,12 +160,36 @@ phalangesofhand = {
 
 }
 
+singleUpperLimb = {
+		
+		type : sw.container,
+		localData : [
+		        {
+		        	type : sw.constant,
+		        	value : "singleUpperLimb",
+		        	key : "pageUri",
+		        }, {
+		        	type : sw.constant,
+		        	value : "singleUpperLimb",
+		        	key : "dataKey",
+		        }, {
+		        	type : sw.constant,
+		        	key : "skeletalDivisionClass",
+		        	value : FMA + "7183",
+		        },{
+					type : sw.constant,
+					value : "Single Bone Organs of Upper Limb",
+					key : "boneLabel",
+				}] ,
+		elements : [ singleBones ]
+	}
+
+
 upperLimbTab = {
 
 	type : sw.tab,
 
 	tabTitle : "Upper Limb",
 
-	elements : [ forearm, carpalbones, metacarpalbones, phalangesofhand ]
-
+	elements : [ forearm, carpalbones, metacarpalbones, phalangesofhand, singleUpperLimb]
 }
