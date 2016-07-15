@@ -21,6 +21,24 @@ Array.prototype.removeElement = function(value){
 	}
 }
 
+String.prototype.cutFromCharacter = function(char){
+	
+	index = this.lastIndexOf(char)
+ 	if(index > -1){
+		return this.substring(0, index)
+	} else {
+		return this	
+	}
+}
+
+String.prototype.getArrayNumber = function(){
+	
+	i1 = this.lastIndexOf("[")
+    i2 = this.lastIndexOf("]")
+    return parseInt(this.substring(i1 + 1, i2 + 1))
+}
+
+
 Array.prototype.getObjectByKey = function(key, value){
 	
 	var toReturn = null
