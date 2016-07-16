@@ -40,9 +40,19 @@ partlySymmetricCEF = {
    parameters : [inputClass], 
 } 
 
+querySwitch = {
+	type : sw.switchCase,
+	on : "pageData.simpleQuery",
+	cases : [{
+		value : "simpleQuery",
+		toReturn : "systemicPartsWithout",
+	}],
+	defaultCase : "systemicPartsWithoutNoBoneOrgan"	
+}
+
 partlySymmetricCEF1 = {
    dataOperation : "query", 
-   queryType : "systemicPartsWithoutNoBoneOrgan", 
+   queryType : querySwitch,
    parameters : [inputClass], 
    systemicParts : partlySymmetricCEF,
    symmetricClasses : symmetricBonesQueryCEF,
@@ -57,3 +67,5 @@ pageData.partlySymmetricSkeletalDivision = {
 	label : labelQuery,
 	systemicParts1 : partlySymmetricCEF1,
 }
+
+
