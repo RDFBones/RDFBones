@@ -4,6 +4,33 @@ systemicQuery = {
 		value : "systemicPartsWithout",
 }
 
+
+vertebraUri = {
+		type : sw.constant,
+		value : "http://purl.obolibrary.org/obo/FMA_13478",
+		key : "skeletalDivision"
+	}
+
+vertebralColumn = {
+		type : sw.container,
+		localData : [
+				skeletalSubDivisionCEF, vertebraUri, 
+				{
+					type : sw.constant,
+					value : "http://purl.obolibrary.org/obo/FMA_13478",
+					key : "boneUri",
+				},{
+					type : sw.constant,
+					value : "Vertebral Column",
+					key : "boneLabel",
+				}, {
+					type : sw.constant,
+					value : "partlySymmetricBoneDivision",
+					key : "cefPageUri",
+				}, systemicQuery ],
+		elements : [ coherentData]
+	}	
+
 cervical = {
 		type : sw.container,
 		localData : [
@@ -142,5 +169,5 @@ singleVertebra = {
 vertebralColumnTab = {
 		type : sw.tab,
 		tabTitle : "Vertebral Column",
-		elements : [cervical, thoracic, lumbar, sacrum, coccyx, singleVertebra]
+		elements : [vertebralColumn, cervical, thoracic, lumbar, sacrum, coccyx, singleVertebra]
 	}

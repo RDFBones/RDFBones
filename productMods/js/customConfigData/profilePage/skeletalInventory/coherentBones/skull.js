@@ -4,22 +4,24 @@ systemicQuery = {
 		value : "systemicPartsWithout",
 }
 
-neurocranium = {
+skullUri = {
+	type : sw.constant,
+	value : "http://purl.obolibrary.org/obo/FMA_46565",
+	key : "skeletalDivision"
+}
+
+skull = {
 		type : sw.container,
 		localData : [
-				partlySymmetricBoneSegment, 
+				skeletalSubDivisionCEF, skullUri, 
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_53672",
 					key : "boneUri",
 				},{
 					type : sw.constant,
-					value : "Neurocranium",
+					value : "Skull",
 					key : "boneLabel",
-				},{
-					type : sw.constant,
-					value : [ "http://purl.obolibrary.org/obo/FMA_53672"],
-					key : "classSelection"
 				}, {
 					type : sw.constant,
 					value : "partlySymmetricBoneDivision",
@@ -28,29 +30,25 @@ neurocranium = {
 		elements : [ coherentData]
 	}	
 
-viscerocranium = {
+skullDivision = {
 		type : sw.container,
 		localData : [
-		        partlySymmetricBoneSegment, 
+				skeletalSubDivisionCEF, skullUri, 
 				{
 					type : sw.constant,
-					value : "http://purl.obolibrary.org/obo/FMA_53673",
-					key : "boneUri",
-				},{
-					type : sw.constant,
-					value : "Viscerocranium",
+					value : "Coherent Skeletal Divisions of Skull",
 					key : "boneLabel",
 				},{
 					type : sw.constant,
-					value : [ "http://purl.obolibrary.org/obo/FMA_53673"],
-					key : "classSelection"
+					value : "subDivision",
+					key : "subDivision",
 				}, {
 					type : sw.constant,
 					value : "partlySymmetricBoneDivision",
 					key : "cefPageUri",
-				}, systemicQuery ] ,
+				}],
 		elements : [ coherentData]
-	}
+	}	
 
 
 singleSkull = {
@@ -85,5 +83,5 @@ singleSkull = {
 skullTab = {
 	type : sw.tab,
 	tabTitle : "Skull",
-	elements : [neurocranium, viscerocranium, singleSkull]
+	elements : [skull, skullDivision, singleSkull]
 }
