@@ -2,11 +2,11 @@
 var SkeletalRegion = function() {
 
 	// The dataset is fix
-	this.descriptor = pageData.skeletalDivision
+	this.descriptor = pageData.partlySymmetricSkeletalDivision
 	this.mainData()
 	this.addSaveContainer()
 	CoherentSkeletalRegion.call(this, null, this.dataToStore.coherentSkeletalDivision,
-			pageData.skeletalDivision)
+			pageData.partlySymmetricSkeletalDivision)
 	this.saveContainer.appendTo(this.container)	
 }
 
@@ -97,7 +97,7 @@ $.extend(SkeletalRegion.prototype, {
 
 		this.systemicPartSelectors = []
 		// Check if we can add existing to add
-		$.each(this.descriptor.boneDivisions, (function(i, systemicPart) {
+		$.each(this.descriptor.systemicParts1, (function(i, systemicPart) {
 			this.systemicPartSelectors.push(new CoherentSkeletalRegion(this,
 					this.dataToStore.coherentSkeletalDivision,
 					systemicPart))
@@ -129,3 +129,16 @@ $.extend(SkeletalRegion.prototype, {
 	},
 	
 })
+
+
+SubSkeletalRegion = function(){
+	
+	
+}
+
+SubSkeletalRegion.prototype = {
+		
+	
+		
+		
+}

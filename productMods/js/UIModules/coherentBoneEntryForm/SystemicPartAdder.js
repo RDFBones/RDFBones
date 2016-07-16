@@ -79,13 +79,14 @@ var SystemicPartAdder = function(parent, dataToStore, dataSet){
 	this.addedSubClasses = []
 	this.list = new Button("list", (this.selectExisting).bind(this)).hide()
 	
-	SingleBoneOrganAdder.call(this, dataToStore, dataSet)
+	SingleBoneOrganAdder.call(this, dataSet, dataToStore)
 }
 
 
-SystemicPartAdder.prototype = {
+SystemicPartAdder.prototype = Object.create(SingleBoneOrganAdder.prototype)
+
+$.extend(SystemicPartAdder.prototype, {
 	
-		
 	init : function(){
 		this.setSelectorField()
 		this.checkExisting()
@@ -106,6 +107,7 @@ SystemicPartAdder.prototype = {
 	
 	
 	checkExisting : function(){
+		
 		
 		if(this.parent.descriptor.existing != undefined){
 
@@ -266,9 +268,7 @@ SystemicPartAdder.prototype = {
 		console.log(this.dataToOffer)
 	},
 
-}
-
-
+})
 
 
 
