@@ -45,5 +45,5 @@ singleBonyPelvis = {
 bonyPelvisTab = {
 	type : sw.tab,
 	tabTitle : "Pelvic Gridle",
-	elements : [bonypelvis]
+	elements : [bonypelvis, singleBonyPelvis]
 }

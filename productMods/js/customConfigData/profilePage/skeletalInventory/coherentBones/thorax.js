@@ -35,7 +35,7 @@ singleThorax = {
 		        	key : "dataKey",
 		        }, {
 					type : sw.constant,
-					value : "Ribs",
+					value : "Single Bones of Rib Cage",
 					key : "boneLabel",
 				}] ,
 		elements : [ singleBones ]
