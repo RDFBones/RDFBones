@@ -21,7 +21,13 @@
 }
 
 .subContainer {
+	margin : 6px 0;
 	padding-left: 20px;
+}
+
+.skeletalDivisionTitle {
+	display : table;
+	border-bottom : 1px solid;
 }
 
 .rightAligned {
@@ -41,7 +47,17 @@
 	height: 28px;
 }
 
+.singleBoneAdderContainer {
+	display: flex;
+	align-items: center;
+	height: 28px;
+}
 
+.verticalMiddleInline{
+	display: flex;
+	align-items: center;
+	height: 28px;		
+}
 .disabledContainer {
 	opacity : 0.4;	
 }

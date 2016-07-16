@@ -1,4 +1,4 @@
-var SingleBoneOrganAdder = function(dataToStore, dataSet){
+var SingleBoneOrganAdder = function(dataSet, dataToStore){
 	
 	
 	this.dataToStore = dataToStore
@@ -6,8 +6,8 @@ var SingleBoneOrganAdder = function(dataToStore, dataSet){
 	this.dataSet = dataSet
 	this.singleSelect = true
 	
-	this.container = html.div()
-	this.selectorContainer = html.div("inlineContainer")
+	this.container = html.div("margin5")
+	this.selectorContainer = html.div("verticalMiddleInline")
 	this.selectedContainer = html.div()
 	this.title = html.div("inline").text(this.dataSet.label)
 	this.addButton = new Button("add", (this.checkAdding).bind(this))
