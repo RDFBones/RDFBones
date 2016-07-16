@@ -127,6 +127,10 @@ select {
 	float: left;
 }
 
+.margin3 {
+	margin: 3px;
+}
+
 .margin5 {
 	margin: 5px;
 }

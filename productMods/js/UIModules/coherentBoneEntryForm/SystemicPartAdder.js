@@ -6,7 +6,7 @@ var SingleBoneOrganAdder = function(dataSet, dataToStore){
 	this.dataSet = dataSet
 	this.singleSelect = true
 	
-	this.container = html.div("margin5")
+	this.container = html.div("margin3")
 	this.selectorContainer = html.div("verticalMiddleInline")
 	this.selectedContainer = html.div()
 	this.title = html.div("inline").text(this.dataSet.label)
