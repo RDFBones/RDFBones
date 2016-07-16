@@ -87,7 +87,7 @@ var DataOperationMap = {
     	switch(DataLib.getType(of)){
     	
     	case "object" : 
-    		toReturn = of[getData1(configData.key)]
+    		toReturn = of[getData(cont, configData.key)]
     		break;
     	case "array" : 
     		arr = []
