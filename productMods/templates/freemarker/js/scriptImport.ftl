@@ -2,9 +2,12 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/lib/jquery-1.11.3.min.js"></script>')}
 
 ${scripts.add(
-	'<script type="text/javascript" src="${urls.base}/js/customConfigData/lib/queries.js"></script>'
-	)}	
+	'<script type="text/javascript" src="${urls.base}/js/pageInit/SWMAP.js"></script>')}
 
+${scripts.add(
+	'<script type="text/javascript" src="${urls.base}/js/customConfigData/lib/queries.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/customConfigData/lib/queryLib.js"></script>'
+	)}
 
 ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/UILib/html.js"></script>',	
@@ -20,6 +23,8 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/lib/InstanceOffer.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/lib/ImageInstanceOffer.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/lib/InstanceOfferLibrary.js"></script>')}
+
+
 
 ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/lib/dataOperation/Arithmetic.js"></script>',
@@ -64,12 +69,13 @@ ${scripts.add(
 
 
 ${scripts.add(
-	'<script type="text/javascript" src="${urls.base}/js/pageInit/SWMAP.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/pageInit/pageAssembly/PageElementMap.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/pageInit/pageAssembly/PageAssembler.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/pageInit/pageElementLoading/PageElementLoader.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/pageInit/pageElementLoading/CustomElementLoader.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/pageInit/pageElementLoading/PageElementLoaderMap.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/pageInit/pageDataPerform/DataInit.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/pageInit/pageDataPerform/PageDataPerform.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/pageInit/query/DataOperation.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/pageInit/query/PageDataLoader.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/pageInit/PageInit.js"></script>',
