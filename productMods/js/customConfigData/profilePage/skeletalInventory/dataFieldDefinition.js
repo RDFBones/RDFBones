@@ -199,20 +199,27 @@ singleBones = {
 			key : "individual",
 		}, {
 			type : sw.local,
+			key : "skeletalDivisionClass",
+		}, {
+			type : sw.local,
 			key : "classUri",
+		},{
+			 type : sw.local,
+			 key : "cefPageUri",
 		}, {
 			type : sw.local,
 			key : "pageUri",
-		}, {
-			type : sw.local,
-			key : "queryType",
-		}],
+		}, ],
 		mapping : "pageLoader",
 		dataToDisplay : {
-			type : sw.global,
+			type : sw.field,
+			of : {
+				type : sw.global,
+				key : "sortedSingleBones"
+			},
 			key : {
 				type : sw.local,
-				key : "dataKey",
+				key : "skeletalDivisionClass",
 			}
 		},
 		dataFields : [ {
