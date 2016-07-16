@@ -96,6 +96,12 @@ public class DataLoader extends VitroAjaxController {
       String[] literals7 = { "label"};
       result = this.performQuery(systemicPartsWithout, inputParam7, uris7, literals7);
       break;
+    case "constitutionalParts":
+      String[] inputParam71 = { "classUri" };
+      String[] uris71 = { "uri" };
+      String[] literals71 = { "label"};
+      result = this.performQuery(constitutionalPartsWithout, inputParam71, uris71, literals71);
+      break;  
     case "regionalParts":
       String[] inputParam8 = { "classUri" };
       String[] uris8 = { "uri", "boneOrgan" };
@@ -183,6 +189,13 @@ public class DataLoader extends VitroAjaxController {
         result = this.performQuery(subClass2, inputParam19, uris19, literals19);
         break; 
 
+      case "subClass3":
+        String[] inputParam191 = {"classUri"};
+        String[] uris191 = { "uri" };
+        String[] literals191 = { "label" };
+        result = this.performQuery(subClass3, inputParam191, uris191, literals191);
+        break;   
+        
       default :
         break;
     }
@@ -229,6 +242,23 @@ public class DataLoader extends VitroAjaxController {
       + " ?uri       rdfs:label        ?label . "
       + " ?subClass1 rdfs:subClassOf   ?uri . "
       + " FILTER( ?inputClass  =  ?classUri )  " 
+      + " } ";
+  
+  private static String subClass3 = "SELECT DISTINCT ?uri ?label  "
+      + " WHERE { " 
+      + " ?uri       rdfs:subClassOf   ?inputClass . "
+      + " ?uri       rdfs:label        ?label . "
+      + " ?subClass1 rdfs:subClassOf   ?uri . "
+      + " ?subClass2 rdfs:subClassOf   ?subClass1 . " 
+      + " FILTER( ?inputClass  =  ?classUri )  " 
+      + " } ";
+  
+  private static String specialSubclass = "SELECT DISTINCT ?uri ?label  "
+      + " WHERE { " 
+      + " ?uri       rdfs:subClassOf   ?inputClass . "
+      + " ?uri       rdfs:label        ?label . "
+      + " FILTER NOT EXISTS { ?anySubclass rdfs:label ?uri } ."
+      + " FILTER NOT EXISTS { ?uri     rdfs:subClassOf ?uri } "
       + " } ";
   
   private static String SkeletalSubdivision =
@@ -368,6 +398,15 @@ public class DataLoader extends VitroAjaxController {
            + "  ?uri                rdfs:label             ?label ."
            + "  ?uri                rdfs:subClassOf        ?restriction . "
            + "  ?restriction        owl:onProperty         <http://purl.obolibrary.org/obo/fma#systemic_part_of> . "
+           + "  ?restriction        owl:someValuesFrom     ?classUri .   "
+           + "}";
+   
+   private static String constitutionalPartsWithout = 
+       "select ?uri ?label "
+           + "  where {  "
+           + "  ?uri                rdfs:label             ?label ."
+           + "  ?uri                rdfs:subClassOf        ?restriction . "
+           + "  ?restriction        owl:onProperty         <http://purl.obolibrary.org/obo/fma#constitutional_part_of> . "
            + "  ?restriction        owl:someValuesFrom     ?classUri .   "
            + "}";
    
