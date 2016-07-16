@@ -18,7 +18,6 @@ ${scripts.add(
 Coherent Bone Regions
 -->
 ${scripts.add(
-	'<script type="text/javascript" src="${urls.base}/js/customConfigData/profilePage/skeletalInventory/coherentBones/bonyPelvis.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/customConfigData/profilePage/skeletalInventory/coherentBones/lowerLimb.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/customConfigData/profilePage/skeletalInventory/coherentBones/pelvicGridle.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/customConfigData/profilePage/skeletalInventory/coherentBones/shoulderGridle.js"></script>',
@@ -32,6 +31,7 @@ Single Bones
 -->
 ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/customConfigData/profilePage/skeletalInventory/singleBones/singleLowerLimb.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/customConfigData/profilePage/skeletalInventory/singleBones/dataMap.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/customConfigData/profilePage/skeletalInventory/singleBones/singleSkull.js"></script>')}
 
 <!--
