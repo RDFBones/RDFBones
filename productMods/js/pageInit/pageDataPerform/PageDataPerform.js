@@ -23,7 +23,13 @@ PageDataPerform.prototype = {
 			$.merge(this.operationArray, newQueryDefinition)
 		}
 		this.array = []
+		
+		if(typeof customDataOperations != "undefined"){
+			$.merge(this.operationArray, customDataOperations)
+		}
+		console.log(this.operationArray)
 		$.each(this.operationArray, (function(i, element){
+		//$.each(customDataOperations, (function(i, element){
 			this.array.push(this.generateArray(element))
 		}).bind(this))
 	},
@@ -34,7 +40,6 @@ PageDataPerform.prototype = {
 				pageData : pageData,
 		}
 		if(this.array.length > 0){
-			console.log(this.array[0])
 			this.prepareLocalData(this.array[0], 0, localData)	
 		} else {
 			this.pageInit.done()
@@ -90,7 +95,20 @@ PageDataPerform.prototype = {
 			this.performOperation(dataQueue, level, localData)
 		} else {
 			levelPlus = level + 1
-			switch(DataLib.getType(localData[dataQueue[level].of][dataQueue[level].key])){
+			
+			
+			var arrayName = null
+			if(dataQueue[level].key.indexOf("[") > -1){
+				arrayName = dataQueue[level].key.cutFromCharacter("[")
+				num = dataQueue[level].key.getArrayNumber()
+				obj = localData[dataQueue[level].of][arrayName][num]
+				dataQueue[level + 1].of = arrayName
+				dataQueue[level].key = arrayName
+			} else {
+				obj = localData[dataQueue[level].of][dataQueue[level].key]
+			}
+			
+			switch(type(obj)){
 				case "array":
 				arr = localData[dataQueue[level].of][dataQueue[level].key]
 				this.numOfOperation += arr.length - 1
@@ -102,8 +120,13 @@ PageDataPerform.prototype = {
 				break;
 			case "object" :
 				
-				localData[dataQueue[level].key] = localData[dataQueue[level].of][dataQueue[level].key]
-				if(dataQueue[level + 1].key == "keys" ){
+				if(arrayName != null){
+					localData[arrayName] = localData[dataQueue[level].of][arrayName][num]
+				} else {
+					localData[dataQueue[level].key] = localData[dataQueue[level].of][dataQueue[level].key]
+				}
+				
+				if(dataQueue[level + 1].key == "keys"){
 					var levelPlus = level + 1
 					$.each(localData[dataQueue[level].key], (function(key, value){
 						dataQueue[levelPlus].key = key 
@@ -127,7 +150,12 @@ PageDataPerform.prototype = {
 		dataOperation = dataQueue[level].operation
 		//We create a reference
 		localData.dataToStore = localData[dataQueue[level].key]
-		localData["this"] = localData[dataQueue[level - 1].key]
+		if(level == 0){
+			localData["this"] = pageData
+		} else {
+			localData["this"] = localData[dataQueue[level - 1].key]
+		}
+		
 		switch(dataOperation.dataOperation){
 			case "query" :
 				this.performQuery(dataOperation, localData, dataQueue, level)
@@ -141,6 +169,10 @@ PageDataPerform.prototype = {
 			case "merge" :
 				this.merge(dataOperation, localData)
 				break;
+			case "sortToKey" :
+				this.sortToKey(dataOperation, localData)
+				break;
+			default : break;
 		}	
 	}, 
 
@@ -182,6 +214,8 @@ PageDataPerform.prototype = {
 		}).done((function(result){
 			$.merge(dataToStore, result)
 			this.checkReady()
+		}).bind(this)).fail((function(){
+			this.sendQuery(data, dataToStore)
 		}).bind(this))
 	},
 
@@ -226,6 +260,18 @@ PageDataPerform.prototype = {
 		this.checkReady()
 	},
 
+	sortToKey : function(process, localData){
+		
+		$.each(this.evaluate(localData, process.object), function(i, object){
+			
+			if(localData.dataToStore[object[process.by]] === undefined){
+				localData.dataToStore[object[process.by]] = []
+			}
+			localData.dataToStore[object[process.by]].push(object)
+		})
+		this.checkReady()
+	},
+	
     merge : function(process, localData){
 		$.merge(localData.dataToStore, this.evaluate(localData, process.what))
 		this.checkReady()
