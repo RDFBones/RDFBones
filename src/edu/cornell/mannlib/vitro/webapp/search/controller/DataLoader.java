@@ -96,6 +96,13 @@ public class DataLoader extends VitroAjaxController {
       String[] literals7 = { "label"};
       result = this.performQuery(systemicPartsWithout, inputParam7, uris7, literals7);
       break;
+    case "systemicPartsWithoutNoBoneOrgan":
+      String[] inputParam72 = { "classUri" };
+      String[] uris72 = { "uri" };
+      String[] literals72 = { "label"};
+      result = this.performQuery(systemicPartsWithoutNoBoneOrgan, inputParam72, uris72, literals72);
+      break;  
+      
     case "constitutionalParts":
       String[] inputParam71 = { "classUri" };
       String[] uris71 = { "uri" };
@@ -122,6 +129,13 @@ public class DataLoader extends VitroAjaxController {
        result = this.performQuery(singleBoneQuery, inputParam10, uris10, literals10);
        break; 
      
+     case "singleBones1" :
+       String[] inputParam101 = { "skeletalInventory" };
+       String[] uris101 = {"boneOrgan", "type", "completenessState", "completeness", "skeletalDivisionType"};
+       String[] literals101 = {"lable", "typeLabel", "completenessLabel"};
+       result = this.performQuery(singleBoneQuery1, inputParam101, uris101, literals101);
+       break; 
+       
       case "sytemicPartWithSubclass" :
         
        String[] inputParam11 = { "classUri" };
@@ -335,8 +349,6 @@ public class DataLoader extends VitroAjaxController {
           + "    ?boneDivision      vitro:mostSpecificType  ?boneDivisionType . \n "
           + " }";
 
-  
-  
   private static String BoneOrganQuery =
       ""
           + "SELECT ?boneOrgan ?label ?typeLabel ?type ?completeness ?completenessState ?completenessLabel \n"
@@ -401,6 +413,16 @@ public class DataLoader extends VitroAjaxController {
            + "  ?restriction        owl:someValuesFrom     ?classUri .   "
            + "}";
    
+   private static String systemicPartsWithoutNoBoneOrgan = 
+       "select ?uri ?label "
+           + "  where {  "
+           + "  ?uri                rdfs:label             ?label ."
+           + "  ?uri                rdfs:subClassOf        ?restriction . "
+           + "  ?restriction        owl:onProperty         <http://purl.obolibrary.org/obo/fma#systemic_part_of> . "
+           + "  ?restriction        owl:someValuesFrom     ?classUri .   "
+           + "  FILTER NOT EXISTS {  ?uri   rdfs:subClassOf  <http://purl.obolibrary.org/obo/FMA_5018> } . "
+           + "}";
+   
    private static String constitutionalPartsWithout = 
        "select ?uri ?label "
            + "  where {  "
@@ -431,6 +453,23 @@ public class DataLoader extends VitroAjaxController {
            + "    ?completenessState  rdfs:label              ?completenessLabel . \n" 
            + "    ?skeletalInventory  obo:BFO_0000051         ?completeness . \n"
            + "    ?boneOrgan          rdf:type                ?inputType \n ."
+           + "    ?boneOrgan          vitro:mostSpecificType  ?type .  \n"
+           + "    ?type               rdfs:label              ?typeLabel . \n" 
+           + "    FILTER NOT EXISTS { ?boneOrgan       obo:systemic_part_of  ?boneDivision } . \n" 
+           + " } ";
+   
+   private static String singleBoneQuery1 = 
+       ""
+           + "SELECT ?boneOrgan ?skeletalDivisionType ?label ?typeLabel ?type ?completeness ?completenessState ?completenessLabel \n"
+           + " WHERE \n " 
+           + "   { "
+           + "    ?boneOrgan          rdfbones:singleBoneOf   ?skeletalDivisionType . \n "  
+           + "    ?boneOrgan          rdfs:label              ?label . \n "
+           + "    ?boneSegment        obo:regional_part_of    ?boneOrgan  . \n"
+           + "    ?completeness       obo:IAO_0000136         ?boneSegment . \n"
+           + "    ?completeness       obo:OBI_0000999         ?completenessState . \n" 
+           + "    ?completenessState  rdfs:label              ?completenessLabel . \n" 
+           + "    ?skeletalInventory  obo:BFO_0000051         ?completeness . \n"
            + "    ?boneOrgan          vitro:mostSpecificType  ?type .  \n"
            + "    ?type               rdfs:label              ?typeLabel . \n" 
            + "    FILTER NOT EXISTS { ?boneOrgan       obo:systemic_part_of  ?boneDivision } . \n" 
