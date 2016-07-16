@@ -31,12 +31,13 @@ DataTable.prototype.loadTableHeader = function() {
 },
 
 DataTable.prototype.loadTableData = function() {
-	this.displayData(DataOperationMap[this.configData.dataToDisplay.type](this,
-			this.configData.dataToDisplay))
+
+	this.displayData(getData(this, this.configData.dataToDisplay))
 },
 
 DataTable.prototype.displayData = function(data) {
-	if(data.length > 0){
+	
+	if(data != undefined && data.length > 0){
 		var column = []
 		$.each(data, (function(i, fieldData) {
 			column.push(new Row(this, this.configData, fieldData).container)
