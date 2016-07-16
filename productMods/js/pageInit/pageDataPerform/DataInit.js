@@ -13,10 +13,11 @@ CheckDataOperation.prototype = {
 
 		case "object":
 			
+			var lastKey = null
 			$.each(input, (function(key, value) {
 				if(key != "pageElements"){
 					if (key == "dataOperation") {
-						this.performDataOperation(variable, input)
+						this.addToQueue(variable, input)
 					}
 					var varQueue = variable + "." + key
 					this.check(varQueue, value)				
@@ -25,6 +26,11 @@ CheckDataOperation.prototype = {
 			break;
 		case "array":
 			$.each(input, (function(i, inp) {
+				
+				if(variable.lastIndexOf("]") == variable.length - 1){
+					variable = variable.cutFromCharacter("[")
+				} 
+				variable += "[" + i + "]"
 				this.check(variable, inp)
 			}).bind(this))
 			break;
@@ -33,8 +39,12 @@ CheckDataOperation.prototype = {
 		}
 	},
 	
-	performDataOperation : function(inputQueue, operation){
+	addToQueue : function(inputQueue, operation){
 
+		index = inputQueue.indexOf("$")
+		if(index > -1){
+		  inputQueue = inputQueue.substring(0, index)	
+		}
 		this.dataOperations.push({
 			object : inputQueue,
 			operation : operation,
