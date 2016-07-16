@@ -25,12 +25,7 @@ labelQuery = {
 }
 
 
-subClass = {
-	
-	dataOperation : "query",
-	queryType : "subClassesWithout",
-	parameters : [inputClass]
-}
+
 
 extract = {
       dataOperation : "extraction",
@@ -106,9 +101,33 @@ partlySymmetric1 = {
    systemicParts$2 : merge,
 } 
 
+subClass = {
+		
+		dataOperation : "query",
+		queryType : "subClassesWithout",
+		parameters : [inputClass]
+	}
+
 subClass2 = {
 	dataOperation : "query",
 	queryType : "subClass2",
+	parameters : [inputClass], 
+	subClasses : subClass
+}
+
+subClass3 = {
+		
+	dataOperation : "query",
+	queryType : "subClass3",
+	subClass1 : subClass2,
+	parameters : [inputClass]
+}
+
+
+consitutionalSubClass = {
+	
+	dataOperation : "query",
+	queryType : "constitutionalParts",
 	parameters : [inputClass], 
 	subClasses : subClass
 }
