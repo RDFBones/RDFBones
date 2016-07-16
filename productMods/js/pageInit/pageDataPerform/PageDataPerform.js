@@ -189,7 +189,7 @@ PageDataPerform.prototype = {
 			}
 		}).bind(this))
 		
-		data.queryType = dataOperation.queryType
+		data.queryType = this.getQueryVariable(dataOperation.queryType, localData)
 		
 		if(array == null){
 			if(dataOperation.singleQuery != undefined){
@@ -231,6 +231,34 @@ PageDataPerform.prototype = {
 		}).bind(this))
 	},
 
+	
+	getQueryVariable : function(queryDef, localData){
+		
+		if(type(queryDef) == "object"){
+			if(queryDef.type == sw.switchCase){
+				
+				on = this.evaluate(localData, queryDef.on)
+				if(on != ""){
+					toReturn = null
+					$.each(queryDef.cases, function(i, _case){
+						if(_case.value == on){
+							toReturn = _case.toReturn
+							return false
+						}
+					})
+					return toReturn
+				} else {
+					return queryDef.defaultCase
+				}
+				
+			} else {
+				return null
+			}
+		} else {
+			return queryDef
+		}
+	},
+	
 	extract : function(dataOperation, localData){
 		
 		if(dataOperation.toNewVariable != undefined){
@@ -358,7 +386,12 @@ PageDataPerform.prototype = {
 			switch(arr.length){
 				case 1 : 
 					return localData.dataToStore[arr[0]]
-				case 2 : return  localData[arr[0]][arr[1]]
+				case 2 : 
+					if(localData[arr[0]][arr[1]] != undefined){
+						return  localData[arr[0]][arr[1]]	
+					} else {
+						return undefined
+					}
 			}
 		} else { 
 			switch(dataDef.type){
