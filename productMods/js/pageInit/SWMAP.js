@@ -1,3 +1,5 @@
+
+var FMA = "http://purl.obolibrary.org/obo/FMA_"
 var swPrefix = "http://softwareOntology.com/"
 var sw = {
 		container : swPrefix + "Container",
