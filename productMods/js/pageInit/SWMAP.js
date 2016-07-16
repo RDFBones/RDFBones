@@ -30,5 +30,6 @@ var sw = {
 		linkField : swPrefix + "LinkField",
 		fieldsOfArray : swPrefix + "fieldsOfArray",
 		customPage : swPrefix + "CustomPage",
+		switchCase : swPrefix + "SwitchCase",
 		field : swPrefix + "Field",
 }
