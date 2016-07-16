@@ -1,7 +1,7 @@
 bonypelvis = {
 		type : sw.container,
 		localData : [
-				{
+				skeletalSubDivisionCEF, {
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_16580",
 					key : "boneUri",
@@ -11,11 +11,25 @@ bonypelvis = {
 					key : "boneLabel",
 				},{
 					type : sw.constant,
-					value : [ "http://purl.obolibrary.org/obo/FMA_16580"],
+					value : ["http://purl.obolibrary.org/obo/FMA_16580"],
 					key : "classSelection"
-				} ],
+				},{
+					type : sw.constant,
+					value : "simpleQuery",
+					key : "simpleQuery",
+				},{
+					type : sw.constant,
+					value : "http://purl.obolibrary.org/obo/FMA_16580",
+					key : "skeletalDivision",
+				}, {
+					type : sw.constant,
+					value : "partlySymmetricBoneDivision",
+					key : "cefPageUri",
+				}],
 		elements : [coherentData]
 	}
+
+
 
 
 singleBonyPelvis = {
