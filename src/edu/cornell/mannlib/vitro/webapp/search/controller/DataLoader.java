@@ -76,6 +76,13 @@ public class DataLoader extends VitroAjaxController {
       result = this.performQuery(CoherentQuery, inputParam4, uris4, literals4);
       break;
       
+    case "CoherentSkeletalRegionOfSkeletalDivision" :
+      String[] inputParam41 = { "skeletalDivision" };
+      String[] uris41 = { "coherentSkeletalRegion", "type" };
+      String[] literals41 = { "boneOrganCount", "typeLabel"};
+      result = this.performQuery(CoherentSkeletalRegionOfSkeletalDivision, inputParam41, uris41, literals41);
+      break;
+      
     case "sytemicParts":
       String[] inputParam5 = { "classUri" };
       String[] uris5 = { "uri", "boneOrgan" };
@@ -364,7 +371,19 @@ public class DataLoader extends VitroAjaxController {
           + "    ?type            rdfs:label            ?typeLabel . \n" 
           + " } ";
   
-   private static String subClassQuery =
+  private static String CoherentSkeletalRegionOfSkeletalDivision =
+      ""
+          + "SELECT ?coherentSkeletalRegion ?type ?typeLabel (COUNT(?boneOrgan) as ?boneOrganCount)  \n"
+          + " WHERE \n " 
+          + "   { "
+          + "    ?coherentSkeletalRegion    obo:systemic_part_of    ?skeletalDivision ."
+          + "    ?coherentSkeletalRegion    vitro:mostSpecificType  ?type ."
+          + "    ?type                      rdfs:label            ?typeLabel . \n" 
+          + "    ?boneOrgan                 obo:systemic_part_of  ?coherentSkeletalRegion ."    
+          + " } GROUP BY ?coherentSkeletalRegion ?type ?typeLabel  ";
+  
+  
+  private static String subClassQuery =
        ""
            + "SELECT ?inputClass ?inputClassLabel ?uri ?label \n"
            + " WHERE { \n "
