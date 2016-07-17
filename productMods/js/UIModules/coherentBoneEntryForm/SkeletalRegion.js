@@ -67,8 +67,9 @@ $.extend(SkeletalRegion.prototype, {
 				}
 				
 				var urlObject = {
-					pageUri : "boneDivision",
-					individual : msg.object.coherentSkeletalDivision.uri,
+					pageUri : "skeletalDivision",
+					individual : msg.object.skeletalSubdivision.uri,
+					skeletalDivision :  msg.object.skeletalSubdivision.uri,
 					skeletalInventory : pageData.individual,
 					existingBoneDivisionType : pageData.existingBoneDivisionType,
 					classUri : pageData.classUri,
@@ -131,14 +132,59 @@ $.extend(SkeletalRegion.prototype, {
 })
 
 
-SubSkeletalRegion = function(){
+CoherentBoneRegion = function(){
+
+	
+}
+
+$.extend(CoherentBoneRegion.prototype, {
+		
+		saveRoutine : function() {
+
+			var toSend = {
+				operation : "addSkeletalRegion",
+				individual : pageData.individual,
+				boneDivision : this.dataToStore.coherentSkeletalDivision,
+			}
+			console.log(toSend)
+			PopUpController.init()
+			
+			$.ajax({
+				type : 'POST',
+				context : this,
+				dataType : 'json',
+				url : baseUrl + "dataInput",
+				data : "dataToStore=" + JSON.stringify(toSend)
+			}).done((function(msg) {
+					if (pageData.existingBoneDivisionType == undefined) {
+						pageData.existingBoneDivisionType = this.dataToStore.uri
+					}
+					
+					var urlObject = {
+						pageUri : "skeletalInventory",
+						individual : "http://testIndividual",
+					}
+					
+					if(pageData.pageUri != "phalanges"){
+						urlObject.cefPageUri = "phalanges"
+					}
+					
+					window.location = baseUrl
+							+ "pageLoader?"
+							+ DataLib.getUrl(urlObject)
+				}).bind(this))
+				
+		},
+		
+})
+
+var ExistingSkeletalRegion = function(){
 	
 	
 }
 
-SubSkeletalRegion.prototype = {
-		
+ExistingSkeletalRegion.prototype = {
 	
-		
-		
+	
 }
+
