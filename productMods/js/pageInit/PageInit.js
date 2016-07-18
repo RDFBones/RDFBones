@@ -22,10 +22,13 @@ PageInit.prototype = {
 		case 1: 
 			new PageDataLoader(this)
 			break;
-		case 2: 
-			DataOperation.perform(this)
+		case 2 :  
+			new PageDataPerform(this)
 			break;
 		case 3: 
+			DataOperation.perform(this)
+			break;
+		case 4: 
 			PageAssembler.loadPage()
 			break;
 		}
