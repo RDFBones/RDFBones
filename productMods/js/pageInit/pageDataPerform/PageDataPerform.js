@@ -172,6 +172,8 @@ PageDataPerform.prototype = {
 			case "sortToKey" :
 				this.sortToKey(dataOperation, localData)
 				break;
+			case "selection" :
+				this.selection(dataOperation, localData)
 			default : break;
 		}	
 	}, 
@@ -297,6 +299,17 @@ PageDataPerform.prototype = {
 			}
 			localData.dataToStore[object[process.by]].push(object)
 		})
+		this.checkReady()
+	},
+	
+	
+	selection : function(process, localData){
+		
+		arr = this.evaluate(localData, process.object)
+							[this.evaluate(localData, process.by)]
+		if(arr != undefined){
+			$.merge(localData.dataToStore, arr)
+		}
 		this.checkReady()
 	},
 	

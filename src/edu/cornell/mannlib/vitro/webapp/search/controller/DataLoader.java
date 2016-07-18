@@ -61,6 +61,22 @@ public class DataLoader extends VitroAjaxController {
       String[] literals2 = {"label", "typeLabel", "completenessLabel"};
       result = this.performQuery(BoneOrganQuery, inputParam2, uris2, literals2);
       break;
+      
+    case "existingBoneOrgan" :  
+      String[] inputParam21 = { "skeletalInventory" };
+      String[] uris21 = {"boneOrgan", "type", "completenessState", "completeness"};
+      String[] literals21 = {"label", "typeLabel", "completenessLabel"};
+      result = this.performQuery(ExistingBoneOrgan, inputParam21, uris21, literals21);
+      break;
+    
+    case "existingBoneOrgan1" :  
+      String[] inputParam211 = { "skeletalInventory" };
+      String[] uris211 = {"uri", "type", "comp2State", "completeness"};
+      String[] literals211 = {"label", "typeLabel", "completenessLabel"};
+      result = this.performQuery(ExistingBoneOrgan1, inputParam211, uris211, literals211);
+      break;  
+     
+      
     case "subClasses" : 
       
       String[] inputParam3 = { "classUri"};
@@ -391,6 +407,40 @@ public class DataLoader extends VitroAjaxController {
           + "    ?boneOrgan       rdfs:label            ?label . \n " 
           + "    ?type            rdfs:label            ?typeLabel . \n" 
           + " } ";
+  
+
+  private static String ExistingBoneOrgan =
+      ""
+          + "SELECT ?boneOrgan ?label ?typeLabel ?type ?completeness ?completenessState ?completenessLabel \n"
+          + " WHERE \n " 
+          + "   { "
+          + "    FILTER NOT EXISTS { ?boneOrgan       obo:systemic_part_of  ?boneDivision  } . \n"
+          + "    ?boneSegment           obo:regional_part_of      ?boneOrgan  . \n"
+          + "    ?completeness          obo:IAO_0000136           ?boneSegment . \n"
+          + "    ?skeletalInventory     obo:BFO_0000051           ?completeness . \n "
+          + "    ?completeness          obo:OBI_0000999           ?completenessState . \n" 
+          + "    ?completenessState     rdfs:label                ?completenessLabel . \n"  
+          + "    ?boneOrgan             vitro:mostSpecificType    ?type . \n"
+          + "    ?boneOrgan             rdfs:label                ?label . \n " 
+          + "    ?type                  rdfs:label                ?typeLabel . \n"  
+          + " } ";
+  
+  private static String ExistingBoneOrgan1 =
+      ""
+          + "SELECT ?uri ?label ?typeLabel ?type ?completeness ?comp2State ?completenessLabel \n"
+          + " WHERE \n " 
+          + "   { "
+          + "    FILTER NOT EXISTS { ?uri       obo:systemic_part_of  ?boneDivision  } . \n"
+          + "    ?boneSegment           obo:regional_part_of      ?uri  . \n"
+          + "    ?completeness          obo:IAO_0000136           ?boneSegment . \n"
+          + "    ?skeletalInventory     obo:BFO_0000051           ?completeness . \n "
+          + "    ?completeness          obo:OBI_0000999           ?comp2State . \n" 
+          + "    ?comp2State            rdfs:label                ?completenessLabel . \n"  
+          + "    ?uri                   vitro:mostSpecificType    ?type . \n"
+          + "    ?uri                   rdfs:label                ?label . \n " 
+          + "    ?type                  rdfs:label                ?typeLabel . \n"  
+          + " } ";
+  
   
   private static String CoherentSkeletalRegionOfSkeletalDivision =
       ""

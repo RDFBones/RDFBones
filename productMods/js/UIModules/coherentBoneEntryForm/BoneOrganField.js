@@ -80,4 +80,10 @@ ExistingBoneOrganField.prototype.getCompletenessSelector = function() {
 
 ExistingBoneOrganField.prototype.setDataObject = function(dataSet, dataToStore) {
 	this.dataSet = dataSet
+	this.dataToStore = dataToStore
+	this.dataObject = new Object()
+	this.dataObject.uri = dataSet.uri
+	this.dataObject.label = dataSet.label
+	this.dataObject.type = "existing"
+	dataToStore.push(this.dataObject)
 }

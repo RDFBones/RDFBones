@@ -248,22 +248,6 @@ $.extend(BoneDivisionEditor.prototype, {
 
 					refresh : function() {
 
-						var thereIsNotAdded = false
-						var thereIsAdded = false
-
-						this.saveButton.disable()
-						$.each(this.systemicPartSelectors,
-								(function(i, sysSel) {
-									if (sysSel.notAdded) {
-										thereIsNotAdded = true
-									} else {
-										this.saveButton.enable()
-									}
-								}).bind(this))
-
-						if (this.addAllButton != undefined) {
-							this.refreshAddAllButton(thereIsNotAdded)
-						}
 					},
 				})
 

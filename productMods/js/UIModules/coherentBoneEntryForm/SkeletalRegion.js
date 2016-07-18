@@ -270,7 +270,7 @@ CoherentBoneRegionSelectorSymmetric.prototype = Object.create(CoherentBoneRegion
 $.extend(CoherentBoneRegionSelectorSymmetric.prototype, {
 	
 	initSelector : function() {
-		this.selector = UI.classSelector(this.descriptor.subClasses)
+		this.selector = UI.classSelector(this.descriptor.subClasses1)
 	},
 
 	addSkeletalDivision : function(){
@@ -278,7 +278,7 @@ $.extend(CoherentBoneRegionSelectorSymmetric.prototype, {
 		this.selector.hide()
 		this.addButton.container.hide()
 		this.dataToStore = []
-		var descriptor = this.descriptor.subClasses.getObjectByKey("uri", this.selector.val())
+		var descriptor = this.descriptor.subClasses1.getObjectByKey("uri", this.selector.val())
 		this.skeletalRegionSelector = new CoherentSkeletalRegion(this, this.dataToStore, descriptor)
 		this.subContainer.append(this.skeletalRegionSelector.container)
 	},

@@ -77,6 +77,9 @@ var SystemicPartAdder = function(parent, dataToStore, dataSet){
 	//Counter
 	this.cnt = 0
 	this.addedSubClasses = []
+	this.existingContainer = html.div("margin10").hide()
+	this.existingTitle = html.div("title").text("Existing Bone Organs")
+    this.existingBones = html.div("subContainer")
 	this.list = new Button("list", (this.selectExisting).bind(this)).hide()
 	
 	SingleBoneOrganAdder.call(this, dataSet, dataToStore)
@@ -90,7 +93,6 @@ $.extend(SystemicPartAdder.prototype, {
 	init : function(){
 		this.setSelectorField()
 		this.checkExisting()
-		this.checkOfferExisting()
 		this.assemble()
 	},
 		
@@ -101,58 +103,19 @@ $.extend(SystemicPartAdder.prototype, {
          				this.selector,
          				this.addButton.container,
          				this.list.container, 
+         			this.existingContainer,
+         			 	this.existingTitle,
+         			 	this.existingBones,
          			this.selectedContainer],
-         			[0, 1, 1, 1, 1, 0])
+         			[0, 1, 1, 1, 1, 0, 1, 1, 0])
 	},
 	
 	
 	checkExisting : function(){
 		
-		
-		if(this.parent.descriptor.existing != undefined){
-
-			this.existingBoneOrgans = []
-			if(this.singleSelect){
-				var obj = this.parent.descriptor.existing.systemicParts.getObjectByKey("type", this.dataSet.uri)
-				if(obj != null){
-					this.existingBoneOrgans.push(obj)
-					this.addExistingSystemicPart(obj)
-					this.selectorContainer.hide()
-				}	
-			} else {
-				var obj = this.parent.descriptor.existing.systemicParts.getObjectByKey("type", this.dataSet.uri)
-				if(obj != null){
-					this.existingBoneOrgans.push(obj)
-					this.addExistingSystemicPart(match)
-				}
-				
-				object = DataLib.joinTables(
-						this.parent.descriptor.existing.systemicParts, "type",
-						this.dataSet.subClasses, "uri")
-				//Fill the existing part array
-				$.each(object, (function(i, obj){
-					this.addedSubClasses.push(obj.type)
-					this.addExistingSystemicPart(obj)
-				}).bind(this))				
-			}
+		if(this.dataSet.existing.length > 0){			
+			this.list.show()
 		}
-	},
-
-	checkOfferExisting : function(){
-		
-		if(this.parent.descriptor.existingToSelect != undefined){
-			
-			if(this.singleSelect){
-				tmp = []
-				tmp.push(this.dataSet)
-				this.dataToOffer = DataLib.joinTables(this.parent.descriptor.existingToSelect, "type", tmp, "uri")
-			} else {
-				this.dataToOffer = DataLib.joinTables(this.parent.descriptor.existingToSelect, "type", this.arr, "uri")
-			}
-			if(this.dataToOffer.length > 0){
-				this.list.show()
-			}
-		} 
 	},
 	
 	addAll : function(){
@@ -177,6 +140,7 @@ $.extend(SystemicPartAdder.prototype, {
 			if(this.cnt < this.max){
 				this.addSystemicPart(this.dataSet, without)
 				this.selectorContainer.hide()
+				return true
 			}
 		} else {
 			//Check the number of element
@@ -186,10 +150,12 @@ $.extend(SystemicPartAdder.prototype, {
 			if(this.cnt == this.max){
 				if(without === undefined){
 					alert("You are allowed to add maximal " + this.cnt + " bone organs!")
+					return false
 				}
 			} else if  (this.addedSubClasses.indexOf(val) != -1){
 				if(without === undefined){
 					alert("You are allowed to add only one from this bone organ!")
+					return false
 				}
 			} else {
 				
@@ -207,15 +173,54 @@ $.extend(SystemicPartAdder.prototype, {
 						}
 					}).bind(this))
 				}
+				return true
 			}
 		}
 	},
 	
 	
+	checkAddingExisting : function(data){
+		
+		//Check if it is already add
+		if(this.singleSelect){
+			this.addExistingSystemicPart(data)
+			return true
+		} else {
+			if(this.cnt == this.max){
+				if(without === undefined){
+					alert("You are allowed to add maximal " + this.cnt + " bone organs!")
+					return false
+				}
+			} else if  (this.addedSubClasses.indexOf(data.uri) != -1){
+				if(without === undefined){
+					alert("You are allowed to add only one from this bone organ!")
+					return false
+				}
+			} else {
+				
+				if(data.boneOrgan != this.dataSet.uri){
+					this.addedSubClasses.push(data.uri)
+				}
+				this.addExistingSystemicPart(this.arr.getObjectByKey("uri", data.uri), without)
+				//If it was the last
+				if(this.cnt == this.max && this.generalBoneOrgans.length == 1){
+					//Check if we 
+					this.generalBoneOrgans[0].deleteRoutine()
+					$.each(this.dataSet.subClasses, (function(i, scl){
+						if(this.addedSubClasses.indexOf(scl.uri) == -1){
+							this.addSystemicPart(scl)
+						}					
+					}).bind(this))
+				}
+				return true
+			}
+		}
+
+	},
+	
 	reset : function(uri, generalBoneOrgan){
 		
 		this.generalBoneOrgans.removeElement(generalBoneOrgan)
-
 		this.addedSubClasses.removeElement(uri)
 		if(this.singleSelect){
 			this.selectorContainer.show()
@@ -238,7 +243,7 @@ $.extend(SystemicPartAdder.prototype, {
 		} else {
 			this.selectedContainer.append(new ExistingBoneOrganField(this, object, this.dataToStore).container)
 		}
-		if(without === undefined){
+		if(typeof without === "undefined"){
 			this.addCheck()
 		}	
 	},
@@ -265,13 +270,41 @@ $.extend(SystemicPartAdder.prototype, {
 	},
 	
 	selectExisting : function(){
-		console.log(this.dataToOffer)
+		
+		var existing = []
+		$.each(this.dataSet.existing, (function(i, ex){
+			existing.push(new ExistingEntry(this, ex).container)
+		}).bind(this))
+		this.existingContainer.append(existing).show()
 	},
-
+	
+	closeExisting : function(data){
+		
+		this.dataSet.existing.removeElement(data)
+		this.existingContainer.hide()
+	}
 })
 
 
+ExistingEntry = function(systemicPartAdder, data){
 
+	this.sysAdder = systemicPartAdder
+	this.data = data
+	this.container = html.div("inline margin5").text(data.label)
+	this.addButton = new Button("add", (this.add).bind(this))
+	this.container.append(this.addButton.container)
+}
+
+ExistingEntry.prototype = {
+		
+	add : function(){
+		this.data.type = "existing"
+		if(this.sysAdder.checkAddingExisting(this.data)){
+			this.container.remove()
+			this.sysAdder.closeExisting(this.data)
+		} 
+	}
+}
 
 
 
