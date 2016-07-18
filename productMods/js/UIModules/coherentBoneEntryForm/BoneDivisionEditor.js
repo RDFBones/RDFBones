@@ -11,7 +11,7 @@ var BoneDivisionEditor = function() {
 	this.cancelButton = new TextButton("Cancel", (this.cancelRoutine)
 			.bind(this), "rightAligned")
 
-	this.loadSubObject(pageData.systemicParts)
+	this.loadSubObject(pageData.skeletalRegions)
 	this.assemble()
 }
 
@@ -60,7 +60,6 @@ BoneDivisionEditor.prototype = {
 			this.subContainer.append(sysSel.container)
 		}).bind(this))
 		
-<<<<<<< Updated upstream
 	}
 }
 
@@ -85,17 +84,15 @@ var CoherentSkeletalRegion = function(parent, parentData, descriptor) {
 
 CoherentSkeletalRegion.prototype = Object.create(SkeletalRegion.prototype)
 
-$.extend(CoherentSkeletalRegion.prototype = {
+$.extend(CoherentSkeletalRegion.prototype, {
 
 	//@Override
 	initData : function() {
-=======
 		//this.addAllButton.hide()
 		this.saveButton.show().disable()
 	},
 	
 	saveRoutine : function() {
->>>>>>> Stashed changes
 
 		var toSend = {
 			operation : "addCoherentBoneRegion",
@@ -159,13 +156,11 @@ $.extend(CoherentSkeletalRegion.prototype = {
 			this.refreshAddAllButton(thereIsNotAdded)
 		}
 	},
-}
+})
 
-<<<<<<< Updated upstream
+
 BoneDivisionEditor.prototype = Object.create(SubBoneDivisionEditor.prototype)
-$.extend(
-				BoneDivisionEditor.prototype,
-				{
+$.extend(BoneDivisionEditor.prototype, {
 
 					// @Override
 					assemble : function() {
@@ -272,8 +267,6 @@ $.extend(
 					},
 				})
 
-=======
->>>>>>> Stashed changes
 var SymmetricBoneDivisionEditor = function() {
 
 	
@@ -316,8 +309,7 @@ var SymmetricBoneDivisionEditor = function() {
 
 SymmetricBoneDivisionEditor.prototype = Object.create(BoneDivisionEditor.prototype)
 
-$.extend(SymmetricBoneDivisionEditor.prototype,
-{
+$.extend(SymmetricBoneDivisionEditor.prototype, {
 		myAssemble : function() {
 
 			UI.assemble(this.container, [ this.headerContainer,

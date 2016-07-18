@@ -36,7 +36,6 @@ SymmetricBoneOrganSelector.prototype = {
 		   		this.addButton.container,
 		   this.systemicPartContainer],
 			[0, 1, 1, 1, 0])
-			
 	},
 	
 	getSelectArray : function(){

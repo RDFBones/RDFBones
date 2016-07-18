@@ -1,5 +1,6 @@
 var CoherentSkeletalRegion = function(parent, parentData, descriptor) {
 
+	
 	this.parent = parent
 	this.descriptor = descriptor
 	this.parentData = parentData
