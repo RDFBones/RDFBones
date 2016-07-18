@@ -3,6 +3,8 @@
  * Input Parameters
  */
 
+
+
 inputClass = {
     value : "this.uri",
     name : "classUri",
@@ -18,6 +20,28 @@ inputType = {
    name : "inputType",
 }
 
+
+subClass = {
+		
+		dataOperation : "query",
+		queryType : "subClassesWithout",
+		parameters : [inputClass]
+	}
+
+subClass2 = {
+	dataOperation : "query",
+	queryType : "subClass2",
+	parameters : [inputClass], 
+	subClasses : subClass
+}
+
+subClass3 = {
+		
+	dataOperation : "query",
+	queryType : "subClass3",
+	subClass1 : subClass2,
+	parameters : [inputClass]
+}
 
 
 labelQuery = {	
@@ -92,10 +116,26 @@ symmetricBonesQuery = {
 }
 
 systemicPartsQuery = {
+		dataOperation : "query", 
+		queryType : "systemicPartsWithout", 
+		parameters : [inputClass], 
+	}
+
+subclassSystemic = {
+		
+		dataOperation : "query",
+		queryType : "subClassesWithout",
+		parameters : [inputClass],
+		systemicParts : systemicPartsQuery,
+}
+
+systemicSubclass = {
 	dataOperation : "query", 
 	queryType : "systemicPartsWithout", 
 	parameters : [inputClass], 
+	subClasses : subClass,
 }
+
 
 partlySymmetric2 = {
 		   dataOperation : "query",
@@ -115,27 +155,6 @@ partlySymmetric1 = {
 } 
 
 
-subClass = {
-		
-		dataOperation : "query",
-		queryType : "subClassesWithout",
-		parameters : [inputClass]
-	}
-
-subClass2 = {
-	dataOperation : "query",
-	queryType : "subClass2",
-	parameters : [inputClass], 
-	subClasses : subClass
-}
-
-subClass3 = {
-		
-	dataOperation : "query",
-	queryType : "subClass3",
-	subClass1 : subClass2,
-	parameters : [inputClass]
-}
 
 
 consitutionalSubClass = {
