@@ -75,7 +75,7 @@ public class DataLoader extends VitroAjaxController {
       String[] literals4 = { "boneOrganCount", "label" };
       result = this.performQuery(CoherentQuery, inputParam4, uris4, literals4);
       break;
-      
+
     case "skeletalRegions":
       String[] inputParam411 = { "skeletalInventory" };
       String[] uris411 = { "skeletalDivision", "type" };
