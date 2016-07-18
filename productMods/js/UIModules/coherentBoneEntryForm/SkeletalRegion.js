@@ -184,72 +184,102 @@ CoherentBoneRegionSelectorPartlySymmetric.prototype = {
 	},
 
 	addSkeletalDivision : function(){
+		
+		this.selector.hide()
+		this.addButton.container.hide()
 		this.dataToStore = []
 		var descriptor = this.descriptor.systemicParts1.getObjectByKey(this.selector.val())
-		this.subContainer.append(new CoherentSkeletalRegion(this, this.dataToStore, descriptor).container)
+		this.skeletalRegionSelector = new CoherentSkeletalRegion(this, this.dataToStore, descriptor)
+		this.subContainer.append(this.skeletalRegionSelector.container)
 	},
 	
-	
 	refresh : function(){
+
 		console.log(this.dataToStore)
+		var thereIsNotAdded = false
+		var thereIsAdded = false
+
+		if(this.skeletalRegionSelector.notAdded){
+			this.saveButton.disable()
+		} else {
+			this.saveButton.enable()
+		}		
 	},
 	
 	saveRoutine : function(){
 
 		var toSend = {
-			operation : "addSkeletalRegion",
+			operation : "addCoherentBoneRegion",
 			individual : pageData.individual,
-			boneDivision : this.dataToStore.coherentSkeletalDivision,
+			boneDivision : this.dataToStore[0]
 		}
 		console.log(toSend)
 		PopUpController.init()
 
-		$
-				.ajax({
-					type : 'POST',
-					context : this,
-					dataType : 'json',
-					url : baseUrl + "dataInput",
-					data : "dataToStore=" + JSON.stringify(toSend)
-				})
-				.done(
-						(function(msg) {
-							if (pageData.existingBoneDivisionType == undefined) {
-								pageData.existingBoneDivisionType = this.dataToStore.uri
-							}
+		$.ajax({
+				type : 'POST',
+				context : this,
+				dataType : 'json',
+				url : baseUrl + "dataInput",
+				data : "dataToStore=" + JSON.stringify(toSend)
+		}).done((function(msg) {
+							
+			
+				if (pageData.existingBoneDivisionType == undefined) {
+					pageData.existingBoneDivisionType = this.dataToStore.uri
+				}
 
-							var urlObject = {
-								pageUri : "skeletalInventory",
-								individual : "http://testIndividual",
-							}
+				var urlObject = {
+					pageUri : "boneDivision",
+					individual : msg.object.boneDivision.uri,
+					skeletalInventory : pageData.individual,
+					existingBoneDivisionType : pageData.existingBoneDivisionType,
+					classUri : pageData.classUri,
+				}
 
-							if (pageData.pageUri != "phalanges") {
-								urlObject.cefPageUri = "phalanges"
-							}
+				if (pageData.pageUri != "phalanges") {
+					urlObject.cefPageUri = "phalanges"
+				}
 
-							window.location = baseUrl + "pageLoader?"
-									+ DataLib.getUrl(urlObject)
-						}).bind(this))
+				window.location = baseUrl
+						+ "pageLoader?"
+						+ DataLib.getUrl(urlObject)
+				window.location = baseUrl + "pageLoader?"
+						+ DataLib.getUrl(urlObject)
+			}).bind(this))
 
 	},
 	
 	cancelRoutine : function(){
 		
-		
+		window.location = baseUrl
+			+ "pageLoader?skeletalInventory="
+			+ pageData.individual
+			+ "&pageUri=skeletalInventory"
 	}
 }
 
 var CoherentBoneRegionSelectorSymmetric = function() {
-
+	
 	CoherentBoneRegionSelectorPartlySymmetric.call(this)
 }
 
 CoherentBoneRegionSelectorSymmetric.prototype = Object.create(CoherentBoneRegionSelectorPartlySymmetric.prototype)	
 
-$.extend(CoherentBoneRegionSelectorSymmetric.prototype, {
 
+$.extend(CoherentBoneRegionSelectorSymmetric.prototype, {
+	
 	initSelector : function() {
 		this.selector = UI.classSelector(this.descriptor.subClasses)
 	},
-	
+
+	addSkeletalDivision : function(){
+		
+		this.selector.hide()
+		this.addButton.container.hide()
+		this.dataToStore = []
+		var descriptor = this.descriptor.subClasses.getObjectByKey("uri", this.selector.val())
+		this.skeletalRegionSelector = new CoherentSkeletalRegion(this, this.dataToStore, descriptor)
+		this.subContainer.append(this.skeletalRegionSelector.container)
+	},
 })
