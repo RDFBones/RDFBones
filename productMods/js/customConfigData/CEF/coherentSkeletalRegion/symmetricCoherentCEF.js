@@ -1,9 +1,10 @@
 
 pageData.mainSkeletalRegion = [{
 	uri : pageData.skeletalRegion,	
-	systemicParts : systemicSubclass,
+	systemicParts : systemicNoBoneOrganSubclass,
 	label : labelQuery,
 }]
+
 
 pageData.skeletalRegions = {	
 	uri : pageData.skeletalRegion,	
@@ -13,3 +14,8 @@ pageData.skeletalRegions = {
 		what : "pageData.mainSkeletalRegion"
 	}
 }
+
+pageData.pageElements = [ {
+	type : sw.customPage,
+	pageLoader : CoherentBoneRegionSelectorSymmetric,
+} ]

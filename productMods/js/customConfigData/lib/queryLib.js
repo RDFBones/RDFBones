@@ -4,6 +4,16 @@
  */
 
 
+querySwitch = {
+	type : sw.switchCase,
+	on : "pageData.simpleQuery",
+	cases : [{
+		value : "simpleQuery",
+		toReturn : "systemicPartsWithout",
+	}],
+	defaultCase : "systemicPartsWithoutNoBoneOrgan"	
+}
+
 
 inputClass = {
     value : "this.uri",
@@ -19,7 +29,6 @@ inputType = {
    value : "this.uri",
    name : "inputType",
 }
-
 
 subClass = {
 		
@@ -136,6 +145,12 @@ systemicSubclass = {
 	subClasses : subClass,
 }
 
+systemicNoBoneOrganSubclass = {
+		dataOperation : "query", 
+		queryType : "systemicPartsWithoutNoBoneOrgan", 
+		parameters : [inputClass], 
+		subClasses : subClass,
+	}
 
 partlySymmetric2 = {
 		   dataOperation : "query",
@@ -154,6 +169,17 @@ partlySymmetric1 = {
    systemicParts$2 : merge,
 } 
 
+
+partlySymmetricNoBoneOrgan = { 
+		   dataOperation : "query", 
+		   queryType : querySwitch,
+		   parameters : [inputClass], 
+		   systemicParts : partlySymmetric2,  
+		   symmetricClasses : symmetricBonesQuery,
+		   systemicParts$1 : extract,
+		   symmetricClasses$1 : group,
+		   systemicParts$2 : merge,
+		} 
 
 
 
