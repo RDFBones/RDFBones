@@ -73,6 +73,12 @@
 }
 
 
+.upperBoneContainer {
+	margin : 5px;
+	padding : 5px;
+	border-top : 1px solid;
+}
+
 .inlineContainer {
 	display : inline-block;
 }
