@@ -16,7 +16,9 @@ Container.prototype = {
 		if(this.configData.localData != undefined){
 			this.localData = new Object()
 			$.each(this.configData.localData, (function(i, data){
-				this.localData[data.key] = DataOperationMap[data.type](this, data)
+				if(typeof data.type != "undefined"){
+					this.localData[data.key] = DataOperationMap[data.type](this, data)	
+				}
 			}).bind(this))
 		}
 	},
