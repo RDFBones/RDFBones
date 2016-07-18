@@ -5,7 +5,6 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/pageInit/SWMAP.js"></script>')}
 
 ${scripts.add(
-	'<script type="text/javascript" src="${urls.base}/js/customConfigData/lib/queries.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/customConfigData/lib/queryLib.js"></script>'
 	)}
 
