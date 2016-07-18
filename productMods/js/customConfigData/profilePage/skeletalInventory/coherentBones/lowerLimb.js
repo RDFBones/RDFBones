@@ -62,7 +62,7 @@ tarsalbones = {
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_71339",
-					key : "boneUri",
+					key : "skeletalRegion",
 				},
 				{
 					type : sw.constant,
@@ -88,7 +88,7 @@ metatarsalbones = {
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_71340",
-					key : "boneUri",
+					key : "skeletalRegion",
 				}, {
 					type : sw.constant,
 					value : "Metatarsal Bones",

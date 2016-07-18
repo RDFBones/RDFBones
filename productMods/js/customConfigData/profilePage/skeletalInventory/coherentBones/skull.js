@@ -4,20 +4,15 @@ systemicQuery = {
 		value : "systemicPartsWithout",
 }
 
-skullUri = {
-	type : sw.constant,
-	value : "http://purl.obolibrary.org/obo/FMA_46565",
-	key : "skeletalRegion"
-}
 
 skull = {
 		type : sw.container,
 		localData : [
-				skeletalSubDivisionCEF, skullUri, 
+				skeletalSubDivisionCEF, 
 				{
 					type : sw.constant,
-					value : "http://purl.obolibrary.org/obo/FMA_53672",
-					key : "boneUri",
+					value : "http://purl.obolibrary.org/obo/FMA_46565",
+					key : "skeletalRegion"
 				},{
 					type : sw.constant,
 					value : "Skull",
@@ -33,10 +28,12 @@ skull = {
 skullDivision = {
 		type : sw.container,
 		localData : [
-				skeletalSubDivisionCEF, skullUri, 
+				partlySymmetricCoherentCEF,
 				{
-					
-				},{
+					type : sw.constant,
+					value : "http://purl.obolibrary.org/obo/FMA_46565",
+					key : "skeletalRegion"
+				}, {
 					type : sw.constant,
 					value : "Coherent Skeletal Divisions of Skull",
 					key : "boneLabel",
@@ -44,7 +41,7 @@ skullDivision = {
 					type : sw.constant,
 					value : "subDivision",
 					key : "subDivision",
-				}, {
+				},{
 					type : sw.constant,
 					value : "partlySymmetricBoneDivision",
 					key : "cefPageUri",

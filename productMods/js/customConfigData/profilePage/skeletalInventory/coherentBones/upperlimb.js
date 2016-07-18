@@ -11,7 +11,7 @@ forearm = {
 
 		value : "http://purl.obolibrary.org/obo/FMA_71199",
 
-		key : "boneUri",
+		key : "skeletalRegion",
 
 	}, {
 
@@ -52,7 +52,7 @@ carpalbones = {
 
 		value : "http://purl.obolibrary.org/obo/FMA_71335",
 
-		key : "boneUri",
+		key : "skeletalRegion",
 
 	}, {
 
@@ -93,7 +93,7 @@ metacarpalbones = {
 
 		value : "http://purl.obolibrary.org/obo/FMA_71335",
 
-		key : "boneUri",
+		key : "skeletalRegion",
 
 	}, {
 

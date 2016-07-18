@@ -21,6 +21,7 @@ ribcage = {
 		elements : [ coherentData]
 	}
 
+
 singleThorax = {
 		
 		type : sw.container,

@@ -5,7 +5,7 @@ pectoralGridle = {
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_24141",
-					key : "boneUri",
+					key : "skeletalRegion",
 				},{
 					type : sw.constant,
 					value : "Skeleton of Pectoral Girdle",

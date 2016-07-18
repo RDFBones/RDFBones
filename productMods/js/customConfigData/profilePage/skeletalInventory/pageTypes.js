@@ -5,12 +5,18 @@ skeletalSubDivisionCEF = {
 	key : "pageUri",
 }
 
+partlySymmetricCoherentCEF = {
+	type : sw.constant,
+	value : "partlySymmetricCoherentSkeletalRegion",
+	key : "pageUri",
+}
+
 /*
  * Bone Division Custom Entry Form Types
  */
 symmetricBoneSegment = {
 	type : sw.constant,
-	value : "symmetricBoneDivision",
+	value : "symmetricCoherentSkeletalRegion",
 	key : "pageUri",
 }
 
