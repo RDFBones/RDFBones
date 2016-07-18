@@ -43,6 +43,10 @@ skullDivision = {
 					key : "subDivision",
 				},{
 					type : sw.constant,
+					value : [FMA + "53672", FMA+ "53673"],
+					key : "classSelection"
+				},{
+					type : sw.constant,
 					value : "partlySymmetricBoneDivision",
 					key : "cefPageUri",
 				}],

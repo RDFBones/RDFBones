@@ -127,7 +127,90 @@ pageData.sortedSkeletalRegions = {
 	type : "object",
 	by : "type",	
 }
-	
+
+pageData.coherentSkeletalRegions = {
+		
+	dataOperation : "query",
+	queryType : "coherentBones",
+	parameters : [skeletalInventory]
+}
+
+skeletalInventory = {
+	value : "pageData.individual",
+	name : "skeletalInventory",
+}
+
+skeletalRegion = {
+	value : "this.uri",
+	name : "skeletalRegion",
+}
+
+coherentBones = {
+	dataOperation : "query",
+	queryType : "coherentBones",
+	parameters : [skeletalInventory, skeletalRegion],
+}
+
+/*
+ * Partlysymmetric Skeletal Divisions 
+ */
+/*
+pageData.partlySymmetricSkeletalDivision = [
+	{ uri : FMA + "46565"}, //Skull
+	{ uri : FMA + "13478"}, //Vertebral Column
+	{ uri : FMA + "7480"}, //Rib Cage
+	{ uri : FMA + "16580"}, //Bony Pelvis	
+]
+
+
+//Systemicparts
+
+customPageDataOperations.push({
+	object : "pageData.partlySymmetricSkeletalDivision.systemicParts",
+	operation : systemicPartsQuery
+})
+
+customPageDataOperations.push({
+	object : "pageData.partlySymmetricSkeletalDivision.coherentBones",
+	operation : coherentBones,
+})
+
+customPageDataOperations.push({
+	object : "pageData.partlySymmetricSkeletalDivision.systemicParts.coherentBones",
+	operation : coherentBones,
+})
+*/
+
+
+/*
+ * Symmetric Skeletal Divisions 
+ */
+
+/*
+pageData.symmetricSkeletalDivision = [
+	{ uri : FMA + "24141"}, //Skeleton of Pectoral Girdle
+	{ uri : FMA + "71199"}, //Skeleton of Forearm 
+	{ uri : FMA + "71335"}, //Carpal Bones
+	{ uri : FMA + "71336"}, //Metacarpal Bones
+	{ uri : FMA + "71339"}, //Tarsal Bones
+	{ uri : FMA + "71340"}, //Metatarsal Bones
+]
+
+customPageDataOperations.push({
+	object : "pageData.symmetricSkeletalDivision.coherentBones",
+	operation : coherentBones,
+})
+
+customPageDataOperations.push({
+	object : "pageData.symmetricSkeletalDivision.subClasses",
+	operation : subClass
+})
+
+customPageDataOperations.push({
+	object : "pageData.symmetricSkeletalDivision.subClasses.coherentBones",
+	operation : coherentBones
+})
+*/
 
 
 //pageData.queries = coherentQuery.concat(singleQuery).concat(skeletalSubDivisionQuery)
