@@ -26,11 +26,8 @@ forearm = {
 		type : sw.constant,
 
 		value : [ "http://purl.obolibrary.org/obo/FMA_71199",
-
 		"http://purl.obolibrary.org/obo/FMA_71201",
-
 		"http://purl.obolibrary.org/obo/FMA_71200" ],
-
 		key : "classSelection"
 
 	} ],
@@ -91,7 +88,7 @@ metacarpalbones = {
 		
 		type : sw.constant,
 
-		value : "http://purl.obolibrary.org/obo/FMA_71335",
+		value : "http://purl.obolibrary.org/obo/FMA_71336",
 
 		key : "skeletalRegion",
 

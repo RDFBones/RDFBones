@@ -1,10 +1,10 @@
 ribcage = {
 		type : sw.container,
 		localData : [
-				{
+				skeletalSubDivisionCEF, {
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_7480",
-					key : "boneUri",
+					key : "skeletalRegion",
 				},{
 					type : sw.constant,
 					value : "Rib Cage",
@@ -32,12 +32,16 @@ coherentRibCage = {
 					key : "skeletalRegion"
 				}, {
 					type : sw.constant,
-					value : "Coherent Skeletal Divisions of Skull",
+					value : "Coherent Skeletal Divisions of Rib Cage",
 					key : "boneLabel",
 				},{
 					type : sw.constant,
 					value : "subDivision",
 					key : "subDivision",
+				},{
+					type : sw.constant,
+					value : "simpleQuery",
+					key : "simpleQuery",
 				},{
 					type : sw.constant,
 					value : [FMA + "20229", FMA+ "16202"],

@@ -33,7 +33,29 @@ bonypelvis = {
 		elements : [skeletalDivisionData]
 	}
 
-
+coherentBonyPelvis = {
+		
+		type : sw.container,
+		localData : [ partlySymmetricCoherentCEF, 
+		{
+			type : sw.constant,
+			value : "http://purl.obolibrary.org/obo/FMA_16580",
+			key : "skeletalRegion",
+		}, {
+			type : sw.constant,
+			value : ["http://purl.obolibrary.org/obo/FMA_16580"],
+			key : "classSelection"
+		}, {
+			type : sw.constant,
+			value : "simpleQuery",
+			key : "simpleQuery",
+		}, {
+			type : sw.constant,
+			value : "Coherent Skeletal Divisions of Bony Pelvis",
+			key : "boneLabel",
+		}],
+		elements : [ coherentData]
+}
 
 
 singleBonyPelvis = {
@@ -63,5 +85,5 @@ singleBonyPelvis = {
 bonyPelvisTab = {
 	type : sw.tab,
 	tabTitle : "Pelvic Gridle",
-	elements : [bonypelvis, singleBonyPelvis]
+	elements : [bonypelvis,coherentBonyPelvis,  singleBonyPelvis]
 }

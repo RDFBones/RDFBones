@@ -35,7 +35,7 @@ vertebralColumn = {
 coherentVertebra = {
 		
 		type : sw.container,
-		localData : [ vertebraUri, 
+		localData : [ partlySymmetricCoherentCEF, vertebraUri, 
 		{
 			type : sw.constant,
 			value : [ FMA + "24138", 
