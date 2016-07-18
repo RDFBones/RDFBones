@@ -1,0 +1,15 @@
+
+pageData.mainSkeletalRegion = [{
+	uri : pageData.skeletalRegion,	
+	systemicParts : systemicSubclass,
+	label : labelQuery,
+}]
+
+pageData.skeletalRegions = {	
+	uri : pageData.skeletalRegion,	
+	subClasses : subclassSystemic,
+	subClasses$1 : {
+		dataOperation : "merge",
+		what : "pageData.mainSkeletalRegion"
+	}
+}
