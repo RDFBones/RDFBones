@@ -210,7 +210,7 @@ coherentData = {
 		key : "queryType",
 	}, {
 		type : sw.local,
-		key : "skeletalDivision",
+		key : "skeletalRegion",
 	}, {
 		type : sw.local,
 		key : "simpleQuery",
