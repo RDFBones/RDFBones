@@ -241,6 +241,7 @@ CoherentBoneRegionSelectorPartlySymmetric.prototype = {
 
 var CoherentBoneRegionSelectorSymmetric = function() {
 
+	CoherentBoneRegionSelectorPartlySymmetric.call(this)
 }
 
 CoherentBoneRegionSelectorSymmetric.prototype = Object.create(CoherentBoneRegionSelectorPartlySymmetric.prototype)	
@@ -248,7 +249,7 @@ CoherentBoneRegionSelectorSymmetric.prototype = Object.create(CoherentBoneRegion
 $.extend(CoherentBoneRegionSelectorSymmetric.prototype, {
 
 	initSelector : function() {
-		this.selector = UI.classSelector(this.descriptor.subClasses1)
+		this.selector = UI.classSelector(this.descriptor.subClasses)
 	},
 	
 })

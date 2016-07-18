@@ -1,7 +1,7 @@
 pectoralGridle = {
 		type : sw.container,
 		localData : [
-		        symmetricBoneSegment, 
+		        symmetricCoherentCEF, 
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_24141",

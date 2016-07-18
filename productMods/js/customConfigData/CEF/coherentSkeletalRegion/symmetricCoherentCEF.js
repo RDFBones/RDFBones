@@ -1,7 +1,7 @@
 
 pageData.mainSkeletalRegion = [{
 	uri : pageData.skeletalRegion,	
-	systemicParts : systemicNoBoneOrganSubclass,
+	systemicParts : systemicSubclass,
 	label : labelQuery,
 }]
 

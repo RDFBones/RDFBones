@@ -34,18 +34,18 @@ phalangesOfFoot = {
 freelowerlimb = {
 		type : sw.container,
 		localData : [
-		      	   symmetricBoneSegment ,
+		      	   symmetricCoherentCEF ,
 				{
 					type : sw.constant,
-					value : "http://purl.obolibrary.org/obo/FMA_21144",
-					key : "boneUri",
+					value : "http://purl.obolibrary.org/obo/FMA_24144",
+					key : "skeletalRegion",
 				},{
 					type : sw.constant,
 					value : "Skeleton of Free Lower Limb",
 					key : "boneLabel",
 				},{
 					type : sw.constant,
-					value : [ "http://purl.obolibrary.org/obo/FMA_21144",
+					value : [ "http://purl.obolibrary.org/obo/FMA_24144",
 					          "http://purl.obolibrary.org/obo/FMA_21174",
 					          "http://purl.obolibrary.org/obo/FMA_21175"],
 					key : "classSelection"
@@ -57,7 +57,7 @@ freelowerlimb = {
 tarsalbones = {
 		type : sw.container,
 		localData : [
-		      	   symmetricBoneSegment ,
+		      	   symmetricCoherentCEF ,
 
 				{
 					type : sw.constant,
@@ -83,7 +83,7 @@ metatarsalbones = {
 		uri : "",
 		type : sw.container,
 		localData : [
-		      	   symmetricBoneSegment ,
+		      	   symmetricCoherentCEF ,
 
 				{
 					type : sw.constant,

@@ -3,6 +3,21 @@ pageData.pageElements = [ {
 	pageLoader : SkeletalRegion,
 } ]
 
+
+/*
+if(pageData.coherentBoneRegion != ""){
+	pageData.pageElements = [ {
+		type : sw.customPage,
+		pageLoader : SkeletalRegion,
+	} ]
+} else {
+	pageData.pageElements = [ {
+		type : sw.customPage,
+		pageLoader : CoherentSkeletalRegion,
+	} ]
+}*/
+
+
 boneOrganFilteredQuery = {
 	    dataOperation : "query",
 	    queryType : "singleBones",
@@ -63,7 +78,7 @@ partlySymmetricCEF1 = {
 }
 
 pageData.partlySymmetricSkeletalDivision = {
-	uri : pageData.skeletalDivision,
+	uri : pageData.skeletalRegion,
 	label : labelQuery,
 	systemicParts1 : partlySymmetricCEF1,
 }

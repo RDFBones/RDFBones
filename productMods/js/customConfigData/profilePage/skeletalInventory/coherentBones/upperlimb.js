@@ -4,7 +4,7 @@ forearm = {
 
 	localData : [
 	
-	   symmetricBoneSegment ,
+	   symmetricCoherentCEF ,
 	{
 
 		type : sw.constant,
@@ -41,7 +41,7 @@ carpalbones = {
 	type : sw.container,
 
 	localData : [
-	      	   symmetricBoneSegment ,
+	      	   symmetricCoherentCEF ,
 
 	{
 
@@ -83,7 +83,7 @@ metacarpalbones = {
 
 	localData : [
 	             
-	    symmetricBoneSegment, 
+	    symmetricCoherentCEF, 
 	{
 		
 		type : sw.constant,
@@ -123,7 +123,7 @@ phalangesofhand = {
 	type : sw.container,
 
 	localData : [
-	             symmetricBoneSegment, 
+	             symmetricCoherentCEF, 
 	{
 		type : sw.constant,
 
