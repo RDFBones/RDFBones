@@ -1,3 +1,99 @@
+skeletalDivisionData = {
+		
+	type : sw.dataField,
+	textValue : {
+		type : sw.local,
+		key : "boneLabel"
+	},
+	linkDataInputs : [ {
+		type : sw.local,
+		key : "boneUri",
+		varName : "classUri",
+	}, {
+		type : sw.global,
+		key : "individual",
+	}, {
+		type : sw.local,
+		key : "pageUri",
+	}, {
+		type : sw.local,
+		key : "queryType",
+	}, {
+		type : sw.local,
+		key : "skeletalDivision",
+	}, {
+		type : sw.local,
+		key : "simpleQuery",
+	}],
+	mapping : "pageLoader",
+	dataToDisplay : {
+		type : sw.field,
+		of : {
+			type : sw.global,
+			key : "sortedSkeletalRegions"
+		},
+		key : {
+			type : sw.local,
+			key : "skeletalRegion",
+		}
+	},
+	dataFields : [ {
+		type : sw.literalField,
+		title : "Label",
+		value : {
+			type : sw.local,
+			key : "label",
+		}
+	}, {
+		type : sw.literalFieldMiddle,
+		title : "Number of Coherent Skeletal Division",
+		value : {
+			type : sw.local,
+			key : "coherentSkeletalDivisionCount",
+		}
+	}, {
+		type : sw.editButton,
+		linkDataInputs : [ {
+			type : sw.global,
+			key : "individual",
+			varName : "skeletalInventory",
+		},{
+			type : sw.constant,
+			varName : "pageUri",
+			value : "boneDivision",
+		}, {
+			type : sw.local,
+			key : "cefPageUri",
+		}, {
+			type : sw.local,
+			key : "boneDivision",
+			varName : "individual",
+		}, {
+			type : sw.local,
+			key : "type",
+			varName : "existingBoneDivisionType",
+		}, {
+			type : sw.local,
+			key : "boneUri",
+			varName : "classUri",
+		} ],
+		mapping : "pageLoader",
+	}, {	
+		type : sw.deleteButton,
+		linkDataInputs : [
+		    {
+				type : sw.local,
+				key : "boneDivision",
+			}, {
+				type : sw.constant,
+				value : "deleteDivisionFromOrgans",
+				key : "operation",
+			}
+		],
+		mapping : "delete",
+	} ]
+}
+
 skeletalSubdivisionData = {
 		
 	type : sw.dataField,
@@ -112,6 +208,12 @@ coherentData = {
 	}, {
 		type : sw.local,
 		key : "queryType",
+	}, {
+		type : sw.local,
+		key : "skeletalDivision",
+	}, {
+		type : sw.local,
+		key : "simpleQuery",
 	}],
 	mapping : "pageLoader",
 	dataToDisplay : {
@@ -231,10 +333,10 @@ singleBones = {
 			}
 		}, {
 			type : sw.literalFieldMiddle,
-			title : "Completeness",
+			title : "Number of Bone Organs",
 			value : {
 				type : sw.local,
-				key : "completenessLabel",
+				key : "boneOrganCount",
 			}
 		}, {
 			type : sw.editButton,

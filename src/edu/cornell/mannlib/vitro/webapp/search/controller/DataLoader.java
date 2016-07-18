@@ -76,6 +76,13 @@ public class DataLoader extends VitroAjaxController {
       result = this.performQuery(CoherentQuery, inputParam4, uris4, literals4);
       break;
       
+    case "skeletalRegions":
+      String[] inputParam411 = { "skeletalInventory" };
+      String[] uris411 = { "skeletalDivision", "type" };
+      String[] literals411 = { "coherentSkeletalDivisionCount", "label" };
+      result = this.performQuery(SkeletalRegionQuery, inputParam411, uris411, literals411);
+      break;  
+      
     case "CoherentSkeletalRegionOfSkeletalDivision" :
       String[] inputParam41 = { "skeletalDivision" };
       String[] uris41 = { "coherentSkeletalRegion", "type" };
@@ -340,6 +347,20 @@ public class DataLoader extends VitroAjaxController {
           + "    ?boneDivision    vitro:mostSpecificType   ?type .  \n"
           + "   } GROUP BY ?boneDivision ?label ?type \n";
 
+  private static String SkeletalRegionQuery =
+      ""
+          + "SELECT ?skeletalDivision ?label ?type (COUNT(?coherentSkeletalDivision) as ?coherentSkeletalDivisionCount) \n"
+          + " WHERE \n " + "   { "
+          + "    ?skeletalInventory obo:BFO_0000051  ?completeness . \n"
+          + "    ?completeness    obo:IAO_0000136       ?boneSegment . \n"
+          + "    ?boneSegment     obo:regional_part_of  ?boneOrgan  . \n"
+          + "    ?boneOrgan       obo:systemic_part_of  ?coherentSkeletalDivision  . \n"
+          + "    ?coherentSkeletalDivision  obo:systemic_part_of   ?skeletalDivision . \n "
+          + "    ?skeletalDivision    rdfs:label            ?label . \n"
+          + "    ?skeletalDivision    vitro:mostSpecificType   ?type .  \n"
+          + "   } GROUP BY ?skeletalDivision ?label ?type \n";
+  
+  
   private static String FilteredCoherentQuery =
       ""
           + "SELECT ?boneDivision ?boneDivisionLabel ?uri ?label ?type ?completenessState \n"

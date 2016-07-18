@@ -8,7 +8,7 @@ systemicQuery = {
 vertebraUri = {
 		type : sw.constant,
 		value : "http://purl.obolibrary.org/obo/FMA_13478",
-		key : "skeletalDivision"
+		key : "skeletalRegion"
 	}
 
 vertebralColumn = {
@@ -28,7 +28,7 @@ vertebralColumn = {
 					value : "partlySymmetricBoneDivision",
 					key : "cefPageUri",
 				}, systemicQuery ],
-		elements : [ coherentData]
+		elements : [ skeletalDivisionData]
 	}	
 
 cervical = {

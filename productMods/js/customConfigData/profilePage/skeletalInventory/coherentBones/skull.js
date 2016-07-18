@@ -7,7 +7,7 @@ systemicQuery = {
 skullUri = {
 	type : sw.constant,
 	value : "http://purl.obolibrary.org/obo/FMA_46565",
-	key : "skeletalDivision"
+	key : "skeletalRegion"
 }
 
 skull = {
@@ -27,7 +27,7 @@ skull = {
 					value : "partlySymmetricBoneDivision",
 					key : "cefPageUri",
 				}, systemicQuery ],
-		elements : [ coherentData]
+		elements : [ skeletalDivisionData]
 	}	
 
 skullDivision = {
@@ -35,6 +35,8 @@ skullDivision = {
 		localData : [
 				skeletalSubDivisionCEF, skullUri, 
 				{
+					
+				},{
 					type : sw.constant,
 					value : "Coherent Skeletal Divisions of Skull",
 					key : "boneLabel",

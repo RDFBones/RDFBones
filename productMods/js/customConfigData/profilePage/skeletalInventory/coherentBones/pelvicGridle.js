@@ -7,6 +7,10 @@ bonypelvis = {
 					key : "boneUri",
 				},{
 					type : sw.constant,
+					value : "http://purl.obolibrary.org/obo/FMA_16580",
+					key : "skeletalRegion",
+				},{
+					type : sw.constant,
 					value : "Bony Pelvis",
 					key : "boneLabel",
 				},{
@@ -26,7 +30,7 @@ bonypelvis = {
 					value : "partlySymmetricBoneDivision",
 					key : "cefPageUri",
 				}],
-		elements : [coherentData]
+		elements : [skeletalDivisionData]
 	}
 
 
