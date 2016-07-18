@@ -35,4 +35,4 @@ tabContainer = {
 	//tabs : [skeletalDivision, coherentTab, singleTab ],
 	tabs : [ coherentTab ]}
 
-pageData.pageElements = [ tabContainer ]
+pageData.pageElements = [ coherentTabContainer ]
