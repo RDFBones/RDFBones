@@ -24,8 +24,8 @@ PageDataPerform.prototype = {
 		}
 		this.array = []
 		
-		if(typeof customDataOperations != "undefined"){
-			$.merge(this.operationArray, customDataOperations)
+		if(typeof customPageDataOperations != "undefined"){
+			$.merge(this.operationArray, customPageDataOperations)
 		}
 		console.log(this.operationArray)
 		$.each(this.operationArray, (function(i, element){

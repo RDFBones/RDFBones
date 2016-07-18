@@ -28,6 +28,8 @@ pageData.singleBones = {
 	}
 }
 
+
+/*
 singleBoneLoading = {
 	
 	object : "pageData.singleBones.keys.dataSet",
@@ -43,7 +45,5 @@ singleBoneLoading = {
 		}]
 	}
 }
+*/
 
-
-newQueryDefinition = []
-newQueryDefinition.push(singleBoneLoading)

@@ -14,7 +14,7 @@ partlySymmetricCoherentCEF = {
 /*
  * Bone Division Custom Entry Form Types
  */
-symmetricBoneSegment = {
+symmetricCoherentCEF = {
 	type : sw.constant,
 	value : "symmetricCoherentSkeletalRegion",
 	key : "pageUri",

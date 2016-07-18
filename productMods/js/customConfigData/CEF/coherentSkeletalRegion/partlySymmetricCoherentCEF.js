@@ -2,7 +2,7 @@
 
 pageData.skeletalRegions = {	
 	uri : pageData.skeletalRegion,	
-	systemicParts1 : partlySymmetric1,
+	systemicParts1 : partlySymmetricNoBoneOrgan,
 }
 
 /*
@@ -12,3 +12,8 @@ pageData.pageElements = [ {
 } ]
 
 */
+
+pageData.pageElements = [ {
+	type : sw.customPage,
+	pageLoader : CoherentBoneRegionSelectorPartlySymmetric,
+} ]

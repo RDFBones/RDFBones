@@ -20,7 +20,7 @@ skeletalDivisionData = {
 		key : "queryType",
 	}, {
 		type : sw.local,
-		key : "skeletalDivision",
+		key : "skeletalRegion",
 	}, {
 		type : sw.local,
 		key : "simpleQuery",
@@ -220,7 +220,7 @@ coherentData = {
 		type : sw.selectOperationResult,
 		dataToSelect : {
 			type : sw.global,
-			key : "coherentBones",
+			key : "coherentSkeletalRegions",
 		},
 		selectField : "type",
 		selectCriteria : {

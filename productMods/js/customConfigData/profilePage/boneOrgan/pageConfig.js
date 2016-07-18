@@ -61,6 +61,13 @@ pageData.pageElements = [
 				key : "classUri",
 			}
 	   ],
+	   requirement : {
+			type : sw.existence,
+			variable : {
+				type : sw.global,
+				key : "existingBoneDivision",
+			}
+		},
 	   mapping : "pageLoader"
     },
 {

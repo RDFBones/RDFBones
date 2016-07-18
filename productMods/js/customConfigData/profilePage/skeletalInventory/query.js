@@ -1,6 +1,6 @@
 singleBones = {
 	type : sw.constant,
-	varName : "queryType",
+	varName : "qBueryType",
 	value : "singleBones"
 }
 

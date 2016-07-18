@@ -1,7 +1,6 @@
 pageData.individual = "http://testIndividual"
 
 
-	
 coherentTabContainer = {
 	type : sw.tabContainer,
 	tabs : [ skullTab, shoulderGridleTab, upperLimbTab, vertebralColumnTab,
@@ -33,7 +32,7 @@ skeletalDivision = {
 
 tabContainer = {
 	type : sw.tabContainer,
-	tabs : [skeletalDivision, coherentTab, singleTab ],
-}
+	//tabs : [skeletalDivision, coherentTab, singleTab ],
+	tabs : [ coherentTab ]}
 
 pageData.pageElements = [ tabContainer ]
