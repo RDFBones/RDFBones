@@ -1,8 +1,24 @@
 
+/*
+ * Input Parameters
+ */
+
 inputClass = {
     value : "this.uri",
     name : "classUri",
 }
+
+skeletalInventory = {
+    value : "pageData.individual",
+    name : "skeletalInventory",
+} 
+
+inputType = {
+   value : "this.uri",
+   name : "inputType",
+}
+
+
 
 labelQuery = {	
 		
@@ -23,9 +39,6 @@ labelQuery = {
 			}
 	]
 }
-
-
-
 
 extract = {
       dataOperation : "extraction",
@@ -100,6 +113,7 @@ partlySymmetric1 = {
    symmetricClasses$1 : group,
    systemicParts$2 : merge,
 } 
+
 
 subClass = {
 		
