@@ -7,7 +7,7 @@ var PartlySymmetric = function(input, dataToStore){
 	this.input = input
 	this.container = html.div()
 	
-	this.title = html.div().text(input.label)
+	this.title = html.div("skeletalDivisionTitle").text(input.label)
 	this.subContainer = html.div("subContainer")
 	
 	this.container.append(this.title).append(this.subContainer)
@@ -66,7 +66,7 @@ var DefaultSingleBone = function(input, dataToStore){
 	this.input = input
 	this.container = html.div()
 	
-	this.title = html.div().text(input.label)
+	this.title = html.div("skeletalDivisionTitle").text(input.label)
 	this.subContainer = html.div("subContainer")
 	
 	this.container.append(this.title).append(this.subContainer)
@@ -111,5 +111,46 @@ Thridary.prototype = {
 }
 
 
+var Primary = function(input, dataToStore){
+	
+	this.dataToStore = dataToStore
+	this.input = input
+	this.container = html.div()
+	
+	this.title = html.div("skeletalDivisionTitle").text(input.label)
+	this.subContainer = html.div("subContainer")
+	
+	this.container.append(this.title).append(this.subContainer)
+	this.init()
+}
 
+Primary.prototype = {
+		
+	init : function(){
+	
+		//Rename subClass2 to subClass1
+		this.input.subClasses = this.input.subClasses2
+		
+		var arr = []
+		//Itself and the list of themselves
+		arr.push(new SingleBoneOrganAdder(this.input, this.dataToStore).container)
+		
+		$.each(this.input.subClasses, (function(i, subClass){
+			arr.push(new Secondary(subClass, this.dataToStore).container)
+		}).bind(this))
+		this.subContainer.append(arr)
+	}, 
+}
 
+var Secondary = function(object, dataToStore){
+	
+	if(object.subClass1 != undefined){
+		this.container = html.div()
+		this.subContainer = html.div("subContainer")
+		this.title = html.div("skeletalDivisionTitle").text(object.label + "s")
+		$.each(object.subClass1, (function(i, subClass){
+			this.subContainer.append(new SingleBoneOrganAdder(subClass, dataToStore).container)
+		}).bind(this))
+		this.container.append(this.title).append(this.subContainer)
+	}
+}
