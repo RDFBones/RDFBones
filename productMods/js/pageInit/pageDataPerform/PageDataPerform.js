@@ -382,7 +382,6 @@ PageDataPerform.prototype = {
 	checkReady : function(){
 		
 		this.current++ 
-		console.log(this.current + "    "  + this.numOfOperation)
 		if(this.current >= this.numOfOperation){
 			this.current = 0
 			this.numOfOperation = 1
