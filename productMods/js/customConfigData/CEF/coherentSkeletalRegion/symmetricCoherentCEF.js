@@ -51,7 +51,7 @@ pageData.sortedSingleBones = {
 	dataOperation : "sortToKey",
 	object : "pageData.existingSingleBones",
 	type : "object",
-	by : "type",	
+	by : "mst",	
 }
 
 customPageDataOperations.push({

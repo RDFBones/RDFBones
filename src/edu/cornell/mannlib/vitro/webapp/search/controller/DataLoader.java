@@ -71,7 +71,7 @@ public class DataLoader extends VitroAjaxController {
     
     case "existingBoneOrgan1" :  
       String[] inputParam211 = { "skeletalInventory" };
-      String[] uris211 = {"uri", "type", "comp2State", "completeness"};
+      String[] uris211 = {"uri", "mst", "comp2State", "completeness"};
       String[] literals211 = {"label", "typeLabel", "completenessLabel"};
       result = this.performQuery(ExistingBoneOrgan1, inputParam211, uris211, literals211);
       break;  
@@ -427,7 +427,7 @@ public class DataLoader extends VitroAjaxController {
   
   private static String ExistingBoneOrgan1 =
       ""
-          + "SELECT ?uri ?label ?typeLabel ?type ?completeness ?comp2State ?completenessLabel \n"
+          + "SELECT ?uri ?label ?typeLabel ?mst ?completeness ?comp2State ?completenessLabel \n"
           + " WHERE \n " 
           + "   { "
           + "    FILTER NOT EXISTS { ?uri       obo:systemic_part_of  ?boneDivision  } . \n"
@@ -436,9 +436,9 @@ public class DataLoader extends VitroAjaxController {
           + "    ?skeletalInventory     obo:BFO_0000051           ?completeness . \n "
           + "    ?completeness          obo:OBI_0000999           ?comp2State . \n" 
           + "    ?comp2State            rdfs:label                ?completenessLabel . \n"  
-          + "    ?uri                   vitro:mostSpecificType    ?type . \n"
+          + "    ?uri                   vitro:mostSpecificType    ?mst . \n"
           + "    ?uri                   rdfs:label                ?label . \n " 
-          + "    ?type                  rdfs:label                ?typeLabel . \n"  
+          + "    ?mst                   rdfs:label                 ?typeLabel . \n"  
           + " } ";
   
   

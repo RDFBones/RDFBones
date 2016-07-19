@@ -61,24 +61,27 @@ BoneOrganField.prototype = {
 	}
 }
 
-var ExistingBoneOrganField = function(systemicPartSelector, dataSet,
-		dataToStore) {
 
+AddedExistingBoneOrganField = function(systemicPartSelector, dataSet, dataToStore){
+	
 	BoneOrganField.call(this, systemicPartSelector, dataSet, dataToStore)
-	this.deleteButton.container.hide()
 }
 
-ExistingBoneOrganField.prototype = Object.create(BoneOrganField.prototype)
 
-ExistingBoneOrganField.prototype.getCompletenessSelector = function() {
-	var obj = [{
-		label : completenessSet.getObjectByKey("uri", this.dataSet.comp2State).label,
-		uri : "doesNotMatter",
-	}]
-	return new DataSetterSelectorField(obj, null, "uri")
+AddedExistingBoneOrganField.prototype = Object.create(BoneOrganField.prototype)
+
+
+AddedExistingBoneOrganField.prototype.deleteRoutine = function() {
+
+	DataLib.removeObjectFromArrayByKey(this.dataToStore, "uri",
+			this.dataSet.uri)
+	this.systemicPartSelector.reset(this.dataObject.mst, this, this.existingEntry)
+	this.container.remove()	
 }
 
-ExistingBoneOrganField.prototype.setDataObject = function(dataSet, dataToStore) {
+AddedExistingBoneOrganField.prototype.setDataObject = function(dataSet, dataToStore, existingEntry) {
+	
+	this.existingEntry = existingEntry
 	this.dataSet = dataSet
 	this.dataToStore = dataToStore
 	this.dataObject = new Object()
@@ -87,3 +90,28 @@ ExistingBoneOrganField.prototype.setDataObject = function(dataSet, dataToStore) 
 	this.dataObject.type = "existing"
 	dataToStore.push(this.dataObject)
 }
+
+
+AddedExistingBoneOrganField.prototype.getCompletenessSelector = function(){
+	var obj = [{
+		label : completenessSet.getObjectByKey("uri", this.dataSet.comp2State).label,
+		uri : "doesNotMatter",
+	}]
+	return new DataSetterSelectorField(obj, null, "uri")
+}
+
+
+var ExistingBoneOrganField = function(systemicPartSelector, dataSet,
+		dataToStore) {
+
+	AddedExistingBoneOrganField.call(this, systemicPartSelector, dataSet, dataToStore)
+	this.deleteButton.container.hide()
+}
+
+ExistingBoneOrganField.prototype = Object.create(AddedExistingBoneOrganField.prototype)
+
+ExistingBoneOrganField.prototype.setDataObject = function(dataSet, dataToStore, existingEntry) {
+	//We do not set anything because the data is already there
+}
+
+
