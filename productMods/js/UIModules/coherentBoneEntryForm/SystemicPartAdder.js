@@ -113,9 +113,12 @@ $.extend(SystemicPartAdder.prototype, {
 	
 	checkExisting : function(){
 		
-		if(this.dataSet.existing.length > 0){			
-			this.list.show()
+		if(typeof this.dataSet.existing != "undefined"){
+			if(this.dataSet.existing.length > 0){			
+				this.list.show()
+			}		
 		}
+	
 	},
 	
 	addAll : function(){
