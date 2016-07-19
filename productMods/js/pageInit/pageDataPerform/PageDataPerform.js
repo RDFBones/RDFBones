@@ -140,6 +140,11 @@ PageDataPerform.prototype = {
 					level++
 					this.prepareLocalData(dataQueue, level, localData)
 				}
+				break;
+			   default : 
+				   this.numOfOperation--
+				   console.log(this.numOfOperation)
+				   
 				break;			
 			}
 		}
@@ -377,7 +382,8 @@ PageDataPerform.prototype = {
 	checkReady : function(){
 		
 		this.current++ 
-		if(this.current == this.numOfOperation){
+		console.log(this.current + "    "  + this.numOfOperation)
+		if(this.current >= this.numOfOperation){
 			this.current = 0
 			this.numOfOperation = 1
 			this.opCounter++ 
