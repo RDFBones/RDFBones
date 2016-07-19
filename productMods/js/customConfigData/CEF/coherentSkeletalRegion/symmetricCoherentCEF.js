@@ -64,7 +64,7 @@ customPageDataOperations.push({
 	}
 })
 
-/*
+
 customPageDataOperations.push({
 	
 	object : "pageData.skeletalRegions.subClasses1.systemicParts.subClasses.existing",
@@ -74,4 +74,4 @@ customPageDataOperations.push({
 		by : "this.uri"
 	}
 })
-*/
+
