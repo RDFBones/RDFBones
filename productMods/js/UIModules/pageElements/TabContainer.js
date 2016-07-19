@@ -71,8 +71,10 @@ Tab.prototype = {
 	},
 	
 	select : function(){
-		this.init()
-		this.tabContainer.select(this)
+		if(this.tabContainer.selected != this){
+			this.init()
+			this.tabContainer.select(this)
+		}
 	},
 	
 	deselect : function(){
