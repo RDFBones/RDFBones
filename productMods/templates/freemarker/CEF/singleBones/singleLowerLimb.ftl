@@ -11,22 +11,22 @@
 		
 		pageData.classesToSelect = [
 	       { //Femur 
-	           uri : "http://purl.obolibrary.org/obo/FMA_13321",
+	           uri : "http://purl.obolibrary.org/obo/FMA_9611",
 	           subClasses : subClass,
 	           uiType : "singleBone",
 	           label : labelQuery,
 	       }, { //Tibia
-	           uri : "http://purl.obolibrary.org/obo/FMA_13394",
+	           uri : "http://purl.obolibrary.org/obo/FMA_24476",
 	           subClasses : subClass,
 	           uiType : "singleBone",
 	           label : labelQuery,
 	       }, { //Patella 
-	           uri : "http://purl.obolibrary.org/obo/FMA_13321",
+	           uri : "http://purl.obolibrary.org/obo/FMA_24485",
 	           subClasses : subClass,
 	           uiType : "singleBone",
 	           label : labelQuery,
 	       }, { //Fibula
-	           uri : "http://purl.obolibrary.org/obo/FMA_13394",
+	           uri : "http://purl.obolibrary.org/obo/FMA_24479",
 	           subClasses : subClass,
 	           uiType : "singleBone",
 	           label : labelQuery,
