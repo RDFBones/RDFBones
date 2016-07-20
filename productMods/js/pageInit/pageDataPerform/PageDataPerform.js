@@ -143,9 +143,7 @@ PageDataPerform.prototype = {
 				break;
 			   default : 
 				   this.numOfOperation--
-				   console.log(this.numOfOperation)
-				   
-				break;			
+				   break;			
 			}
 		}
 	},
