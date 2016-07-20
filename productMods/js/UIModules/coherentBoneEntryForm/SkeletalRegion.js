@@ -155,7 +155,7 @@ CoherentBoneRegionSelectorPartlySymmetric = function() {
 			.bind(this), "rightAligned")
 
 	this.saveContainer.append(this.saveButton.container).append(
-			this.cancelButton)
+			this.cancelButton.container)
 
 	this.initSelector()
 	this.assemble()
@@ -206,8 +206,8 @@ CoherentBoneRegionSelectorPartlySymmetric.prototype = {
 			boneDivision : this.dataToStore[0]
 		}
 		console.log(toSend)
+		
 		PopUpController.init()
-
 		$.ajax({
 				type : 'POST',
 				context : this,
@@ -216,7 +216,6 @@ CoherentBoneRegionSelectorPartlySymmetric.prototype = {
 				data : "dataToStore=" + JSON.stringify(toSend)
 		}).done((function(msg) {
 							
-			
 				if (pageData.existingBoneDivisionType == undefined) {
 					pageData.existingBoneDivisionType = this.dataToStore.uri
 				}
@@ -239,7 +238,7 @@ CoherentBoneRegionSelectorPartlySymmetric.prototype = {
 				window.location = baseUrl + "pageLoader?"
 						+ DataLib.getUrl(urlObject)
 			}).bind(this))
-
+		
 	},
 	
 	cancelRoutine : function(){

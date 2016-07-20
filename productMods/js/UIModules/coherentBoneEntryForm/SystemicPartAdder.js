@@ -10,7 +10,8 @@ var SingleBoneOrganAdder = function(dataSet, dataToStore){
 	this.selectorContainer = html.div("verticalMiddleInline")
 	this.selectedContainer = html.div()
 	this.title = html.div("inline").text(this.dataSet.label)
-	this.addButton = new Button("add", (this.addSystemicPart).bind(this))
+	this.addButton = new Button("add", (this.addSystemicPart).bind(this), "inline")
+
 	this.init()
 }
 
@@ -79,10 +80,12 @@ var SystemicPartAdder = function(parent, dataToStore, dataSet){
 	this.cnt = 0
 	this.addedSubClasses = []
 	this.existingContainer = html.div("margin10").hide()
-	this.existingTitle = html.div("title").text("Existing Bone Organs")
+	this.existingTitle = html.div("inline").text("Existing Bone Organs")
     this.existingBones = html.div("subContainer")
 	this.list = new Button("list", (this.selectExisting).bind(this)).hide()
 	this.existingGeneralBoneOrgan = false
+	this.doneExisting = new Button("done", (this.doneExisting).bind(this), "inline")
+
 	SingleBoneOrganAdder.call(this, dataSet, dataToStore)
 }
 
@@ -94,6 +97,7 @@ $.extend(SystemicPartAdder.prototype, {
 	init : function(){
 		this.setSelectorField()
 		this.checkExisting()
+		this.initExistingToAdd()
 		this.assemble()
 	},
 		
@@ -103,12 +107,13 @@ $.extend(SystemicPartAdder.prototype, {
          				this.title,
          				this.selector,
          				this.addButton.container,
-         				this.list.container, 
+         				this.list.container,
+         			this.selectedContainer,
          			this.existingContainer,
          			 	this.existingTitle,
-         			 	this.existingBones,
-         			this.selectedContainer],
-         			[0, 1, 1, 1, 1, 0, 1, 1, 0])
+         				this.doneExisting.container,
+         			 	this.existingBones],
+         			[0, 1, 1, 1, 1, 0, 0, 1, 1, 1])
 	},
 	
 
@@ -141,10 +146,17 @@ $.extend(SystemicPartAdder.prototype, {
 		
 		if(existingEntry != undefined){
 			//Place It back to the container
-			this.existingContainer.append(existingEntry.container)
+			existingEntry.container.show()
+			
+			this.dataSet.existing.push(existingEntry.dataSet)
+			//We have here necessarily data
+			this.list.show()
+			
 		}
 		
+		//It it is not there then 
 		this.generalBoneOrgans.removeElement(generalBoneOrgan)
+		//If it is not there then it will not remove anything
 		this.addedSubClasses.removeElement(uri)
 		if(this.singleSelect){
 			this.selectorContainer.show()
@@ -195,14 +207,14 @@ $.extend(SystemicPartAdder.prototype, {
 					
 					if(data !== undefined){ //Existing
 						//Check if only one specific is missing
-						if(this.addedSubClasses.length == this.dataSet.subClasses - 1 ){
+						if(this.addedSubClasses.length == this.dataSet.subClasses.length - 1 ){
 							//Error
 							alert("You can add only the last missing specific bone organ!")
 							return false
 						} else {
 						//Add the existing
 							this.cnt++
-							var existing = new AddedExistingBoneOrganField(this, data, this.dataToStore, true)
+							var existing = new AddedExistingBoneOrganField(this, data, this.dataToStore, this.existingEntry)
 							this.generalBoneOrgans.push(existing)
 							this.existingGeneralBoneOrgan = true
 							this.selectedContainer.append(existing.container)
@@ -210,14 +222,18 @@ $.extend(SystemicPartAdder.prototype, {
 					} else { //New 
 						
 						this.cnt++
-						if(this.addedSubClasses.length == this.dataSet.subClasses - 1 ){
+						//Only one specific bone is missing --- and we added a general
+						if(this.addedSubClasses.length == this.dataSet.subClasses.length - 1 ){
 							//We do not add the general but the specific instead
 							$.each(this.dataSet.subClasses, (function(i, scl){
 								if(this.addedSubClasses.indexOf(scl.uri) == -1){
 									//Add the remaining specific
 									this.addedSubClasses.push(scl.uri)
 									var tmp = this.dataSet.subClasses.getObjectByKey("uri", scl.uri)
-									this.selectedContainer.append(new BoneOrganField(this, this.dataSet, this.dataToStore, true).container)
+									this.selectedContainer.append(new BoneOrganField(this, tmp, this.dataToStore, true).container)
+									PopUpController.note("Instead of adding " + this.dataSet.label + " a " + scl.label + "were added" 
+											+ " because it was the only missign specific bone! ")
+											
 									return false
 								}
 							}).bind(this))
@@ -235,10 +251,11 @@ $.extend(SystemicPartAdder.prototype, {
 
 						//Check if there are general element that has to be now specific
 						if(!this.checkRemainingSpecific(false)){
+							console.log("here")
 							return false
 						}
 						//Add
-						this.selectedContainer.append(new AddedExistingBoneOrganField(this, data, this.dataToStore, true).container)
+						this.selectedContainer.append(new AddedExistingBoneOrganField(this, data, this.dataToStore, this.existingEntry).container)
 					} else { //New
 
 						if(!this.checkRemainingSpecific(false)){
@@ -257,16 +274,15 @@ $.extend(SystemicPartAdder.prototype, {
 				return true
 			}
 		}
-
 	},
-	
 	
 	checkRemainingSpecific : function(existing){
 		
 		if(this.addedSubClasses.length == this.dataSet.subClasses.length - 1 && this.generalBoneOrgans.length == 1){
 			//We have to remove the already added general and add instead of the remaining specific
 			if(this.existingGeneralBoneOrgan = true){
-				alert("You can add a specific bone in this case")
+				alert("You can add a specific bone in this case. Please remove the" +
+						"general bone and add the specific.")
 				return false 
 			} else {
 				this.generalBoneOrgans[0].deleteRoutine()
@@ -287,19 +303,38 @@ $.extend(SystemicPartAdder.prototype, {
 		this.parent.refresh()
 	},
 	
-	selectExisting : function(){
+	initExistingToAdd : function(){
 		
+		if(!this.singleSelect){
+			$.each(this.dataSet.subClasses, (function(i, subClass){
+				if(subClass.existing != undefined){
+					$.merge(this.dataSet.existing, subClass.existing)	
+				}
+			}).bind(this))
+		}
 		var existing = []
 		$.each(this.dataSet.existing, (function(i, ex){
 			existing.push(new ExistingEntry(this, ex).container)
 		}).bind(this))
-		this.existingContainer.append(existing).show()
+		this.existingBones.append(existing)
+	},
+	
+	selectExisting : function(){
+		this.existingContainer.show()
+	},
+	
+	doneExisting : function(){
+		this.existingContainer.hide()
 	},
 	
 	closeExisting : function(data){
 		
 		this.dataSet.existing.removeElement(data)
-		this.existingContainer.hide()
+		console.log(this.dataSet.existing)
+		if(this.dataSet.existing.length == 0){
+			this.existingContainer.hide()
+			this.list.hide()
+		}
 	}
 })
 
@@ -317,8 +352,9 @@ ExistingEntry.prototype = {
 		
 	add : function(){
 		this.data.type = "existing"
+		this.sysAdder.existingEntry = this
 		if(this.sysAdder.addSystemicPart(this.data)){
-			this.container.remove()
+			this.container.hide()
 			this.sysAdder.closeExisting(this.data)
 		} 
 	}

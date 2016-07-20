@@ -62,11 +62,11 @@ BoneOrganField.prototype = {
 }
 
 
-AddedExistingBoneOrganField = function(systemicPartSelector, dataSet, dataToStore){
+AddedExistingBoneOrganField = function(systemicPartSelector, dataSet, dataToStore, existingEntry){
 	
+	this.existingEntry = existingEntry
 	BoneOrganField.call(this, systemicPartSelector, dataSet, dataToStore)
 }
-
 
 AddedExistingBoneOrganField.prototype = Object.create(BoneOrganField.prototype)
 
@@ -75,18 +75,19 @@ AddedExistingBoneOrganField.prototype.deleteRoutine = function() {
 
 	DataLib.removeObjectFromArrayByKey(this.dataToStore, "uri",
 			this.dataSet.uri)
+	//The set the data cache of the systemicpartselector object
 	this.systemicPartSelector.reset(this.dataObject.mst, this, this.existingEntry)
 	this.container.remove()	
 }
 
-AddedExistingBoneOrganField.prototype.setDataObject = function(dataSet, dataToStore, existingEntry) {
+AddedExistingBoneOrganField.prototype.setDataObject = function(dataSet, dataToStore) {
 	
-	this.existingEntry = existingEntry
 	this.dataSet = dataSet
 	this.dataToStore = dataToStore
 	this.dataObject = new Object()
 	this.dataObject.uri = dataSet.uri
 	this.dataObject.label = dataSet.label
+	this.dataObject.mst = dataSet.mst
 	this.dataObject.type = "existing"
 	dataToStore.push(this.dataObject)
 }
