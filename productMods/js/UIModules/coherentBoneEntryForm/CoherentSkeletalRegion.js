@@ -1,93 +1,237 @@
+
+
+//Called from Skull, Vertebral Column, Bony Pelvis,
+var CoherentSkeletalRegionOfSkeletalRegion = function(parent, dataToStore, descriptor){
+	
+	this.parent = parent
+	this.dataToStore = dataToStore
+	this.descriptor = descriptor
+	this.init()
+}
+
+CoherentSkeletalRegionOfSkeletalRegion.prototype = {
+		
+		assemble : function() {
+
+			UI.assemble(this.container, [ 
+			      UI.inlineCont("margin10"),                     
+			      	this.titleContainer, 
+				      	this.classLabel,
+				      	this.separator,
+				      	this.existingLabel, 
+				     this.buttonContainer, 
+						this.addNewButton.container,
+						this.addExisting.container, 
+						this.complete.container,
+					this.selectedExistingContainer,
+				this.subContainer,
+     			this.existingContainer,
+ 			 		this.existingTitle,
+ 			 		this.existingBones,
+				], [ 0, 1, 2, 1, 2, 2, 2, 0 ])
+		},	
+
+		initUI : function(){
+			
+			this.container = html.div()
+			this.titleContainer = html.div("titleContainer1")
+				this.classLabel = html.div().text(this.descriptor.label)
+				this.separator = html.div("separator")
+				this.existingLabel = html.div()
+			
+			this.buttonContainer = html.div("inlineContainer")
+				this.addNewButton = new Button("add", (this.addNew).bind(this));
+				this.addExisting = new Button("list",
+						(this.selectExisting).bind(this))
+				this.complete = new CheckBoxText("complete", this, "addAll", null)
+						.hide()	
+			
+			this.selectedExistingContainer = html.div()
+			this.subContainer = html.div("subContainer")
+
+			this.existingContainer = html.div("margin10").hide()
+				this.existingTitle = html.div("inline").text("Existing Bone Organs")
+				this.existingBones = html.div("subContainer")
+		},
+		
+		init : function(){
+			
+			this.initUI()
+			
+			if(this.descriptor.existing != undefined && this.descriptor.existing.length > 0){
+				
+				this.buttonContainer.hide()
+				this.existingLabel.text(this.descriptor.existing.label)
+				
+			} else {
+				
+				if(this.descriptor.existingToAdd.length == 0){
+					this.addExisting.hide()
+					this.addNew()
+				} else {
+					//Do nothing -> the addNew and the addExisting buttons appear
+					this.initExistingToAdd()
+				}
+			}
+			this.assemble()
+		},
+		
+		addNew : function(){
+
+			this.systemicPartSelectors = []
+			$.each(this.descriptor.systemicParts, (function(i, sys) {
+				this.systemicPartSelectors.push(new SystemicPartAdder(this, this.dataToStore.boneOrgan, sys))
+			}).bind(this))
+			
+			this.addNewButton.hide()
+			this.addExisting.hide()
+			this.complete.show()
+			
+			arr = []
+			$.each(this.systemicPartSelectors, (function(i, sysSel) {
+				arr.push(sysSel.container)
+			}).bind(this))
+			this.subContainer.append(arr)
+		},
+		
+		
+		initExistingToAdd : function(){
+
+			var existing = []
+			$.each(this.dataSet.existing, (function(i, ex){
+				existing.push(new ExistingCoherentSkeletalRegion(this, ex).container)
+			}).bind(this))
+			this.existingBones.append(existing)
+		},
+		
+		selectExisting : function(){
+			this.addExisting.hide()
+			this.existingContainer.show()
+		},
+		
+		addExistingSystemicPart : function(dataSet){
+		
+			this.dataToStore.push(dataSet)
+			this.addNewButton.hide()
+			this.addExisting.hide()
+			this.buttonContainer.hide()
+			this.selectedExistingContainer.append(
+					new AddedExistingCoherentSkeletalDivison(this, dataSet).container)
+		},
+		
+		removeExisting : function(dataSet){
+			
+			this.selectedExistingContainer.empty()
+			this.addExisting.show()
+			this.buttonContainer.show()
+			this.dataToStore.removeElement(dataSet)
+		},
+}
+
+
+ExistingCoherentSkeletalRegion = function(coherentSkeletalRegion, data){
+
+	this.coherentSkeletalRegion = coherentSkeletalRegion
+	this.data = data
+	this.container = html.div("margin5").text(data.label)
+	this.addButton = new Button("add", (this.add).bind(this))
+	this.container.append(this.addButton.container)
+}
+
+ExistingCoherentSkeletalRegion.prototype = {
+		
+	add : function(){
+		this.data.type = "existing"
+		this.sysAdder.existingEntry = this
+		this.coherentSkeletalRegion.addExistingSystemicPart(this.data)
+	}
+}
+
 var CoherentSkeletalRegion = function(parent, parentData, descriptor) {
 
 	
 	this.parent = parent
 	this.descriptor = descriptor
-	this.parentData = parentData
+	this.dataToStore = parentData
 
+	
 	this.notAdded = true
 	this.notComplete = true
 	
-	this.initData()
 	this.init()
 }
 
-
 CoherentSkeletalRegion.prototype = {
 
-	init : function() {
-
-		this.container = html.div()
-		this.titleContainer = html.div("titleContainer1")
-		this.subContainer = html.div("subContainer")
-
-		this.buttonContainer = html.div("inlineContainer")
-		this.complete = new CheckBoxText("complete", this, "addAll", null)
-				.hide()
-		this.classLabel = html.div().text(this.descriptor.label)
-
-		if (this.descriptor.existing != undefined) {
-			this.separator = html.div("separator")
-			this.assembleExisting()
-			this.addExisting()
-		} else {
-			//There is no existing
-			this.complete.hide()
-			this.addNewButton = new Button("add", (this.addNew).bind(this));
-			this.addExisting = new Button("list",
-					(this.selectExisting).bind(this))
-			this.exitButton = new Button("close", (this.exit).bind(this)).hide()
-			this.assembleNew()
-			if (this.descriptor.existingToSelect === undefined) {
-				this.addNew()
-			}
-		}
-	},	
 	
-	appendToParentData : function(){
-		this.parentData.push(this.dataToStore)
-	}, 
-	
-	assembleExisting : function() {
-
-		UI.assemble(this.container, [ 
-		     UI.inlineCont(),                     
-                this.titleContainer, 
-		        	this.classLabel,
-		        	this.sepearator, 
-		        	this.existingLabel,  
-			this.subContainer], 
-			[ 0, 1, 2, 2, 2, 0])
-	},
-
-	assembleNew : function() {
+	assemble : function() {
 
 		UI.assemble(this.container, [ 
 		      UI.inlineCont("margin10"),                     
 		      	this.titleContainer, 
 			      	this.classLabel,
-			     this.buttonContainer, 
-					this.addNewButton.container,
-					this.addExisting.container, 
+			      	this.separator,
+			      	this.existingLabel, //Here we do not have button container
+			    this.buttonContainer,  
 					this.complete.container,
-					this.exitButton.container, 
-			this.subContainer ], [ 0, 1, 2, 1, 2, 2, 2, 2, 0 ])
+			  this.subContainer],
+			  [ 0, 1, 2, 2, 2, 1, 2, 0])
+	},	
+		
+	initUI : function(){
+		
+		this.container = html.div()
+		this.titleContainer = html.div("titleContainer1")
+			this.classLabel = html.div().text(this.descriptor.label)
+			this.separator = html.div("separator")
+			this.existingLabel = html.div()
+	
+		this.buttonContainer = html.div("inlineContainer")
+			this.complete = new CheckBoxText("complete", this, "addAll", null)
+					.hide()	
+		this.subContainer = html.div("subContainer")
 	},
 	
-	//@Override
-	initData : function() {
+	init : function() {
 
-		this.dataToStore = new Object()
-		this.dataToStore.boneOrgan = []
-		if (this.descriptor.existing != undefined) {
-			this.dataToStore.type = "existing",
-				this.dataToStore.uri = this.descriptor.uri
-		} else {
+		this.initUI()
+		//Check if existing or new 
+		if(this.descriptor.existing != undefined){ //Existing 
+			//We have to display the label of the coherent bone division and the
+			// label of the 
+			this.existingLabel.text(this.descriptor.existing.label)
+
+			this.dataToStore.type = "existing"
+			this.dataToStore.uri = this.descriptor.existing.uri
+			this.dataToStore.label = this.descriptor.existing.label
+			
+		} else { // New
 			this.dataToStore.type = "new"
 			this.dataToStore.uri = this.descriptor.uri
-			this.dataToStore.label = this.descriptor.label
 		}
+		
+		this.addSystemicParts()
+		this.assemble()
+	},	
+	
+	addSystemicParts : function(){
+
+		this.systemicPartSelectors = []
+		this.dataToStore.boneOrgan = []
+		$.each(this.descriptor.systemicParts, (function(i, sys) {
+			this.systemicPartSelectors.push(new SystemicPartAdder(this, this.dataToStore.boneOrgan, sys))
+		}).bind(this))
+		
+		arr = []
+		$.each(this.systemicPartSelectors, (function(i, sysSel) {
+			arr.push(sysSel.container)
+		}).bind(this))
+		this.subContainer.append(arr)
 	},
+	
+	appendToParentData : function(){
+		this.parentData.push(this.dataToStore)
+	}, 
 
 	//@Override
 	addExisting : function() {
@@ -101,40 +245,6 @@ CoherentSkeletalRegion.prototype = {
 		}).bind(this))
 
 		this.appendFields()
-	},
-	
-	//@Override
-	addNew : function(){
-
-		this.systemicPartSelectors = []
-		$.each(this.descriptor.systemicParts, (function(i, sys) {
-			this.systemicPartSelectors.push(new SystemicPartAdder(this, this.dataToStore.boneOrgan, sys))
-		}).bind(this))
-		
-		this.addNewButton.hide()
-		this.addExisting.hide()
-		this.complete.show()
-		//this.exitButton.show()
-		this.appendFields()
-	},
-	
-	selectExisting : function() {
-
-		// Pop up controller the existing entities
-		// this returns to the addExisting
-	},
-
-	appendFields : function() {
-		
-		arr = []
-		$.each(this.systemicPartSelectors, (function(i, sysSel) {
-			arr.push(sysSel.container)
-		}).bind(this))
-		this.subContainer.append(arr)
-	},
-	
-	exit : function() {
-		
 	},
 	
 	addAll : function(_this){
@@ -170,15 +280,6 @@ CoherentSkeletalRegion.prototype = {
 				this.complete.reset()
 			}
 		}).bind(this))
-		
-		if(!thereIsAdded){
-			this.parentData.removeElement(this.dataToStore)
-		} else {
-			if(this.parentData.indexOf(this.dataToStore) == -1){
-				this.parentData.push(this.dataToStore)
-			}
-		}
 		this.parent.refresh()
-	},
-
+	}
 }

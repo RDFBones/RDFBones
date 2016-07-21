@@ -2,52 +2,78 @@ var SkeletalRegion = function() {
 
 	// The dataset is fix
 	this.descriptor = pageData.partlySymmetricSkeletalDivision
-	this.mainData()
-	this.addSaveContainer()
-	CoherentSkeletalRegion.call(this, null,
-			this.dataToStore.coherentSkeletalDivision,
-			pageData.partlySymmetricSkeletalDivision)
-	this.saveContainer.appendTo(this.container)
+	this.init()
 }
 
-SkeletalRegion.prototype = Object.create(CoherentSkeletalRegion.prototype)
+//SkeletalRegion.prototype = 
+	//Object.create(CoherentSkeletalRegion.prototype)
 
-$.extend(SkeletalRegion.prototype,{
+SkeletalRegion.prototype =  {
 
-	mainData : function() {
+	assemble : function() {
 
+		UI.assemble(this.container, [ 
+		      UI.inlineCont("margin10"),                     
+		      	this.titleContainer, 
+			      	this.classLabel,
+			      	this.separator,
+			      	this.existingLabel, 
+			     this.buttonContainer, 
+					this.complete.container,
+				 this.systemicPartsContainer,
+				 this.saveContainer,
+				 	this.saveButton.container,
+				 	this.cancelButton.container,
+			this.subContainer ], [ 0, 1, 2, 2, 2,  1, 2, 1, 1, 2, 2, 0 ])
+	},	
+
+	initUI : function(){
+		
+		this.container = html.div()
+		this.titleContainer = html.div("titleContainer1")
+			this.classLabel = html.div().text(this.descriptor.label)
+			this.separator = html.div("separator")
+			this.existingLabel = html.div()
+		
+		this.buttonContainer = html.div("inlineContainer")
+			this.complete = new CheckBoxText("complete", this, "addAll", null)
+					.hide()	
+		
+		this.systemicPartsContainer = html.div("subContainer")
+		
+		this.saveContainer = html.div("saveContainer")
+			this.saveButton = new TextButton("Save",
+				(this.saveRoutine).bind(this)).disable()
+			this.cancelButton = new TextButton("Cancel",
+				(this.cancelRoutine).bind(this), "rightAligned")
+	},
+	
+	init : function(){
+		
+		this.initUI()
+		
 		this.dataToStore = new Object()
 		this.dataToStore.coherentSkeletalDivision = []
-		console.log(this.descriptor)
-		if (this.descriptor.existing != undefined) {
+		
+		if(this.descriptor.existing.uri != undefined){
+			this.existingLabel.text(pageData.existingSkeletalRegion)
+			this.buttonContainer.hide()
 			this.dataToStore.type = "existing",
-					this.dataToStore.uri = this.descriptor.uri
+			this.dataToStore.existing.uri = this.descriptor.existing.uri
 		} else {
 			this.dataToStore.type = "new"
 			this.dataToStore.uri = this.descriptor.uri
 			this.dataToStore.label = this.descriptor.label
 		}
+		//We add anyway the systemic parts
+		$.each(this.descriptor.systemicParts1, (function(i, systemicPart) {
+			this.systemicPartSelectors.push(new CoherentSkeletalRegionOfSkeletalRegion(
+							this, this.dataToStore.coherentSkeletalDivision, systemicPart))
+		}).bind(this))
 	},
-
-	initData : function() {
-
-	},
-
-	addSaveContainer : function() {
-
-		this.saveContainer = html.div("saveContainer")
-		this.saveButton = new TextButton("Save",
-				(this.saveRoutine).bind(this)).disable()
-		this.cancelButton = new TextButton("Cancel",
-				(this.cancelRoutine).bind(this), "rightAligned")
-
-		this.saveContainer.append(this.saveButton.container)
-				.append(this.cancelButton)
-
-	},
-
+	
 	saveRoutine : function() {
-
+		
 		var toSend = {
 			operation : "addSkeletalRegion",
 			individual : pageData.individual,
@@ -84,7 +110,6 @@ $.extend(SkeletalRegion.prototype,{
 						+ "pageLoader?"
 						+ DataLib.getUrl(urlObject)
 			}).bind(this))
-
 	},
 
 	cancelRoutine : function() {
@@ -95,33 +120,10 @@ $.extend(SkeletalRegion.prototype,{
 				+ "&pageUri=skeletalInventory"
 	},
 
-	addNew : function() {
-
-		this.systemicPartSelectors = []
-		// Check if we can add existing to add
-		$
-				.each(
-						this.descriptor.systemicParts1,
-						(function(i, systemicPart) {
-							this.systemicPartSelectors
-									.push(new CoherentSkeletalRegion(
-											this,
-											this.dataToStore.coherentSkeletalDivision,
-											systemicPart))
-						}).bind(this))
-
-		this.addNewButton.hide()
-		this.addExisting.hide()
-		this.complete.show()
-		// this.exitButton.show()
-		this.appendFields()
-	},
-
 	refresh : function() {
 
 		var thereIsNotAdded = false
 		var thereIsAdded = false
-
 		this.saveButton.disable()
 		$.each(this.systemicPartSelectors,
 				(function(i, sysSel) {
@@ -136,37 +138,64 @@ $.extend(SkeletalRegion.prototype,{
 				}).bind(this))
 	},
 
-})
+}
+
 
 CoherentBoneRegionSelectorPartlySymmetric = function() {
 
 	this.descriptor = pageData.skeletalRegions
 
-	this.container = html.div()
-	this.addButton = new Button("add", (this.addSkeletalDivision).bind(this))
-	// Coherent Bone Region
-
-	this.subContainer = html.div()
 	
-	this.saveContainer = html.div("saveContainer")
-	this.saveButton = new TextButton("Save", (this.saveRoutine).bind(this))
-			.disable()
-	this.cancelButton = new TextButton("Cancel", (this.cancelRoutine)
-			.bind(this), "rightAligned")
 
-	this.saveContainer.append(this.saveButton.container).append(
-			this.cancelButton.container)
-
-	this.initSelector()
-	this.assemble()
+	this.init()
 }
 
+
+//Neurocranium, Viscerocranium
 CoherentBoneRegionSelectorPartlySymmetric.prototype = {
 
-	initSelector : function() {
-		this.selector = UI.classSelector(this.descriptor.systemicParts1)
-	},
+	initUI : function(){
+		
+		this.container = html.div()
+		this.addButton = new Button("add", (this.addSkeletalDivision).bind(this))
+		// Coherent Bone Region
 
+		this.selector = UI.classSelector(this.descriptor.systemicParts1)
+		this.subContainer = html.div()
+		
+		this.saveContainer = html.div("saveContainer")
+		this.saveButton = new TextButton("Save", (this.saveRoutine).bind(this))
+				.disable()
+		this.cancelButton = new TextButton("Cancel", (this.cancelRoutine)
+				.bind(this), "rightAligned")
+
+		this.saveContainer.append(this.saveButton.container).append(
+				this.cancelButton.container)
+	},
+		
+	init : function(){
+		
+		this.initUI()
+		if(pageData.skeletalRegions.existing.uri != undefined){
+			
+			//We add the Coherent Skeletal Region immediately
+			//We extend the data structure of it with the existing
+			this.selector.hide()
+			this.addButton.container.hide()
+			this.dataToStore = new Object()
+			var descriptor = this.descriptor.systemicParts1.getObjectByKey("uri", pageData.skeletalRegions.existing.type)
+
+			//This will be checked in the CoherentSkeletalRegion object
+			descriptor.existing = new Object()
+			descriptor.existing.uri = pageData.skeletalRegions.existing.uri
+			
+			//$.extend(descriptor, pageData.skeletalRegions.existing)
+			this.skeletalRegionSelector = new CoherentSkeletalRegion(this, this.dataToStore, descriptor)
+			this.subContainer.append(this.skeletalRegionSelector.container)
+		}
+		this.assemble()
+	},
+		
 	assemble : function() {
 		this.container
 			.append(this.selector)
@@ -179,8 +208,8 @@ CoherentBoneRegionSelectorPartlySymmetric.prototype = {
 		
 		this.selector.hide()
 		this.addButton.container.hide()
-		this.dataToStore = []
-		var descriptor = this.descriptor.systemicParts1.getObjectByKey(this.selector.val())
+		this.dataToStore = new Object()
+		var descriptor = this.descriptor.systemicParts1.getObjectByKey("uri", this.selector.val())
 		this.skeletalRegionSelector = new CoherentSkeletalRegion(this, this.dataToStore, descriptor)
 		this.subContainer.append(this.skeletalRegionSelector.container)
 	},
@@ -203,7 +232,7 @@ CoherentBoneRegionSelectorPartlySymmetric.prototype = {
 		var toSend = {
 			operation : "addCoherentBoneRegion",
 			individual : pageData.individual,
-			boneDivision : this.dataToStore[0]
+			boneDivision : this.dataToStore
 		}
 		console.log(toSend)
 		
@@ -223,9 +252,11 @@ CoherentBoneRegionSelectorPartlySymmetric.prototype = {
 				var urlObject = {
 					pageUri : "boneDivision",
 					individual : msg.object.boneDivision.uri,
+					skeletalDivision : msg.object.boneDivision.uri,
 					skeletalInventory : pageData.individual,
 					existingBoneDivisionType : pageData.existingBoneDivisionType,
 					classUri : pageData.classUri,
+					skeletalRegion : pageData.skeletalRegions.uri
 				}
 
 				if (pageData.pageUri != "phalanges") {
@@ -238,7 +269,6 @@ CoherentBoneRegionSelectorPartlySymmetric.prototype = {
 				window.location = baseUrl + "pageLoader?"
 						+ DataLib.getUrl(urlObject)
 			}).bind(this))
-		
 	},
 	
 	cancelRoutine : function(){
@@ -250,6 +280,8 @@ CoherentBoneRegionSelectorPartlySymmetric.prototype = {
 	}
 }
 
+
+//Every other
 var CoherentBoneRegionSelectorSymmetric = function() {
 	
 	CoherentBoneRegionSelectorPartlySymmetric.call(this)
@@ -274,3 +306,31 @@ $.extend(CoherentBoneRegionSelectorSymmetric.prototype, {
 		this.subContainer.append(this.skeletalRegionSelector.container)
 	},
 })
+
+
+var ExistingCoherentBoneRegionSelectorSymmetric = function(){
+	
+	CoherentBoneRegionSelectorPartlySymmetric.call(this)
+}
+
+
+ExistingCoherentBoneRegionSelectorSymmetric.prototype = Object.create(CoherentBoneRegionSelectorPartlySymmetric.prototype)	
+
+
+ExistingCoherentBoneRegionSelectorSymmetric.prototype.init = function(){
+	//Select the existing 
+	this.assemble()
+	this.addSkeletalDivision()
+}
+
+ExistingCoherentBoneRegionSelectorSymmetric.prototype.addSkeletalDivision = function(){
+	
+	this.selector.hide()
+	this.addButton.container.hide()
+	this.dataToStore = []
+	//From the initital ontological we get the type of the existing
+	var descriptor = pageData.skeletalRegions.subClasses1.getObjectByKey("uri", 
+			pageData.existingBoneDision.type)
+	this.skeletalRegionSelector = new ExistingCoherentSkeletalRegion(this, this.dataToStore, descriptor)
+	this.subContainer.append(this.skeletalRegionSelector.container)
+}
