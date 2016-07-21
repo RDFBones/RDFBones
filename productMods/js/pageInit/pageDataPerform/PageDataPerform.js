@@ -112,11 +112,16 @@ PageDataPerform.prototype = {
 				case "array":
 				arr = localData[dataQueue[level].of][dataQueue[level].key]
 				this.numOfOperation += arr.length - 1
-				$.each(arr, (function(i, value){
-					newLocalData = $.extend({}, localData)
-					newLocalData[dataQueue[level].key] = value 
-					this.prepareLocalData(dataQueue, levelPlus, newLocalData)
-				}).bind(this))
+				if(arr.length == 0){
+					   this.checkReady()
+				} else {
+					$.each(arr, (function(i, value){
+						newLocalData = $.extend({}, localData)
+						newLocalData[dataQueue[level].key] = value 
+						this.prepareLocalData(dataQueue, levelPlus, newLocalData)
+					}).bind(this))
+				}
+
 				break;
 			case "object" :
 				
