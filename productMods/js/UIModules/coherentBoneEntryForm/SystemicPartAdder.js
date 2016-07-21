@@ -170,7 +170,7 @@ $.extend(SystemicPartAdder.prototype, {
 			//Place It back to the container
 			existingEntry.container.show()
 			
-			this.dataSet.existing.push(existingEntry.dataSet)
+			this.dataSet.existingToSelect.push(existingEntry.data)
 			//We have here necessarily data
 			this.list.show()
 		}
@@ -200,7 +200,14 @@ $.extend(SystemicPartAdder.prototype, {
 		//Check if it is already add
 
 		if(this.singleSelect){
-			this.selectedContainer.append(new BoneOrganField(this, this.dataSet, this.dataToStore, true).container)
+			
+			if(DataLib.getType(data) == "object"){ //Existing
+				this.selectedContainer.append(new AddedExistingBoneOrganField(this, 
+						data, this.dataToStore, this.existingEntry).container)
+			} else { //New 
+				this.selectedContainer.append(new BoneOrganField(this,
+						this.dataSet, this.dataToStore, true).container)
+			}
 			this.selectorContainer.hide()
 			this.notAdded = false
 			this.parent.refresh()
@@ -357,9 +364,8 @@ $.extend(SystemicPartAdder.prototype, {
 	
 	closeExisting : function(data){
 		
-		this.dataSet.existing.removeElement(data)
-		console.log(this.dataSet.existing)
-		if(this.dataSet.existing.length == 0){
+		this.dataSet.existingToSelect.removeElement(data)
+		if(this.dataSet.existingToSelect.length == 0){
 			this.existingContainer.hide()
 			this.list.hide()
 		}
