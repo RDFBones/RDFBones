@@ -105,16 +105,19 @@ $.extend(SystemicPartAdder.prototype, {
 		
 	addExisting : function(){
 		
-		
-
 		arr = []
 		$.each(this.dataSet.existingSystemicPart, (function(key, sysPart){
-			
-			if(key != this.dataSet.uri){
-				this.addedSubClasses.push(sysPart.uri)
-			}
-			console.log(sysPart)
+			this.cnt++
 			arr.push(new ExistingBoneOrganField(this, sysPart, null).container)
+		}).bind(this))
+		
+		
+		$.each(this.dataSet.subClasses, (function(i, subClass){
+			$.each(subClass.existingSystemicPart, (function(key, sysPart){
+				this.addedSubClasses.push(sysPart.type)
+				this.cnt++
+				arr.push(new ExistingBoneOrganField(this, sysPart, null).container)
+			}).bind(this))
 		}).bind(this))
 		
 		this.selectedContainer.append(arr)
@@ -122,6 +125,10 @@ $.extend(SystemicPartAdder.prototype, {
 		if(arr.length > 0 && this.singleSelect){
 			this.selectorContainer.hide()
 		}
+	},
+	
+	addSubExisting : function(){
+
 	},
 	
 	assemble : function(){
@@ -342,8 +349,8 @@ $.extend(SystemicPartAdder.prototype, {
 		
 		if(!this.singleSelect){
 			$.each(this.dataSet.subClasses, (function(i, subClass){
-				if(subClass.existing != undefined){
-					$.merge(this.dataSet.existing, subClass.existing)	
+				if(subClass.existingToSelect != undefined){
+					$.merge(this.dataSet.existingToSelect, subClass.existingToSelect)	
 				}
 			}).bind(this))
 		}
@@ -365,7 +372,7 @@ $.extend(SystemicPartAdder.prototype, {
 	closeExisting : function(data){
 		
 		this.dataSet.existingToSelect.removeElement(data)
-		if(this.dataSet.existingToSelect.length == 0){
+		if(this.dataSet.existingToSelect.length == 0 || this.singleSelect){
 			this.existingContainer.hide()
 			this.list.hide()
 		}
