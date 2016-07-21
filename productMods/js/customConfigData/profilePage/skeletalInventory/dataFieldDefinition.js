@@ -257,6 +257,9 @@ coherentData = {
 			key : "cefPageUri",
 		}, {
 			type : sw.local,
+			key : "skeletalRegion",
+		}, {
+			type : sw.local,
 			key : "boneDivision",
 			varName : "individual",
 		}, {

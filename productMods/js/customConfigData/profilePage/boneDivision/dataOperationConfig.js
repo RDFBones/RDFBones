@@ -31,15 +31,6 @@ dataOperations.subClass2 = {
 }
 
 
-dataOperations.partlySymmetric1 = {
-    systemicParts :  {
-       type : "query", 
-       queryType : "systemicPart", 
-       parameters : [inputClass], 
-       systemicParts : dataOperations.partlySymmetric2
-   }       
-} 
-
 
 dataOperations.partlySymmetric2 = {
 		

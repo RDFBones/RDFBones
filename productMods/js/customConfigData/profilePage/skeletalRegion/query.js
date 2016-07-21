@@ -25,7 +25,7 @@ pageData.pageElements = [{
 		 key : "label",
 	 }, {
 		 type : sw.editButton,
-		 paremeters : [
+		 parameters : [
 		   {
 			  type : sw.constant,
 			  value : "pageUri",

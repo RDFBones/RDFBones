@@ -46,16 +46,21 @@ pageData.pageElements = [
 		value : "Systemic Parts",
 	},
 	linkDataInputs : [
-	{
+	/*{
 		type : sw.global,
 		key : "cefPageUri",
 		varName : "pageUri",
 		defaultValue : "partlySymmetricBoneDivision",
 	},{
-		type : sw.global,
+		type : sw.,
 		key : "cefPageUri",
 		varName : "pageUri",
 		
+	},*/ 
+	{
+		type : sw.constant,
+		key : "pageUri",
+		value : "partlySymmetricCoherentSkeletalRegion"
 	}, {
 		type : sw.global,
 		key : "skeletalInventory",
@@ -66,11 +71,11 @@ pageData.pageElements = [
 	}, {
 		type : sw.global,
 		key : "individual",
-		varName : "existingBoneDivision",
+		varName : "existingSkeletalRegion",
 	}, {
 		type : sw.global,
-		key : "existingBoneDivisionType",
-		varName : "classUri",
+		key : "skeletalRegion",
+		varName : "skeletalRegion",
 	}, {
 		type : sw.global,
 		key : "classUri",
