@@ -75,14 +75,14 @@ PageDataPerform.prototype = {
 		if(dataQueue[level].operation != undefined){
 			
 			if(localData[dataQueue[level].of][dataQueue[level].key] === undefined){
-				if(dataQueue[level].type == "object"){
+				if(dataQueue[level].type == "object" || dataQueue[level].operation.sortBy != undefined){
 					localData[dataQueue[level].of][dataQueue[level].key] = new Object()
 				} else { //Array
 					localData[dataQueue[level].of][dataQueue[level].key] = []
 				}
 			} else {
 				if(localData[dataQueue[level].of][dataQueue[level].key].dataOperation != undefined){
-					if(dataQueue[level].type == "object"){
+					if(dataQueue[level].type == "object" || dataQueue[level].operation.sortBy != undefined){
 						localData[dataQueue[level].of][dataQueue[level].key] = new Object()
 					} else { //Array
 						localData[dataQueue[level].of][dataQueue[level].key] = []
@@ -183,10 +183,16 @@ PageDataPerform.prototype = {
 
 	 performQuery : function(dataOperation, localData, dataQueue, level){
 		
+		 
+		var flag = false
 		var data = new Object()
 		array = null
 		$.each(dataOperation.parameters, (function(i, param){
 			data[param.name] = this.evaluate(localData, param.value)
+			if(typeof data[param.name] == "undefined"){
+				flag = true
+				return false
+			}
 			if(DataLib.getType(data[param.name]) == "array"){
 				array = data[param.name]
 				arrayParameterName = param.name
@@ -194,33 +200,49 @@ PageDataPerform.prototype = {
 			}
 		}).bind(this))
 		
+		if(flag){
+			this.checkReady()
+			return false
+		}
+		
 		data.queryType = this.getQueryVariable(dataOperation.queryType, localData)
 		
 		if(array == null){
 			if(dataOperation.singleQuery != undefined){
 				this.sendSingleQuery(data, localData["this"], dataQueue[level].key)
 			} else {
-				this.sendQuery(data, localData.dataToStore)
+				this.sendQuery(data, localData.dataToStore, dataOperation)
 			}		
 		} else {
 			$.each(array, (function(i, value){
 				data[arrayParameterName] = value
-				this.sendQuery(data, localData.dataToStore)
+				this.sendQuery(data, localData.dataToStore, dataOperation)
 			}).bind(this))
 		}
 	},
 	
-	sendQuery : function(data, dataToStore){
+	sendQuery : function(data, dataToStore, dataOperation){
 		
 		$.ajax({
 			dataType : "json",
 			url : baseUrl + "dataLoader",
 			data : data,
 		}).done((function(result){
-			$.merge(dataToStore, result)
+
+			if(dataOperation.sortBy != undefined){
+				var sortBy = dataOperation.sortBy
+				$.each(result, function(i, object){
+					if(dataToStore[object[sortBy]] === undefined){
+						dataToStore[object[sortBy]] = []
+					}
+					dataToStore[object[sortBy]].push(object)
+				})
+			} else {
+				$.merge(dataToStore, result)
+			}
 			this.checkReady()
 		}).bind(this)).fail((function(){
-			this.sendQuery(data, dataToStore)
+			this.sendQuery(data, dataToStore, dataOperation)
 		}).bind(this))
 	},
 
@@ -243,7 +265,7 @@ PageDataPerform.prototype = {
 			if(queryDef.type == sw.switchCase){
 				
 				on = this.evaluate(localData, queryDef.on)
-				if(on != ""){
+				if(on != "" && on != undefined){
 					toReturn = null
 					$.each(queryDef.cases, function(i, _case){
 						if(_case.value == on){
@@ -308,8 +330,14 @@ PageDataPerform.prototype = {
 	
 	selection : function(process, localData){
 		
-		arr = this.evaluate(localData, process.object)
-							[this.evaluate(localData, process.by)]
+		
+		object = this.evaluate(localData, process.object)
+		key = this.evaluate(localData, process.by)
+		
+		if(object != undefined && object != undefined){
+			arr = object[key]
+		}
+		
 		if(arr != undefined){
 			$.merge(localData.dataToStore, arr)
 		}
@@ -400,7 +428,7 @@ PageDataPerform.prototype = {
 		if(DataLib.getType(dataDef) != "object"){
 			var arr = dataDef.split(".")
 			switch(arr.length){
-				case 1 : 
+				case 1 :
 					return localData.dataToStore[arr[0]]
 				case 2 : 
 					if(localData[arr[0]][arr[1]] != undefined){
@@ -408,6 +436,18 @@ PageDataPerform.prototype = {
 					} else {
 						return undefined
 					}
+				case 3 : 
+					if(localData[arr[0]][arr[1]][arr[2]] != undefined){
+						return  localData[arr[0]][arr[1]][arr[2]]	
+					} else {
+						return undefined
+					}
+				case 4 : 
+					if(localData[arr[0]][arr[1]][arr[2]][arr[3]] != undefined){
+						return  localData[arr[0]][arr[1]][arr[2]][arr[3]]
+					} else {
+						return undefined
+					}	
 			}
 		} else { 
 			switch(dataDef.type){
