@@ -1,6 +1,5 @@
 
 subClassPlusExisting = {
-		
 	dataOperation : "query",
 	queryType : "subClassesWithout",
 	parameters : [inputClass],
@@ -28,50 +27,41 @@ pageData.skeletalRegions = {
 	subClasses1$1 : {
 		dataOperation : "merge",
 		what : "pageData.mainSkeletalRegion"
-	}
+	},
+	existing : {
+		//This in this the coherent skeletal division
+		uri : pageData.existingSkeletalRegion,
+		label : labelQuery,
+		systemicParts : systemicPartOfSkeletalRegion,
+	},
+	existingToSelect : existingBoneOrgans
 }
+
+/*
+ * Setting the existing variable into the ontology data tree
+ */
+
+customPageDataOperations.push({
+	
+	object : "pageData.skeletalRegions.subClasses1.systemicParts.existingToSelect",
+	operation : {
+		dataOperation : "selection",
+		object : "pageData.skeletalRegions.existing.systemicParts",
+		by : "this.uri"
+	}
+})
+
+customPageDataOperations.push({
+	object : "pageData.skeletalRegions.subClasses1.systemicParts.subClasses.existingToSelect",
+	operation : {
+		dataOperation : "selection",
+		object : "pageData.skeletalRegions.existing.systemicParts",
+		by : "this.uri"
+	}
+})
 
 pageData.pageElements = [ {
 	type : sw.customPage,
 	pageLoader : CoherentBoneRegionSelectorSymmetric,
 } ]
-
-
-
-pageData.existingSingleBones = {
-		
-	dataOperation : "query",
-	queryType : "existingBoneOrgan1",
-	parameters : [skeletalInventory]
-}
-
-
-pageData.sortedSingleBones = {
-		
-	dataOperation : "sortToKey",
-	object : "pageData.existingSingleBones",
-	type : "object",
-	by : "mst",	
-}
-
-customPageDataOperations.push({
-	
-	object : "pageData.skeletalRegions.subClasses1.systemicParts.existing",
-	operation : {
-		dataOperation : "selection",
-		object : "pageData.sortedSingleBones",
-		by : "this.uri"
-	}
-})
-
-
-customPageDataOperations.push({
-	
-	object : "pageData.skeletalRegions.subClasses1.systemicParts.subClasses.existing",
-	operation : {
-		dataOperation : "selection",
-		object : "pageData.sortedSingleBones",
-		by : "this.uri"
-	}
-})
 

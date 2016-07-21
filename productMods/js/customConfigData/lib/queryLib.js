@@ -3,6 +3,20 @@
  * Input Parameters
  */
 
+inputClass = {
+    value : "this.uri",
+    name : "classUri",
+}
+
+skeletalInventory = {
+    value : "pageData.individual",
+    name : "skeletalInventory",
+} 
+
+skeletalDivision = {
+    value : "pageData.individual",
+    name : "skeletalDivision",	
+}
 
 querySwitch = {
 	type : sw.switchCase,
@@ -14,16 +28,19 @@ querySwitch = {
 	defaultCase : "systemicPartsWithoutNoBoneOrgan"	
 }
 
-
-inputClass = {
-    value : "this.uri",
-    name : "classUri",
+uri = {
+	value : "this.uri",
+	name : "uri",
 }
 
-skeletalInventory = {
-    value : "pageData.individual",
-    name : "skeletalInventory",
-} 
+mstQuery = {
+	dataOperation : "query",
+	queryType : "mostSpecificType",
+	type : "literal",
+	singleQuery : true,
+	parameters : [uri]
+}
+
 
 inputType = {
    value : "this.uri",
@@ -31,11 +48,10 @@ inputType = {
 }
 
 subClass = {
-		
-		dataOperation : "query",
-		queryType : "subClassesWithout",
-		parameters : [inputClass]
-	}
+	dataOperation : "query",
+	queryType : "subClassesWithout",
+	parameters : [inputClass]
+}
 
 subClass2 = {
 	dataOperation : "query",
@@ -73,6 +89,30 @@ labelQuery = {
 	]
 }
 
+
+typeQuery = {	
+		
+	dataOperation : "query",
+	queryType : "object",
+	type : "literal",
+	singleQuery : true,
+	parameters : [
+			{
+				value : "this.uri",
+				name : "subject",
+			}, {
+				value : {
+					type : sw.constant,
+					value : "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", 
+				},
+				name : "predicate",
+			}
+	]
+}
+
+
+
+
 extract = {
       dataOperation : "extraction",
       what :  "this.symmetricClasses",
@@ -97,6 +137,61 @@ group = {
 		key : "inputClassLabel",
 		to : "label"
 	}]
+}
+/*
+ * Systemic Part of Skeletal Region
+ */
+
+systemicPartOfSkeletalRegion = {
+	
+	dataOperation : "query",
+	queryType : "systemicParts",	
+	parameters : [skeletalDivision],
+	sortBy : "type",
+}
+
+/*
+ * Existing Bone Organs of skeletalInventory
+ */
+
+existingBoneOrgans = {
+	dataOperation : "query",
+	queryType : "existingBoneOrgan1",
+	parameters : [skeletalInventory],
+	sortBy : "type"
+}
+
+
+systemicParts = {
+		
+	dataOperation : "query",
+	queryType : "systemicParts",
+	parameters : [{
+		value : "this.uri",
+		name : "skeletalRegion",
+	}]
+}
+
+systemicPartsWithCompletenessSorted = {
+		
+	dataOperation : "query",
+	queryType : "systemicPartsWithCompleteness",
+	parameters : [{
+		value : "this.uri",
+		name : "skeletalRegion",
+	}],
+	sortBy : "type",
+}
+
+systemicPartsSorted = {
+		
+	dataOperation : "query",
+	queryType : "systemicParts",
+	parameters : [{
+		value : "this.uri",
+		name : "skeletalRegion",
+	}],
+	sortBy : "type",
 }
 
 symmetricBonesQuery = {
@@ -146,40 +241,42 @@ systemicSubclass = {
 }
 
 systemicNoBoneOrganSubclass = {
-		dataOperation : "query", 
-		queryType : "systemicPartsWithoutNoBoneOrgan", 
-		parameters : [inputClass], 
-		subClasses : subClass,
-	}
+	dataOperation : "query", 
+	queryType : "systemicPartsWithoutNoBoneOrgan", 
+	parameters : [inputClass], 
+	subClasses : subClass,
+}
 
 partlySymmetric2 = {
-		   dataOperation : "query",
-		   queryType : "systemicPartsWithout",
-		   parameters : [inputClass], 		 
-		}
-
-partlySymmetric1 = { 
-   dataOperation : "query", 
-   queryType : "systemicPartsWithout", 
-   parameters : [inputClass], 
-   systemicParts : partlySymmetric2,  
-   symmetricClasses : symmetricBonesQuery,
-   systemicParts$1 : extract,
-   symmetricClasses$1 : group,
-   systemicParts$2 : merge,
-} 
+	   dataOperation : "query",
+	   queryType : "systemicPartsWithout",
+	   parameters : [inputClass], 		 
+	}
 
 
-partlySymmetricNoBoneOrgan = { 
-		   dataOperation : "query", 
-		   queryType : querySwitch,
-		   parameters : [inputClass], 
-		   systemicParts : partlySymmetric2,  
-		   symmetricClasses : symmetricBonesQuery,
-		   systemicParts$1 : extract,
-		   symmetricClasses$1 : group,
-		   systemicParts$2 : merge,
-		} 
+partlySymmetricLoad = { 
+	   dataOperation : "query", 
+	   queryType : querySwitch,
+	   parameters : [inputClass], 
+	   systemicParts : partlySymmetric2,  
+	   symmetricClasses : symmetricBonesQuery,
+	   systemicParts$1 : extract,
+	   symmetricClasses$1 : group,
+	   systemicParts$2 : merge,
+	   existingToAdd : {
+		   dataOpertion : "query",
+		   queryType : "filteredCoherentBones",
+		   parameters : [{
+			   value : "pageData.individual",
+			   name : "skeletalInventory",
+		   }, {
+			   value : "this.uri",
+			   name : "coherentSkeletalDivision",
+		   }]
+
+	   }
+}
+
 
 
 
