@@ -105,6 +105,7 @@ AddedExistingBoneOrganField.prototype.getCompletenessSelector = function(){
 var ExistingBoneOrganField = function(systemicPartSelector, dataSet,
 		dataToStore) {
 
+	this.dataSet = dataSet
 	AddedExistingBoneOrganField.call(this, systemicPartSelector, dataSet, dataToStore)
 	this.deleteButton.container.hide()
 }
@@ -115,4 +116,20 @@ ExistingBoneOrganField.prototype.setDataObject = function(dataSet, dataToStore, 
 	//We do not set anything because the data is already there
 }
 
+
+
+AddedExistingCoherentSkeletalDivision = function(dataSet){
+	
+	this.coherentSkeletalRegion = coherentSkeletalRegion
+	this.dataSet = dataSet
+}
+
+
+AddedExistingCoherentSkeletalDivision.prototype = {
+		
+	remove : function(){
+		
+		this.coherentSkeletalRegion.removeExisting(this.dataSet)		
+	}
+}
 
