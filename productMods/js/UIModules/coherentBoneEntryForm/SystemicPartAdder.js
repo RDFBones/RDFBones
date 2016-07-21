@@ -97,10 +97,33 @@ $.extend(SystemicPartAdder.prototype, {
 	init : function(){
 		this.setSelectorField()
 		this.checkExisting()
+		
+		this.addExisting()
 		this.initExistingToAdd()
 		this.assemble()
 	},
 		
+	addExisting : function(){
+		
+		
+
+		arr = []
+		$.each(this.dataSet.existingSystemicPart, (function(key, sysPart){
+			
+			if(key != this.dataSet.uri){
+				this.addedSubClasses.push(sysPart.uri)
+			}
+			console.log(sysPart)
+			arr.push(new ExistingBoneOrganField(this, sysPart, null).container)
+		}).bind(this))
+		
+		this.selectedContainer.append(arr)
+		
+		if(arr.length > 0 && this.singleSelect){
+			this.selectorContainer.hide()
+		}
+	},
+	
 	assemble : function(){
 		UI.assemble(this.container, [
          			this.selectorContainer,
@@ -115,12 +138,11 @@ $.extend(SystemicPartAdder.prototype, {
          			 	this.existingBones],
          			[0, 1, 1, 1, 1, 0, 0, 1, 1, 1])
 	},
-	
 
 	checkExisting : function(){
 		
-		if(typeof this.dataSet.existing != "undefined"){
-			if(this.dataSet.existing.length > 0){			
+		if(typeof this.dataSet.existingToSelect != "undefined"){
+			if(this.dataSet.existingToSelect.length > 0){			
 				this.list.show()
 			}		
 		}
@@ -151,7 +173,6 @@ $.extend(SystemicPartAdder.prototype, {
 			this.dataSet.existing.push(existingEntry.dataSet)
 			//We have here necessarily data
 			this.list.show()
-			
 		}
 		
 		//It it is not there then 
@@ -166,6 +187,11 @@ $.extend(SystemicPartAdder.prototype, {
 			this.notAdded = true
 		}
 		this.notComplete = true
+		
+		if(this.singleSelect){
+			this.notAdded = true
+		}
+		
 		this.parent.refresh()
 	},
 
@@ -174,8 +200,10 @@ $.extend(SystemicPartAdder.prototype, {
 		//Check if it is already add
 
 		if(this.singleSelect){
-			this.selectedContainer.append(new BoneOrganField(this, this.dataSet, this.dataToStore, true))
+			this.selectedContainer.append(new BoneOrganField(this, this.dataSet, this.dataToStore, true).container)
 			this.selectorContainer.hide()
+			this.notAdded = false
+			this.parent.refresh()
 			return true
 		} else {
 			
@@ -313,8 +341,8 @@ $.extend(SystemicPartAdder.prototype, {
 			}).bind(this))
 		}
 		var existing = []
-		$.each(this.dataSet.existing, (function(i, ex){
-			existing.push(new ExistingEntry(this, ex).container)
+		$.each(this.dataSet.existingToSelect, (function(i, ex){
+			existing.push(new ExistingBoneOrgan(this, ex).container)
 		}).bind(this))
 		this.existingBones.append(existing)
 	},
@@ -339,7 +367,7 @@ $.extend(SystemicPartAdder.prototype, {
 })
 
 
-ExistingEntry = function(systemicPartAdder, data){
+ExistingBoneOrgan = function(systemicPartAdder, data){
 
 	this.sysAdder = systemicPartAdder
 	this.data = data
@@ -348,7 +376,7 @@ ExistingEntry = function(systemicPartAdder, data){
 	this.container.append(this.addButton.container)
 }
 
-ExistingEntry.prototype = {
+ExistingBoneOrgan.prototype = {
 		
 	add : function(){
 		this.data.type = "existing"
