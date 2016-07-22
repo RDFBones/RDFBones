@@ -10,11 +10,11 @@ phalangesOfFoot = {
 		      	} ,{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_78512",
-					key : "boneUri",
+					key : "skeletalDivisionType",
 				},{
 					type : sw.constant,
 					value : "Set of phalanges of foot",
-					key : "boneLabel",
+					key : "typeLabel",
 				},{
 					type : sw.constant,
 					value : [ "http://purl.obolibrary.org/obo/FMA_78512",
@@ -26,7 +26,7 @@ phalangesOfFoot = {
 					key : "cefPageUri",
 					value : "phalanges",
 				}],
-		elements : [ coherentData]
+		elements : [ skeletalDivisionData]
 	}
 
 
@@ -38,11 +38,11 @@ freelowerlimb = {
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_24144",
-					key : "skeletalRegion",
+					key : "skeletalDivisionType",
 				},{
 					type : sw.constant,
 					value : "Skeleton of Free Lower Limb",
-					key : "boneLabel",
+					key : "typeLabel",
 				},{
 					type : sw.constant,
 					value : [ "http://purl.obolibrary.org/obo/FMA_24144",
@@ -50,7 +50,7 @@ freelowerlimb = {
 					          "http://purl.obolibrary.org/obo/FMA_21175"],
 					key : "classSelection"
 				}],
-		elements : [ coherentData]
+		elements : [ skeletalDivisionData]
 	}
 
 
@@ -62,12 +62,12 @@ tarsalbones = {
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_71339",
-					key : "skeletalRegion",
+					key : "skeletalDivisionType",
 				},
 				{
 					type : sw.constant,
 					value : "Tarsal Bones",
-					key : "boneLabel",
+					key : "typeLabel",
 				},
 				{
 					type : sw.constant,
@@ -76,7 +76,7 @@ tarsalbones = {
 							"http://purl.obolibrary.org/obo/FMA_78508" ],
 					key : "classSelection"
 				}],
-		elements : [ coherentData ]
+		elements : [ skeletalDivisionData ]
 	}
 
 metatarsalbones = {
@@ -88,11 +88,11 @@ metatarsalbones = {
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_71340",
-					key : "skeletalRegion",
+					key : "skeletalDivisionType",
 				}, {
 					type : sw.constant,
 					value : "Metatarsal Bones",
-					key : "boneLabel",
+					key : "typeLabel",
 				},{
 					type : sw.constant,
 					value : [ "http://purl.obolibrary.org/obo/FMA_71340",
@@ -100,7 +100,7 @@ metatarsalbones = {
 							"http://purl.obolibrary.org/obo/FMA_78510" ],
 					key : "classSelection"
 				},],
-		elements : [ coherentData ]
+		elements : [ skeletalDivisionData ]
 	}
 
 singleLowerLimb = {
@@ -122,7 +122,7 @@ singleLowerLimb = {
 		        },{
 					type : sw.constant,
 					value : "Single Bone Organs of Lower Limb",
-					key : "boneLabel",
+					key : "typeLabel",
 				}] ,
 		elements : [ singleBones ]
 	}

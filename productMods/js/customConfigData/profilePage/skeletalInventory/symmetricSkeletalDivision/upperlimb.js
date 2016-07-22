@@ -1,80 +1,49 @@
 forearm = {
 
 	type : sw.container,
-
 	localData : [
 	
-	   symmetricCoherentCEF ,
+	    symmetricCoherentCEF ,
 	{
-
 		type : sw.constant,
-
 		value : "http://purl.obolibrary.org/obo/FMA_71199",
-
-		key : "skeletalRegion",
-
+		key : "skeletalDivisionType",
 	}, {
-
 		type : sw.constant,
-
 		value : "Skeleton of Forearm",
-
-		key : "boneLabel",
-
+		key : "typeLabel",
 	}, {
-
 		type : sw.constant,
-
 		value : [ "http://purl.obolibrary.org/obo/FMA_71199",
 		"http://purl.obolibrary.org/obo/FMA_71201",
 		"http://purl.obolibrary.org/obo/FMA_71200" ],
 		key : "classSelection"
-
 	} ],
 
-	elements : [ coherentData ]
-
+	elements : [ skeletalDivisionData ]
 }
 
 carpalbones = {
 
 	type : sw.container,
-
 	localData : [
 	      	   symmetricCoherentCEF ,
-
 	{
-
 		type : sw.constant,
-
 		value : "http://purl.obolibrary.org/obo/FMA_71335",
-
-		key : "skeletalRegion",
-
+		key : "skeletalDivisionType",
 	}, {
-
 		type : sw.constant,
-
 		value : "Carpal Bones",
-
-		key : "boneLabel",
-
+		key : "typeLabel",
 	}, {
-
 		type : sw.constant,
-
 		value : [ "http://purl.obolibrary.org/obo/FMA_71335",
-
-		"http://purl.obolibrary.org/obo/FMA_71895",
-
-		"http://purl.obolibrary.org/obo/FMA_71894" ],
-
+		          "http://purl.obolibrary.org/obo/FMA_71895",
+		          "http://purl.obolibrary.org/obo/FMA_71894" ],
 		key : "classSelection"
-
 	} ],
-
-	elements : [ coherentData ]
-
+	elements : [ skeletalDivisionData ]
 }
 
 metacarpalbones = {
@@ -82,79 +51,46 @@ metacarpalbones = {
 	type : sw.container,
 
 	localData : [
-	             
 	    symmetricCoherentCEF, 
 	{
-		
 		type : sw.constant,
-
 		value : "http://purl.obolibrary.org/obo/FMA_71336",
-
-		key : "skeletalRegion",
-
+		key : "skeletalDivisionType",
 	}, {
-
 		type : sw.constant,
-
 		value : "Metacarpal Bones",
-
-		key : "boneLabel",
-
+		key : "typeLabel",
 	}, {
-
 		type : sw.constant,
-
 		value : [ "http://purl.obolibrary.org/obo/FMA_71336",
-
-		"http://purl.obolibrary.org/obo/FMA_71897",
-
-		"http://purl.obolibrary.org/obo/FMA_71896" ],
-
+		          "http://purl.obolibrary.org/obo/FMA_71897",
+		          "http://purl.obolibrary.org/obo/FMA_71896" ],
 		key : "classSelection"
-
 	} ],
-
-	elements : [ coherentData ]
-
+	elements : [ skeletalDivisionData ]
 }
 
 phalangesofhand = {
 
 	type : sw.container,
-
 	localData : [
 	             symmetricCoherentCEF, 
 	{
 		type : sw.constant,
-
 		value : "http://purl.obolibrary.org/obo/FMA_71337",
-
-		key : "boneUri",
-
+		key : "skeletalDivisionType",
 	}, {
-
 		type : sw.constant,
-
 		value : "Phalanges of Hand",
-
-		key : "boneLabel",
-
+		key : "typeLabel",
 	}, {
-
 		type : sw.constant,
-
 		value : [ "http://purl.obolibrary.org/obo/FMA_71337",
-
-		"http://purl.obolibrary.org/obo/FMA_71898",
-
-		"http://purl.obolibrary.org/obo/FMA_71899" ],
-
+		          "http://purl.obolibrary.org/obo/FMA_71898",
+		          "http://purl.obolibrary.org/obo/FMA_71899" ],
 		key : "classSelection"
-
 	} ],
-
-	elements : [ coherentData ]
-
+	elements : [ skeletalDivisionData ]
 }
 
 singleUpperLimb = {
@@ -176,17 +112,14 @@ singleUpperLimb = {
 		        },{
 					type : sw.constant,
 					value : "Single Bone Organs of Upper Limb",
-					key : "boneLabel",
+					key : "typeLabel",
 				}] ,
 		elements : [ singleBones ]
 	}
 
 
 upperLimbTab = {
-
 	type : sw.tab,
-
 	tabTitle : "Upper Limb",
-
 	elements : [ forearm, carpalbones, metacarpalbones, phalangesofhand, singleUpperLimb]
 }

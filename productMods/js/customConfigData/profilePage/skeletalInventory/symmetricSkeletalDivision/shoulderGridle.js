@@ -5,11 +5,11 @@ pectoralGridle = {
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_24141",
-					key : "skeletalRegion",
+					key : "skeletalDivisionType",
 				},{
 					type : sw.constant,
 					value : "Skeleton of Pectoral Girdle",
-					key : "boneLabel",
+					key : "typeLabel",
 				},{
 		        	type : sw.constant,
 		        	key : "skeletalDivisionClass",
@@ -21,7 +21,7 @@ pectoralGridle = {
 					          "http://purl.obolibrary.org/obo/FMA_24164"],
 					key : "classSelection"
 				} ],
-		elements : [ coherentData]
+		elements : [ skeletalDivisionData]
 	}
 
 
@@ -39,7 +39,7 @@ singeShoulderGirdle = {
 		        }, {
 					type : sw.constant,
 					value : "Single Bones of Pectoral Girdle",
-					key : "boneLabel",
+					key : "typeLabel",
 				}] ,
 		elements : [ singleBones ]
 	}
