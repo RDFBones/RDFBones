@@ -1,42 +1,31 @@
-systemicQuery = {
-		type : sw.constant,
-		key : "queryType",
-		value : "systemicPartsWithout",
-}
-
 
 skull = {
 		type : sw.container,
 		localData : [
-				skeletalSubDivisionCEF, 
-				{
+				coherentSkeletalDivisionCEF, {
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_46565",
-					key : "skeletalRegion"
+					key : "coherentSkeletalDivisionType"
 				},{
 					type : sw.constant,
 					value : "Skull",
-					key : "boneLabel",
-				}, {
-					type : sw.constant,
-					value : "partlySymmetricBoneDivision",
-					key : "cefPageUri",
-				}, systemicQuery ],
-		elements : [ skeletalDivisionData]
+					key : "typeLabel",
+				}],
+		elements : [ coherentSkeletalDivisionData]
 	}	
 
 skullDivision = {
 		type : sw.container,
 		localData : [
-				partlySymmetricCoherentCEF,
+		          
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_46565",
-					key : "skeletalRegion"
+					key : "skeletalDivisionType"
 				}, {
 					type : sw.constant,
 					value : "Coherent Skeletal Divisions of Skull",
-					key : "boneLabel",
+					key : "typeLabel",
 				},{
 					type : sw.constant,
 					value : "subDivision",
@@ -50,9 +39,8 @@ skullDivision = {
 					value : "partlySymmetricBoneDivision",
 					key : "cefPageUri",
 				}],
-		elements : [ coherentData]
+		elements : [ skeletalDivisionData]
 	}	
-
 
 singleSkull = {
 	
@@ -73,15 +61,14 @@ singleSkull = {
 	        },{
 				type : sw.constant,
 				value : "Single Bone Organs of Skull",
-				key : "boneLabel",
+				key : "typeLabel",
 			}, {
 				type : sw.constant,
 				value : "singleSkull",
 				key : "cefPageUri",
-			}, systemicQuery ] ,
+			}] ,
 	elements : [ singleBones ]
 }
-
 
 skullTab = {
 	type : sw.tab,

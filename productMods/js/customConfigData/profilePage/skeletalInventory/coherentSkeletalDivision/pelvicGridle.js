@@ -1,36 +1,20 @@
 bonypelvis = {
 		type : sw.container,
 		localData : [
-				skeletalSubDivisionCEF, {
+				coherentSkeletalDivisionCEF, {
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_16580",
-					key : "boneUri",
-				},{
-					type : sw.constant,
-					value : "http://purl.obolibrary.org/obo/FMA_16580",
-					key : "skeletalRegion",
+					key : "coherentSkeletalDivisionType",
 				},{
 					type : sw.constant,
 					value : "Bony Pelvis",
-					key : "boneLabel",
-				},{
-					type : sw.constant,
-					value : ["http://purl.obolibrary.org/obo/FMA_16580"],
-					key : "classSelection"
+					key : "typeLabel",
 				},{
 					type : sw.constant,
 					value : "simpleQuery",
 					key : "simpleQuery",
-				},{
-					type : sw.constant,
-					value : "http://purl.obolibrary.org/obo/FMA_16580",
-					key : "skeletalDivision",
-				}, {
-					type : sw.constant,
-					value : "partlySymmetricBoneDivision",
-					key : "cefPageUri",
 				}],
-		elements : [skeletalDivisionData]
+		elements : [coherentSkeletalDivisionData]
 	}
 
 coherentBonyPelvis = {
@@ -40,7 +24,7 @@ coherentBonyPelvis = {
 		{
 			type : sw.constant,
 			value : "http://purl.obolibrary.org/obo/FMA_16580",
-			key : "skeletalRegion",
+			key : "skeletalDivisionType",
 		}, {
 			type : sw.constant,
 			value : ["http://purl.obolibrary.org/obo/FMA_16580"],
@@ -52,9 +36,9 @@ coherentBonyPelvis = {
 		}, {
 			type : sw.constant,
 			value : "Coherent Skeletal Divisions of Bony Pelvis",
-			key : "boneLabel",
+			key : "typeLabel",
 		}],
-		elements : [ coherentData]
+		elements : [ skeletalDivisionData]
 }
 
 
@@ -76,7 +60,7 @@ singleBonyPelvis = {
 		        },{
 					type : sw.constant,
 					value : "Single Bones of Bony Pelvis",
-					key : "boneLabel",
+					key : "typeLabel",
 				}] ,
 		elements : [ singleBones ]
 	}
