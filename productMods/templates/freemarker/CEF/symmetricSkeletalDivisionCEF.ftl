@@ -13,5 +13,4 @@ ${scripts.add(
 
 
 ${scripts.add(
-    '<script type="text/javascript" src="${urls.base}/js/customConfigData/CEF/coherentSkeletalSubdivision/config.js"></script>')}
-	
+    '<script type="text/javascript" src="${urls.base}/js/customConfigData/CEF/symmetricSkeletalDivision/config.js"></script>')}

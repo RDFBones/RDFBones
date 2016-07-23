@@ -9,6 +9,6 @@ ${scripts.add(
 )}
 
 ${scripts.add(
-		'<script type="text/javascript" src="${urls.base}/js/customConfigData/CEF/skeletalSubdivision/partlySymmetricConfig.js"></script>',
-		'<script type="text/javascript" src="${urls.base}/js/customConfigData/CEF/skeletalSubdivision/partlySymmetricSkeletalRegions.js"></script>')}
+		'<script type="text/javascript" src="${urls.base}/js/customConfigData/CEF/skeletalRegion/partlySymmetricConfig.js"></script>',
+		'<script type="text/javascript" src="${urls.base}/js/customConfigData/CEF/skeletalRegion/partlySymmetricSkeletalRegions.js"></script>')}
 
