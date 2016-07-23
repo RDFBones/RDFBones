@@ -109,15 +109,12 @@ pageData.pageElements = [
 				value : "boneOrgan",
 			}, {
 				type : sw.local,
-				key : "boneOrgan",
+				key : "uri",
 				varName : "individual",
-			},{
+			}, {
 				type : sw.global,
 				key : "individual",
 				varName : "boneDivision",
-			}, {
-				type : sw.local,
-				key : "completenessState",
 			}, {
 				type : sw.local,
 				key : "completeness",
@@ -127,9 +124,6 @@ pageData.pageElements = [
 			}, {
 				type : sw.global,
 				key : "skeletalInventory",
-			}, {
-				type : sw.global,
-				key : "classUri",
 			}
 		],
 		mapping : "pageLoader",
