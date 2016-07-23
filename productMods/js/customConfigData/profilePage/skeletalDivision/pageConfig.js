@@ -74,7 +74,7 @@ pageData.pageElements = [
 		varName : "existingSkeletalRegion",
 	}, {
 		type : sw.global,
-		key : "skeletalRegion",
+		key : "individual",
 		varName : "skeletalRegion",
 	}, {
 		type : sw.global,
