@@ -226,7 +226,7 @@ PageDataPerform.prototype = {
 		}
 	},
 	
-	sendQuery : function(data, dataToStore, dataOperation){
+	sendQuery : function(data, dataToStore, dataOperation, secondTry){
 		
 		$.ajax({
 			dataType : "json",
@@ -247,7 +247,13 @@ PageDataPerform.prototype = {
 			}
 			this.checkReady()
 		}).bind(this)).fail((function(){
-			this.sendQuery(data, dataToStore, dataOperation)
+			if(secondTry != true){
+				this.sendQuery(data, dataToStore, dataOperation, true)	
+			} else {
+				console.log("The data loading were not successful")
+				console.log(dataOperation)
+				this.checkReady()
+			}
 		}).bind(this))
 	},
 
