@@ -4,7 +4,6 @@ subClassPlusExisting = {
 	queryType : "subClassesWithout",
 	parameters : [inputClass],
 } 
-	
 
 systemicSubclass = {
 	dataOperation : "query", 
@@ -13,16 +12,14 @@ systemicSubclass = {
 	subClasses : subClass,
 }
 
-
 pageData.mainSkeletalRegion = [{
-	uri : pageData.skeletalRegion,	
+	uri : pageData.skeletalDivisionType,	
 	systemicParts : systemicSubclass,
 	label : labelQuery,
 }]
 
-
 pageData.skeletalRegions = {	
-	uri : pageData.skeletalRegion,	
+	uri : pageData.skeletalDivisionType,	
 	subClasses1 : subclassSystemic,
 	subClasses1$1 : {
 		dataOperation : "merge",
@@ -62,6 +59,6 @@ customPageDataOperations.push({
 
 pageData.pageElements = [ {
 	type : sw.customPage,
-	pageLoader : CoherentBoneRegionSelectorSymmetric,
+	pageLoader : SymmetricSkeletalDivisionSelector,
 } ]
 

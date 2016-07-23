@@ -1,6 +1,6 @@
 
 pageData.skeletalRegions = {
-	uri : pageData.skeletalRegion,
+	uri : pageData.coherentSkeletalDivisionType,
 	label : labelQuery,
 	systemicParts1 : partlySymmetricLoad,
 	existing : {
@@ -65,10 +65,9 @@ customPageDataOperations.push({
 
 
 
-
 pageData.pageElements = [ {
 	type : sw.customPage,
-	pageLoader : SkeletalRegion,
+	pageLoader : CoherentSkeletalDivision,
 } ]
 
 
