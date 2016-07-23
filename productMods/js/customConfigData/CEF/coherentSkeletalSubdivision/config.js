@@ -11,7 +11,6 @@ pageData.skeletalRegions = {
 	},
 }
 
-
 pageData.existingBoneOrgans = existingBoneOrgans
 
 
@@ -24,16 +23,15 @@ customPageDataOperations.push({
 		by : "this.uri"
 	}
 })
-/*
+
 customPageDataOperations.push({
 	object : "pageData.skeletalRegions.systemicParts1.systemicParts.subClasses.existingSystemicPart",
 	operation : {
 		dataOperation : "selection",
-		object : "pageData.skeletalRegions.existing.systemicParts",
+		object : "pageData.skeletalRegions.existing.systemicParts11",
 		by : "this.uri",
 	}
 })
-*/
 
 customPageDataOperations.push({
 	
@@ -46,7 +44,7 @@ customPageDataOperations.push({
 })
 
 customPageDataOperations.push({
-	object : "pageData.skeletalRegions.systemicParts1.systemicParts.subClasses.existingToSelect",
+	object : "pageData.skeletalRegions.systemicParts1.systemicParts.subClasses.existingToSelectSubClass",
 	operation : {
 		dataOperation : "selection",
 		object : "pageData.existingBoneOrgans",
@@ -54,8 +52,7 @@ customPageDataOperations.push({
 	}
 })
 
-
 pageData.pageElements = [ {
 	type : sw.customPage,
-	pageLoader : CoherentBoneRegionSelectorPartlySymmetric,
+	pageLoader : CoherentSkeletalSubdivision,
 } ]
