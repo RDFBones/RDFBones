@@ -34,7 +34,7 @@ phalangesOfFoot = {
 freelowerlimb = {
 		type : sw.container,
 		localData : [
-		      	   symmetricCoherentCEF ,
+		      	   symmetricSkeletalDivisionCEF ,
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_24144",
@@ -57,7 +57,7 @@ freelowerlimb = {
 tarsalbones = {
 		type : sw.container,
 		localData : [
-		      	   symmetricCoherentCEF ,
+		      	   symmetricSkeletalDivisionCEF ,
 
 				{
 					type : sw.constant,
@@ -83,7 +83,7 @@ metatarsalbones = {
 		uri : "",
 		type : sw.container,
 		localData : [
-		      	   symmetricCoherentCEF ,
+		      	   symmetricSkeletalDivisionCEF ,
 
 				{
 					type : sw.constant,

@@ -3,7 +3,7 @@ forearm = {
 	type : sw.container,
 	localData : [
 	
-	    symmetricCoherentCEF ,
+	    symmetricSkeletalDivisionCEF ,
 	{
 		type : sw.constant,
 		value : "http://purl.obolibrary.org/obo/FMA_71199",
@@ -27,7 +27,7 @@ carpalbones = {
 
 	type : sw.container,
 	localData : [
-	      	   symmetricCoherentCEF ,
+	      	   symmetricSkeletalDivisionCEF ,
 	{
 		type : sw.constant,
 		value : "http://purl.obolibrary.org/obo/FMA_71335",
@@ -51,7 +51,7 @@ metacarpalbones = {
 	type : sw.container,
 
 	localData : [
-	    symmetricCoherentCEF, 
+	    symmetricSkeletalDivisionCEF, 
 	{
 		type : sw.constant,
 		value : "http://purl.obolibrary.org/obo/FMA_71336",
@@ -74,7 +74,7 @@ phalangesofhand = {
 
 	type : sw.container,
 	localData : [
-	             symmetricCoherentCEF, 
+	             symmetricSkeletalDivisionCEF, 
 	{
 		type : sw.constant,
 		value : "http://purl.obolibrary.org/obo/FMA_71337",

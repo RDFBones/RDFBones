@@ -17,7 +17,7 @@ skull = {
 skullDivision = {
 		type : sw.container,
 		localData : [
-		          
+		        coherentSkeletalSubdivisionCEF,  
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_46565",

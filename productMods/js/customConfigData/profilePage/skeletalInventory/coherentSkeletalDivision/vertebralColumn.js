@@ -18,7 +18,8 @@ vertebralColumn = {
 coherentVertebra = {
 		
 		type : sw.container,
-		localData : [ partlySymmetricCoherentCEF, 
+		localData : [ 
+		coherentSkeletalSubdivisionCEF, 
 		{
 			type : sw.constant,
 			value : "http://purl.obolibrary.org/obo/FMA_13478",
