@@ -104,6 +104,9 @@ skeletalDivisionData = {
 		key : "pageUri",
 	}, {
 		type : sw.local,
+		key : "cefPageUri",
+	}, {
+		type : sw.local,
 		key : "queryType",
 	}, {
 		type : sw.local,
@@ -150,12 +153,18 @@ skeletalDivisionData = {
 			value : "skeletalDivision",
 		},{
 			type : sw.local,
+			key : "cefPageUri",
+		},{
+			type : sw.local,
 			key : "uri",
 			varName : "individual",
 		}, {
 			type : sw.local,
 			key : "type",
 			varName : "skeletalRegionType",
+		}, {
+			type : sw.local,
+			key : "skeletalDivisionType",
 		} ],
 		mapping : "pageLoader",
 	}, {	
