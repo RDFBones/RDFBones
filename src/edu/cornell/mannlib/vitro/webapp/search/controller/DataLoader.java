@@ -365,13 +365,15 @@ public class DataLoader extends VitroAjaxController {
   private static String SkeletalDivision =
       ""
           + "SELECT ?uri ?label ?type (COUNT(?boneOrgan) as ?boneOrganCount) \n"
-          + " WHERE \n " + "   { "
+          + " WHERE \n " 
+          + "   { "
           + "    ?skeletalInventory   obo:BFO_0000051          ?completeness . \n"
           + "    ?completeness        obo:IAO_0000136          ?boneSegment . \n"
           + "    ?boneSegment         obo:regional_part_of     ?boneOrgan  . \n"
           + "    ?boneOrgan           obo:systemic_part_of     ?uri     . \n"
           + "    ?uri                 rdfs:label               ?label   . \n"
           + "    ?uri                 vitro:mostSpecificType   ?type    .  \n"
+          + "    FILTER NOT EXISTS { ?uri   obo:systemic_part_of  ?coherentSkeletalRegion }  . \n "
           + "   } GROUP BY ?uri ?label ?type ";
   
   
