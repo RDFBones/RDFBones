@@ -110,6 +110,25 @@ typeQuery = {
 	]
 }
 
+individualType = {
+	
+	dataOperation : "query",
+	queryType : "object",
+	type : "literal",
+	singleQuery : true,
+	parameters : [
+			{
+				value : "pageData.individual",
+				name : "subject",
+			}, {
+				value : {
+					type : sw.constant,
+					value : "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", 
+				},
+				name : "predicate",
+			}
+	]
+}
 
 
 
