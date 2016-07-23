@@ -2,7 +2,7 @@
  * Called by the CoherentSkeletalDivision
  */
 
-var CoherentSkeletalSubDivision = function(parent, parentData, descriptor){
+var CoherentSkeletalSubdivision = function(parent, parentData, descriptor){
 	
 	this.parent = parent
 	this.parentData = parentData
@@ -10,7 +10,7 @@ var CoherentSkeletalSubDivision = function(parent, parentData, descriptor){
 	this.init()
 }
 
-CoherentSkeletalSubDivision.prototype = {
+CoherentSkeletalSubdivision.prototype = {
 		
 		assemble : function() {
 
@@ -108,11 +108,13 @@ CoherentSkeletalSubDivision.prototype = {
 		
 		initExistingToAdd : function(){
 
+			/*
 			var existing = []
 			$.each(this.descriptor.existingToSelect, (function(i, ex){
-				existing.push(new ExistingCoherentSkeletalRegion(this, ex).container)
+				existing.push(new CoherentSkeletalRegion(this, ex).container)
 			}).bind(this))
 			this.existingBones.append(existing)
+			*/
 		},
 		
 		selectExisting : function(){

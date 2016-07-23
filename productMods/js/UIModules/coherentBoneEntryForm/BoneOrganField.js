@@ -65,6 +65,7 @@ BoneOrganField.prototype = {
 AddedExistingBoneOrganField = function(systemicPartSelector, dataSet, dataToStore, existingEntry){
 	
 	this.existingEntry = existingEntry
+	this.dataSet = dataSet
 	BoneOrganField.call(this, systemicPartSelector, dataSet, dataToStore)
 }
 
@@ -115,8 +116,6 @@ ExistingBoneOrganField.prototype = Object.create(AddedExistingBoneOrganField.pro
 ExistingBoneOrganField.prototype.setDataObject = function(dataSet, dataToStore, existingEntry) {
 	//We do not set anything because the data is already there
 }
-
-
 
 AddedExistingCoherentSkeletalDivision = function(dataSet){
 	
