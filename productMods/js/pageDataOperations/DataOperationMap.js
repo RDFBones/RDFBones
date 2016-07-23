@@ -87,7 +87,20 @@ var DataOperationMap = {
     	switch(DataLib.getType(of)){
     	
     	case "object" : 
-    		toReturn = of[getData(cont, configData.key)]
+    		
+    		key = getData(cont, configData.key)
+    		if(DataLib.getType(key) == "array"){
+    			arr = []
+    			$.each(key, function(i, key_){
+    				if(of[key_] != undefined){
+    					arr = arr.concat(of[key_])	
+    				}
+    			})
+    			toReturn = arr
+    		} else {
+    			toReturn = of[getData(cont, configData.key)]
+    	    }
+    		
     		break;
     	case "array" : 
     		arr = []
@@ -101,6 +114,7 @@ var DataOperationMap = {
     	return toReturn
     }
 }
+
 
 var checkCriteria = function(value, selectCriteria){
 	
