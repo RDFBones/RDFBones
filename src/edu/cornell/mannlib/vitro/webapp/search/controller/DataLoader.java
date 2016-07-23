@@ -56,12 +56,65 @@ public class DataLoader extends VitroAjaxController {
       result = this.performQuery(Query, inputParam1, uris1, literals1);
       break;
 
-    case "boneOrgans" :
-      String[] inputParam2 = { "boneDivision" };
-      String[] uris2 = {"boneOrgan", "type", "completenessState", "completeness"};
-      String[] literals2 = {"label", "typeLabel", "completenessLabel"};
-      result = this.performQuery(BoneOrganQuery, inputParam2, uris2, literals2);
+     /*
+      * Coherent Skeletal Division 
+      */
+      
+    case "coherentSkeletalDivisions":
+      
+      String[] inputParamCSD = { "skeletalInventory" };
+      String[] urisCSD = { "uri", "type" };
+      String[] literalsCSD = { "skeletalDivisionCount", "label" };
+      result = this.performQuery(CoherentSkeletalDivision, inputParamCSD, urisCSD, literalsCSD);
       break;
+      
+     /*
+      * Skeletal Division 
+      */
+    case "skeletalDivisions":
+    
+      String[] inputParamSD = { "skeletalInventory" };
+      String[] urisSD = { "uri", "type" };
+      String[] literalsSD = { "boneOrganCount", "label" };
+      result = this.performQuery(SkeletalDivision, inputParamSD, urisSD, literalsSD);
+      break;
+    
+     /*
+      * Bone Organs
+      */
+    case "singleBones" :
+      String[] inputParam101 = { "skeletalInventory" };
+      String[] uris101 = {"boneOrgan", "type", "completenessState", "completeness", "skeletalDivisionType"};
+      String[] literals101 = {"lable", "typeLabel", "completenessLabel"};
+      result = this.performQuery(singleBoneQuery1, inputParam101, uris101, literals101);
+      break;  
+      
+    case "boneOrgans":
+      
+      String[] inputParamBO = { "skeletalInventory" };
+      String[] urisBO = { "uri", "type" };
+      String[] literalsBO = { "completenessLabel", "label", "typeLabel" };
+      result = this.performQuery(BoneOrgan, inputParamBO, urisBO, literalsBO);
+      break;
+      
+    case "boneOrganOfSkeletalDivision" :
+      String[] inputParam2 = { "skeletalDivision" };
+      String[] uris2 = {"uri", "type", "completenessState", "completeness"};
+      String[] literals2 = {"label", "typeLabel", "completenessLabel"};
+      result = this.performQuery(BoneOrganOfSkeletalDivision, inputParam2, uris2, literals2);
+      break;    
+    
+      
+    /*
+    case "coherentSkeletalRegions" : 
+      
+      String[] inputCSR = { "boneDivision" };
+      String[] urisCSR = {"boneOrgan", "type", "completenessState", "completeness"};
+      String[] literalsCSR = {"label", "typeLabel", "completenessLabel"};
+      result = this.performQuery(BoneOrganQuery, inputCSR, urisCSR, literalsCSR);
+      break;   
+      */
+      
       
     case "existingBoneOrgan" :  
       String[] inputParam21 = { "skeletalInventory" };
@@ -77,6 +130,13 @@ public class DataLoader extends VitroAjaxController {
       result = this.performQuery(ExistingBoneOrgan1, inputParam211, uris211, literals211);
       break;  
      
+    case "existingCoherentSkeletalRegion" :  
+      String[] inputParam2111 = { "skeletalInventory" };
+      String[] uris2111 = {"uri", "type"};
+      String[] literals2111 = {"label", "typeLabel"};
+      result = this.performQuery(ExistingSkeletalRegions, inputParam2111, uris2111, literals2111);
+      break;  
+     
     case "subClasses" : 
       
       String[] inputParam3 = { "classUri"};
@@ -85,16 +145,10 @@ public class DataLoader extends VitroAjaxController {
       result = this.performQuery(subClassQuery, inputParam3, uris3, literals3);
       break; 
       
-    case "coherentBones":
-      String[] inputParam4 = { "skeletalInventory" };
-      String[] uris4 = { "boneDivision", "type" };
-      String[] literals4 = { "boneOrganCount", "label" };
-      result = this.performQuery(CoherentQuery, inputParam4, uris4, literals4);
-      break;
-
+    
     case "skeletalRegions":
       String[] inputParam411 = { "skeletalInventory" };
-      String[] uris411 = { "skeletalDivision", "type" };
+      String[] uris411 = { "skeletalRegion", "type" };
       String[] literals411 = { "coherentSkeletalDivisionCount", "label" };
       result = this.performQuery(SkeletalRegionQuery, inputParam411, uris411, literals411);
       break;  
@@ -152,13 +206,16 @@ public class DataLoader extends VitroAjaxController {
       result = this.performQuery(regionalPartsWithout, inputParam9, uris9, literals9);
       break;
      
+      
+     /*
      case "singleBones" :
        String[] inputParam10 = { "skeletalInventory", "inputType" };
        String[] uris10 = {"boneOrgan", "type", "completenessState", "completeness"};
        String[] literals10 = {"lable", "typeLabel", "completenessLabel"};
        result = this.performQuery(singleBoneQuery, inputParam10, uris10, literals10);
        break; 
-     
+     */
+       
      case "mostSpecificType" :
        String[] inputParam102 = { "uri" };
        String[] uris102 = {"object"};
@@ -166,12 +223,7 @@ public class DataLoader extends VitroAjaxController {
        result = this.performQuery(singleBoneQuery, inputParam102, uris102, literals102);
        break;   
        
-     case "singleBones1" :
-       String[] inputParam101 = { "skeletalInventory" };
-       String[] uris101 = {"boneOrgan", "type", "completenessState", "completeness", "skeletalDivisionType"};
-       String[] literals101 = {"lable", "typeLabel", "completenessLabel"};
-       result = this.performQuery(singleBoneQuery1, inputParam101, uris101, literals101);
-       break; 
+
        
       case "sytemicPartWithSubclass" :
         
@@ -295,7 +347,50 @@ public class DataLoader extends VitroAjaxController {
     resultSet = QueryUtils.getQueryResults(readyQuery, vreq);
     return QueryUtils.getQueryVars(resultSet, uris, literals);
   }
-
+  
+  private static String CoherentSkeletalDivision =
+      ""
+          + "SELECT ?uri ?label ?type (COUNT(?skeletalDivision) as ?skeletalDivisionCount) \n"
+          + " WHERE \n " 
+          + "   { "
+          + "    ?skeletalInventory     obo:BFO_0000051          ?completeness . \n"
+          + "    ?completeness          obo:IAO_0000136          ?boneSegment . \n"
+          + "    ?boneSegment           obo:regional_part_of     ?boneOrgan  . \n"
+          + "    ?boneOrgan             obo:systemic_part_of     ?skeletalDivision . \n"
+          + "    ?skeletalDivision      obo:systemic_part_of     ?uri . \n"
+          + "    ?uri                   rdfs:label               ?label . \n"
+          + "    ?uri                   vitro:mostSpecificType   ?type  .  \n"
+          + "   } GROUP BY ?uri ?label ?type \n";
+  
+  private static String SkeletalDivision =
+      ""
+          + "SELECT ?uri ?label ?type (COUNT(?boneOrgan) as ?boneOrganCount) \n"
+          + " WHERE \n " + "   { "
+          + "    ?skeletalInventory   obo:BFO_0000051          ?completeness . \n"
+          + "    ?completeness        obo:IAO_0000136          ?boneSegment . \n"
+          + "    ?boneSegment         obo:regional_part_of     ?boneOrgan  . \n"
+          + "    ?boneOrgan           obo:systemic_part_of     ?uri     . \n"
+          + "    ?uri                 rdfs:label               ?label   . \n"
+          + "    ?uri                 vitro:mostSpecificType   ?type    .  \n"
+          + "   } GROUP BY ?uri ?label ?type ";
+  
+  
+  private static String BoneOrgan =
+      ""
+          + "SELECT ?uri ?label ?type ?completenessLabel \n"
+          + " WHERE \n " 
+          + "   { "
+          + "    ?skeletalInventory       obo:BFO_0000051           ?completeness . \n"
+          + "    ?completeness            obo:IAO_0000136           ?boneSegment . \n"
+          + "    ?completeness            obo:OBI_0000999           ?completenessState . \n" 
+          + "    ?completenessState       rdfs:label                ?completenessLabel . \n"  
+          + "    ?boneSegment             obo:regional_part_of      ?uri  . \n"
+          + "    ?uri                     rdfs:label                ?label   . \n"
+          + "    ?uri                     vitro:mostSpecificType    ?type    .  \n"
+          + "    ?type                    rdfs:label                ?typeLabel . \n "   
+          + "   } ";
+  
+  
   private static String Query = "" + " SELECT ?object \n" + " WHERE \n "
       + "   {  \n"
       + "    ?subject    ?predicate   ?object . \n"
@@ -400,31 +495,24 @@ public class DataLoader extends VitroAjaxController {
           + "   } GROUP BY ?coherentSkeletalRegion  ?label ?type ?typeLabel \n";
   
   
-  private static String CoherentQuery =
-      ""
-          + "SELECT ?boneDivision ?label ?type (COUNT(?boneOrgan) as ?boneOrganCount) \n"
-          + " WHERE \n " + "   { "
-          + "    ?skeletalInventory obo:BFO_0000051  ?completeness . \n"
-          + "    ?completeness    obo:IAO_0000136       ?boneSegment . \n"
-          + "    ?boneSegment     obo:regional_part_of  ?boneOrgan  . \n"
-          + "    ?boneOrgan       obo:systemic_part_of  ?boneDivision  . \n"
-          + "    ?boneDivision    rdfs:label            ?label . \n"
-          + "    ?boneDivision    vitro:mostSpecificType   ?type .  \n"
-          + "   } GROUP BY ?boneDivision ?label ?type \n";
 
+
+
+  
+  
   private static String SkeletalRegionQuery =
       ""
-          + "SELECT ?skeletalDivision ?label ?type (COUNT(?coherentSkeletalDivision) as ?coherentSkeletalDivisionCount) \n"
-          + " WHERE \n " + "   { "
+          + "SELECT ?skeletalRegion ?label ?type (COUNT(?coherentSkeletalDivision) as ?coherentSkeletalDivisionCount) \n"
+          + " WHERE \n " 
+          + "   { "
           + "    ?skeletalInventory obo:BFO_0000051  ?completeness . \n"
           + "    ?completeness    obo:IAO_0000136       ?boneSegment . \n"
           + "    ?boneSegment     obo:regional_part_of  ?boneOrgan  . \n"
           + "    ?boneOrgan       obo:systemic_part_of  ?coherentSkeletalDivision  . \n"
-          + "    ?coherentSkeletalDivision  obo:systemic_part_of   ?skeletalDivision . \n "
-          + "    ?skeletalDivision    rdfs:label            ?label . \n"
-          + "    ?skeletalDivision    vitro:mostSpecificType   ?type .  \n"
-          + "   } GROUP BY ?skeletalDivision ?label ?type \n";
-  
+          + "    ?coherentSkeletalDivision  obo:systemic_part_of   ?skeletalRegion . \n "
+          + "    ?skeletalRegion    rdfs:label            ?label . \n"
+          + "    ?skeletalRegion    vitro:mostSpecificType   ?type .  \n"
+          + "   } GROUP BY ?skeletalRegion ?label ?type \n";
   
   private static String FilteredCoherentQuery =
       ""
@@ -439,19 +527,19 @@ public class DataLoader extends VitroAjaxController {
           + "    ?uri               obo:systemic_part_of    ?coherentSkeletalDivision . \n"
           + " }";
 
-  private static String BoneOrganQuery =
+  private static String BoneOrganOfSkeletalDivision =
       ""
-          + "SELECT ?boneOrgan ?label ?typeLabel ?type ?completeness ?completenessState ?completenessLabel \n"
+          + "SELECT ?uri ?label ?typeLabel ?type ?completeness ?completenessState ?completenessLabel \n"
           + " WHERE \n " 
           + "   { "
-          + "    ?boneOrgan       obo:systemic_part_of  ?boneDivision  . \n"
-          + "    ?boneSegment     obo:regional_part_of  ?boneOrgan  . \n"
-          + "    ?completeness    obo:IAO_0000136       ?boneSegment . \n"
-          + "    ?completeness    obo:OBI_0000999       ?completenessState . \n" 
-          + "    ?completenessState    rdfs:label       ?completenessLabel . \n"  
-          + "    ?boneOrgan       vitro:mostSpecificType ?type .  \n"
-          + "    ?boneOrgan       rdfs:label            ?label . \n " 
-          + "    ?type            rdfs:label            ?typeLabel . \n" 
+          + "    ?boneOrgan            obo:systemic_part_of      ?skeletalDivision  . \n"
+          + "    ?boneSegment          obo:regional_part_of      ?boneOrgan  . \n"
+          + "    ?completeness         obo:IAO_0000136           ?boneSegment . \n"
+          + "    ?completeness         obo:OBI_0000999           ?completenessState . \n" 
+          + "    ?completenessState    rdfs:label                ?completenessLabel . \n"  
+          + "    ?boneOrgan            vitro:mostSpecificType    ?type .  \n"
+          + "    ?boneOrgan            rdfs:label                ?label . \n " 
+          + "    ?type                 rdfs:label                ?typeLabel . \n" 
           + " } ";
   
 
@@ -484,6 +572,23 @@ public class DataLoader extends VitroAjaxController {
           + "    ?uri                   vitro:mostSpecificType    ?type . \n"
           + "    ?uri                   rdfs:label                ?label . \n " 
           + "    ?type                   rdfs:label                ?typeLabel . \n"  
+          + "    FILTER NOT EXISTS { ?uri     obo:systemic_part_of  ?boneDivision  } . \n"
+          + " } ";
+  
+  private static String ExistingSkeletalRegions =
+      ""
+          + "SELECT ?uri ?label ?type ?typeLabel  \n"
+          + " WHERE \n " 
+          + "   { "
+          + "    ?skeletalInventory     obo:BFO_0000051           ?completeness . \n "
+          + "    ?completeness          obo:OBI_0000999           ?comp2State . \n" 
+          + "    ?comp2State            rdfs:label                ?completenessLabel . \n"  
+          + "    ?completeness          obo:IAO_0000136           ?boneSegment . \n"
+          + "    ?boneSegment           obo:regional_part_of      ?boneOrgan . \n "
+          + "    ?boneOrgan             obo:systemic_part_of      ?uri  . \n"
+          + "    ?uri                   vitro:mostSpecificType    ?type . \n"
+          + "    ?uri                   rdfs:label                ?label . \n " 
+          + "    ?type                  rdfs:label               ?typeLabel . \n"  
           + "    FILTER NOT EXISTS { ?uri     obo:systemic_part_of  ?boneDivision  } . \n"
           + " } ";
   
