@@ -20,6 +20,7 @@ coherentVertebra = {
 		type : sw.container,
 		localData : [ 
 		coherentSkeletalSubdivisionCEF, 
+		coherentSkeletalSubdivisionCEFUri,
 		{
 			type : sw.constant,
 			value : "http://purl.obolibrary.org/obo/FMA_13478",

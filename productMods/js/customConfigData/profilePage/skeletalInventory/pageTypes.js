@@ -10,11 +10,24 @@ symmetricSkeletalDivisionCEF = {
 	key : "pageUri",
 }
 
+symmetricSkeletalDivisionCEFUri = {
+		type : sw.constant,
+		value : "symmetricSkeletalDivisionCEF",
+		key : "cefPageUri",
+	}
+
 coherentSkeletalSubdivisionCEF = {
 		type : sw.constant,
 		value : "coherentSkeletalSubdivisionCEF",
 		key : "pageUri",
 	}
+
+coherentSkeletalSubdivisionCEFUri = {
+	type : sw.constant,
+	value : "coherentSkeletalSubdivisionCEF",
+	key : "cefPageUri",
+}
+
 
 partlySymmetricBoneSegment = {
 	type : sw.constant,

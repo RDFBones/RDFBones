@@ -4,6 +4,7 @@ forearm = {
 	localData : [
 	
 	    symmetricSkeletalDivisionCEF ,
+	    symmetricSkeletalDivisionCEFUri ,
 	{
 		type : sw.constant,
 		value : "http://purl.obolibrary.org/obo/FMA_71199",

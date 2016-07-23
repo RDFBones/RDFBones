@@ -20,7 +20,9 @@ bonypelvis = {
 coherentBonyPelvis = {
 		
 		type : sw.container,
-		localData : [ coherentSkeletalSubdivisionCEF, 
+		localData : [ 
+		coherentSkeletalSubdivisionCEF, 
+		coherentSkeletalSubdivisionCEFUri,
 		{
 			type : sw.constant,
 			value : "http://purl.obolibrary.org/obo/FMA_16580",

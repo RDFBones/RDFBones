@@ -35,6 +35,7 @@ freelowerlimb = {
 		type : sw.container,
 		localData : [
 		      	   symmetricSkeletalDivisionCEF ,
+		      	 symmetricSkeletalDivisionCEFUri ,
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_24144",
@@ -58,7 +59,7 @@ tarsalbones = {
 		type : sw.container,
 		localData : [
 		      	   symmetricSkeletalDivisionCEF ,
-
+		      	   symmetricSkeletalDivisionCEFUri ,
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_71339",
@@ -83,8 +84,8 @@ metatarsalbones = {
 		uri : "",
 		type : sw.container,
 		localData : [
-		      	   symmetricSkeletalDivisionCEF ,
-
+		      	 symmetricSkeletalDivisionCEF ,
+		      	 symmetricSkeletalDivisionCEFUri ,
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_71340",

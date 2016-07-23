@@ -17,7 +17,8 @@ skull = {
 skullDivision = {
 		type : sw.container,
 		localData : [
-		        coherentSkeletalSubdivisionCEF,  
+		        coherentSkeletalSubdivisionCEF, 
+		        coherentSkeletalSubdivisionCEFUri,
 				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_46565",
@@ -34,10 +35,6 @@ skullDivision = {
 					type : sw.constant,
 					value : [FMA + "53672", FMA+ "53673"],
 					key : "classSelection"
-				},{
-					type : sw.constant,
-					value : "partlySymmetricBoneDivision",
-					key : "cefPageUri",
 				}],
 		elements : [ skeletalDivisionData]
 	}	
