@@ -147,25 +147,15 @@ skeletalDivisionData = {
 		},{
 			type : sw.constant,
 			varName : "pageUri",
-			value : "boneDivision",
-		}, {
+			value : "skeletalDivision",
+		},{
 			type : sw.local,
-			key : "cefPageUri",
-		}, {
-			type : sw.local,
-			key : "skeletalRegion",
-		}, {
-			type : sw.local,
-			key : "boneDivision",
+			key : "uri",
 			varName : "individual",
 		}, {
 			type : sw.local,
 			key : "type",
-			varName : "existingBoneDivisionType",
-		}, {
-			type : sw.local,
-			key : "boneUri",
-			varName : "classUri",
+			varName : "skeletalRegionType",
 		} ],
 		mapping : "pageLoader",
 	}, {	
