@@ -1,26 +1,20 @@
-skeletalDivisionData = {
+coherentSkeletalDivisionData = {
 		
 	type : sw.dataField,
 	textValue : {
 		type : sw.local,
-		key : "boneLabel"
+		key : "typeLabel"
 	},
 	linkDataInputs : [ {
 		type : sw.local,
-		key : "boneUri",
-		varName : "classUri",
+		key : "coherentSkeletalDivisionType",
 	}, {
 		type : sw.global,
 		key : "individual",
 	}, {
-		type : sw.local,
+		type : sw.constant,
 		key : "pageUri",
-	}, {
-		type : sw.local,
-		key : "queryType",
-	}, {
-		type : sw.local,
-		key : "skeletalRegion",
+		value : "coherentSkeletalDivisionCEF"
 	}, {
 		type : sw.local,
 		key : "simpleQuery",
@@ -30,12 +24,14 @@ skeletalDivisionData = {
 		type : sw.field,
 		of : {
 			type : sw.global,
-			key : "sortedSkeletalRegions"
+			key : "coherentSkeletalRegions"
 		},
 		key : {
 			type : sw.local,
-			key : "skeletalRegion",
+			key : "coherentSkeletalDivisionType",
 		}
+		//Later on more compact definition
+		//coherentSkeletalRegions[local.coherentSkeletalDivisionType]
 	},
 	dataFields : [ {
 		type : sw.literalField,
@@ -46,10 +42,10 @@ skeletalDivisionData = {
 		}
 	}, {
 		type : sw.literalFieldMiddle,
-		title : "Number of Coherent Skeletal Division",
+		title : "Number Skeletal Divisions",
 		value : {
 			type : sw.local,
-			key : "coherentSkeletalDivisionCount",
+			key : "skeletalDivisionCount",
 		}
 	}, {
 		type : sw.editButton,
@@ -57,26 +53,18 @@ skeletalDivisionData = {
 			type : sw.global,
 			key : "individual",
 			varName : "skeletalInventory",
-		},{
+		}, {
 			type : sw.constant,
 			varName : "pageUri",
-			value : "boneDivision",
+			value : "coherentSkeletalDivision",
 		}, {
 			type : sw.local,
-			key : "cefPageUri",
-		}, {
-			type : sw.local,
-			key : "boneDivision",
+			key : "uri",
 			varName : "individual",
 		}, {
 			type : sw.local,
-			key : "type",
-			varName : "existingBoneDivisionType",
-		}, {
-			type : sw.local,
-			key : "boneUri",
-			varName : "classUri",
-		} ],
+			value : "type",
+		}],
 		mapping : "pageLoader",
 	}, {	
 		type : sw.deleteButton,
@@ -94,115 +82,24 @@ skeletalDivisionData = {
 	} ]
 }
 
-skeletalSubdivisionData = {
-		
-	type : sw.dataField,
-	textValue : {
-		type : sw.local,
-		key : "boneLabel"
-	},
-	linkDataInputs : [ {
-		type : sw.local,
-		key : "boneUri",
-		varName : "classUri",
-	}, {
-		type : sw.global,
-		key : "individual",
-	}, {
-		type : sw.local,
-		key : "pageUri",
-	}, {
-		type : sw.local,
-		key : "queryType",
-	}],
-	mapping : "pageLoader",
-	dataToDisplay : {
-		type : sw.selectOperationResult,
-		dataToSelect : {
-			type : sw.global,
-			key : "skeletalSubdivision",
-		},
-		selectField : "type",
-		selectCriteria : {
-			type : sw.local,
-			key : "classSelection",
-		}
-	},
-	dataFields : [ {
-		type : sw.literalField,
-		title : "Label",
-		value : {
-			type : sw.local,
-			key : "label",
-		}
-	}, {
-		type : sw.literalFieldMiddle,
-		title : "Number of Coherent Skeletal Regions",
-		value : {
-			type : sw.local,
-			key : "coherentSkeletalRegionCount",
-			//key : "skeletalSubdivision",
 
-		}
-	}, {
-		type : sw.editButton,
-		linkDataInputs : [ {
-			type : sw.global,
-			key : "individual",
-			varName : "skeletalInventory",
-		},{
-			type : sw.constant,
-			varName : "pageUri",
-			value : "skeletalSubdivision",
-		}, {
-			type : sw.local,
-			key : "cefPageUri",
-		}, {
-			type : sw.local,
-			key : "skeletalSubdivision",
-			varName : "individual",
-		}, {
-			type : sw.local,
-			key : "type",
-			varName : "existingBoneDivisionType",
-		}, {
-			type : sw.local,
-			key : "boneUri",
-			varName : "classUri",
-		} ],
-		mapping : "pageLoader",
-	},
-	/*{	
-		type : sw.deleteButton,
-		linkDataInputs : [
-		    {
-				type : sw.local,
-				key : "boneDivision",
-			}, {
-				type : sw.constant,
-				value : "deleteDivisionFromOrgans",
-				key : "operation",
-			}
-		],
-		mapping : "delete",
-	} */ ]
-}
-
-coherentData = {
+skeletalDivisionData = {
 
 	type : sw.dataField,
 	textValue : {
 		type : sw.local,
-		key : "boneLabel"
+		key : "typeLabel"
 	},
 	linkDataInputs : [ {
 		type : sw.local,
-		key : "boneUri",
-		varName : "classUri",
+		key : "skeletalDivisionType",
 	}, {
 		type : sw.global,
 		key : "individual",
 	}, {
+		//The the CEF is defined by the container because 
+		//there is two different types of cases. The symmetric and the
+		//coherentSkeletalSubdivision
 		type : sw.local,
 		key : "pageUri",
 	}, {
@@ -217,13 +114,12 @@ coherentData = {
 	}],
 	mapping : "pageLoader",
 	dataToDisplay : {
-		type : sw.selectOperationResult,
-		dataToSelect : {
+		type : sw.field,
+		of : {
 			type : sw.global,
-			key : "coherentSkeletalRegions",
+			key : "skeletalDivisions",
 		},
-		selectField : "type",
-		selectCriteria : {
+		key : {
 			type : sw.local,
 			key : "classSelection",
 		}
@@ -293,7 +189,7 @@ singleBones = {
 		type : sw.dataField,
 		textValue : {
 			type : sw.local,
-			key : "boneLabel"
+			key : "typeLabel"
 		},
 		linkDataInputs : [ {
 			type : sw.local,
@@ -314,13 +210,13 @@ singleBones = {
 		}, {
 			type : sw.local,
 			key : "pageUri",
-		}, ],
+		}],
 		mapping : "pageLoader",
 		dataToDisplay : {
 			type : sw.field,
 			of : {
 				type : sw.global,
-				key : "sortedSingleBones"
+				key : "singleBones"
 			},
 			key : {
 				type : sw.local,
