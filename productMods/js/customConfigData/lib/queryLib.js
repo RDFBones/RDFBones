@@ -161,6 +161,12 @@ existingBoneOrgans = {
 	sortBy : "type"
 }
 
+existingCoherentSkeletalRegions = {
+		dataOperation : "query",
+		queryType : "existingCoherentSkeletalRegion",
+		parameters : [skeletalInventory],
+		sortBy : "type"
+	}
 
 systemicParts = {
 		
@@ -278,7 +284,16 @@ partlySymmetricLoad = {
 }
 
 
-
+systemicParts2 = {
+		
+	dataOperation : "query",
+	queryType : "systemicParts",
+	parameters : [{
+		value : "this.uri",
+		name : "skeletalRegion",
+	}],
+	systemicParts : systemicPartsWithCompletenessSorted,
+}
 
 consitutionalSubClass = {
 	
