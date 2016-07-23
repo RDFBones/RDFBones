@@ -18,22 +18,24 @@ SkeletalDivision.prototype = {
 		UI.assemble(this.container, [ 
 		      UI.inlineCont("margin10"),                     
 		      	this.titleContainer, 
-			      	this.classLabel,
-			      	this.separator,
-			      	this.existingLabel, //Here we do not have button container
+		      		this.middleContainer, 
+		      			this.classLabel,
+		      			this.separator,
+		      			this.existingLabel, //Here we do not have button container
 			    this.buttonContainer,  
 					this.complete.container,
 			  this.subContainer],
-			  [ 0, 1, 2, 2, 2, 1, 2, 0])
+			  [ 0, 1, 2, 3, 3, 3, 1, 2, 0])
 	},	
 		
 	initUI : function(){
 		
 		this.container = html.div()
-		this.titleContainer = html.div("titleContainer1")
-			this.classLabel = html.div().text(this.descriptor.label)
-			this.separator = html.div("separator")
-			this.existingLabel = html.div()
+		this.titleContainer = html.div("")
+			this.middleContainer = html.div("addFieldContainer")
+				this.classLabel = html.div("inline").text(this.descriptor.label)
+				this.separator = html.div("separator")
+				this.existingLabel = html.div("inline")
 	
 		this.buttonContainer = html.div("inlineContainer")
 			this.complete = new CheckBoxText("complete", this, "addAll", null)
