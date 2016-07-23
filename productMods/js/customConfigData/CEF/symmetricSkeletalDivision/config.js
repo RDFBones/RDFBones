@@ -29,10 +29,15 @@ pageData.skeletalRegions = {
 		//This in this the coherent skeletal division
 		uri : pageData.existingSkeletalRegion,
 		label : labelQuery,
-		systemicParts : systemicPartOfSkeletalRegion,
+		type : typeQuery,
+		systemicParts11 : systemicPartsWithCompletenessSorted,
 	},
 	existingToSelect : existingBoneOrgans
 }
+
+
+pageData.existingBoneOrgans = existingBoneOrgans
+
 
 /*
  * Setting the existing variable into the ontology data tree
@@ -40,10 +45,28 @@ pageData.skeletalRegions = {
 
 customPageDataOperations.push({
 	
+	object : "pageData.skeletalRegions.subClasses1.systemicParts.existingSystemicPart",
+	operation : {
+		dataOperation : "selection",
+		object : "pageData.skeletalRegions.existing.systemicParts11",
+		by : "this.uri"
+	}
+})
+
+customPageDataOperations.push({
+	object : "pageData.skeletalRegions.subClasses1.systemicParts.subClasses.existingSystemicPart",
+	operation : {
+		dataOperation : "selection",
+		object : "pageData.skeletalRegions.existing.systemicParts11",
+		by : "this.uri",
+	}
+})
+
+customPageDataOperations.push({
 	object : "pageData.skeletalRegions.subClasses1.systemicParts.existingToSelect",
 	operation : {
 		dataOperation : "selection",
-		object : "pageData.skeletalRegions.existing.systemicParts",
+		object : "pageData.existingBoneOrgans",
 		by : "this.uri"
 	}
 })
@@ -52,7 +75,7 @@ customPageDataOperations.push({
 	object : "pageData.skeletalRegions.subClasses1.systemicParts.subClasses.existingToSelect",
 	operation : {
 		dataOperation : "selection",
-		object : "pageData.skeletalRegions.existing.systemicParts",
+		object : "pageData.existingBoneOrgans",
 		by : "this.uri"
 	}
 })

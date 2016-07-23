@@ -33,26 +33,28 @@ CoherentSkeletalSubdivisionSelector.prototype = {
 	},
 	
 	init : function(){
-		
-			if(pageData.skeletalRegions.existing.uri != undefined){
+
+		this.initUI()
+		if(pageData.skeletalRegions.existing.uri != undefined){
 			
 			//We add the Coherent Skeletal Region immediately
 			//We extend the data structure of it with the existing
 			this.selector.hide()
 			this.addButton.container.hide()
 			this.dataToStore = new Object()
-			var descriptor = this.getDescriptor(pageData.skeletalRegions.existing.type)
-			
-
+		
 			//This will be checked in the CoherentSkeletalRegion object
-			descriptor.existing = new Object()
-			descriptor.existing.uri = pageData.skeletalRegions.existing.uri
 			
+			descriptorToPass = this.getDescriptor(pageData.skeletalRegions.existing.type)
+			
+			descriptorToPass.existing = new Object()
+			descriptorToPass.existing.uri = pageData.skeletalRegions.existing.uri
+			descriptorToPass.existing.label = pageData.skeletalRegions.existing.label
+
 			//$.extend(descriptor, pageData.skeletalRegions.existing)
-			this.skeletalRegionSelector = new SkeletalDivision(this, this.dataToStore, descriptor)
+			this.skeletalRegionSelector = new SkeletalDivision(this, this.dataToStore, descriptorToPass)
 			this.subContainer.append(this.skeletalRegionSelector.container)
 		}
-		this.initUI()
 		this.assemble()
 	},
 	
@@ -84,12 +86,15 @@ CoherentSkeletalSubdivisionSelector.prototype = {
 		console.log(this.dataToStore)
 		var thereIsNotAdded = false
 		var thereIsAdded = false
-
 		if(this.skeletalRegionSelector.notAdded){
 			this.saveButton.disable()
 		} else {
 			this.saveButton.enable()
 		}		
+	},
+	
+	getName : function(){
+		return "coherentSkeletalSubdivisionCEF"
 	},
 	
 	saveRoutine : function(){
@@ -116,16 +121,14 @@ CoherentSkeletalSubdivisionSelector.prototype = {
 
 				var urlObject = {
 					pageUri : "skeletalDivision",
+					cefPageUri : this.getName(),
 					individual : msg.object.boneDivision.uri,
 					skeletalDivision : msg.object.boneDivision.uri,
+					skeletalDivisionType : pageData.skeletalDivisionType, 
 					skeletalInventory : pageData.individual,
 					existingBoneDivisionType : pageData.existingBoneDivisionType,
 					classUri : pageData.classUri,
 					skeletalRegion : pageData.skeletalRegions.uri
-				}
-
-				if (pageData.pageUri != "phalanges") {
-					urlObject.cefPageUri = "phalanges"
 				}
 
 				window.location = baseUrl
@@ -160,8 +163,12 @@ $.extend(SymmetricSkeletalDivisionSelector.prototype, {
 	},
 	
 	getSelector : function(){
-		return UI.classSelector(this.descriptor.subClasses1)
+		return UI.classSelector(pageData.skeletalRegions.subClasses1)
 	},
+	
+	getName : function(){
+		return "symmetricSkeletalDivisionCEF"
+	}
 	
 })
 

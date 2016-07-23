@@ -106,31 +106,33 @@ $.extend(SystemicPartAdder.prototype, {
 	addExisting : function(){
 		
 		arr = []
-		$.each(this.dataSet.existingSystemicPart, (function(key, sysPart){
-			this.cnt++
-			arr.push(new ExistingBoneOrganField(this, sysPart, null).container)
-		}).bind(this))
 		
-		
-		$.each(this.dataSet.subClasses, (function(i, subClass){
-			$.each(subClass.existingSystemicPart, (function(key, sysPart){
-				this.addedSubClasses.push(sysPart.type)
+		if(this.dataSet.existingSystemicPart != undefined){
+			$.each(this.dataSet.existingSystemicPart, (function(key, sysPart){
 				this.cnt++
 				arr.push(new ExistingBoneOrganField(this, sysPart, null).container)
 			}).bind(this))
-		}).bind(this))
-		
-		this.selectedContainer.append(arr)
-		
-		if(arr.length > 0 && this.singleSelect){
-			this.selectorContainer.hide()
+			
+			if(this.dataSet.subClasses != undefined){
+				
+				$.each(this.dataSet.subClasses, (function(i, subClass){
+					$.each(subClass.existingSystemicPart, (function(key, sysPart){
+						this.addedSubClasses.push(sysPart.type)
+						this.cnt++
+						arr.push(new ExistingBoneOrganField(this, sysPart, null).container)
+					}).bind(this))
+				}).bind(this))
+			}
+					
+			this.selectedContainer.append(arr)
+			
+			if(arr.length > 0 && this.singleSelect){
+				this.selectorContainer.hide()
+			}	
 		}
-	},
-	
-	addSubExisting : function(){
 
 	},
-	
+
 	assemble : function(){
 		UI.assemble(this.container, [
          			this.selectorContainer,
@@ -355,6 +357,8 @@ $.extend(SystemicPartAdder.prototype, {
 			}).bind(this))
 		}
 		var existing = []
+		
+		
 		$.each(this.dataSet.existingToSelect, (function(i, ex){
 			existing.push(new ExistingBoneOrgan(this, ex).container)
 		}).bind(this))
