@@ -79,9 +79,6 @@
 	border-top : 1px solid;
 }
 
-.inlineContainer {
-	display : inline-block;
-}
 
 .saveContainer {
 	display: flex;

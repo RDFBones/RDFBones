@@ -43,5 +43,8 @@
 }
 
 .titleContainer1 {
-	border-bottom : 1px solid;
+	display: flex;
+	align-items: center;
+	height: 36px;
+	//border-bottom : 1px solid;
 }

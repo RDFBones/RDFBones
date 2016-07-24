@@ -177,10 +177,36 @@ select {
 	display : table;	
 }
 
-.inlineContainer {
-	display: inline-block;
+.iInlineContainer {
+   display: inline-block;
 }
+
+.iInlineContainer >  * {
+   display: inline-block;
+}
+
 
 .inlineContainer >  * {
    display: inline-block;
+}
+
+.separator {
+	display : inline-block;
+	margin : 0px 15px;
+	height : 22px;
+	width : 0px;
+	border : 1px solid;
+}
+
+.existingContainer {
+	padding : 5px;
+	margin : 5px 10px; 
+	display : table;
+	background-color : #afb3b3;
+	border-radius : 5px;
+}
+
+.underLined {
+	padding : 3px;
+	border-bottom : 1px solid;	
 }
