@@ -61,7 +61,6 @@ BoneOrganField.prototype = {
 	}
 }
 
-
 AddedExistingBoneOrganField = function(systemicPartSelector, dataSet, dataToStore, existingEntry){
 	
 	this.existingEntry = existingEntry
@@ -69,40 +68,41 @@ AddedExistingBoneOrganField = function(systemicPartSelector, dataSet, dataToStor
 	BoneOrganField.call(this, systemicPartSelector, dataSet, dataToStore)
 }
 
+
 AddedExistingBoneOrganField.prototype = Object.create(BoneOrganField.prototype)
 
+$.extend(AddedExistingBoneOrganField.prototype, {
 
-AddedExistingBoneOrganField.prototype.deleteRoutine = function() {
+	deleteRoutine : function(){
 
-	DataLib.removeObjectFromArrayByKey(this.dataToStore, "uri",
-			this.dataSet.uri)
-	//The set the data cache of the systemicpartselector object
-	this.systemicPartSelector.reset(this.dataObject.mst, this, this.existingEntry)
-	this.container.remove()	
-}
+		DataLib.removeObjectFromArrayByKey(this.dataToStore, "uri",
+				this.dataSet.uri)
+		//The set the data cache of the systemicpartselector object
+		this.systemicPartSelector.reset(this.dataObject.mst, this, this.existingEntry)
+		this.container.remove()	
+	},
 
-AddedExistingBoneOrganField.prototype.setDataObject = function(dataSet, dataToStore) {
+	setDataObject : function(dataSet, dataToStore) {
 	
-	this.dataSet = dataSet
-	this.dataToStore = dataToStore
-	this.dataObject = new Object()
-	this.dataObject.uri = dataSet.uri
-	this.dataObject.label = dataSet.label
-	this.dataObject.mst = dataSet.mst
-	this.dataObject.type = "existing"
-	dataToStore.push(this.dataObject)
-}
+		this.dataSet = dataSet
+		this.dataToStore = dataToStore
+		this.dataObject = new Object()
+		this.dataObject.uri = dataSet.uri
+		this.dataObject.label = dataSet.label
+		this.dataObject.mst = dataSet.mst
+		this.dataObject.type = "existing"
+		dataToStore.push(this.dataObject)
+	},
 
-
-AddedExistingBoneOrganField.prototype.getCompletenessSelector = function(){
-	var obj = [{
-		label : completenessSet.getObjectByKey("uri", this.dataSet.comp2State).label,
-		uri : "doesNotMatter",
-	}]
-	return new DataSetterSelectorField(obj, null, "uri")
-}
-
-
+	getCompletenessSelector : function(){
+		var obj = [{
+			label : completenessSet.getObjectByKey("uri", this.dataSet.comp2State).label,
+			uri : "doesNotMatter",
+		}]
+		return new DataSetterSelectorField(obj, null, "uri")
+	}
+})
+	
 var ExistingBoneOrganField = function(systemicPartSelector, dataSet,
 		dataToStore) {
 
@@ -117,18 +117,13 @@ ExistingBoneOrganField.prototype.setDataObject = function(dataSet, dataToStore, 
 	//We do not set anything because the data is already there
 }
 
-AddedExistingCoherentSkeletalDivision = function(dataSet){
+
+AddedExistingCoherentSkeletalDivison = function(deleleteRoutione, dataSet){
 	
-	this.coherentSkeletalRegion = coherentSkeletalRegion
-	this.dataSet = dataSet
-}
-
-
-AddedExistingCoherentSkeletalDivision.prototype = {
-		
-	remove : function(){
-		
-		this.coherentSkeletalRegion.removeExisting(this.dataSet)		
-	}
+	
+	return html.div("inlineContainer")
+		.append(UI.listPoint())
+		.append(html.div("classNameContainer").text(dataSet.label))
+		.append(new Button("del", deleleteRoutione).container)
 }
 

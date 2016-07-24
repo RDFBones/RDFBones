@@ -5,32 +5,32 @@ var CoherentSkeletalDivision = function() {
 	this.init()
 }
 
-CoherentSkeletalDivision.prototype =  {
+CoherentSkeletalDivision.prototype = {
 
 	assemble : function() {
 
 		UI.assemble(this.container, [ 
-		      UI.inlineCont("margin10"),                     
+		      UI.inlineCont("margin3"),                     
 		      	this.titleContainer, 
 			      	this.classLabel,
 			      	this.separator,
 			      	this.existingLabel, 
-			     this.buttonContainer, 
-					this.complete.container,
-				 this.systemicPartsContainer,
-				 this.saveContainer,
+			  this.buttonContainer, 
+				this.complete.container,
+			   this.systemicPartsContainer,
+			   this.saveContainer,
 				 	this.saveButton.container,
 				 	this.cancelButton.container,
-			 ], [ 0, 1, 2, 2, 2, 1, 2, 0, 0, 1, 1])
+			 ], [ 0, 1, 2, 2, 2, 0, 1, 0, 0, 1, 1])
 	},	
 
 	initUI : function(){
 		
 		this.container = html.div()
 		this.titleContainer = html.div("titleContainer1")
-			this.classLabel = html.div().text(this.descriptor.label)
-			this.separator = html.div("separator")
-			this.existingLabel = html.div()
+			this.classLabel = html.div("inline").text(this.descriptor.label)
+			this.separator = html.div("separator").hide()
+			this.existingLabel = html.div("inline")
 		
 		this.buttonContainer = html.div("inlineContainer")
 			this.complete = new CheckBoxText("complete", this, "addAll", null)
@@ -54,10 +54,11 @@ CoherentSkeletalDivision.prototype =  {
 		this.dataToStore.coherentSkeletalDivision = []
 		
 		if(this.descriptor.existing.uri != undefined){
-			this.existingLabel.text(pageData.existingSkeletalRegion)
+			this.separator.css("display", "inline-block")
+			this.existingLabel.text(this.descriptor.existing.label)
 			this.buttonContainer.hide()
 			this.dataToStore.type = "existing",
-			this.dataToStore.existing.uri = this.descriptor.existing.uri
+			this.dataToStore.uri = this.descriptor.existing.uri
 		} else {
 			this.dataToStore.type = "new"
 			this.dataToStore.uri = this.descriptor.uri
@@ -66,9 +67,11 @@ CoherentSkeletalDivision.prototype =  {
 		
 		this.systemicPartSelectors = []
 		//We add anyway the systemic parts
+		console.log(this.dataToStore)
 		$.each(this.descriptor.systemicParts1, (function(i, systemicPart) {
+			
 			this.systemicPartSelectors.push(new CoherentSkeletalSubdivision(
-							this, this.dataToStore.coherentSkeletalDivision, systemicPart))
+							this, this.dataToStore, systemicPart))
 		}).bind(this))
 		
 		arr = []
@@ -82,6 +85,20 @@ CoherentSkeletalDivision.prototype =  {
 	
 	saveRoutine : function() {
 		
+		
+		/*
+		 * Remove the CoherentSkeletalREIGON
+		 */
+		arrToRemove = []
+		$.each(this.dataToStore.coherentSkeletalDivision, function(i, value){
+			if(typeof value.boneOrgan != "undefined" && value.boneOrgan.length == 0){
+				arrToRemove.push(value)
+			}
+		})
+		$.each(arrToRemove, (function(i, value){
+			this.dataToStore.coherentSkeletalDivision.removeElement(value)	
+		}).bind(this))
+		
 		var toSend = {
 			operation : "addSkeletalRegion",
 			individual : pageData.individual,
@@ -89,7 +106,8 @@ CoherentSkeletalDivision.prototype =  {
 		}
 		console.log(toSend)
 		PopUpController.init()
-
+		
+		
 		$.ajax({
 			type : 'POST',
 			context : this,

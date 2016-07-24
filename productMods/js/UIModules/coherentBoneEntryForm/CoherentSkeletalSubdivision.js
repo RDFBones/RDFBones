@@ -15,32 +15,31 @@ CoherentSkeletalSubdivision.prototype = {
 		assemble : function() {
 
 			UI.assemble(this.container, [ 
-			      UI.inlineCont("margin10"),                     
-			      	this.titleContainer, 
-				      	this.classLabel,
-				      	this.separator,
-				      	this.existingLabel, 
-				     this.buttonContainer, 
-						this.addNewButton.container,
-						this.addExisting.container, 
-						this.complete.container,
-					this.selectedExistingContainer,
+			     this.titleContainer, 
+				      this.classLabel,
+				      this.separator,
+				      this.existingLabel, 
+			     this.buttonContainer, 
+					this.addNewButton.container,
+					this.addExisting.container, 
+					this.complete.container,
+				this.selectedExistingContainer,
 				this.subContainer,
      			this.existingContainer,
  			 		this.existingTitle,
  			 		this.existingBones,
-				], [ 0, 1, 2, 2, 2, 1, 2, 2, 2, 1, 0, 0, 1, 1])
+				], [ 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1])
 		},	
 
 		initUI : function(){
 			
 			this.container = html.div()
-			this.titleContainer = html.div("titleContainer1")
-				this.classLabel = html.div().text(this.descriptor.label)
-				this.separator = html.div("separator")
-				this.existingLabel = html.div()
+			this.titleContainer = html.div("iInlineContainer")
+				this.classLabel = html.div("inline").text(this.descriptor.label)
+				this.separator = html.div("separator inline").hide()
+				this.existingLabel = html.div("inline")
 			
-			this.buttonContainer = html.div("inlineContainer")
+			this.buttonContainer = html.div("iInlineContainer")
 				this.addNewButton = new Button("add", (this.addNew).bind(this));
 				this.addExisting = new Button("list",
 						(this.selectExisting).bind(this))
@@ -50,23 +49,19 @@ CoherentSkeletalSubdivision.prototype = {
 			this.selectedExistingContainer = html.div()
 			this.subContainer = html.div("subContainer")
 
-			this.existingContainer = html.div("margin10").hide()
-				this.existingTitle = html.div("inline").text("Existing Bone Organs")
+			this.existingContainer = html.div("existingContainer").hide()
+				this.existingTitle = html.div("underLined").text("Existing " + this.descriptor.label + "s")
 				this.existingBones = html.div("subContainer")
 		},
 		
 		init : function(){
 			
 			this.initUI()
-			
 			if(this.descriptor.existing != undefined && this.descriptor.existing.length > 0){
-			
 				this.buttonContainer.hide()
-				this.existingLabel.text(this.descriptor.existing.label)
-			
+				this.separator.css("display", "inline-block")
+				this.existingLabel.text(this.descriptor.existing[0].label)
 			} else {
-				
-
 				if(this.descriptor.existingToSelect.length == 0){
 					this.addExisting.hide()
 					this.addNew()
@@ -80,13 +75,12 @@ CoherentSkeletalSubdivision.prototype = {
 		
 		addNew : function(){
 
-			
 			this.dataToStore = new Object()
 			this.dataToStore.uri = this.descriptor.uri
-			this.dataToStore.labe = this.descriptor.label
+			this.dataToStore.label = this.descriptor.label
 			this.dataToStore.type = "new"
 			
-			this.parentData.push(this.dataToStore)
+			this.parentData.coherentSkeletalDivision.push(this.dataToStore)
 			this.dataToStore.boneOrgan = []
 			
 			this.systemicPartSelectors = []
@@ -108,13 +102,11 @@ CoherentSkeletalSubdivision.prototype = {
 		
 		initExistingToAdd : function(){
 
-			/*
 			var existing = []
 			$.each(this.descriptor.existingToSelect, (function(i, ex){
-				existing.push(new CoherentSkeletalRegion(this, ex).container)
+				existing.push(new existingSkeletalDivision(this, ex))
 			}).bind(this))
 			this.existingBones.append(existing)
-			*/
 		},
 		
 		selectExisting : function(){
@@ -125,12 +117,22 @@ CoherentSkeletalSubdivision.prototype = {
 		addExistingSystemicPart : function(dataSet){
 		
 			dataSet.type = "existing"
-			this.parentData.push(dataSet)
+			console.log(dataSet)
+			this.parentData.coherentSkeletalDivision.push(dataSet)
 			this.addNewButton.hide()
 			this.addExisting.hide()
 			this.buttonContainer.hide()
-			this.selectedExistingContainer.append(
-					new AddedExistingCoherentSkeletalDivison(this, dataSet).container)
+			this.selectedExistingContainer
+				.append(new AddedExistingCoherentSkeletalDivison(
+							(this.resetExistingEntry).bind(this), dataSet))
+			
+			this.notAdded = false
+			this.existingContainer.hide()
+			this.parent.refresh()
+		},
+		
+		closeExisting : function(){
+			this.existingContainer.hide()
 		},
 		
 		removeExisting : function(dataSet){
@@ -139,6 +141,20 @@ CoherentSkeletalSubdivision.prototype = {
 			this.addExisting.show()
 			this.buttonContainer.show()
 			this.dataToStore.removeElement(dataSet)
+		},
+		
+		//Deleting the added systemic part
+		reset : function(){
+			this.selectedExistingContainer.empty()
+			this.list.show()
+		},
+		
+		resetExistingEntry : function(dataSet){
+
+			this.parentData.coherentSkeletalDivision.shift()
+			this.selectedExistingContainer.empty()
+			this.buttonContainer.show()
+			this.addExisting.show()
 		},
 		
 		refresh : function(){
@@ -164,4 +180,23 @@ CoherentSkeletalSubdivision.prototype = {
 			}).bind(this))
 			this.parent.refresh()
 		}
+}
+
+existingSkeletalDivision = function(coherentSkeletalSubdivision, data){
+	
+	this.coherentSkeletalSubdivision = coherentSkeletalSubdivision
+	this.data = data
+	this.container = html.div("inlineContainer")
+	return this.container
+				.append(html.div("margin5").text(data.label))
+				.append(new Button("add", (this.add).bind(this)).container)
+}
+
+existingSkeletalDivision.prototype = {
+	
+	add : function(){
+		//Here there is no check
+		this.coherentSkeletalSubdivision.addExistingSystemicPart(this.data)
+		this.coherentSkeletalSubdivision.closeExisting(this.data)
+	}	
 }
