@@ -29,7 +29,11 @@ pectoralGridle = {
 singeShoulderGirdle = {
 		type : sw.container,
 		localData : [
-		        {
+		        {		        	
+		        	type : sw.constant,
+		        	key : "skeletalDivisionClass",
+		        	value : [FMA + "24141"]
+		        }, {
 		        	type : sw.constant,
 		        	value : "singleShoulderGirdle",
 		        	key : "pageUri",

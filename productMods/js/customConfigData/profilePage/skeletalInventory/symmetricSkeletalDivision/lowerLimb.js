@@ -30,11 +30,11 @@ phalangesOfFoot = {
 	}
 
 
-
+/*
 freelowerlimb = {
 		type : sw.container,
 		localData : [
-		      	   symmetricSkeletalDivisionCEF ,
+		      	 symmetricSkeletalDivisionCEF ,
 		      	 symmetricSkeletalDivisionCEFUri ,
 				{
 					type : sw.constant,
@@ -53,7 +53,7 @@ freelowerlimb = {
 				}],
 		elements : [ skeletalDivisionData]
 	}
-
+*/
 
 tarsalbones = {
 		type : sw.container,
@@ -119,7 +119,10 @@ singleLowerLimb = {
 		        }, {
 		        	type : sw.constant,
 		        	key : "skeletalDivisionClass",
-		        	value : FMA + "7184",
+		        	value : [	FMA + "7184",
+		        	         	FMA + "71340",
+		        	         	FMA + "71339",
+		        	         	FMA + "78512"]
 		        },{
 					type : sw.constant,
 					value : "Single Bone Organs of Lower Limb",
@@ -133,5 +136,5 @@ singleLowerLimb = {
 lowerLimbTab = {
 	type : sw.tab,
 	tabTitle : "Lower Limb",
-	elements : [phalangesOfFoot, freelowerlimb, tarsalbones, metatarsalbones, singleLowerLimb]
+	elements : [phalangesOfFoot, tarsalbones, metatarsalbones, singleLowerLimb]
 }
