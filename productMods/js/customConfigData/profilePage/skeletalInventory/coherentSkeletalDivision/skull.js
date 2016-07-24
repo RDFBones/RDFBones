@@ -54,7 +54,7 @@ singleSkull = {
 	        }, {
 	        	type : sw.constant,
 	        	key : "skeletalDivisionClass",
-	        	value : FMA + "45565",
+	        	value : FMA + "46565",
 	        },{
 				type : sw.constant,
 				value : "Single Bone Organs of Skull",
