@@ -6,6 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.cornell.mannlib.vitro.webapp.config.DeleteBoneOrgan;
+import edu.cornell.mannlib.vitro.webapp.config.DeleteCoherentDivision;
+import edu.cornell.mannlib.vitro.webapp.config.DeleteDivision;
 import edu.cornell.mannlib.vitro.webapp.config.DeleteDivisionFromOrgans;
 import edu.cornell.mannlib.vitro.webapp.config.DeleteOrganFromDivision;
 import edu.cornell.mannlib.vitro.webapp.config.DeleteConfig;
@@ -84,6 +86,22 @@ public class DeleteController extends VitroAjaxController {
        this.predicateMap = DeleteDivisionFromOrgans.predicateMap;
        this.inputs = DeleteDivisionFromOrgans.inputs; 
        break;
+       
+     case "deleteDivision" :
+     
+       this.objectTriples = DeleteDivision.getObjectTriples();
+       this.dataTriples = DeleteDivision.getDataTriples();
+       this.predicateMap = DeleteDivision.predicateMap;
+       this.inputs = DeleteDivision.inputs; 
+       break;
+    
+     case "deleteCoherentDivision" :
+       
+       this.objectTriples = DeleteCoherentDivision.getObjectTriples();
+       this.dataTriples = DeleteCoherentDivision.getDataTriples();
+       this.predicateMap = DeleteCoherentDivision.predicateMap;
+       this.inputs = DeleteCoherentDivision.inputs; 
+       break;  
        
       default : break;
     }
