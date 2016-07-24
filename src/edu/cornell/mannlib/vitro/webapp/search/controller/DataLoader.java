@@ -85,9 +85,16 @@ public class DataLoader extends VitroAjaxController {
     case "singleBones" :
       String[] inputParam101 = { "skeletalInventory" };
       String[] uris101 = {"boneOrgan", "type", "completenessState", "completeness", "skeletalDivisionType"};
-      String[] literals101 = {"lable", "typeLabel", "completenessLabel"};
+      String[] literals101 = {"label", "typeLabel", "completenessLabel"};
       result = this.performQuery(singleBoneQuery1, inputParam101, uris101, literals101);
       break;  
+    
+    case "singleBonesWithout" :
+      String[] inputParam1010 = {};
+      String[] uris1010 = {"uri", };
+      String[] literals1010 = {};
+      result = this.performQuery(singleBoneQuery1Without, inputParam1010, uris1010, literals1010);
+      break;    
       
     case "boneOrgans":
       
@@ -222,8 +229,6 @@ public class DataLoader extends VitroAjaxController {
        String[] literals102 = {};
        result = this.performQuery(singleBoneQuery, inputParam102, uris102, literals102);
        break;   
-       
-
        
       case "sytemicPartWithSubclass" :
         
@@ -534,13 +539,13 @@ public class DataLoader extends VitroAjaxController {
           + "SELECT ?uri ?label ?typeLabel ?type ?completeness ?completenessState ?completenessLabel \n"
           + " WHERE \n " 
           + "   { "
-          + "    ?boneOrgan            obo:systemic_part_of      ?skeletalDivision  . \n"
-          + "    ?boneSegment          obo:regional_part_of      ?boneOrgan  . \n"
+          + "    ?uri                  obo:systemic_part_of      ?skeletalDivision  . \n"
+          + "    ?boneSegment          obo:regional_part_of      ?uri   . \n"
           + "    ?completeness         obo:IAO_0000136           ?boneSegment . \n"
           + "    ?completeness         obo:OBI_0000999           ?completenessState . \n" 
           + "    ?completenessState    rdfs:label                ?completenessLabel . \n"  
-          + "    ?boneOrgan            vitro:mostSpecificType    ?type .  \n"
-          + "    ?boneOrgan            rdfs:label                ?label . \n " 
+          + "    ?uri                  vitro:mostSpecificType    ?type .  \n"
+          + "    ?uri                  rdfs:label                ?label . \n " 
           + "    ?type                 rdfs:label                ?typeLabel . \n" 
           + " } ";
   
@@ -717,6 +722,19 @@ public class DataLoader extends VitroAjaxController {
            + "    ?type               rdfs:label              ?typeLabel . \n" 
            + "    FILTER NOT EXISTS { ?boneOrgan       obo:systemic_part_of  ?boneDivision } . \n" 
            + " } ";
+   
+   private static String singleBoneQuery1Without = 
+       ""
+           + "SELECT ?uri \n"
+           + " WHERE \n " 
+           + "   { "
+           + "    ?boneSegment        obo:regional_part_of    ?uri  . \n"
+           + "    ?completeness       obo:IAO_0000136         ?boneSegment . \n"
+           + "    ?skeletalInventory  obo:BFO_0000051         ?completeness . \n"
+           + "    FILTER NOT EXISTS {  ?uri                rdfbones:singleBoneOf   ?skeletalDivisionType } . \n " 
+           + "    FILTER NOT EXISTS { ?uri              obo:systemic_part_of  ?boneDivision } . \n" 
+           + " } ";
+   
    
    private static String systemicQueryWithSubClass = 
        
