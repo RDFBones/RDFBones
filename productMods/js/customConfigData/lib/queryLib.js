@@ -197,6 +197,18 @@ systemicParts = {
 	}]
 }
 
+systemicPartsSorted = {
+		
+		dataOperation : "query",
+		queryType : "systemicParts",
+		parameters : [{
+			value : "this.uri",
+			name : "skeletalRegion",
+		}],
+		sortBy : "type",
+}
+
+
 systemicPartsWithCompletenessSorted = {
 		
 	dataOperation : "query",
