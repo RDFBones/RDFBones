@@ -172,7 +172,8 @@ skeletalDivisionData = {
 		linkDataInputs : [
 		    {
 				type : sw.local,
-				key : "boneDivision",
+				key : "uri",
+				varName : "boneDivision",
 			}, {
 				type : sw.constant,
 				value : "deleteDivisionFromOrgans",
@@ -231,10 +232,10 @@ singleBones = {
 			}
 		}, {
 			type : sw.literalFieldMiddle,
-			title : "Number of Bone Organs",
+			title : "Label",
 			value : {
 				type : sw.local,
-				key : "boneOrganCount",
+				key : "label",
 			}
 		}, {
 			type : sw.editButton,
@@ -248,17 +249,18 @@ singleBones = {
 				value : "boneOrgan",
 			}, {
 				type : sw.local,
-				key : "boneDivision",
+				key : "boneOrgan",
 				varName : "individual",
 			}, {
 				type : sw.local,
 				key : "type",
-				varName : "existingBoneDivisionType",
 			}, {
 				type : sw.local,
-				key : "boneUri",
-				varName : "classUri",
-			} ],
+				key : "completenessState",
+			}, {
+				type : sw.local,
+				key : "completeness",
+			}],
 			mapping : "pageLoader",
 		}, {	
 			type : sw.deleteButton,
