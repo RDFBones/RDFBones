@@ -24,7 +24,7 @@ coherentVertebra = {
 		{
 			type : sw.constant,
 			value : "http://purl.obolibrary.org/obo/FMA_13478",
-			key : "skeletalRegionType"
+			key : "skeletalDivisionType",
 		}, {
 			type : sw.constant,
 			value : [ FMA + "24138", 
