@@ -7,3 +7,5 @@ pageData.boneOrgans = {
 		value : "pageData.individual",
 	}]
 }
+
+pageData.type = individualType

@@ -46,39 +46,30 @@ pageData.pageElements = [
 		value : "Systemic Parts",
 	},
 	linkDataInputs : [
-	/*{
+	{
+		//This comes as a parameter
 		type : sw.global,
 		key : "cefPageUri",
 		varName : "pageUri",
-		defaultValue : "partlySymmetricBoneDivision",
 	},{
-		type : sw.,
-		key : "cefPageUri",
-		varName : "pageUri",
-		
-	},*/ 
-	{
-		type : sw.constant,
+		type : sw.global,
 		key : "pageUri",
-		value : "partlySymmetricCoherentSkeletalRegion"
+		varName : "cefPageUri",
 	}, {
 		type : sw.global,
 		key : "skeletalInventory",
 		varName : "individual",
 	}, {
 		type : sw.global,
-		key : "classUri",
-	}, {
-		type : sw.global,
 		key : "individual",
 		varName : "existingSkeletalRegion",
 	}, {
 		type : sw.global,
-		key : "individual",
-		varName : "skeletalRegion",
+		key : "skeletalDivisionType",
 	}, {
 		type : sw.global,
-		key : "classUri",
+		key : "individual",
+		varName : "existingSkeletalRegion",
 	}
 ],
 	mapping : "pageLoader",
@@ -132,13 +123,15 @@ pageData.pageElements = [
 		linkDataInputs : [
 		    {
 				type : sw.local,
-				key : "boneOrgan",
+				key : "uri",
+				varName : "boneOrgan",
 			}, {
 				type : sw.constant,
 				value : "deleteOrganFromDivision",
 				key : "operation",
 			}
 		],
+		afterProcess : "kutyaLo",
 		mapping : "delete",
 	} ]
 } ]
