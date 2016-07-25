@@ -1,3 +1,85 @@
+ribData = {
+		
+	type : sw.dataField,
+	textValue : {
+		type : sw.local,
+		key : "typeLabel"
+	},
+	linkDataInputs : [ {
+		type : sw.local,
+		key : "coherentSkeletalDivisionType",
+	}, {
+		type : sw.global,
+		key : "individual",
+	}, {
+		type : sw.constant,
+		key : "pageUri",
+		value : "ribCEF"
+	}],
+	mapping : "pageLoader",
+	dataToDisplay : {
+		type : sw.field,
+		of : {
+			type : sw.global,
+			key : "coherentSkeletalRegions"
+		},
+		key : {
+			type : sw.local,
+			key : "coherentSkeletalDivisionType",
+		}
+		//Later on more compact definition
+		//coherentSkeletalRegions[local.coherentSkeletalDivisionType]
+	},
+	dataFields : [ {
+		type : sw.literalField,
+		title : "Label",
+		value : {
+			type : sw.local,
+			key : "label",
+		}
+	}, {
+		type : sw.literalFieldMiddle,
+		title : "Number Skeletal Divisions",
+		value : {
+			type : sw.local,
+			key : "skeletalDivisionCount",
+		}
+	}, {
+		type : sw.editButton,
+		linkDataInputs : [ {
+			type : sw.global,
+			key : "individual",
+			varName : "skeletalInventory",
+		}, {
+			type : sw.constant,
+			varName : "pageUri",
+			value : "coherentSkeletalDivision",
+		}, {
+			type : sw.local,
+			key : "uri",
+			varName : "individual",
+		}, {
+			type : sw.local,
+			value : "type",
+		}],
+		mapping : "pageLoader",
+	}, {	
+		type : sw.deleteButton,
+		linkDataInputs : [
+		    {
+				type : sw.local,
+				key : "uri",
+				varName : "coherentDivision",
+			}, {
+				type : sw.constant,
+				value : "deleteCoherentDivision",
+				key : "operation",
+			}
+		],
+		mapping : "delete",
+	} ]
+}
+
 coherentSkeletalDivisionData = {
 		
 	type : sw.dataField,
