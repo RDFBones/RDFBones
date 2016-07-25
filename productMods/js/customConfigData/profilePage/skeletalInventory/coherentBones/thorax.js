@@ -1,14 +1,14 @@
 ribcage = {
 		type : sw.container,
 		localData : [
-				skeletalSubDivisionCEF, {
+				{
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_7480",
 					key : "skeletalRegion",
 				},{
 					type : sw.constant,
 					value : "Rib Cage",
-					key : "boneLabel",
+					key : "typeLabel",
 				},{
 		        	type : sw.constant,
 		        	key : "skeletalDivisionClass",
@@ -18,9 +18,8 @@ ribcage = {
 					value : [ "http://purl.obolibrary.org/obo/FMA_7480"],
 					key : "classSelection"
 				} ],
-		elements : [ coherentData]
+		elements : [ coherentSkeletalDivisionData]
 	}
-
 
 coherentRibCage = {
 		type : sw.container,
@@ -33,7 +32,7 @@ coherentRibCage = {
 				}, {
 					type : sw.constant,
 					value : "Coherent Skeletal Divisions of Rib Cage",
-					key : "boneLabel",
+					key : "typeLabel",
 				},{
 					type : sw.constant,
 					value : "subDivision",
@@ -51,7 +50,7 @@ coherentRibCage = {
 					value : "partlySymmetricBoneDivision",
 					key : "cefPageUri",
 				}],
-		elements : [ coherentData]
+		elements : [ skeletalDivisionData]
 	}	
 
 singleThorax = {
@@ -69,10 +68,12 @@ singleThorax = {
 		        }, {
 					type : sw.constant,
 					value : "Single Bones of Rib Cage",
-					key : "boneLabel",
+					key : "typeLabel",
 				}] ,
 		elements : [ singleBones ]
 	}
+
+
 thoraxTab = {
 	type : sw.tab,
 	tabTitle : "Thorax",

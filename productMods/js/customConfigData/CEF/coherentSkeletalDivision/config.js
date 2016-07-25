@@ -4,9 +4,9 @@ pageData.skeletalRegions = {
 	label : labelQuery,
 	systemicParts1 : partlySymmetricLoad,
 	existing : {
-		uri : pageData.existingSkeletalRegionUri,
+		uri : pageData.existingSkeletalDivision,
 		label : labelQuery,
-		systemicParts11 : systemicParts2
+		systemicParts11 : systemicPartsSorted
 	},
 }
 

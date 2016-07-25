@@ -53,7 +53,7 @@ pageData.pageElements = [
 				type : sw.global,
 				key : "boneDivision",
 				varName : "individual",
-			}, {
+			},{
 				type : sw.global,
   				key : "skeletalInventory",
 			},{

@@ -71,10 +71,11 @@ coherentSkeletalDivisionData = {
 		linkDataInputs : [
 		    {
 				type : sw.local,
-				key : "boneDivision",
+				key : "uri",
+				varName : "coherentDivision",
 			}, {
 				type : sw.constant,
-				value : "deleteDivisionFromOrgans",
+				value : "deleteCoherentDivision",
 				key : "operation",
 			}
 		],
@@ -176,7 +177,7 @@ skeletalDivisionData = {
 				varName : "boneDivision",
 			}, {
 				type : sw.constant,
-				value : "deleteDivisionFromOrgans",
+				value : "deleteDivision",
 				key : "operation",
 			}
 		],

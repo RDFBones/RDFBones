@@ -47,13 +47,8 @@ pageData.pageElements = [
 	},
 	linkDataInputs : [
 	{
-		type : sw.global,
-		key : "cefPageUri",
-		varName : "pageUri",
-		defaultValue : "partlySymmetricBoneDivision",
-	},{
-		type : sw.global,
-		key : "cefPageUri",
+		type : sw.constant,
+		value : "coherentSkeletalDivisionCEF",
 		varName : "pageUri",
 	}, {
 		type : sw.global,
@@ -61,15 +56,12 @@ pageData.pageElements = [
 		varName : "individual",
 	}, {
 		type : sw.global,
-		key : "classUri",
-	}, {
-		type : sw.global,
 		key : "individual",
-		varName : "existingSkeletSubdivision",
+		varName : "existingSkeletalDivision",
 	}, {
 		type : sw.global,
-		key : "existingSkeletSubdivisionType",
-		varName : "classUri",
+		key : "type",
+		varName : "coherentSkeletalDivisionType",
 	}, 
 ],
 	mapping : "pageLoader",
