@@ -322,7 +322,6 @@ public class DataLoader extends VitroAjaxController {
         break;
     }
     
-    log.info(result.toString());
     if (result.size() > 0) {
       JSONArray arrayToSend = new JSONArray();
       N3Utils.setJsonArray(arrayToSend, result);
@@ -348,7 +347,6 @@ public class DataLoader extends VitroAjaxController {
 
     readyQuery = N3Utils.setPrefixes(null, query);
     readyQuery = N3Utils.subInputUriQuery(readyQuery, inputParam, this.vreq);
-    log.info(readyQuery);
     resultSet = QueryUtils.getQueryResults(readyQuery, vreq);
     return QueryUtils.getQueryVars(resultSet, uris, literals);
   }
