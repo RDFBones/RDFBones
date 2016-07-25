@@ -11,6 +11,10 @@ ribcage = {
 					key : "skeletalDivisionType",
 				},{
 					type : sw.constant,
+					value : "http://purl.obolibrary.org/obo/FMA_7480",
+					key : "skeletalDivisionType"
+				}, {
+					type : sw.constant,
 					value : "Rib Cage",
 					key : "typeLabel",
 				},{
@@ -65,7 +69,7 @@ singleThorax = {
 		localData : [
 		        {
 		        	type : sw.constant,
-		        	value : "singleThoracicBones",
+		        	value : "singleRibCEF",
 		        	key : "pageUri",
 		        }, {
 		        	type : sw.constant,
@@ -78,7 +82,7 @@ singleThorax = {
 				}, {
 					type : sw.constant,
 					value : "http://purl.obolibrary.org/obo/FMA_7480",
-					key : "skeletalDivisionType",
+					key : "skeletalDivisionClass",
 				}] ,
 		elements : [ singleBones ]
 	}

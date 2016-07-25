@@ -39,7 +39,7 @@ PhalanxEditController.prototype = {
 	assemble : function(){
 		
 		UI.assemble(this.container, [
-		       html.div("title").text("Phalanx of Toe"),
+		       html.div("title").text("Set of phalanges of foot"),
 		       html.div("inlineContainer"),
 		       	   this.selector,
 		       	   this.addButton.container,
@@ -70,7 +70,7 @@ PhalanxEditController.prototype = {
 	},
 	
 	reset : function(uri, boneOrganField){
-		
+		this.cnt--
 	},
 	
 	saveRoutine : function(){

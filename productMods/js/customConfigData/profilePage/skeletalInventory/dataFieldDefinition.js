@@ -21,11 +21,11 @@ ribData = {
 		type : sw.field,
 		of : {
 			type : sw.global,
-			key : "coherentSkeletalRegions"
+			key : "skeletalDivisions"
 		},
 		key : {
 			type : sw.local,
-			key : "coherentSkeletalDivisionType",
+			key : "skeletalDivisionType",
 		}
 		//Later on more compact definition
 		//coherentSkeletalRegions[local.coherentSkeletalDivisionType]

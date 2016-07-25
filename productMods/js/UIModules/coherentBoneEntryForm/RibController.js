@@ -116,6 +116,54 @@ RibController.prototype = {
 			+ "pageLoader?skeletalInventory="
 			+ pageData.individual
 			+ "&pageUri=skeletalInventory"
-	}
-	
+	}	
 }
+
+var SingleRibController = function(){
+	
+	RibController.call(this)
+}
+
+SingleRibController.prototype = Object.create(RibController.prototype)
+
+$.extend(SingleRibController.prototype, {
+		
+		
+		saveRoutine : function(){
+
+			var toSend = {
+				operation : "addSingleBoneRegion",
+				individual : pageData.individual,
+				skeletalDivisionClass : pageData.skeletalDivisionClass,
+				boneOrgan : this.dataToStore.boneOrgan
+			}
+			console.log(toSend)
+			
+			PopUpController.init()
+			$.ajax({
+					type : 'POST',
+					context : this,
+					dataType : 'json',
+					url : baseUrl + "dataInput",
+					data : "dataToStore=" + JSON.stringify(toSend)
+			}).done((function(msg) {
+								
+				var urlObject = {
+						pageUri : "skeletalInventory",
+						individual : pageData.individual,
+					}
+					
+					window.location = baseUrl
+							+ "pageLoader?"
+							+ DataLib.getUrl(urlObject)
+				}).bind(this))
+		},
+		
+		cancelRoutine : function(){
+			
+			window.location = baseUrl
+				+ "pageLoader?skeletalInventory="
+				+ pageData.individual
+				+ "&pageUri=skeletalInventory"
+		}	
+})
