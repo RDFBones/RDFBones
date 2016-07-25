@@ -20,94 +20,90 @@ WHERE
 			  }  GROUP BY ?rib ?label  
 */		 
 
-
-var irregularPhalanx = {
-		
-	"http://purl.obolibrary.org/obo/FMA_75830" : {
-		uri : FMA + "75830",
-		label : "Distal phalanx of toe",
-	},
+var rootPhalanxArr = [{
 	
-	"http://purl.obolibrary.org/obo/FMA_75828" : {
-		uri : FMA + "75828",
-		label : "Proximal phalanx of toe",
+	uri : FMA + "24493",
+	label : "Phalanx of toe",
+	count : 45,
+}]
 
-	},	
+var rootPhalanx = {
 	
-	"http://purl.obolibrary.org/obo/FMA_75829" : {
-		uri : FMA + "75829",
-		label : "Middle phalanx of toe",
-	}
+	uri : FMA + "24493",
+	label : "Phalanx of toe",
+	count : 45,
 }
 
+var irregularPhalanxArr = [
+		
+	{
+		uri : FMA + "75830",
+		label : "Distal phalanx of toe",
+		count : "15",
+	},
+	{
+		uri : FMA + "75828",
+		label : "Proximal phalanx of toe",
+		count : "15",
+	},	
+	{
+		uri : FMA + "75829",
+		label : "Middle phalanx of toe",
+		count : "12"
+	}
+]
 
-var thirdaryPhalanx = {
+
+var thirdaryPhalanxArr = [
 		
-	"http://purl.obolibrary.org/obo/FMA_32884" :	{
-			uri : "http://purl.obolibrary.org/obo/FMA_32884",
-			label : "Phalanx of big toe",
-			count : "6",
-		},
-		
-	"http://purl.obolibrary.org/obo/FMA_32899" :  {
+	{
+		uri : "http://purl.obolibrary.org/obo/FMA_32884",
+		label : "Phalanx of big toe",
+		count : "6",
+	},
+	{
 	
 		uri : "http://purl.obolibrary.org/obo/FMA_32899",
 		label : "Phalanx of second toe",
 		count : "9",
 	},
-	
-	"http://purl.obolibrary.org/obo/FMA_32900" : {
+	{
 		uri : "http://purl.obolibrary.org/obo/FMA_32900",
 		label : "Phalanx of third toe",
 		count : "9",
 	}, 
-	
-	"http://purl.obolibrary.org/obo/FMA_32901" : {
+	{
 		uri : "http://purl.obolibrary.org/obo/FMA_32901",
 		label : "Phalanx of fourth toe",
 		count : "9",
 	}, 
-	
-	"http://purl.obolibrary.org/obo/FMA_32900" : {
+	{
 		uri : "http://purl.obolibrary.org/obo/FMA_32900",
 		label : "Phalanx of third toe",
 		count : "9",
 	}, 
-	
-	"http://purl.obolibrary.org/obo/FMA_32902" : {
+	{
 		uri : "http://purl.obolibrary.org/obo/FMA_32902",
 		label : "Phalanx of little toe",
 		count : "9",
 		parents : [FMA + "75830"],
 	}
-}
-
-
+]
 
 	
 big = FMA + "32884"
 second = FMA + "32899"
 third = FMA + "32900"
-fourh = FMA + "32901"
+fourth = FMA + "32901"
 little = FMA + "32902"
-
-parent : second
-parent : third
-parent : fourth
-parent : little
-
-
 
 distal = FMA + "75830"
 proximal = FMA + "75828"
 middle = FMA + "75829"
 
-
-var secondaryPhalanx = {
+var secondaryPhalanxArr = [
 	
-
-		
-	//Big
+	// Big
 	{
 		uri : "http://purl.obolibrary.org/obo/FMA_32627",
 		label : "Distal phalanx of big toe",
@@ -121,7 +117,7 @@ var secondaryPhalanx = {
 	},
 
 	
-	//Second
+	// Second
 	{
 		uri : "http://purl.obolibrary.org/obo/FMA_32618",
 		label : "Proximal phalanx of second toe",
@@ -139,7 +135,7 @@ var secondaryPhalanx = {
 		parent : second,
 	},
 
-	//Third
+	// Third
 	{
 		uri : "http://purl.obolibrary.org/obo/FMA_32624",
 		label : "Middle phalanx of third toe",
@@ -159,7 +155,7 @@ var secondaryPhalanx = {
 		parent : third,
 	},
 	
-	//Fourth	
+	// Fourth
 	{
 		uri : "http://purl.obolibrary.org/obo/FMA_32620",
 		label : "Proximal phalanx of fourth toe",
@@ -177,9 +173,7 @@ var secondaryPhalanx = {
 		parent : fourth,
 	},
 	
-	
-
-	//Little
+	// Little
 	{
 		uri : "http://purl.obolibrary.org/obo/FMA_32631",
 		label : "Distal phalanx of little toe",
@@ -195,8 +189,9 @@ var secondaryPhalanx = {
 		label : "Proximal phalanx of little toe",
 		count : "2 ",
 		parent : little,
-	}	
-}
+	}]
+
+
 
 distalBig = FMA + "32627"
 distalSecond = FMA + "32628"
@@ -216,7 +211,7 @@ middleFourth = FMA + "32625"
 middleLittle = FMA + "230984"	
 
 
-var primaryPhalanx = [{
+var primaryPhalanxArr = [{
 	uri : "http://purl.obolibrary.org/obo/FMA_32641",
 	label : "Distal phalanx of left little toe",
 	parent : distalLittle
@@ -233,7 +228,7 @@ var primaryPhalanx = [{
 	label : "Proximal phalanx of right second toe",
 	parent : proximalSecond
 },
-///////////
+// /////////
 
 {
 	uri : "http://purl.obolibrary.org/obo/FMA_62639",
@@ -244,7 +239,7 @@ var primaryPhalanx = [{
 	label : "Proximal phalanx of right fourth toe",
 	parent : proximalFourth
 },
-//////////
+// ////////
 
 {
 	uri : "http://purl.obolibrary.org/obo/FMA_32645",
@@ -256,7 +251,7 @@ var primaryPhalanx = [{
 	parent : middleThird
 },
 
-//////////
+// ////////
 
 {
 	uri : "http://purl.obolibrary.org/obo/FMA_62651",
@@ -268,7 +263,7 @@ var primaryPhalanx = [{
 	parent : distalBig
 },
 
-//////////
+// ////////
 {
 	uri : "http://purl.obolibrary.org/obo/FMA_62653",
 	label : "Distal phalanx of left second toe",
@@ -278,7 +273,7 @@ var primaryPhalanx = [{
 	label : "Distal phalanx of right second toe",
 	parent : distalSecond
 },
-////////////
+// //////////
 
 {
 	uri : "http://purl.obolibrary.org/obo/FMA_230988",
@@ -289,7 +284,7 @@ var primaryPhalanx = [{
 	label : "Middle phalanx of right little toe",
 	parent : middleLittle
 },
-//////////
+// ////////
 
 {
 	uri : "http://purl.obolibrary.org/obo/FMA_32641",
@@ -300,7 +295,7 @@ var primaryPhalanx = [{
 	label : "Proximal phalanx of right little toe",
 	parent : proximalLittle
 },
-/////////
+// ///////
 
 {
 	uri : "http://purl.obolibrary.org/obo/FMA_43254",
@@ -312,7 +307,7 @@ var primaryPhalanx = [{
 	parent : proximalBig
 },
 
-/////////
+// ///////
  
 {
 	uri : "http://purl.obolibrary.org/obo/FMA_32655",
@@ -324,7 +319,7 @@ var primaryPhalanx = [{
 	parent : distalThird
 },
 
-////////
+// //////
 
 {
 	uri : "http://purl.obolibrary.org/obo/FMA_32647",
@@ -335,7 +330,7 @@ var primaryPhalanx = [{
 	label : "Middle phalanx of right fourth toe",
 	parent : middleFourth
 },
-////////
+// //////
  {
 	uri : "http://purl.obolibrary.org/obo/FMA_62637",
 	label : "Proximal phalanx of left third toe",
@@ -346,7 +341,7 @@ var primaryPhalanx = [{
 	parent : proximalThird
 },
 
-////////
+// //////
 {
 	uri : "http://purl.obolibrary.org/obo/FMA_62657",
 	label : "Distal phalanx of left fourth toe",
@@ -357,7 +352,7 @@ var primaryPhalanx = [{
 	parent : distalFourth
 },
 
-////////
+// //////
 {
 	uri : "http://purl.obolibrary.org/obo/FMA_32643",
 	label : "Middle phalanx of left second toe",
@@ -368,4 +363,5 @@ var primaryPhalanx = [{
 	parent : middleSecond
 }]
 
-phalanxOfToe = $.merge($.merge(phalanxOfToe1, phalanxOfToe2), phalanxOfToe3)
+
+
