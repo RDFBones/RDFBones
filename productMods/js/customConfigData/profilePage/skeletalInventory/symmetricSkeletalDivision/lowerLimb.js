@@ -3,32 +3,35 @@
 phalangesOfFoot = {
 		type : sw.container,
 		localData : [
-		      	{
-		      		type : sw.constant,
-		      		value : "phalanges",
-		      		key : "pageUri",
-		      	} ,{
-					type : sw.constant,
-					value : "http://purl.obolibrary.org/obo/FMA_78512",
-					key : "skeletalDivisionType",
-				},{
-					type : sw.constant,
-					value : "Set of phalanges of foot",
-					key : "typeLabel",
-				},{
-					type : sw.constant,
-					value : [ "http://purl.obolibrary.org/obo/FMA_78512",
-					          "http://purl.obolibrary.org/obo/FMA_231319",
-					          "http://purl.obolibrary.org/obo/FMA_231317"],
-					key : "classSelection"
-				}, {
-					type : sw.constant,
-					key : "cefPageUri",
-					value : "phalanges",
-				}],
+			{
+	        	type : sw.constant,
+	        	value : "singleUpperLimb",
+	        	key : "phalanxOfHand",
+	        }, {
+	      		type : sw.constant,
+	      		value : "phalanxOfToe",
+	      		key : "pageUri",
+	      	}, {
+				type : sw.constant,
+				value : "http://purl.obolibrary.org/obo/FMA_78512",
+				key : "skeletalDivisionType",
+			}, {
+				type : sw.constant,
+				value : "Set of phalanges of foot",
+				key : "typeLabel",
+			}, {
+				type : sw.constant,
+				value : [ "http://purl.obolibrary.org/obo/FMA_78512",
+				          "http://purl.obolibrary.org/obo/FMA_231319",
+				          "http://purl.obolibrary.org/obo/FMA_231317"],
+				key : "classSelection"
+			}, {
+				type : sw.constant,
+				key : "cefPageUri",
+				value : "phalangesOfToe",
+			}],
 		elements : [ skeletalDivisionData]
 	}
-
 
 /*
 freelowerlimb = {

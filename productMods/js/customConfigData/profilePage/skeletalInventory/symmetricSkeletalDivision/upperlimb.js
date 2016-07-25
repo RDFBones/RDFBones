@@ -81,8 +81,12 @@ phalangesofhand = {
 
 	type : sw.container,
 	localData : [
-	             symmetricSkeletalDivisionCEF, 
-	{
+     symmetricSkeletalDivisionCEF, 
+     {
+        	type : sw.constant,
+        	value : "singleUpperLimb",
+        	key : "phalanxOfHand",
+        },{
 		type : sw.constant,
 		value : "http://purl.obolibrary.org/obo/FMA_71337",
 		key : "skeletalDivisionType",
