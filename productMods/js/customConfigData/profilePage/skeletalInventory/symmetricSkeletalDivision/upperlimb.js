@@ -119,12 +119,12 @@ singleUpperLimb = {
 		        }, {
 		        	type : sw.constant,
 		        	key : "skeletalDivisionClass",
-		        	value : [ FMA + "7183",
-		        	          "http://purl.obolibrary.org/obo/FMA_71337",
+		        	value :  FMA + "7183",
+		        	      /*    "http://purl.obolibrary.org/obo/FMA_71337",
 		        	          "http://purl.obolibrary.org/obo/FMA_71336",
 		        	          "http://purl.obolibrary.org/obo/FMA_71335",
 		        	          "http://purl.obolibrary.org/obo/FMA_71199"
-		        	         ]
+		        	         ]*/
 		        },{
 					type : sw.constant,
 					value : "Single Bone Organs of Upper Limb",

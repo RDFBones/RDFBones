@@ -122,10 +122,10 @@ singleLowerLimb = {
 		        }, {
 		        	type : sw.constant,
 		        	key : "skeletalDivisionClass",
-		        	value : [	FMA + "7184",
-		        	         	FMA + "71340",
+		        	value : 	FMA + "7184",
+		        	        /* 	FMA + "71340",
 		        	         	FMA + "71339",
-		        	         	FMA + "78512"]
+		        	         	FMA + "78512"]*/
 		        },{
 					type : sw.constant,
 					value : "Single Bone Organs of Lower Limb",

@@ -33,7 +33,7 @@
 		
 		pageData.classesToSelect = {
 			uri : "http://purl.obolibrary.org/obo/FMA_46565", 
-			subClasses : partlySymmetric1, 
+			subClasses : partlySymmetricLoad, 
 			uiType : "partlySymmetric",
 		} 
 	}

@@ -20,27 +20,33 @@
 	           uri : "http://purl.obolibrary.org/obo/FMA_13303",
 	           subClasses : subClass,
 	           uiType : "singleBone",
-	       	},{ //Ulna
+	           label : labelQuery,
+	        },{ //Ulna
 	           uri : "http://purl.obolibrary.org/obo/FMA_23466",
 	           subClasses : subClass,
 	           uiType : "singleBone",
+	           label : labelQuery,
 	        },{ //Radius
 	           uri : "http://purl.obolibrary.org/obo/FMA_23463",
 	           subClasses : subClass,
 	           uiType : "singleBone",
-	       	}, { //Carpal Bone  
+	           label : labelQuery,
+	        }, { //Carpal Bone  
 	           uri : "http://purl.obolibrary.org/obo/FMA_23889",
 	           subClasses2 : subClass3,
 	           uiType : "primary",
+	       	   label : labelQuery,
 	       	}, { //Metacarpal Bone 
 	           uri : "http://purl.obolibrary.org/obo/FMA_9612",
 	           subClasses1 : subClass2,
 	           uiType : "default",
-       	   	}, { //Phalanx of finger
+	           label : labelQuery,
+	        }, { //Phalanx of finger
            		uri : "http://purl.obolibrary.org/obo/FMA_23914",
            		subClasses2 : subClass3,
            		uiType : "primary",
-       		} ]  
+           		label : labelQuery,
+           } ]  
 }
 </script>
 
