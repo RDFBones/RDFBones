@@ -197,10 +197,10 @@ var updatePhalanx = function(phalanxUri){
 	console.log(toIncrement)
 	console.log(allowed)
 	
-	if(allowed = "allowed"){
+	if(allowed == "allowed"){
 		//Add the data
 		$.each(toIncrement, function(i, value){
-			value.count++
+			value.current++
 		})
 		return true
 	} else {
@@ -248,7 +248,7 @@ var check = function(object){
 		toIncrement.push(object)
 		return true
 	} else {
-		allowed = rootPhalanx.label 
+		allowed = "It is allowed to add onley " + object.count +  " from " + object.label 
 		return false
 	}
 }
