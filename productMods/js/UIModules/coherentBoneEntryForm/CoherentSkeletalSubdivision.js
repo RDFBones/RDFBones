@@ -54,6 +54,14 @@ CoherentSkeletalSubdivision.prototype = {
 				this.existingBones = html.div("subContainer")
 		},
 		
+		
+		addAll : function(_this){
+			
+			$.each(_this.systemicPartSelectors, function(i, sysPartSelector){
+				sysPartSelector.addAll()
+			})
+		},
+		
 		init : function(){
 			
 			this.initUI()

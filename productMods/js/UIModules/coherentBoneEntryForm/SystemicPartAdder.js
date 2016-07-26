@@ -166,10 +166,10 @@ $.extend(SystemicPartAdder.prototype, {
 			}
 			//Check if we do not have 
 			$.each(this.dataSet.subClasses, (function(i, scl){
-				this.checkAdding(true, scl.uri)	
+				this.addSystemicPart(scl.uri, true)	
 			}).bind(this))	
 		} else {
-			this.checkAdding(true)	
+			this.addSystemicPart("", true)	
 		}
 	},
 	

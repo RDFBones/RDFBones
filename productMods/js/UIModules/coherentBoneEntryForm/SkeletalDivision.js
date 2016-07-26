@@ -39,8 +39,15 @@ SkeletalDivision.prototype = {
 	
 		this.buttonContainer = html.div("inlineContainer")
 			this.complete = new CheckBoxText("complete", this, "addAll", null)
-					.hide()	
+					
 		this.subContainer = html.div("subContainer")
+	},
+	
+	addAll : function(){
+		
+		$.each(this.systemicPartSelectors, function(i, sysPartSelector){
+			sysPartSelector.addAll()
+		})
 	},
 	
 	init : function() {
