@@ -71,6 +71,7 @@ PhalanxEditController.prototype = {
 	
 	reset : function(uri, boneOrganField){
 		this.cnt--
+		deletePhalanx(uri)
 	},
 	
 	saveRoutine : function(){
@@ -162,6 +163,32 @@ var objectFromArray = function(array, key){
 var toIncrement = []
 var allowed = null
 
+var deletePhalanx = function(phalanxUri){
+	
+	leaf = primaryPhalanx[phalanxUri]
+	if(leaf == undefined){
+		//It is leaf node ->
+		secondary = secondaryPhalanx[phalanxUri]
+		if(secondary == undefined){
+			irregular = irregularPhalanx[phalanxUri]
+			if(irregular == undefined){
+				thirdary = thirdaryPhalanx[phalanxUri]
+				if(thirdary == undefined){
+					deleteRoot()
+				} else {
+					deleteThirdary(thirdary)
+				}
+			} else {
+				deleteIrregular(irregular)
+			}
+		} else {
+		    deleteSecondary(secondary)
+		}
+	} else {
+		deleteLeaf(leaf)
+	}
+}
+
 var updatePhalanx = function(phalanxUri){
 	
 	toIncrement.length = 0
@@ -208,6 +235,37 @@ var updatePhalanx = function(phalanxUri){
 		return false
 	}
 }
+
+
+var deleteLeaf = function(object){
+	
+	object.current--
+	secondary = secondaryPhalanx[object.parent]
+	deleteSecondary(secondary)
+}
+
+var deleteSecondary = function(object){
+	
+	object.current--
+	thirdary = thirdaryPhalanx[object.parent]
+	getIrregular(object.label).current--
+	deleteThirdary(thirdary)	
+}
+
+var deleteThirdary = function(object){
+	object.current--
+	deleteRoot()
+}
+
+var deleteIrregular = function(object){
+	object.current--
+	deleteRoot()
+}
+
+var deleteRoot = function(){
+	rootPhalanx.current--
+}
+
 
 var checkLeaf = function(object){
 	
