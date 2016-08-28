@@ -9,17 +9,18 @@ pageData.pageElements = [
     {
     	uri : "http://softwareOntology.com/addField1",
     	type : "http://softwareOntology.com/SelectorAddField",
+    	formId : "skeletalInventory",
     	title : "Add new Skeletal Inventory",
     	listElements : [
     	    { 
-    	    	value : "http://w3id.org/rdfbones/core#PrimarySkeletalInventory",
-    	    	text : "Primary Skeletal Inventory",
+    	    	uri : "http://w3id.org/rdfbones/core#PrimarySkeletalInventory",
+    	    	label : "Primary Skeletal Inventory",
     	    },{
-    	    	value : "http://w3id.org/rdfbones/core#SecondarySkeletalInventory",
-    	    	text : "Secondary Skeletal Inventory",
+    	    	uri : "http://w3id.org/rdfbones/core#PrimarySkeletalInventoryFreshBone",
+    	    	label : "Primary skeletal inventory for fresh bone material",
     	    },{
-    	    	value : "http://w3id.org/rdfbones/core#ThirdarySkeletalInventory",
-    	    	text : "Thirdary Skeletal Inventory",
+    	    	uri : "http://w3id.org/rdfbones/core#PrimarySkeletalInventoryDryBone",
+    	    	label : "Primary skeletal inventory for dry bone material",
     	    }
     	 ]
     },{

@@ -45,9 +45,10 @@ var html = {
 		return $("<div/>").addClass("fullScreenContainer")
 	},
 
-	getSelectorField : function() {
+	getSelectorField : function(id, name) {
 		return selector = $("<select/>", {
-			class : "",
+			id : id,
+			name : name,
 		})
 	},
 	
@@ -102,28 +103,24 @@ var html = {
 		return $("<input>").attr("type", type)
 	},
 	
-	span : function(){
-		return $("<span/>")
-	},
-	
 	span : function(_class){
 		return $("<span/>").addClass(_class)
-	},
-	
-	link : function(href){
-		return $("<a/>").attr("href", href)
 	},
 	
 	link : function(href, _class){
 		return $("<a/>").attr("href", href).addClass(_class)
 	},
 	
-	form : function(){
-		return $("<form/>")
+	hiddenInput : function(name){
+		return $("<input/>").attr("type", "hidden").attr("name", name)
 	},
 	
-	form : function(_class){
-		return $("<form/>").addClass(_class)
+	submit : function(label){
+		return $("<input/>").attr("type", "submit").attr("value", label)
+	},
+	
+	form : function(action, id, _class){
+		return $("<form/>").attr("action", action).attr("id", id).addClass(_class)
 	},
 	
 	fileUpload : function(){

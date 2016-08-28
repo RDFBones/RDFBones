@@ -1,10 +1,10 @@
 
 
 
-var SelectorField = function(dataSet, changeFunction){
+var SelectorField = function(dataSet, changeFunction, config){
 	
 	this.container = html.div()
-	this.selectorField = html.getSelectorField()
+	this.selectorField = html.getSelectorField(config.id, config.name)
 		.change(function(){
 			changeFunction(this.value)
 		})
@@ -24,6 +24,10 @@ SelectorField.prototype = {
 	
 	removeSelectorElement : function(){
 		this.selectorField.find('option[value="SelectorElement"]').remove()
+	},
+
+	getText : function(){
+		return this.selectorField.find('option:selected').text()
 	}
 }
 
