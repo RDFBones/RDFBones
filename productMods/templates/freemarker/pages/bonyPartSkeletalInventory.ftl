@@ -12,5 +12,6 @@ ${scripts.add(
 </div>
 
 <div class = "margin10">
-	Uri : ${individual}
+	Uri : ${individual} <br>
+	Label : ${label}
 </div>
