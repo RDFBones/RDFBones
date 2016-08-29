@@ -946,6 +946,17 @@
     <url-pattern>/populateselect</url-pattern>
   </servlet-mapping>
   
+  <!-- My servlets -->
+  
+  <servlet>
+    <servlet-name>CustomFormGenerator</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.CustomFormGenerator</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CustomFormGenerator</servlet-name>
+    <url-pattern>/customForm</url-pattern>
+  </servlet-mapping>
+  
   <servlet>
     <servlet-name>InstanceToOfferConroller</servlet-name>
     <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.InstanceToOfferController</servlet-class>
@@ -1062,8 +1073,28 @@
     <servlet-name>AnatomicalModelLoader</servlet-name>
     <url-pattern>/anatomicalModelLoader</url-pattern>
   </servlet-mapping>
-     
-   
+
+  <servlet>
+    <servlet-name>NewInstance</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.NewInstance</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>NewInstance</servlet-name>
+    <url-pattern>/newInstance</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>DefaultPageLoad</servlet-name>
+    <servlet-class>rdfbones.pageload.DefaultPageLoad</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DefaultPageLoad</servlet-name>
+    <url-pattern>/defaultPageLoad</url-pattern>
+  </servlet-mapping>  
+
+   <!--
+   END - just to know where to place the additional servlets
+    -->
    
    <servlet>
     <servlet-name>DataAutocompleteController</servlet-name>

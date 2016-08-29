@@ -40,17 +40,13 @@ pageData.pageElements = [
     		key : "skeletalInventories",
     	},
     	linkDataInputs : [
-    		 { 
+    		 {
     			 type : sw.local,
     			 key : "uri",
-    			 varName  : "skeletalInventory",
-    		 },{
-    			 type : sw.constant,
-    			 value : "skeletalInventory",
-    			 varName : "pageUri"
+    			 varName  : "individual",
     		 }
 	    ],
-	    mapping : "pageLoader",
+	    mapping : "defaultPageLoad",
 	    dataFields : [
              {
             	 title : "Label",
