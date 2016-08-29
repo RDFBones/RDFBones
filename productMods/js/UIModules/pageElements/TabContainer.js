@@ -36,14 +36,17 @@ TabContainer.prototype = {
 		this.selected.deselect()
 		this.selected = tab
 	}
+	
 }
 
 var Tab = function(tabContainer, tabDef){
 	
 	this.tabContainer = tabContainer
 	this.tabDef = tabDef
+	this.configData = tabDef
 	this.container = html.div("tab").text(tabDef.tabTitle).
 		click((this.select).bind(this))
+	this.setLocalData()
 	this.initContent()
 }
 
@@ -55,14 +58,27 @@ Tab.prototype = {
 		
 		if(this.tabDef.elements !== undefined){
 			if(this.tabDef.elements.length != 0){
-				$.each(this.tabDef.elements, function(i, element){
-					tmp.push(new PageElementMap[element.type](element).container)
-				})
+				$.each(this.tabDef.elements, (function(i, element){
+					tmp.push(new PageElementMap[element.type](element, this).container)
+				}).bind(this))
 				this.content.append(tmp)
 				return true
 			}
 		}
 		this.content = html.div().text("There is no content")
+	},
+	
+	setLocalData : function(){
+		
+		if(this.configData.localData != undefined){
+			this.localData = new Object()
+			$.each(this.configData.localData, (function(i, data){
+				if(typeof data.type != "undefined"){
+					this.localData[data.key] = DataOperationMap[data.type](this, data)	
+				}
+			}).bind(this))
+			console.log(this.localData)
+		}
 	},
 	
 	init : function(){
