@@ -35,7 +35,11 @@
 	width : 200px;
 }
 
+.linkTableRow {
+	display : table;
+}
+
 .linkTableRow:hover {
 	background-color : #B0B0B0;
-	display : table;
+	cursor : pointer;
 }

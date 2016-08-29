@@ -1,9 +1,17 @@
 
 
 	
-pageData.skeletalInventories = [
-	    { uri : "http://example.org/individual", label : "Test Inventory", type : "Primary Skeletal Inventory"},
-	]
+pageData.skeletalInventories = {
+	    dataOperation : "query",
+	    queryType : "instances",
+	    parameters : [{
+	    	value : {
+				type : sw.constant,
+				value : "http://w3id.org/rdfbones/core#PrimarySkeletalInventory", 
+			},
+	    	name : "class",
+	    }]
+}
 
 pageData.pageElements = [
     {
@@ -56,7 +64,7 @@ pageData.pageElements = [
     	    	 type : sw.literalField,
     	    	 value : {
     	    		 type : sw.local,
-    	    		 key : "type",
+    	    		 key : "typeLabel",
     	    	 }
     	     },
     	]

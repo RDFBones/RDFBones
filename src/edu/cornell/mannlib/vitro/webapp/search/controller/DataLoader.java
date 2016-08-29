@@ -59,6 +59,14 @@ public class DataLoader extends VitroAjaxController {
      /*
       * Coherent Skeletal Division 
       */
+    
+    case "instances" :
+      
+      String[] inputParamInst = { "class"};
+      String[] urisInst = {"uri", "type" };
+      String[] literalsInst = { "label" , "typeLabel"};
+      result = this.performQuery(instancesQuery, inputParamInst, urisInst, literalsInst);
+      break;
       
     case "coherentSkeletalDivisions":
       
@@ -350,6 +358,18 @@ public class DataLoader extends VitroAjaxController {
     resultSet = QueryUtils.getQueryResults(readyQuery, vreq);
     return QueryUtils.getQueryVars(resultSet, uris, literals);
   }
+  
+  
+  private static String instancesQuery =
+      ""
+          + "SELECT ?uri ?label ?type ?typeLabel \n"
+          + " WHERE \n " 
+          + "   { "
+          + "    ?uri              rdf:type                 ?class . \n"
+          + "    ?uri              rdfs:label               ?label . \n"
+          + "    ?uri              vitro:mostSpecificType   ?type  .  \n"
+          + "    ?type             rdfs:label               ?typeLabel . \n"
+          + "   } \n";
   
   private static String CoherentSkeletalDivision =
       ""

@@ -8,7 +8,7 @@ var LinkRow = function(parent, configData, localData){
 LinkRow.prototype = Object.create(Row.prototype)
 
 LinkRow.prototype.getContainer = function(){
-	 return html.link((this.getLinkUri).bind(this), "linkTableRow") 
+	 return	html.link((this.getLinkUri).bind(this), "linkTableRow")
 },
 	
 LinkRow.prototype.getLinkUri = function(){
