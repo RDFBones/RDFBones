@@ -93,7 +93,7 @@ ribCageTab = {
 lowerLimbTab = {
 	type : sw.tab,
 	tabTitle : "Upper Limbs",
-	elements : [ /* lower limb is missing */, bonyTarsal, bonyMetatarsal, bonyPhalanxToe]
+	elements : [ /* lower limb is missing */bonyTarsal, bonyMetatarsal, bonyPhalanxToe]
 }
 
 tabcontainer = {
@@ -101,5 +101,5 @@ tabcontainer = {
 	tabs : [ skullTab, shoulderGirdleTab, upperLimbTab, vertebralTab, lowerLimbTab]
 }
 
-pageData.pageElemnents = [tabContainer]
+pageData.pageElements = [tabcontainer]
 
