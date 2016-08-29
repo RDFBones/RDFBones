@@ -16,7 +16,7 @@ bonyForearm = {
 		},{
 			type : sw.constant,
 			key : "formUri",
-			value : "bonyPartType2",
+			value : "bonyForm2",
 		}],
 	elements : [dryBones]
 }
@@ -36,7 +36,7 @@ bonyCarpal = {
 		},{
 			type : sw.constant,
 			key : "formUri",
-			value : "bonyPartType1",
+			value : "default",
 		}],
 	elements : [dryBones]
 }
@@ -56,7 +56,7 @@ bonyMetacarpal = {
 		},{
 			type : sw.constant,
 			key : "formUri",
-			value : "bonyPartType1",
+			value : "default",
 		}],
 	elements : [dryBones]
 }
@@ -76,7 +76,7 @@ bonyPhalanxFinger = {
 		},{
 			type : sw.constant,
 			key : "formUri",
-			value : "bonyPartType1",
+			value : "default",
 		}],
 	elements : [dryBones]
 	}

@@ -22,6 +22,7 @@ dryBones = {
 	}, {
 		type : sw.local,
 		key : "skeletalDivisionClass",
+		varName : "class"
 	}, {
 		type : sw.local,
 		key : "classUri",

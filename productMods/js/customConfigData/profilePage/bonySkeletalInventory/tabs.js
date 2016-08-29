@@ -14,7 +14,7 @@ skullTab = {
 		},{
 			type : sw.constant,
 			key : "formUri",
-			value : "bonyPartType1",
+			value : "bonyForm1",
 		}],
 	elements : [dryBones]
 }
@@ -25,7 +25,7 @@ shoulderGirdleTab = {
 	localData : [
 		{
 			type : sw.constant,
-			value : FMA + 24144,
+			value : FMA + 24141,
 			key : "skeletalDivisionClass"
 		},{
 			type : sw.constant,
@@ -34,7 +34,7 @@ shoulderGirdleTab = {
 		},{
 			type : sw.constant,
 			key : "formUri",
-			value : "bonyPartType2",
+			value : "bonyForm2",
 		}
 	],
 	elements : [dryBones]
@@ -49,20 +49,20 @@ upperLimbTab = {
 vertebralTab = {
 		
 	type : sw.tab,
-	tabTitle : "Shoulder Girdle",
+	tabTitle : "Vertebra",
 	localData : [
 		{
 			type : sw.constant,
-			value : FMA + 24144,
+			value : FMA + 29738,
 			key : "skeletalDivisionClass"
 		},{
 			type : sw.constant,
-			value : "Bony Part of vertebra",
+			value : "Bony parts of vertebra",
 			key : "typeLabel",
 		},{
 			type : sw.constant,
 			key : "formUri",
-			value : "bonyPartType1",
+			value : "default",
 		}
 	],
 	elements : [dryBones]
@@ -83,7 +83,7 @@ ribCageTab = {
 		},{
 			type : sw.constant,
 			key : "formUri",
-			value : "bonyPartType1",
+			value : "default",
 		}
 	],
 	elements : [dryBones]
@@ -92,7 +92,7 @@ ribCageTab = {
 
 lowerLimbTab = {
 	type : sw.tab,
-	tabTitle : "Upper Limbs",
+	tabTitle : "Lower Limbs",
 	elements : [ /* lower limb is missing */bonyTarsal, bonyMetatarsal, bonyPhalanxToe]
 }
 

@@ -27,16 +27,16 @@ bonyTarsal = {
 	localData : [
 		{
 			type : sw.constant,
-			value : FMA + "232148",
+			value : FMA + "232178",
 			key : "skeletalDivisionClass"
 		},{
 			type : sw.constant,
-			value : "Bony Parts of Carpal Bones",
+			value : "Bony parts of tarsal bones",
 			key : "typeLabel",
 		},{
 			type : sw.constant,
 			key : "formUri",
-			value : "bonyPartType1",
+			value : "default",
 		}],
 	elements : [dryBones]
 }
@@ -51,12 +51,12 @@ bonyMetatarsal = {
 			key : "skeletalDivisionClass"
 		},{
 			type : sw.constant,
-			value : "Bony Parts of Metacarpal Bone",
+			value : "Bony parts of metatarsal bone",
 			key : "typeLabel",
 		},{
 			type : sw.constant,
 			key : "formUri",
-			value : "bonyPartType1",
+			value : "default",
 		}],
 	elements : [dryBones]
 }
@@ -76,7 +76,7 @@ bonyPhalanxToe = {
 		},{
 			type : sw.constant,
 			key : "formUri",
-			value : "bonyPartType1",
+			value : "default",
 		}],
 	elements : [dryBones]
 	}
