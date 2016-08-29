@@ -56,12 +56,13 @@ FormGenerator.prototype = {
 		$.each(formElements, function(i, element){
 			dataToStore[element.varName] = element.dataObject
 		})
-
-		dataToStore["operation"] = dataOperation
 		
 		$.each(globalVarsToSend, function(i, element){
 			dataToStore[element.key] = pageData[element.value]
 		})
+		
+		ext = this.generateSubmissionMap()
+		$.extend(dataToStore, ext)
 		
 		/*
 		 * These data is configuration data 
@@ -75,9 +76,62 @@ FormGenerator.prototype = {
 			data : "dataToStore=" + JSON.stringify(dataToStore)})
 			.done((function(msg) {
 
+				var urlObject = {
+					individual : msg.boneOrgan.uri,
+					completenessState : msg.completenessState.uri,
+					completeness : msg.completeness.uri,
+					pageUri : "boneOrgan",
+				}
+				
 				window.location = baseUrl
 						+ "pageLoader?"
-						+ DataLib.getUrl(urlObject)
+						+ DataLib.getUrl(urlObject)	
+							
 			}).bind(this))
+	},
+	
+	generateSubmissionMap : function(){
+		
+		var obj = new Object()
+		$.each(submitConfig, function(index, value){
+			if(value.value === "undefined"){
+				//Constant
+				if(value.varName === undefined){
+					object[value.key] = pageData[value.key]
+				} else {
+					object[value.varName] = pageData[value.key]
+				}
+			} else {
+				obj[value.varName] = value.value
+			}
+		})
+		return obj 
+	},
+	
+	generateRedirectMap : function(msg){
+		
+		var obj = new Object()
+		$.each(redirectDef, function(index, value){
+			if(value.type == "SUBMISSIONDATA"){
+				if(value.varName === undefined){
+					object[value.key] = msg[value.key].uri
+				} else {
+					object[value.varName] = msg[value.key].uri
+				}
+			} else{
+				if(value.value === "undefined"){
+					//Constant
+					if(value.varName === undefined){
+						object[value.key] = pageData[value.key]
+					} else {
+						object[value.varName] = pageData[value.key]
+					}
+				} else {
+					obj[value.varName] = value.value
+				}
+			}
+
+		})
+		return obj 
 	}
 }
