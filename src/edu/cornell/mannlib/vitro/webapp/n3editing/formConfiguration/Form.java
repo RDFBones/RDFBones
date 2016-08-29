@@ -19,6 +19,17 @@ public class Form {
   public VitroRequest vreq;
   public List<FormElement> formElements = new ArrayList<FormElement>();
   public String dataOperation;
+
+  public List<RequestData> getSubmitConfig() {
+    return submitConfig;
+  }
+
+  public List<RequestData> getRedirectConfig() {
+    return redirectConfig;
+  }
+
+  public List<RequestData> submitConfig = new ArrayList<RequestData>();
+  public List<RequestData> redirectConfig = new ArrayList<RequestData>();
   
   public Map<String, Object> errors = new HashMap<String, Object>();
   public Map<String, DebugData> debugData = new HashMap<String, DebugData>();

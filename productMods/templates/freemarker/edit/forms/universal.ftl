@@ -2,7 +2,9 @@
 	var imgSrc = "${urls.base}/images/general/"
 	var baseUrl = "${urls.base}/"
 </script>
+
 <#include "cssImport.ftl">
+<#include "JS_PageInit.ftl">
 <#include "scriptImport.ftl">
 
 
@@ -42,6 +44,42 @@ ${scripts.add(
 		},
 	</#list>
 	]
+	
+	//Definition of the form submission
+	var submitConfig = [
+		<#list form.submitConfig as conf>
+		{	
+			type : "${conf.type}",
+			<#if conf.key?has_content>
+				key : "${conf.key}",
+			</#if>
+			<#if conf.varName?has_content>
+				varName : "${conf.varName}",
+			</#if>	
+			<#if conf.value?has_content>
+				value : "${conf.value}",
+			</#if>
+		},
+		</#list>
+	]
+	
+	//Definition of the form submission
+	var redirectConfig = [
+		<#list form.redirectConfig as conf>
+		{	type : "${conf.type}",
+			<#if conf.key?has_content>
+				key : "${conf.key}",
+			</#if>	
+			<#if conf.varName?has_content>
+				varName : "${conf.varName}",
+			</#if>	
+			<#if conf.value?has_content>
+				value : "${conf.value}",
+			</#if>
+		},
+		</#list>
+	]
+	
 	
 	<#if form.dataOperation?has_content>
 		var dataOperation = "${form.dataOperation}"
