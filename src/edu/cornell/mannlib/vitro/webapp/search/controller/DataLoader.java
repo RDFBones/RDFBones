@@ -68,6 +68,23 @@ public class DataLoader extends VitroAjaxController {
       result = this.performQuery(instancesQuery, inputParamInst, urisInst, literalsInst);
       break;
       
+    
+    case "completeness" :
+      
+      String[] inputParamComp = { "boneOrgan"};
+      String[] urisComp = {"object"};
+      String[] literalsComp = {};
+      result = this.performQuery(completenessQuery, inputParamComp, urisComp, literalsComp);
+      break;
+      
+    case "completenessState" :
+      
+      String[] inputParamCompState = { "boneOrgan"};
+      String[] urisCompState= {"object"};
+      String[] literalsCompState = {};
+      result = this.performQuery(completenessQueryState, inputParamCompState, urisCompState, literalsCompState);
+      break;  
+      
     case "coherentSkeletalDivisions":
       
       String[] inputParamCSD = { "skeletalInventory" };
@@ -384,6 +401,27 @@ public class DataLoader extends VitroAjaxController {
           + "    ?uri                   rdfs:label               ?label . \n"
           + "    ?uri                   vitro:mostSpecificType   ?type  .  \n"
           + "   } GROUP BY ?uri ?label ?type \n";
+  
+  
+  private static String completenessQuery = 
+      ""
+      + "SELECT ?object \n"
+      + " WHERE \n " 
+      + "   { "
+      + "    ?object                obo:IAO_0000136          ?boneSegment . \n"
+      + "    ?boneSegment           obo:regional_part_of     ?boneOrgan  . \n"
+      + "} ";
+    
+  private static String completenessQueryState =
+      ""
+      + "SELECT ?object \n"
+      + " WHERE \n " 
+      + "   { "
+      + "    ?completeness          obo:OBI_0000999           ?object . \n" 
+      + "    ?completeness          obo:IAO_0000136          ?boneSegment . \n"
+      + "    ?boneSegment           obo:regional_part_of     ?boneOrgan  . \n"
+      + "} ";
+  
   
   private static String SkeletalDivision =
       ""

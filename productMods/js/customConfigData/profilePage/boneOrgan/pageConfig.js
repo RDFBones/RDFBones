@@ -121,3 +121,33 @@ pageData.pageElements = [
 		key : "completenessState"
 	}
 }, ]
+
+
+pageData.completeness = {
+		
+	dataOperation : "query",
+	queryType : "completeness",
+	singleQuery : true,
+	parameters : [{
+	  value : {
+		  type : sw.global,
+		  key : "individual",
+	  },
+	  name : "boneOrgan",
+	}]
+}
+
+pageData.completenessState = {
+		
+	dataOperation : "query",
+	queryType : "completenessState",
+	singleQuery : true,
+	parameters : [{
+	  value : {
+		  type : sw.global,
+		  key : "individual",
+	  },
+	  name : "boneOrgan",
+	}]
+}
+
