@@ -4,6 +4,10 @@ import edu.cornell.mannlib.vitro.webapp.n3editing.rdfdataset.DataSet;
 
 public class FormElement {
   
+  public String getDataType() {
+    return dataType;
+  }
+
   public String type;
   public String varName;
   public String dataType;
