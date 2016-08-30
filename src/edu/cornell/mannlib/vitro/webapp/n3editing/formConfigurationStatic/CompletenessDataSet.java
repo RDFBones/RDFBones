@@ -16,16 +16,12 @@ public class CompletenessDataSet extends ConstantDataSet {
     this.name = new String("testName");
     this.data = new ArrayList<Map<String, String>>();
     
-    this.testMap = new HashMap<String, String>();
-    
-    this.testMap.put("a", "b");
-    
     Map<String, String> complete = new HashMap<String, String>();
-    complete.put("uri", "completeUri");
+    complete.put("uri", "http://w3id.org/rdfbones/core#complete");
     complete.put("label", "Complete");
     
     Map<String, String> incomplete = new HashMap<String, String>();
-    incomplete.put("uri", "incompleteUri");
+    incomplete.put("uri", "http://w3id.org/rdfbones/core#partlyPresent");
     incomplete.put("label", "Partly Present");
     
     this.data.add(complete);
