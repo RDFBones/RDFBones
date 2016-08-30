@@ -20,7 +20,7 @@ public class BonyForm{
     form.dataSets.put("completeness", new CompletenessDataSet());
 
     form.submitConfig.add(new RequestData("class", "skeletalDivisionClass"));
-    form.submitConfig.add(new RequestData("skeletalInventory", "individual"));
+    form.submitConfig.add(new RequestData("individual", "skeletalInventory"));
     
     form.redirectConfig.add(new ConstantRequestData("pageUri", "boneOrgan"));
     form.redirectConfig.add(new SubmissionData("boneOrgan", "individual"));

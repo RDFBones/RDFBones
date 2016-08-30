@@ -10,22 +10,21 @@ FormGenerator.prototype = {
 	initElements : function(){
 
 		//Form Elements
-		var elements = []
+		this.elements = []
 		$.each(formElements, (function(i, value){
 			switch(value.type){
 			case "selector" : 
-				elements.push(new Selector(value, this))
+				this.elements.push(new Selector(value, this))
 			}
 		}).bind(this))
 		//SubmitButton
 		containers = []
 		
-		$.each(elements, function(i, element){
+		$.each(this.elements, function(i, element){
 			containers.push(
 					html.div("margin10").append(element.container))
 		})
 		
-		this.elements = elements
 		this.submitButton = new TextButton("Submit", (this.submit).bind(this)).disable()
 		containers.push(this.submitButton.container)
 		
@@ -53,12 +52,8 @@ FormGenerator.prototype = {
 		
 		//Assemble the JSON objects to store
 		var dataToStore = new Object()
-		$.each(formElements, function(i, element){
+		$.each(this.elements, function(i, element){
 			dataToStore[element.varName] = element.dataObject
-		})
-		
-		$.each(globalVarsToSend, function(i, element){
-			dataToStore[element.key] = pageData[element.value]
 		})
 		
 		ext = this.generateSubmissionMap()
@@ -94,12 +89,12 @@ FormGenerator.prototype = {
 		
 		var obj = new Object()
 		$.each(submitConfig, function(index, value){
-			if(value.value === "undefined"){
+			if(value.value === undefined){
 				//Constant
 				if(value.varName === undefined){
-					object[value.key] = pageData[value.key]
+					obj[value.key] = pageData[value.key]
 				} else {
-					object[value.varName] = pageData[value.key]
+					obj[value.varName] = pageData[value.key]
 				}
 			} else {
 				obj[value.varName] = value.value

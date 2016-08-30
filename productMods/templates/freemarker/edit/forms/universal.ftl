@@ -6,7 +6,7 @@
 <#include "cssImport.ftl">
 <#include "JS_PageInit.ftl">
 <#include "scriptImport.ftl">
-
+<#import "dynamicFormLib.ftl" as lib>
 
 ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/formGeneration/Selector.js"></script>',
@@ -21,66 +21,24 @@ ${scripts.add(
 	var imgSrc = "${urls.base}/images/general/"
 	var baseUrl = "${urls.base}/"
 
+
+	
+	<#assign fields = ["title", "type", "varName", "dataType"]>
+	<#assign baseField = ["uri", "label"]>
+	
 	var formElements = [
 	<#list form.formElements as formElement>
 		{
-			type : "${formElement.type}",
-			<#if formElement.title?has_content>
-				title : "${formElement.title}",
-			</#if>
-			<#if formElement.varName?has_content>
-				varName : "${formElement.varName}",
-			</#if>
-			
-			dataSet : [
-			
-			<#if formElement.dataSet.data?has_content>
-				<#list formElement.dataSet.data as data>
-				{	uri : "${data.uri}",
-					label : "${data.label}" },
-				</#list>
-			</#if>
-			]
+			<@lib.createJSONObjectSub formElement fields />
+			<@lib.createJSONListSub "dataSet" formElement.dataSet.data baseField />
 		},
 	</#list>
 	]
 	
-	//Definition of the form submission
-	var submitConfig = [
-		<#list form.submitConfig as conf>
-		{	
-			type : "${conf.type}",
-			<#if conf.key?has_content>
-				key : "${conf.key}",
-			</#if>
-			<#if conf.varName?has_content>
-				varName : "${conf.varName}",
-			</#if>	
-			<#if conf.value?has_content>
-				value : "${conf.value}",
-			</#if>
-		},
-		</#list>
-	]
-	
-	//Definition of the form submission
-	var redirectConfig = [
-		<#list form.redirectConfig as conf>
-		{	type : "${conf.type}",
-			<#if conf.key?has_content>
-				key : "${conf.key}",
-			</#if>	
-			<#if conf.varName?has_content>
-				varName : "${conf.varName}",
-			</#if>	
-			<#if conf.value?has_content>
-				value : "${conf.value}",
-			</#if>
-		},
-		</#list>
-	]
-	
-	
+	<#assign submitFields = ["type", "key", "varName", "value"]>
+	<@lib.createJSONList "submitConfig" form.submitConfig submitFields />
+	<@lib.createJSONList "redirectConfig" form.redirectConfig submitFields />
+
 	<#if form.dataOperation?has_content>
 		var dataOperation = "${form.dataOperation}"
 	</#if>
