@@ -16,21 +16,21 @@ public class BonyForm{
   
     form.dataOperation = new String("addSingleBoneOf");
     
-    form.dataSets.put("subClasses", SubClassesDataSet.getDataSet());
-    form.dataSets.put("completeness", new CompletenessDataSet());
+    form.dataSets.put("boneOrgan", SubClassesDataSet.getDataSet());
+    form.dataSets.put("comp2State", new CompletenessDataSet());
 
     form.submitConfig.add(new RequestData("class", "skeletalDivisionClass"));
-    form.submitConfig.add(new RequestData("individual", "skeletalInventory"));
+    form.submitConfig.add(new RequestData("individual"));
     
     form.redirectConfig.add(new ConstantRequestData("pageUri", "boneOrgan"));
     form.redirectConfig.add(new SubmissionData("boneOrgan", "individual"));
-    form.redirectConfig.add(new SubmissionData("completeness"));
-    form.redirectConfig.add(new SubmissionData("completenessState"));
+    //form.redirectConfig.add(new SubmissionData("completeness"));
+    //form.redirectConfig.add(new SubmissionData("completenessState"));
     
-    form.formElements.add(new ClassSelector("subClasses", "Bony Part Type"));
-    form.formElements.add(new InstanceSelector("completeness", "Completeness", true));
+    form.formElements.add(new ClassSelector("boneOrgan", "SelectBonyPart"));
+    form.formElements.add(new InstanceSelector("comp2State", "Completeness", true));
     
-    form.triplesToStore = new String("addSingleBoneRegion");
+    form.dataOperation = new String("addSingleBoneRegion");
     return form;
   }
 }

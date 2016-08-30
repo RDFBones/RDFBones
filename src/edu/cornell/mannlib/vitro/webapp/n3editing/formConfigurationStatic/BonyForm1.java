@@ -14,21 +14,21 @@ public class BonyForm1 {
   public static Form getForm(VitroRequest vreq){
     
     Form form = new Form(vreq);
-    form.dataSets.put("classes", BonyDataSet1.getDataSet());
-    form.formElements.add(new ClassSelector("classes", "SelectBonyPart"));
+    form.dataSets.put("boneOrgan", BonyDataSet1.getDataSet());
+    form.formElements.add(new ClassSelector("boneOrgan", "SelectBonyPart"));
     
     form.submitConfig.add(new RequestData("class", "skeletalDivisionClass"));
-    form.submitConfig.add(new RequestData("skeletalInventory", "individual"));
+    form.submitConfig.add(new RequestData("individual"));
     
     form.redirectConfig.add(new ConstantRequestData("pageUri", "boneOrgan"));
     form.redirectConfig.add(new SubmissionData("boneOrgan", "individual"));
-    form.redirectConfig.add(new SubmissionData("completeness"));
-    form.redirectConfig.add(new SubmissionData("completenessState"));
+    //form.redirectConfig.add(new SubmissionData("completeness"));
+    //form.redirectConfig.add(new SubmissionData("comp2State"));
     
-    form.dataSets.put("completeness", new CompletenessDataSet());
-    form.formElements.add(new InstanceSelector("completeness", "Completeness", true));
+    form.dataSets.put("comp2State", new CompletenessDataSet());
+    form.formElements.add(new InstanceSelector("comp2State", "Completeness", true));
 
-    form.triplesToStore = new String("addSingleBoneRegion");
+    form.dataOperation = new String("addSingleBoneRegion");
     
     return form;
   }
