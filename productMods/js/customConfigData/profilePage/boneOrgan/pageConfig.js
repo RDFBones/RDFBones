@@ -14,27 +14,24 @@ pageData.options = [ {
 
 pageData.pageElements = [
      {
-  	   type : sw.linkField,
-  	   title : {
-  		   type : sw.constant,
-  		   value : "SkeletalInventory"
-  	   },
-  	   label : {
-  		   type : sw.constant,
-  		   value : "Test Inventory"
-  	   },
-  	   linkDataInputs : [
-  		   {
-  				type : sw.constant,
-  				key : "pageUri",
-  				value : "skeletalInventory",
-  			},{
-  				type : sw.global,
-  				key : "skeletalInventory",
-  			},
-  	   ],
-  	   mapping : "pageLoader"
-      },   {
+	   type : sw.linkField,
+	   title : {
+		   type : sw.constant,
+		   value : "SkeletalInventory"
+	   },
+	   label : {
+		   type : sw.global,
+		   key : "skeletalInventoryLabel"
+	   },
+	   linkDataInputs : [
+	   {
+			type : sw.global,
+			varName : "individual",
+			key : "skeletalInventory",
+		}
+	   ],
+	   mapping : "defaultPageLoad"
+    },   {
 	   type : sw.linkField,
 	   title : {
 		   type : sw.constant,
@@ -151,3 +148,39 @@ pageData.completenessState = {
 	}]
 }
 
+pageData.skeletalInventory = {
+	dataOperation : "query",
+	queryType : "skeletalInventory3",
+	singleQuery : true,
+	resultKey : "skeletalInventory",
+	parameters : [{
+		value : {
+			type : sw.global,
+			key : "individual",
+		},
+		name : "boneOrgan",
+	}]
+}
+
+pageData.skeletalInventoryLabel = {
+		
+		dataOperation : "query",
+		queryType : "literal",
+		type : "literal",
+		singleQuery : true,
+		parameters : [
+				{
+				value : {
+					type : sw.global,
+					key : "skeletalInventory",
+				},
+				name : "subject",
+				}, {
+					value : {
+						type : sw.constant,
+						value : "http://www.w3.org/2000/01/rdf-schema#label", 
+					},
+					name : "predicate",
+				}
+		]
+	}
