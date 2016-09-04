@@ -36,6 +36,6 @@ Selector.prototype = {
 		/*
 		 * To implement the label of the selector
 		 */
-		this.dataObject.label = this.selector.text()
+		this.dataObject.label = this.selector.find("option:selected").text()
 	}
 }

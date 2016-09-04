@@ -59,9 +59,7 @@ FormGenerator.prototype = {
 		ext = this.generateSubmissionMap()
 		$.extend(dataToStore, ext)
 		
-		/*
-		 * These data is configuration data 
-		 */
+		dataToStore.operation = dataOperation
 		
 		$.ajax({
 			type : 'POST',
@@ -71,16 +69,9 @@ FormGenerator.prototype = {
 			data : "dataToStore=" + JSON.stringify(dataToStore)})
 			.done((function(msg) {
 
-				var urlObject = {
-					individual : msg.boneOrgan.uri,
-					completenessState : msg.completenessState.uri,
-					completeness : msg.completeness.uri,
-					pageUri : "boneOrgan",
-				}
-				
 				window.location = baseUrl
 						+ "pageLoader?"
-						+ DataLib.getUrl(urlObject)	
+						+ DataLib.getUrl(this.generateRedirectMap(msg.object))	
 							
 			}).bind(this))
 	},
@@ -103,23 +94,23 @@ FormGenerator.prototype = {
 		return obj 
 	},
 	
-	generateRedirectMap : function(msg){
+	generateRedirectMap : function(returnObject){
 		
 		var obj = new Object()
-		$.each(redirectDef, function(index, value){
+		$.each(redirectConfig, function(index, value){
 			if(value.type == "SUBMISSIONDATA"){
 				if(value.varName === undefined){
-					object[value.key] = msg[value.key].uri
+					obj[value.key] = returnObject[value.key].uri
 				} else {
-					object[value.varName] = msg[value.key].uri
+					obj[value.varName] = returnObject[value.key].uri
 				}
 			} else{
 				if(value.value === "undefined"){
 					//Constant
 					if(value.varName === undefined){
-						object[value.key] = pageData[value.key]
+						obj[value.key] = pageData[value.key]
 					} else {
-						object[value.varName] = pageData[value.key]
+						obj[value.varName] = pageData[value.key]
 					}
 				} else {
 					obj[value.varName] = value.value
