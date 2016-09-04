@@ -43,7 +43,6 @@ CoherentSkeletalDivision.prototype = {
 				(this.saveRoutine).bind(this)).disable()
 			this.cancelButton = new TextButton("Cancel",
 				(this.cancelRoutine).bind(this), "rightAligned")
-		
 	},
 	
 	init : function(){
@@ -107,7 +106,6 @@ CoherentSkeletalDivision.prototype = {
 		console.log(toSend)
 		PopUpController.init()
 		
-		
 		$.ajax({
 			type : 'POST',
 			context : this,
@@ -123,7 +121,6 @@ CoherentSkeletalDivision.prototype = {
 					pageUri : "coherentSkeletalDivision",
 					individual : msg.object.skeletalSubdivision.uri,
 					skeletalDivision : msg.object.skeletalSubdivision.uri,
-					skeletalInventory : pageData.individual,
 					existingBoneDivisionType : pageData.existingBoneDivisionType,
 					classUri : pageData.classUri,
 				}

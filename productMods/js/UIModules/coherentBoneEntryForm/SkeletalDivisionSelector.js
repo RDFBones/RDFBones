@@ -125,7 +125,6 @@ CoherentSkeletalSubdivisionSelector.prototype = {
 					individual : msg.object.boneDivision.uri,
 					skeletalDivision : msg.object.boneDivision.uri,
 					skeletalDivisionType : pageData.skeletalDivisionType, 
-					skeletalInventory : pageData.individual,
 					existingBoneDivisionType : pageData.existingBoneDivisionType,
 					classUri : pageData.classUri,
 					skeletalRegion : pageData.skeletalRegions.uri
