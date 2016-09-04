@@ -191,6 +191,34 @@ public class DataLoader extends VitroAjaxController {
       String[] literals41 = { "boneOrganCount", "typeLabel"};
       result = this.performQuery(CoherentSkeletalRegionOfSkeletalDivision, inputParam41, uris41, literals41);
       break;
+    
+    case "skeletalInventory1" :  
+      String[] inputParamSI1 = { "skeletalDivision" };
+      String[] urisSI1 = { "skeletalInventory"};
+      String[] literalsSI1 = {};
+      result = this.performQuery(skeletalInventory1, inputParamSI1, urisSI1, literalsSI1);
+      break;
+      
+    case "skeletalInventory2" :  
+      String[] inputParamSI2 = {"coherentSkeletalDivision"};
+      String[] urisSI2 = {"skeletalInventory"};
+      String[] literalsSI2 = {};
+      result = this.performQuery(skeletalInventory2, inputParamSI2, urisSI2, literalsSI2);  
+      break;
+      
+    case "skeletalInventory3" :  
+      String[] inputParamSI3 = { "boneOrgan" };
+      String[] urisSI3 = {"skeletalInventory"};
+      String[] literalsSI3 = {};
+      result = this.performQuery(skeletalInventory3, inputParamSI3, urisSI3, literalsSI3);       
+      break;
+      
+    case "skeletalInventory4" :  
+      String[] inputParamSI4 = { "skeletalInventory" };
+      String[] urisSI4 = {"boneSegment"};
+      String[] literalsSI4 = {};
+      result = this.performQuery(skeletalInventory4, inputParamSI4, urisSI4, literalsSI4);   
+      break;
       
     case "sytemicParts":
       String[] inputParam5 = { "classUri" };
@@ -200,7 +228,6 @@ public class DataLoader extends VitroAjaxController {
       break;
       
     case "subClassesWithout" : 
-      
       String[] inputParam6 = { "classUri"};
       String[] uris6 = {"uri"};
       String[] literals6 = { "label" };
@@ -212,6 +239,7 @@ public class DataLoader extends VitroAjaxController {
       String[] literals7 = { "label"};
       result = this.performQuery(systemicPartsWithout, inputParam7, uris7, literals7);
       break;
+      
     case "systemicPartsWithoutNoBoneOrgan":
       String[] inputParam72 = { "classUri" };
       String[] uris72 = { "uri" };
@@ -401,7 +429,6 @@ public class DataLoader extends VitroAjaxController {
           + "    ?uri                   rdfs:label               ?label . \n"
           + "    ?uri                   vitro:mostSpecificType   ?type  .  \n"
           + "   } GROUP BY ?uri ?label ?type \n";
-  
   
   private static String completenessQuery = 
       ""
@@ -667,6 +694,48 @@ public class DataLoader extends VitroAjaxController {
           + "    ?boneOrgan                 obo:systemic_part_of  ?coherentSkeletalRegion ."    
           + " } GROUP BY ?coherentSkeletalRegion ?type ?typeLabel  ";
   
+  
+  private static String skeletalInventory1 =
+      ""
+          + "SELECT ?skeletalInventory \n"
+          + " WHERE \n " 
+          + "   { "
+          + "    ?coherentSkeletalRegion    obo:systemic_part_of    ?skeletalDivision . \n"
+          + "    ?boneOrgan                 obo:systemic_part_of    ?coherentSkeletalRegion . \n"
+          + "    ?boneSegment               obo:regional_part_of    ?boneOrgan  . \n"  
+          + "    ?completeness              obo:IAO_0000136         ?boneSegment . \n" 
+          + "    ?skeletalInventory         obo:BFO_0000051         ?completeness . \n"
+          + " } LIMIT 1 ";
+  
+  private static String skeletalInventory2 =
+      ""
+          + "SELECT ?skeletalInventory \n"
+          + " WHERE \n " 
+          + "   { "
+          + "    ?boneOrgan                 obo:systemic_part_of    ?coherentSkeletalDivision . "
+          + "    ?boneSegment               obo:regional_part_of    ?boneOrgan  . "  
+          + "    ?completeness              obo:IAO_0000136         ?boneSegment . " 
+          + "    ?skeletalInventory         obo:BFO_0000051         ?completeness . "
+          + " } LIMIT 1 ";
+  
+  private static String skeletalInventory3 =
+      ""
+          + "SELECT ?skeletalInventory \n"
+          + " WHERE \n " 
+          + "   { "
+          + "    ?boneSegment               obo:regional_part_of    ?boneOrgan  . "  
+          + "    ?completeness              obo:IAO_0000136         ?boneSegment . " 
+          + "    ?skeletalInventory         obo:BFO_0000051         ?completeness . "
+          + " } LIMIT 1 ";
+ 
+  private static String skeletalInventory4 =
+      ""
+          + "SELECT ?skeletalInventory \n"
+          + " WHERE \n " 
+          + "   { "
+          + "    ?completeness              obo:IAO_0000136         ?boneSegment . " 
+          + "    ?skeletalInventory         obo:BFO_0000051         ?completeness . "
+          + " } LIMIT 1 ";
   
   private static String subClassQuery =
        ""
