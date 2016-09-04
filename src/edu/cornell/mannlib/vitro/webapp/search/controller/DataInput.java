@@ -31,6 +31,7 @@ import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import edu.cornell.mannlib.vitro.webapp.application.ApplicationUtils;
 import edu.cornell.mannlib.vitro.webapp.beans.DataPropertyStatementImpl;
 import edu.cornell.mannlib.vitro.webapp.beans.ObjectPropertyStatementImpl;
+import edu.cornell.mannlib.vitro.webapp.config.AddBonyPart;
 import edu.cornell.mannlib.vitro.webapp.config.AddCoherentBoneRegion;
 import edu.cornell.mannlib.vitro.webapp.config.AddSingleBone;
 import edu.cornell.mannlib.vitro.webapp.config.AddSingleBoneOf;
@@ -75,6 +76,7 @@ public class DataInput extends VitroAjaxController {
         throws IOException, ServletException {
   
         log.info("arrived");
+        
         /*
         log.info(vreq.getParameterMap().toString());
         log.info(vreq.getParameter("dataToStore").toString());
@@ -82,7 +84,6 @@ public class DataInput extends VitroAjaxController {
         
         List<Triple> tripleToStore = null;
        
-
         JSONObject json = new JSONObject();
         JSONObject toSend = new JSONObject();
 
@@ -96,6 +97,9 @@ public class DataInput extends VitroAjaxController {
           
           case "addSingleBoneOf" : 
               tripleToStore = AddSingleBoneOf.getTriples();
+              break;
+          case "addBonyPart" :
+              tripleToStore = AddBonyPart.getTriples();
               break;
           case "addCoherentBoneRegion" : 
               tripleToStore = AddCoherentBoneRegion.getTriples();
