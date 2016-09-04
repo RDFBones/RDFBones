@@ -6,12 +6,14 @@ bibo:Document
       vitro:customDisplayViewAnnot
               "documentProfilePage.ftl"^^xsd:string .
 
-<http://w3id.org/rdfbones/core#SkeletalInventory>
+<http://w3id.org/rdfbones/core#PrimarySkeletalInventoryDryBone>				
       vitro:customDisplayViewAnnot
-              "mainPage.ftl"^^xsd:string .
-            
+              "bonyPartSkeletalInventory.ftl"^^xsd:string .
 
-#bibo:Image				
-#      vitro:customDisplayViewAnnot
-#              "imageProfilePage.ftl"^^xsd:string .
-              
+<http://w3id.org/rdfbones/core#PrimarySkeletalInventory>				
+      vitro:customDisplayViewAnnot
+              "skeletalInventory.ftl"^^xsd:string .              
+
+<http://purl.obolibrary.org/obo/FMA_5018>
+      vitro:customDisplayViewAnnot
+              "boneOrgan.ftl"^^xsd:string .

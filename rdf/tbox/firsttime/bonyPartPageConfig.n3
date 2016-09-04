@@ -1,7 +1,0 @@
-@prefix vitro:   <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#> .
-@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
-
-
-<http://w3id.org/rdfbones/core#PrimarySkeletalInventoryDryBone>				
-      vitro:customDisplayViewAnnot
-              "bonyPartSkeletalInventory.ftl"^^xsd:string .
