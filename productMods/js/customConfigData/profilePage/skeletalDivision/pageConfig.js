@@ -12,20 +12,17 @@ pageData.pageElements = [
 		   value : "SkeletalInventory"
 	   },
 	   label : {
-		   type : sw.constant,
-		   value : "Test Inventory"
+		   type : sw.global,
+		   key : "skeletalInventoryLabel"
 	   },
 	   linkDataInputs : [
-	        {
-				type : sw.constant,
-				key : "pageUri",
-				value : "skeletalInventory",
-			},{
-				type : sw.global,
-				key : "skeletalInventory",
-			},
+	   {
+			type : sw.global,
+			varName : "individual",
+			key : "skeletalInventory",
+		}
 	   ],
-	   mapping : "pageLoader"
+	   mapping : "defaultPageLoad"
     }, {
 	   type : sw.literalEditor,
 	   title : {
