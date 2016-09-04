@@ -30,7 +30,7 @@ public class BonyForm{
     form.formElements.add(new ClassSelector("boneOrgan", "SelectBonyPart"));
     form.formElements.add(new InstanceSelector("comp2State", "Completeness", true));
     
-    form.dataOperation = new String("addSingleBoneRegion");
+    form.dataOperation = new String("addBonyPart");
     return form;
   }
 }

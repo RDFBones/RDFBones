@@ -20,7 +20,7 @@ public class BonyForm2 {
     form.dataSets.put("comp2State", new CompletenessDataSet());
     form.formElements.add(new InstanceSelector("comp2State", "Completeness", true));
 
-    form.dataOperation = new String("addSingleBoneRegion");
+    form.dataOperation = new String("addBonyPart");
     
     form.submitConfig.add(new RequestData("class", "skeletalDivisionClass"));
     form.submitConfig.add(new RequestData("individual"));
