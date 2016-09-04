@@ -101,5 +101,19 @@ tabcontainer = {
 	tabs : [ skullTab, shoulderGirdleTab, upperLimbTab, vertebralTab, lowerLimbTab]
 }
 
-pageData.pageElements = [tabcontainer]
+pageData.pageElements = [{
+	type : sw.literalEditor,
+	title : {
+		type : sw.constant,
+		value : "Label",
+	},
+	subject : {
+		type : sw.global,
+		key : "individual",
+	},
+	predicate : {
+		type : sw.constant,
+		value : "rdfs:label",
+	}
+}, tabcontainer]
 
