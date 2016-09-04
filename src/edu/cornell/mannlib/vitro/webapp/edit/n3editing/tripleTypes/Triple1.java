@@ -22,17 +22,6 @@ public class Triple1 extends Triple{
   private static final long serialVersionUID = 1L;
   private static final Log log = LogFactory.getLog(Triple1.class);
   
-  public String subject;
-  public String predicate;
-  public String object;
-  public String newVarName;
-  public String fixUri;
-  public boolean inverse;
-  
-  public String from;
-  //public boolean fromObject;
-  //public boolean fromBoth;
-
   public Triple1(String subject, String predicate, String object) {
     super(subject, predicate, object);
   }
@@ -42,34 +31,7 @@ public class Triple1 extends Triple{
     super(subject, predicate, object, from);
   }
 
-  public boolean valid(String key) {
-
-    /*
-     * Key is the starting variable to the triple
-     */
-    
-    switch(this.from){
-    
-    case "all" :
-        return true;
-    case "object" :
-        if (key.equals(this.object)) {
-          return true;
-        } else {
-          return false;
-        }
-    case "subject":
-        if (key.equals(this.subject)) {
-          return true;
-        } else {
-          return false;
-        }
-     default :
-        return false;
-    }
-    
-  }
-
+  @Override
   public void createTriples(TripleCreator creator, String key, JSONObject obj)
     throws JSONException {
 
@@ -169,31 +131,6 @@ public class Triple1 extends Triple{
      * @Task
      * Figure out a use case where this could be useful
      */
-  }
-
-  public void createTriple(TripleCreator creator, JSONObject obj)
-    throws JSONException {
-
-    if (obj.get("type").equals("new")) {
-      creator.createInstance(obj);
-    }
-
-    switch(this.from){
-      
-    case "object" : 
-      creator.createTriple(obj.getString("uri"), this.predicate, this.fixUri);
-      break;
-    case "subject" :
-      creator.createTriple(this.fixUri, this.predicate, obj.getString("uri"));
-      break;
-    default :
-      break;
-    }
-  }
-  
-  public void logMe(){
-    
-    log.info(this.subject + "  " + this.predicate + "  " + this.object);
   }
 
 }

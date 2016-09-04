@@ -27,7 +27,7 @@ public class ConstantNewInstance1 extends Triple{
   }
   
   String classUri;
-  
+  @Override
   public void createTriples(TripleCreator creator, String key, JSONObject obj) throws JSONException{
 
     /*
