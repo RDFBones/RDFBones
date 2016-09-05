@@ -214,7 +214,12 @@ PageDataPerform.prototype = {
 		
 		if(array == null){
 			if(dataOperation.singleQuery != undefined){
-				this.sendSingleQuery(data, localData["this"], dataQueue[level].key)
+				if(dataOperation.resultKey !== "undefined"){
+					this.sendSingleQuery(data, localData["this"], dataQueue[level].key, 
+							dataOperation.resultKey)
+				} else {
+					this.sendSingleQuery(data, localData["this"], dataQueue[level].key)	
+				}
 			} else {
 				this.sendQuery(data, localData.dataToStore, dataOperation)
 			}		
@@ -257,14 +262,18 @@ PageDataPerform.prototype = {
 		}).bind(this))
 	},
 
-	sendSingleQuery : function(data, object, key){
+	sendSingleQuery : function(data, object, key, resultKey){
 		
 		$.ajax({
 			dataType : "json",
 			url : baseUrl + "dataLoader",
 			data : data,
 		}).done((function(result){
-			object[key] = result[0].object
+			if(resultKey !== undefined){
+				object[key] = result[0][resultKey]
+			} else {
+				object[key] = result[0].object
+			}
 			this.checkReady()
 		}).bind(this))
 	},

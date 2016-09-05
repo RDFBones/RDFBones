@@ -18,6 +18,7 @@ var ImgSrc = {
 		plus : this.folder + "plus.png",
 		jump : this.folder + "jump.png",
 		list : this.folder + "list.png",
+		bin : this.folder + "rubbish-bin.png",
 	}
 
 var ImgUI = {

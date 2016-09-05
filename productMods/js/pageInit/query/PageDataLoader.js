@@ -88,14 +88,11 @@ PageDataLoader.prototype = {
 						url : baseUrl + query.mapping,
 						data : data
 					}).done((function(result) {
-						if(query.singleData != undefined){
-							pageData[query.toVariable] = result[0].object
-						} else {
-							if (pageData[query.toVariable] === undefined) {
-								pageData[query.toVariable] = []
-							}
-							pageData[query.toVariable] = result
+
+						if (pageData[query.toVariable] === undefined) {
+							pageData[query.toVariable] = []
 						}
+						pageData[query.toVariable] = result
 						this.checkIfAllArrived(i)
 					}).bind(this))
 				}
