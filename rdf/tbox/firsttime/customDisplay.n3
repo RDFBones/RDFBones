@@ -14,6 +14,10 @@ bibo:Document
       vitro:customDisplayViewAnnot
               "skeletalInventory.ftl"^^xsd:string .              
 
+<http://purl.obolibrary.org/obo/FMA_83129>
+      vitro:customDisplayViewAnnot
+              "boneOrgan.ftl"^^xsd:string .
+
 <http://purl.obolibrary.org/obo/FMA_5018>
       vitro:customDisplayViewAnnot
               "boneOrgan.ftl"^^xsd:string .
