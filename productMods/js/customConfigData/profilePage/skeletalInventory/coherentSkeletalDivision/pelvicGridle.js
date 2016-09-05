@@ -37,7 +37,7 @@ coherentBonyPelvis = {
 			key : "simpleQuery",
 		}, {
 			type : sw.constant,
-			value : "Coherent Skeletal Divisions of Bony Pelvis",
+			value : "Skeletal Divisions of Bony Pelvis",
 			key : "typeLabel",
 		}],
 		elements : [ skeletalDivisionData]

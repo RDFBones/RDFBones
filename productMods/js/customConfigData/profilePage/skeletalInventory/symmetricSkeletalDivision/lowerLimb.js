@@ -70,7 +70,7 @@ tarsalbones = {
 				},
 				{
 					type : sw.constant,
-					value : "Tarsal Bones",
+					value : "Set of Tarsal Bones",
 					key : "typeLabel",
 				},
 				{
@@ -95,7 +95,7 @@ metatarsalbones = {
 					key : "skeletalDivisionType",
 				}, {
 					type : sw.constant,
-					value : "Metatarsal Bones",
+					value : "Set of Metatarsal Bones",
 					key : "typeLabel",
 				},{
 					type : sw.constant,
@@ -128,7 +128,7 @@ singleLowerLimb = {
 		        	         	FMA + "78512"]*/
 		        },{
 					type : sw.constant,
-					value : "Single Bone Organs of Lower Limb",
+					value : "Single Bones of Lower Limb",
 					key : "typeLabel",
 				}] ,
 		elements : [ singleBones ]

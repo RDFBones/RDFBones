@@ -26,6 +26,7 @@
 	display : inline-block;
 	margin : 5px;
 	width : 200px;
+	font-size : small;
 }
 
 .literalFieldMiddle {
@@ -33,6 +34,7 @@
 	display : inline-block;
 	margin : 5px;
 	width : 200px;
+	font-size : small;
 }
 
 .linkTableRow {

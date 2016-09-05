@@ -41,7 +41,7 @@ carpalbones = {
 		key : "skeletalDivisionType",
 	}, {
 		type : sw.constant,
-		value : "Carpal Bones",
+		value : "Set of Carpal Bones",
 		key : "typeLabel",
 	}, {
 		type : sw.constant,
@@ -65,7 +65,7 @@ metacarpalbones = {
 		key : "skeletalDivisionType",
 	}, {
 		type : sw.constant,
-		value : "Metacarpal Bones",
+		value : "Set of Metacarpal Bones",
 		key : "typeLabel",
 	}, {
 		type : sw.constant,
@@ -92,7 +92,7 @@ phalangesofhand = {
 		key : "skeletalDivisionType",
 	}, {
 		type : sw.constant,
-		value : "Phalanges of Hand",
+		value : "Set of Phalanges of Hand",
 		key : "typeLabel",
 	}, {
 		type : sw.constant,
@@ -127,7 +127,7 @@ singleUpperLimb = {
 		        	         ]*/
 		        },{
 					type : sw.constant,
-					value : "Single Bone Organs of Upper Limb",
+					value : "Single Bones of Upper Limb",
 					key : "typeLabel",
 				}] ,
 		elements : [ singleBones ]

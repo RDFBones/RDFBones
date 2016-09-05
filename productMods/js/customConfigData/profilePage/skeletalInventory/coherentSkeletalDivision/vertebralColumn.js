@@ -33,7 +33,7 @@ coherentVertebra = {
 			key : "classSelection"
 		}, {
 			type : sw.constant,
-			value : "Coherent Skeletal Divisions of Vertebral Column",
+			value : "Skeletal Divisions of Vertebral Column",
 			key : "typeLabel",
 		}],
 		elements : [ skeletalDivisionData]
@@ -58,7 +58,7 @@ singleVertebra = {
 		        	value : FMA + "9914",
 		        },{
 					type : sw.constant,
-					value : "Single Bone Organs of Vertebra",
+					value : "Single Bones of Vertebral Column",
 					key : "typeLabel",
 				}] ,
 		elements : [ singleBones ]

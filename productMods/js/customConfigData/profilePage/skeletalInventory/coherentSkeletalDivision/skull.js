@@ -25,7 +25,7 @@ skullDivision = {
 					key : "skeletalDivisionType"
 				}, {
 					type : sw.constant,
-					value : "Coherent Skeletal Divisions of Skull",
+					value : "Skeletal Divisions of Skull",
 					key : "typeLabel",
 				},{
 					type : sw.constant,
@@ -57,7 +57,7 @@ singleSkull = {
 	        	value : FMA + "46565",
 	        },{
 				type : sw.constant,
-				value : "Single Bone Organs of Skull",
+				value : "Single Bones of Skull",
 				key : "typeLabel",
 			}, {
 				type : sw.constant,
