@@ -5,7 +5,7 @@ var SelectorAddField = function(configData){
 	this.container = html.form("/vivo/newInstance", configData.id)
 	this.title = html.div("title").text(configData.title)
 	this.hidden = html.hiddenInput("label")
-	this.select = html.div("addFieldContainer").css("margin-left", "15px")
+	this.select = html.div("addFieldContainer").css("margin-left", "10px")
 	
 	console.log(configData.listElements)
 	
@@ -24,7 +24,7 @@ var SelectorAddField = function(configData){
 		.append(this.select
 				.append(this.selector.container.addClass("inline")))
 		.append(this.hidden)
-		.append(this.submit)	
+		.append(html.div("margin10").append(this.submit))	
 }
 
 SelectorAddField.prototype = {

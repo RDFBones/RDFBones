@@ -45,3 +45,10 @@
 	background-color : #B0B0B0;
 	cursor : pointer;
 }
+
+.tabContentContainer {
+	border : 1px solid #D3D3D3;
+	margin : 10px;
+	padding : 3px;
+	width : 700px;
+}

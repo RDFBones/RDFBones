@@ -4,7 +4,7 @@ var TabContainer = function(configData){
 	
 	this.configData = configData
 	this.tabContainer = html.div("tabContainer")
-	this.contentContainer = html.div("contentContainer")
+	this.contentContainer = html.div("tabContentContainer")
 	this.container = html.div("tabContainerCont")
 				.append(this.tabContainer)
 				.append(this.contentContainer)
