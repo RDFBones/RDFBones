@@ -24,7 +24,7 @@ public class AddSkeletalRegion {
         "boneOrgan", "http://w3id.org/rdfbones/core#EntireBone", "object"));
     triples.add(new ConstantNewInstance("completeness",
         "http://purl.obolibrary.org/obo/IAO_0000136", "boneSegment",
-        "http://w3id.org/rdfbones/core#Completeness2State", "object"));
+        "http://w3id.org/rdfbones/core#Completeness2States", "object"));
     triples.add(new Triple("completeness",
         "http://purl.obolibrary.org/obo/OBI_0000999", "comp2State", "subject"));
     triples.add(new Triple("individual",
