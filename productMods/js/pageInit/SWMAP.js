@@ -12,6 +12,7 @@ var sw = {
 		literalFieldMiddle : swPrefix + "LiteralFieldMiddle",
 		editButton : swPrefix + "EditButton",
 		deleteButton : swPrefix + "DeleteButton",
+		binButton : swPrefix + "BinButton",
 		linkDataTable : swPrefix + "LinkDataTable",
 		selectorAddField : swPrefix + "SelectorAddField",
 		global : swPrefix + "global",
