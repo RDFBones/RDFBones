@@ -185,11 +185,11 @@ public class DataLoader extends VitroAjaxController {
       result = this.performQuery(SkeletalRegionQuery, inputParam411, uris411, literals411);
       break;  
       
-    case "CoherentSkeletalRegionOfSkeletalDivision" :
-      String[] inputParam41 = { "skeletalDivision" };
-      String[] uris41 = { "coherentSkeletalRegion", "type" };
-      String[] literals41 = { "boneOrganCount", "typeLabel"};
-      result = this.performQuery(CoherentSkeletalRegionOfSkeletalDivision, inputParam41, uris41, literals41);
+    case "skeletalDivisionOfCoherentSkeletalDivision" :
+      String[] inputParam41 = { "coherentSkeletalDivision" };
+      String[] uris41 = { "uri", "type" };
+      String[] literals41 = { "systemicPartCount", "typeLabel"};
+      result = this.performQuery(skeletalDivisionOfCoherentSkeletalDivision, inputParam41, uris41, literals41);
       break;
     
     case "skeletalInventory1" :  
@@ -683,16 +683,16 @@ public class DataLoader extends VitroAjaxController {
           + " } ";
   
   
-  private static String CoherentSkeletalRegionOfSkeletalDivision =
+  private static String skeletalDivisionOfCoherentSkeletalDivision =
       ""
-          + "SELECT ?coherentSkeletalRegion ?type ?typeLabel (COUNT(?boneOrgan) as ?boneOrganCount)  \n"
+          + "SELECT ?uri ?type ?typeLabel (COUNT(?systemicPart) as ?systemicPartCount)  \n"
           + " WHERE \n " 
           + "   { "
-          + "    ?coherentSkeletalRegion    obo:systemic_part_of    ?skeletalDivision ."
-          + "    ?coherentSkeletalRegion    vitro:mostSpecificType  ?type ."
-          + "    ?type                      rdfs:label            ?typeLabel . \n" 
-          + "    ?boneOrgan                 obo:systemic_part_of  ?coherentSkeletalRegion ."    
-          + " } GROUP BY ?coherentSkeletalRegion ?type ?typeLabel  ";
+          + "    ?uri                       obo:systemic_part_of    ?coherentSkeletalDivision . \n"
+          + "    ?uri                       vitro:mostSpecificType  ?type . \n"
+          + "    ?type                      rdfs:label              ?typeLabel . \n" 
+          + "    ?systemicPart              obo:systemic_part_of    ?uri ."    
+          + " } GROUP BY ?uri ?type ?typeLabel  ";
   
   
   private static String skeletalInventory1 =
