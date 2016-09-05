@@ -9,6 +9,7 @@ var LinkField = function(configData){
 	this.assemble()
 }
 
+
 LinkField.prototype = {
 	
 	assemble : function(){

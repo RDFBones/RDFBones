@@ -6,6 +6,9 @@ var EditButtonLink = function(parent, configData){
 
 EditButtonLink.prototype = Object.create(ParentButtonLink.prototype)
 
+
+
+
 var DeleteButtonLink = function(parent, configData){
 	
 	this.configData = configData
@@ -74,3 +77,13 @@ DeleteButtonLink.prototype = {
 		})
 	}
 }
+
+var BinButtonLink = function(parent, configData){
+	
+	this.configData = configData
+	this.parent = parent
+	this.assembleData()
+	this.container = new Button("bin", (this.routine).bind(this)).container
+}
+
+BinButtonLink.prototype = Object.create(DeleteButtonLink.prototype)

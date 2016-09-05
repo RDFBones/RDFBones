@@ -24,7 +24,7 @@ DataTable.prototype.setElements = function() {
 
 DataTable.prototype.loadTableHeader = function() {
 	$.each(this.configData.dataFields, (function(j, field) {
-		if (field.type != sw.editButton && field.type != sw.deleteButton) {
+		if (field.type != sw.editButton && field.type != sw.deleteButton && field.type != sw.binButton) {
 			this.header.append(html.div("tableTitle").text(field.title))
 		}
 	}).bind(this))
