@@ -31,7 +31,7 @@ pageData.pageElements = [
 		}
 	   ],
 	   mapping : "defaultPageLoad"
-    },   {
+    },  /*{
 	   type : sw.linkField,
 	   title : {
 		   type : sw.constant,
@@ -66,7 +66,7 @@ pageData.pageElements = [
 			}
 		},
 	   mapping : "pageLoader"
-    },
+    }, */
 {
 	type : sw.literalEditor,
 	title : {

@@ -82,7 +82,7 @@ dryBones = {
 		}],
 		mapping : "pageLoader",
 	}, {	
-		type : sw.deleteButton,
+		type : sw.binButton,
 		linkDataInputs : [
 		    {
 				type : sw.local,

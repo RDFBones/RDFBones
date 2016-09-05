@@ -3,7 +3,7 @@ skeletalInventory = {
 	name : "skeletalInventory",
 }
 
-pageData.coherentSkeletalRegions = {
+pageData.coherentSkeletalDivisions = {
 	dataOperation : "query",
 	queryType : "coherentSkeletalDivisions",
 	parameters : [skeletalInventory],
@@ -26,4 +26,3 @@ pageData.singleBones = {
 	}],
 	sortBy : "skeletalDivisionType",
 }
-

@@ -116,7 +116,7 @@ pageData.pageElements = [
 		],
 		mapping : "pageLoader",
 	}, {	
-		type : sw.deleteButton,
+		type : sw.binButton,
 		linkDataInputs : [
 		    {
 				type : sw.local,
@@ -124,11 +124,25 @@ pageData.pageElements = [
 				varName : "boneOrgan",
 			}, {
 				type : sw.constant,
-				value : "deleteOrganFromDivision",
+				value : "deleteBoneOrgan",
 				key : "operation",
 			}
 		],
-		afterProcess : "kutyaLo",
+		mapping : "delete",
+	}, {	
+		type : sw.deleteButton,
+		linkDataInputs : [
+		    {
+				type : sw.local,
+				key : "uri",
+				varName : "part",
+			}, {
+				type : sw.constant,
+				value : "deleteFromSystemicParent",
+				key : "operation",
+			}
+		],
+		afterProcess : "It works as a flag simply",
 		mapping : "delete",
 	} ]
 } ]

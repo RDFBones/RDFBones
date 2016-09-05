@@ -64,7 +64,7 @@ pageData.pageElements = [
 	mapping : "pageLoader",
 	dataToDisplay : {
 		type : sw.global,
-		key : "boneOrgans",
+		key : "skeletalDivisions",
 	},
 	dataFields : [ {
 		type : sw.literalField,
@@ -78,7 +78,7 @@ pageData.pageElements = [
 		title : "Number of bone organs",
 		value : {
 			type : sw.local,
-			key : "boneOrganCount",
+			key : "systemicPartCount",
 		}
 	}, {	
 		type : sw.editButton,
@@ -97,7 +97,7 @@ pageData.pageElements = [
 				value : "skeletalDivision",
 			},{
 				type : sw.local,
-				key : "coherentSkeletalRegion",
+				key : "uri",
 				varName : "individual",
 			},{
 				type : sw.global,
@@ -110,18 +110,33 @@ pageData.pageElements = [
 		],
 		mapping : "pageLoader",
 	}, {	
-		type : sw.deleteButton,
+		type : sw.binButton,
 		linkDataInputs : [
 		    {
 				type : sw.local,
-				key : "boneOrgan",
+				key : "uri",
+				varName : "skeletalDivision",
 			}, {
 				type : sw.constant,
-				value : "deleteCoherentFromSubivision",
+				value : "deleteSkeletalDivision",
 				key : "operation",
 			}
 		],
 		mapping : "delete",
-	} ]
+	}, {	
+		type : sw.deleteButton,
+		linkDataInputs : [
+		    {
+				type : sw.local,
+				key : "uri",
+				varName : "part"
+			}, {
+				type : sw.constant,
+				value : "deleteFromSystemicParent",
+				key : "operation",
+			}
+		],
+		mapping : "delete",
+	},  ]
 } ]
 

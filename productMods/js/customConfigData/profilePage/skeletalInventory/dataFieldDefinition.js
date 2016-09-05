@@ -39,10 +39,10 @@ ribData = {
 		}
 	}, {
 		type : sw.literalFieldMiddle,
-		title : "Number Skeletal Divisions",
+		title : "Type",
 		value : {
 			type : sw.local,
-			key : "skeletalDivisionCount",
+			key : "type",
 		}
 	}, {
 		type : sw.editButton,
@@ -53,7 +53,7 @@ ribData = {
 		}, {
 			type : sw.constant,
 			varName : "pageUri",
-			value : "coherentSkeletalDivision",
+			value : "singleBones",
 		}, {
 			type : sw.local,
 			key : "uri",
@@ -106,7 +106,7 @@ coherentSkeletalDivisionData = {
 		type : sw.field,
 		of : {
 			type : sw.global,
-			key : "coherentSkeletalRegions"
+			key : "coherentSkeletalDivisions"
 		},
 		key : {
 			type : sw.local,
@@ -148,16 +148,16 @@ coherentSkeletalDivisionData = {
 			value : "type",
 		}],
 		mapping : "pageLoader",
-	}, {	
-		type : sw.deleteButton,
+	},  {	
+		type : sw.binButton,
 		linkDataInputs : [
-		    {
+  		    {
 				type : sw.local,
 				key : "uri",
-				varName : "coherentDivision",
+				varName : "coherentSkeletalDivision",
 			}, {
 				type : sw.constant,
-				value : "deleteCoherentDivision",
+				value : "deleteCoherentSkeletalDivision",
 				key : "operation",
 			}
 		],
@@ -251,20 +251,20 @@ skeletalDivisionData = {
 		} ],
 		mapping : "pageLoader",
 	}, {	
-		type : sw.deleteButton,
+		type : sw.binButton,
 		linkDataInputs : [
 		    {
 				type : sw.local,
 				key : "uri",
-				varName : "boneDivision",
+				varName : "skeletalDivision",
 			}, {
 				type : sw.constant,
-				value : "deleteDivision",
+				value : "deleteSkeletalDivision",
 				key : "operation",
 			}
 		],
 		mapping : "delete",
-	} ]
+	}]
 }
 
 singleBones = {
@@ -346,7 +346,7 @@ singleBones = {
 			}],
 			mapping : "pageLoader",
 		}, {	
-			type : sw.deleteButton,
+			type : sw.binButton,
 			linkDataInputs : [
 			    {
 					type : sw.local,
