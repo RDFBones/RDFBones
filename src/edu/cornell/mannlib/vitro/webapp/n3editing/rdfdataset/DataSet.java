@@ -23,7 +23,6 @@ public class DataSet {
   
   public List<String> data1;
   public List<Map<String, String>> data;
-  public Map<String, String> testMap;
   
   public String getName(){
     return name;

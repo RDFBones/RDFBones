@@ -132,6 +132,15 @@ public class N3Utils {
       return toReturn;
     }
     
+    public static String subInputUriQueryList(String query, 
+      List<String> parameters, VitroRequest vreq){
+      String toReturn = query;
+      for(String param : parameters){
+        toReturn = toReturn.replace("?" + param, "<" + vreq.getParameter(param) + ">");
+       }
+      return toReturn;
+    }
+    
     public static String subPredicateUriQuery(String query, 
       String[] parameters, VitroRequest vreq){
       String toReturn = query;

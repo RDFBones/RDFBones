@@ -37,7 +37,7 @@ public class TripleCreator {
   private NewURIMaker newUri;
 
   public JSONObject inputData;
-  List<Triple> tripleDefinition;
+  public List<Triple> tripleDefinition;
   List<Triple> triplesToCreate;
   List<Triple> dataTriplesToCreate;
 
@@ -63,7 +63,7 @@ public class TripleCreator {
     this.dataTriplesToCreate = new ArrayList<Triple>();
 
     this.inputData = json;
-
+    log.info("tripleDefinition " + this.tripleDefinition.size());
     for (Triple triple : this.tripleDefinition) {
       Iterator<String> keys = this.inputData.keys();
       while (keys.hasNext()) {
@@ -124,11 +124,42 @@ public class TripleCreator {
     }
   }
 
-  public void process(JSONObject obj, String varName) throws JSONException {
+  public void process(JSONObject obj, String newVarName) throws JSONException {
 
+    /*
     for (Triple triple : this.tripleDefinition) {
       if (triple.valid(varName)) {
         triple.createTriples(this, varName, obj);
+      }
+    }*/
+    for(Triple triple : this.tripleDefinition){
+      String from = triple.from.equals("subject") ? triple.subject : triple.object;
+      String to = triple.from.equals("subject") ? triple.object : triple.subject;
+      log.info("From : " + from + "  newVarName : " + newVarName);
+      if(from.equals(newVarName)){
+        
+        triple.createTriples(this, from, obj);
+        /*
+        if(triple instanceof ConstantNewInstance){
+          log.info("inside");
+          triple.createTriples(this, from, obj);
+        } else { //instanceof Triple
+           //Check if the object' (to) is in the 
+          log.info("To " + to);
+          Iterator<String> keys11 = obj.keys();
+          log.info(keys11);
+          while (keys11.hasNext()) {
+            // If the object has to be new then we create it to new
+            String k = keys11.next();
+            if (k.equals(to)) {
+              log.info("objectFinal");
+              log.info(obj.toString());
+              triple.createTriples(this, from, obj);
+              break;
+            }
+          } 
+        }
+        */
       }
     }
   }

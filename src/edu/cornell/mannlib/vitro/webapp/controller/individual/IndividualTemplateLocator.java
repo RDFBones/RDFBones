@@ -44,7 +44,7 @@ public class IndividualTemplateLocator {
 
 	// Determine whether the individual has a custom display template based on its class membership.
 	// If not, return the default individual template.
-	String findTemplate() {
+	public String findTemplate() {
 	    
         @SuppressWarnings("unused")
         String vclassName = "unknown"; 

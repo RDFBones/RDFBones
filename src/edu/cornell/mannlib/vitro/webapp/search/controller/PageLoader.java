@@ -22,8 +22,6 @@ public class PageLoader extends FreemarkerHttpServlet {
     String templateName = new String();
     templateName = vreq.getParameter("pageUri") + ".ftl";
     
-    
-
     Map<String, String> params = new HashMap<String, String>();
     for (String key : vreq.getParameterMap().keySet()) {
       if (!key.equals("pageUri")) {

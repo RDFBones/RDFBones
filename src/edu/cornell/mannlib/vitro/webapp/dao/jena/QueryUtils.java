@@ -66,6 +66,36 @@ public class QueryUtils {
       return resultList;
     }
     
+   public static List<Map<String, String>> getQueryVarsList(ResultSet results, List<String> uris, List<String> literals){
+      
+      List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
+      while(results.hasNext()){
+        QuerySolution sol = results.next();
+        //Map for the row of the result
+        Map<String, String> resultMap  = new HashMap<String, String>();
+        if(uris != null){
+          for(String uri : uris){
+            //og.info(uri);
+            if(sol.get(uri) != null){
+              resultMap.put(uri, sol.get(uri).asResource().getURI());
+            }
+          }
+        }
+        if(literals != null){
+          for(String literal : literals){
+            //log.info(literal);
+            if(sol.getLiteral(literal) != null){
+              resultMap.put(literal, sol.getLiteral(literal).getString());
+            }
+          }
+        }
+        //log.info(resultMap);
+
+        resultList.add(resultMap);
+      }
+      return resultList;
+    }
+    
     
     
     public static Map<String,Object> querySolutionToObjectValueMap( QuerySolution soln){

@@ -46,7 +46,17 @@ public class CustomFormGenerator extends FreemarkerHttpServlet{
      */
     Map<String, Object> toReturn = new HashMap<String, Object>();
     toReturn.put("form", form);
-
+    
+    Map<String, String> params = new HashMap<String, String>();
+    for (String key : vreq.getParameterMap().keySet()) {
+      if (!key.equals("pageUri")) {
+        params.put(key, vreq.getParameter(key));
+      } else {
+        params.put("inputPageUri", vreq.getParameter(key));
+      }
+    }
+    toReturn.put("params", params);
+    
     return new TemplateResponseValues("universal.ftl", toReturn);
   }
 }
