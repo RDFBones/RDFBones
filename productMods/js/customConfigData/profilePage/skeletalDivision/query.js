@@ -22,7 +22,7 @@ pageData.skeletalInventory = {
 			type : sw.global,
 			key : "individual",
 		},
-		name : "coherentSkeletalDivision",
+		name : "skeletalDivision",
 	}]
 }
 

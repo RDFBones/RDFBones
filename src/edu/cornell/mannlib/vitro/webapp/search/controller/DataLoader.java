@@ -192,15 +192,15 @@ public class DataLoader extends VitroAjaxController {
       result = this.performQuery(skeletalDivisionOfCoherentSkeletalDivision, inputParam41, uris41, literals41);
       break;
     
-    case "skeletalInventory1" :  
-      String[] inputParamSI1 = { "skeletalDivision" };
+    case "skeletalInventory1" :
+      String[] inputParamSI1 = { "coherentSkeletalDivision" };
       String[] urisSI1 = { "skeletalInventory"};
       String[] literalsSI1 = {};
       result = this.performQuery(skeletalInventory1, inputParamSI1, urisSI1, literalsSI1);
       break;
       
-    case "skeletalInventory2" :  
-      String[] inputParamSI2 = {"coherentSkeletalDivision"};
+    case "skeletalInventory2" :
+      String[] inputParamSI2 = {"skeletalDivision"};
       String[] urisSI2 = {"skeletalInventory"};
       String[] literalsSI2 = {};
       result = this.performQuery(skeletalInventory2, inputParamSI2, urisSI2, literalsSI2);  
@@ -700,8 +700,8 @@ public class DataLoader extends VitroAjaxController {
           + "SELECT ?skeletalInventory \n"
           + " WHERE \n " 
           + "   { "
-          + "    ?coherentSkeletalRegion    obo:systemic_part_of    ?skeletalDivision . \n"
-          + "    ?boneOrgan                 obo:systemic_part_of    ?coherentSkeletalRegion . \n"
+          + "    ?skeletalDivision          obo:systemic_part_of    ?coherentSkeletalDivision . \n"
+          + "    ?boneOrgan                 obo:systemic_part_of    ?skeletalDivision . \n"
           + "    ?boneSegment               obo:regional_part_of    ?boneOrgan  . \n"  
           + "    ?completeness              obo:IAO_0000136         ?boneSegment . \n" 
           + "    ?skeletalInventory         obo:BFO_0000051         ?completeness . \n"
@@ -712,7 +712,7 @@ public class DataLoader extends VitroAjaxController {
           + "SELECT ?skeletalInventory \n"
           + " WHERE \n " 
           + "   { "
-          + "    ?boneOrgan                 obo:systemic_part_of    ?coherentSkeletalDivision . "
+          + "    ?boneOrgan                 obo:systemic_part_of    ?skeletalDivision . "
           + "    ?boneSegment               obo:regional_part_of    ?boneOrgan  . "  
           + "    ?completeness              obo:IAO_0000136         ?boneSegment . " 
           + "    ?skeletalInventory         obo:BFO_0000051         ?completeness . "
