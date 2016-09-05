@@ -1,5 +1,6 @@
 package rdfbones.pageload;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -67,42 +68,30 @@ public class DefaultPageLoad extends FreemarkerHttpServlet{
     //String classUri1 = vclasses.get(0).getURI();
 
     String template = new String();
-    String found = new String();
-    boolean flag = true;
     //Dao for class
     VClassDao vdao = vreq.getWebappDaoFactory().getVClassDao();
-    List<String> superClasses = vdao.getSuperClassURIs(classUri, true);
-    
+    List<String> superClasses = new ArrayList<String>();
+    superClasses.add(classUri);
     while(true){
       classUri = this.getSuperClass(classUri, vdao);
       if(StringUtils.isEmpty(classUri)){
         break;
       } else {
-        log.info(classUri);
+        superClasses.add(classUri);
       }
     }
-    /*
+    
     for(String uri : superClasses){
-      VClass vc = vdao.getVClassByURI(uri);
-      log.info(vc.getLabel());
-      if(vc != null){
-        if(!vc.getLabel().startsWith("restriction")){
-          found = vc.getURI();
-          log.info(found);
-          //Query if there is a custom template for the class
-          List<Literal> customTemplates = dpsd.getDataPropertyValuesForIndividualByProperty(classUri, "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#customDisplayViewAnnot");
-          if(customTemplates.size() > 0 && flag)  {
-            flag = false;
-            template = customTemplates.get(0).getString();
-            //break;
-          } 
-        }
+      List<Literal> customTemplates = dpsd.getDataPropertyValuesForIndividualByProperty(uri, "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#customDisplayViewAnnot");
+      if(customTemplates.size() > 0){
+        template = customTemplates.get(0).getString();
+        break;
       }
     }
-    */
-    if(template.equals(null)){
+
+    if(StringUtils.isEmpty(template)){
       template = "noTemplate.ftl";
-    } 
+    }
     
     Map<String, Object> data = new HashMap<String, Object>();
     Map<String, Object> params = new HashMap<String, Object>();
