@@ -6,11 +6,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.cornell.mannlib.vitro.webapp.config.DeleteBoneOrgan;
-import edu.cornell.mannlib.vitro.webapp.config.DeleteCoherentDivision;
-import edu.cornell.mannlib.vitro.webapp.config.DeleteDivision;
-import edu.cornell.mannlib.vitro.webapp.config.DeleteDivisionFromOrgans;
-import edu.cornell.mannlib.vitro.webapp.config.DeleteOrganFromDivision;
-import edu.cornell.mannlib.vitro.webapp.config.DeleteConfig;
+import edu.cornell.mannlib.vitro.webapp.config.DeleteCoherentSkeletalDivision;
+import edu.cornell.mannlib.vitro.webapp.config.DeleteFromSystemicParent;
+import edu.cornell.mannlib.vitro.webapp.config.DeleteSkeletalDivision;
+import edu.cornell.mannlib.vitro.webapp.config.DeleteSystemicParts;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.controller.ajax.VitroAjaxController;
 import edu.cornell.mannlib.vitro.webapp.dao.DataPropertyStatementDao;
@@ -25,10 +24,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.hp.hpl.jena.query.ResultSet;
-import com.sun.org.apache.xpath.internal.operations.VariableSafeAbsRef;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,39 +67,40 @@ public class DeleteController extends VitroAjaxController {
         this.predicateMap = DeleteBoneOrgan.predicateMap;
         this.inputs = DeleteBoneOrgan.inputs; 
         break;
-     
-     case "deleteOrganFromDivision" :
+    
+    case "deleteSkeletalDivision" :
+      
+      this.objectTriples = DeleteSkeletalDivision.getObjectTriples();
+      this.dataTriples = DeleteSkeletalDivision.getDataTriples();
+      this.predicateMap = DeleteSkeletalDivision.predicateMap;
+      this.inputs = DeleteSkeletalDivision.inputs;
+      break;
+
+    case "deleteCoherentSkeletalDivision" :
+      
+      this.objectTriples = DeleteCoherentSkeletalDivision.getObjectTriples();
+      this.dataTriples = DeleteCoherentSkeletalDivision.getDataTriples();
+      this.predicateMap = DeleteCoherentSkeletalDivision.predicateMap;
+      this.inputs = DeleteCoherentSkeletalDivision.inputs; 
+      break;  
+      
+      
+     case "deleteFromSystemicParent" :
          
-       this.objectTriples = DeleteOrganFromDivision.getObjectTriples();
-       this.dataTriples = DeleteOrganFromDivision.getDataTriples();
-       this.predicateMap = DeleteOrganFromDivision.predicateMap;
-       this.inputs = DeleteOrganFromDivision.inputs; 
+       this.objectTriples = DeleteFromSystemicParent.getObjectTriples();
+       this.dataTriples = DeleteFromSystemicParent.getDataTriples();
+       this.predicateMap = DeleteFromSystemicParent.predicateMap;
+       this.inputs = DeleteFromSystemicParent.inputs; 
        break;
       
-     case "deleteDivisionFromOrgans" :
+     case "deleteSystemicParts" :
        
-       this.objectTriples = DeleteDivisionFromOrgans.getObjectTriples();
-       this.dataTriples = DeleteDivisionFromOrgans.getDataTriples();
-       this.predicateMap = DeleteDivisionFromOrgans.predicateMap;
-       this.inputs = DeleteDivisionFromOrgans.inputs; 
+       this.objectTriples = DeleteSystemicParts.getObjectTriples();
+       this.dataTriples = DeleteSystemicParts.getDataTriples();
+       this.predicateMap = DeleteSystemicParts.predicateMap;
+       this.inputs = DeleteSystemicParts.inputs;
        break;
-       
-     case "deleteDivision" :
-     
-       this.objectTriples = DeleteDivision.getObjectTriples();
-       this.dataTriples = DeleteDivision.getDataTriples();
-       this.predicateMap = DeleteDivision.predicateMap;
-       this.inputs = DeleteDivision.inputs; 
-       break;
-    
-     case "deleteCoherentDivision" :
-       
-       this.objectTriples = DeleteCoherentDivision.getObjectTriples();
-       this.dataTriples = DeleteCoherentDivision.getDataTriples();
-       this.predicateMap = DeleteCoherentDivision.predicateMap;
-       this.inputs = DeleteCoherentDivision.inputs; 
-       break;  
-       
+
       default : break;
     }
     

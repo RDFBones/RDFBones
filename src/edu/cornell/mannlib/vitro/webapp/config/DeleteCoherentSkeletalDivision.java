@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeleteCoherentDivision implements DeleteConfig{
+public class DeleteCoherentSkeletalDivision implements DeleteConfig{
 
   public static Map<String, String> predicateMap = new HashMap<String, String>(){{
       put("systemicPartOf", "obo:systemic_part_of");
@@ -16,14 +16,14 @@ public class DeleteCoherentDivision implements DeleteConfig{
   }
   };
  
-  public static String[] inputs = {"coherentDivision"};
+  public static String[] inputs = {"coherentSkeletalDivision"};
   
   public Map<String, String> getPredicateMap(){
     return predicateMap;
   }
 
-  static String[] objectTriple0 = { "boneDivision", "systemicPartOf", "coherentDivision"};
-  static String[] objectTriple1 = { "boneOrgan", "systemicPartOf", "boneDivision"};
+  static String[] objectTriple0 = { "skeletalDivision", "systemicPartOf", "coherentSkeletalDivision"};
+  static String[] objectTriple1 = { "boneOrgan", "systemicPartOf", "skeletalDivision"};
   static String[] objectTriple2 = { "boneSegment", "regionalPartOf", "boneOrgan"};
   static String[] objectTriple3 = { "completeness", "isAbout", "boneSegment" };
   static String[] objectTriple4 = { "skeletalInventory", "hasPart", "completeness" };

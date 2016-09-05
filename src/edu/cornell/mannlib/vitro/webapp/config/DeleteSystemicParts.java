@@ -5,20 +5,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeleteOrganFromDivision implements DeleteConfig{
+public class DeleteSystemicParts implements DeleteConfig{
 
   public static Map<String, String> predicateMap = new HashMap<String, String>(){{
       put("systemicPart", "obo:systemic_part_of");
   }
   };
  
-  public static String[] inputs = {"boneOrgan"};
+  public static String[] inputs = {"division"};
   
   public Map<String, String> getPredicateMap(){
     return predicateMap;
   }
 
-  static String[] objectTriple1 = { "boneOrgan", "systemicPart", "boneDivision" };
+  static String[] objectTriple1 = { "part", "systemicPart", "division" };
   
   public static List<String[]> getObjectTriples(){
     
