@@ -116,15 +116,21 @@ var DataLib = {
 	},
 	
 	
-	assembleUrl : function(configData){
+	assembleUrl : function(configData, element){
 		
 		var paramMap = new Object()
-		$.each(configData.linkDataInputs, function(i, data){
+		$.each(configData.linkDataInputs, function(i, input){
 			
-			if(data.varName != undefined){
-				paramMap[data.varName] = encodeURIComponent(getData1(data))
+			if(element !== null){
+				data = getData(element, input)
 			} else {
-				paramMap[data.key] = encodeURIComponent(getData1(data))
+				data = getData1(input)
+			}
+			
+			if(input.varName != undefined){
+				paramMap[input.varName] = encodeURIComponent(data)
+			} else {
+				paramMap[input.key] = encodeURIComponent(data)
 			}	
 		})
 		
