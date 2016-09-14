@@ -19,6 +19,6 @@ var LiteralFieldMiddle = function(parent, configData){
 var LiteralLinkField = function(parent, configData){
 	this.parent = parent
 	this.container = html.link(DataLib.assembleUrl(configData, this))
-			.append(html.div("literalField").text(getData(this, configData.value)))
+			.append(html.div("literalLinkField").text(getData(this, configData.value)))
 	console.log(getData(this, configData.value))
 }

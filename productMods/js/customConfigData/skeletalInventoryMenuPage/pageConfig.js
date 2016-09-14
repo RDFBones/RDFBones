@@ -33,28 +33,28 @@ pageData.pageElements = [
     	 ]
     },{
     	uri : "http://softwareOntology.com/existingInventories",
-     	type : "http://softwareOntology.com/LinkDataTable",
+     	type : "http://softwareOntology.com/DataTable",
     	title : "Existing Skeletal Inventories",
     	dataToDisplay : {
     		type : sw.global,
     		key : "skeletalInventories",
     	},
-    	linkDataInputs : [
-    		 {
-    			 type : sw.local,
-    			 key : "uri",
-    			 varName  : "individual",
-    		 }
-	    ],
-	    mapping : "defaultPageLoad",
 	    dataFields : [
              {
             	 title : "Label",
-    	    	 type : sw.literalField,
+    	    	 type : sw.literalLinkField,
     	    	 value : {
     	    		 type : sw.local,
     	    		 key : "label",
     	    	 },
+    	     	linkDataInputs : [
+ 	        		 {
+ 	        			 type : sw.local,
+ 	        			 key : "uri",
+ 	        			 varName  : "individual",
+ 	        		 }
+ 	    	    ],
+ 	    	    mapping : "defaultPageLoad",
     	     },{
     	    	 title : "Type",
     	    	 type : sw.literalField,
@@ -62,6 +62,24 @@ pageData.pageElements = [
     	    		 type : sw.local,
     	    		 key : "typeLabel",
     	    	 }
+    	     },{
+    	    	 type : sw.deleteButton,
+    	    	 linkDataInputs : [
+    	    	 {
+    	    		 type : sw.constant,
+    	    		 value : "deleteSkeletalInventory",
+    	    		 key : "operation",
+    	    	 },{
+					type : sw.local,
+					key : "uri",
+					varName : "skeletalInventory",
+				}, {
+					//It is signed that the uri has to be deleted
+					type : sw.local,
+					key : "uri",
+					varName : "instance",
+				}],
+    			mapping : "delete",
     	     },
     	]
      }

@@ -37,6 +37,18 @@
 	font-size : small;
 }
 
+.literalLinkField {
+	display : inline-block;
+	margin : 5px;
+	width : 200px;
+	font-size : small;
+	text-decoration : underline;
+}
+
+literalLinkField:hover{
+	cursor : pointer;
+}
+
 .linkTableRow {
 	display : table;
 }
