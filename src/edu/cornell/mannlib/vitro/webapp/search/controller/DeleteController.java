@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.cornell.mannlib.vitro.webapp.config.DeleteBoneOrgan;
 import edu.cornell.mannlib.vitro.webapp.config.DeleteCoherentSkeletalDivision;
-import edu.cornell.mannlib.vitro.webapp.config.DeleteConf;
 import edu.cornell.mannlib.vitro.webapp.config.DeleteConfig;
 import edu.cornell.mannlib.vitro.webapp.config.DeleteFromSystemicParent;
 import edu.cornell.mannlib.vitro.webapp.config.DeleteInstance;
