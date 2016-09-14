@@ -33,4 +33,5 @@ var sw = {
 		customPage : swPrefix + "CustomPage",
 		switchCase : swPrefix + "SwitchCase",
 		field : swPrefix + "Field",
+		literalLinkField : swPrefix + "LiteralLinkField",
 }

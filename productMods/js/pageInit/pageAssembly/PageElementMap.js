@@ -21,5 +21,7 @@ var RowElementMap = new Object()
 RowElementMap[sw.editButton] = EditButtonLink
 RowElementMap[sw.deleteButton] = DeleteButtonLink
 RowElementMap[sw.binButton] = BinButtonLink
+RowElementMap[sw.textButton] = TextButton
 RowElementMap[sw.literalField] = LiteralField
+RowElementMap[sw.literalLinkField] = LiteralLinkField
 RowElementMap[sw.literalFieldMiddle] = LiteralFieldMiddle
