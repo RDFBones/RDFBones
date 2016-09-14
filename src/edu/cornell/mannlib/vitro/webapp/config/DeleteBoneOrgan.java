@@ -9,7 +9,8 @@ public class DeleteBoneOrgan implements DeleteConfig{
 
   public static Map<String, String> predicateMap = new HashMap<String, String>(){{
       put("regionalPart", "obo:regional_part_of");
-      put("hasPart", "obo:IAO_0000136");
+      put("hasPart", "obo:BFO_0000051");
+      put("isAbout", "obo:IAO_0000136");
       put("hasCategoricalValue", "obo:OBI_0000999");
     }
   };
@@ -21,9 +22,9 @@ public class DeleteBoneOrgan implements DeleteConfig{
   }
 
   static String[] objectTriple1 = { "boneSegment", "regionalPart", "boneOrgan" };
-  static String[] objectTriple2 = { "completeness", "hasPart", "boneSegment" };
+  static String[] objectTriple2 = { "completeness", "isAbout", "boneSegment" };
   static String[] objectTriple3 = { "completeness", "hasCategoricalValue", "completenessState" };
-  static String[] objectTriple4 = { "skeletalInventory", "isAbout", "completeness" };
+  static String[] objectTriple4 = { "skeletalInventory", "hasPart", "completeness" };
   
   public static List<String[]> getObjectTriples(){
     
