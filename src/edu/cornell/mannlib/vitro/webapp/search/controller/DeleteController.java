@@ -7,8 +7,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.cornell.mannlib.vitro.webapp.config.DeleteBoneOrgan;
 import edu.cornell.mannlib.vitro.webapp.config.DeleteCoherentSkeletalDivision;
+import edu.cornell.mannlib.vitro.webapp.config.DeleteConf;
+import edu.cornell.mannlib.vitro.webapp.config.DeleteConfig;
 import edu.cornell.mannlib.vitro.webapp.config.DeleteFromSystemicParent;
+import edu.cornell.mannlib.vitro.webapp.config.DeleteInstance;
 import edu.cornell.mannlib.vitro.webapp.config.DeleteSkeletalDivision;
+import edu.cornell.mannlib.vitro.webapp.config.DeleteSkeletalInventory;
 import edu.cornell.mannlib.vitro.webapp.config.DeleteSystemicParts;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.controller.ajax.VitroAjaxController;
@@ -18,6 +22,7 @@ import edu.cornell.mannlib.vitro.webapp.dao.PropertyInstanceDao;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.N3Utils;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
@@ -31,7 +36,6 @@ import java.util.Map;
 
 public class DeleteController extends VitroAjaxController {
 
-  
   private DataPropertyStatementDao dataDao;
   private ObjectPropertyStatementDao objectDao;
   private PropertyInstanceDao propDao;
@@ -44,7 +48,7 @@ public class DeleteController extends VitroAjaxController {
   public Map<String, String> predicateMap;
   private VitroRequest vreq;
   private static final Log log = LogFactory.getLog(DeleteController.class);
-
+  
   @Override
   protected void doRequest(VitroRequest vreq, HttpServletResponse resp)
     throws ServletException, IOException {
@@ -57,7 +61,6 @@ public class DeleteController extends VitroAjaxController {
     this.vreq = vreq;
     log.info("Arrived");
 
-    
     switch(vreq.getParameter("operation")) {
     
     case "deleteBoneOrgan" :
@@ -84,7 +87,6 @@ public class DeleteController extends VitroAjaxController {
       this.inputs = DeleteCoherentSkeletalDivision.inputs; 
       break;  
       
-      
      case "deleteFromSystemicParent" :
          
        this.objectTriples = DeleteFromSystemicParent.getObjectTriples();
@@ -100,15 +102,37 @@ public class DeleteController extends VitroAjaxController {
        this.predicateMap = DeleteSystemicParts.predicateMap;
        this.inputs = DeleteSystemicParts.inputs;
        break;
-
-      default : break;
+     
+     case "deleteSkeletalInventory" :
+       
+       log.info("deleteSkeletalInventory");
+       this.objectTriples = DeleteSkeletalInventory.getObjectTriples();
+       this.dataTriples = DeleteSkeletalInventory.getDataTriples();
+       this.predicateMap = DeleteSkeletalInventory.predicateMap;
+       this.inputs = DeleteSkeletalInventory.inputs;
+       break;   
+       
+      default : 
+        log.info("The delete operation is not implemented");
+        break;
     }
     
     List<Map<String, String>> result = performQuery();
-    log.info(result.toString());
-
     this.deleteDataTriples(result);
     this.deleteObjectTriples(result);
+    
+    if(StringUtils.isNotEmpty(vreq.getParameter("instance"))){
+      log.info("notEmpty");
+      this.objectTriples = DeleteInstance.getObjectTriples();
+      this.dataTriples = DeleteInstance.getDataTriples();
+      this.predicateMap = DeleteInstance.predicateMap;
+      this.inputs = DeleteInstance.inputs;
+      List<Map<String, String>> resultInstance = performQuery();
+      this.deleteDataTriples(resultInstance);
+      this.deleteObjectTriples(resultInstance);
+    } else {
+      log.info("empty");
+    }
     
     JSONObject obj = new JSONObject();
     try {
