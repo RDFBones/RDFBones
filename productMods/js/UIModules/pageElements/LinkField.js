@@ -20,5 +20,4 @@ LinkField.prototype = {
 		    	this.label,
 		    ], [0, 0, 1])
 	}
-	
 }

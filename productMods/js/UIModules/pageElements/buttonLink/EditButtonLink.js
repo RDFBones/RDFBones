@@ -33,6 +33,7 @@ DeleteButtonLink.prototype = {
 		
 	routine : function(){
 		
+		PopUpController.init()
 		$.ajax({
 			url : baseUrl + "delete",
 			context : this,
