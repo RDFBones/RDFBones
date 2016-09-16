@@ -69,7 +69,7 @@
                 
         
         
-	-->
+	
         <#if geoFocusMapsEnabled >
             <!-- Map display of researchers' areas of geographic focus. Must be enabled in runtime.properties -->
             <@lh.geographicFocusHtml />
