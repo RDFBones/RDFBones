@@ -74,7 +74,6 @@ DeleteButtonLink.prototype = {
 			} else {
 				location.reload();
 			}
-			
 		})
 	}
 }

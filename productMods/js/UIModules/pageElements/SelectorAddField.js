@@ -2,7 +2,7 @@
 
 var SelectorAddField = function(configData){
 	
-	this.container = html.form("/vivo/newInstance", configData.id)
+	this.container = html.form(baseUrl + "newInstance", configData.id)
 	this.title = html.div("title").text(configData.title)
 	this.hidden = html.hiddenInput("label")
 	this.select = html.div("addFieldContainer").css("margin-left", "10px")

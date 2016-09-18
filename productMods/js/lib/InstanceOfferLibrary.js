@@ -23,7 +23,7 @@ var AddInstanceButton = function(instanceOffer, container, instanceURI){
 	
 	return ImgUI.libImgCont("addInstance", "middle")
 			.click(function(){
-			PopUpController.initWaiting()
+			PopUpController.init()
 			$.ajax({
 				url : baseUrl + "ajaxData",
 				data : {

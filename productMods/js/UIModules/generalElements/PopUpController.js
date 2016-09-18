@@ -5,12 +5,20 @@ var PopUpController = {
 	
 	init : function(){
 		
-		this.container = html.div("popUpOuter")
-		this.innerContainer = html.div("popUpInner")
-		this.innerContainer.append(ImgUI.libImg("loading", "loadingImg"))
-		$("#popUpContainer").append(this.container.append(this.innerContainer))
+		this.container = html.div("popUpOuterNew")
+		this.inner = html.div("popUpInnerNew")
+		this.vertical = html.div("verticalMiddleContainer")
+		this.pleaseWait = html.div("margin10 pleaseWait").text("Please wait!")
+		this.imgCont = ImgUI.libImgWidth("loading2", "margin10", "80")
+		UI.assemble(this.container,[
+		        this.inner,
+		        	this.vertical,
+		        		this.pleaseWait,
+		        		this.imgCont,
+				], [0, 1, 2, 2])		
+		$("#popUpContainer").append(this.container)
 	},
-		
+	
 	initWaiting : function(){
 		this.container = UI.getFullScreenContainer()
 		this.innerContainer = UI.getFullScreenInnerMiddle(500)

@@ -6,7 +6,8 @@ var PopUpController = {
 	initWaiting : function(){
 		this.container = UI.getFullScreenContainer()
 		this.innerContainer = UI.getFullScreenInnerMiddle(500)
-		this.innerContainer.append(ImgUI.horizontalLibImg("loading", "large"))
+		//this.innerContainer.append(ImgUI.horizontalLibImg("loading", ""))
+		this.innerContainer.append(UI.getWaitGif())
 		this.container.append(this.innerContainer)
 		$("#popUpContainer").append(this.container)
 	},

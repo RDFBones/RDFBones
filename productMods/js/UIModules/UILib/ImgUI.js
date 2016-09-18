@@ -10,6 +10,7 @@ var ImgSrc = {
 		check : this.folder + "check-mark.png",
 		edit : this.folder + "edit.png",
 		loading : this.folder + "loading.gif",
+		loading2 : this.folder + "loading2.gif",
 		minus : this.folder + "minus.png",
 		modify : this.folder + "modify.png",
 		waitBar : this.folder + "waitBar.gif",
@@ -71,7 +72,9 @@ var ImgUI = {
 		return ImgUI.generalImgCont(ImgSrc[type], _class, size)
 	},
 	
-	
+	libImgWidth : function(type, _class, width){
+		return html.div(_class).append(html.getImg(ImgSrc[type]).attr("width", width + "px"))
+	},
 	
 	/***************************************************************************
 	 * General Img with container
