@@ -62,6 +62,7 @@ public class AjaxQueryController extends VitroAjaxController {
       result = QueryUtils.getQueryVars(resultSet, null, object);
 
       break;
+
     case "imagesOfNotIndividual":
 
       readyQuery = N3Utils.setPrefixes(null, ImagesOfNOTIndividualQuery);
@@ -69,18 +70,14 @@ public class AjaxQueryController extends VitroAjaxController {
       readyQuery =
           N3Utils.subInputUriQuery(readyQuery,
               ImagesOfNOTIndividualQueryInputs, vreq);
-      log.info("sub Are set");
-      log.info(readyQuery);
       resultSet = QueryUtils.getQueryResults(readyQuery, vreq);
-      log.info("resultSet");
+
       result =
           QueryUtils.getQueryVars(resultSet, ImagesOfNOTIndividualQueryUris,
               ImagesOfNOTIndividualQueryLiterals);
-      log.info("Result");
-      log.info(result.toString());
+      
       break;
     case "imagesOfIndividual":
-      log.info("imagesOfIndividual");
       readyQuery = N3Utils.setPrefixes(null, ImagesOfIndividualQuery);
       readyQuery =
           N3Utils.subInputUriQuery(readyQuery, ImagesOfIndividualQueryInputs,
@@ -89,8 +86,6 @@ public class AjaxQueryController extends VitroAjaxController {
       result =
           QueryUtils.getQueryVars(resultSet, ImagesOfIndividualQueryUris,
               ImagesOfIndividualQueryLiterals);
-      log.info("Result");
-      log.info(result.toString());
       break;
     }
 
@@ -117,6 +112,7 @@ public class AjaxQueryController extends VitroAjaxController {
 
   private static String query = "" + "SELECT  ?object "
       + " WHERE { \n" + "    ?subject   ?predicate   ?object . " + "   } ";
+
 
   private static String[] ImagesOfIndividualQueryInputs = { "subject" };
   private static String[] ImagesOfIndividualQueryUris = {};

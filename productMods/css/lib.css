@@ -1,6 +1,5 @@
 
-
-select {
+.select {
     height: 21px;
     font-size: 12px;
     margin-bottom : 0px;
@@ -46,13 +45,16 @@ select {
 	left: 0;
 	right: 0;
 	overflow: hidden;
-	z-index: 1; //
+	z-index: 1;
 	background-color: rgba(0, 0, 0, 0.4);
 }
 
 .fullScreenInner {
 	opacity: 1;
 	background-color: white;
+}
+
+.fullScreenInner {
 	position: fixed;
 	top: 50%;
 	left: 50%;
@@ -81,7 +83,6 @@ select {
 	border-radius: 3px;
 	padding: 1px 2px;
 }
-
 
 .enabledButton {
 	opacity: 1;
@@ -116,7 +117,7 @@ select {
 }
 
 .table {
-	display: table;
+	display : table;
 }
 
 .floatRight {
@@ -149,7 +150,7 @@ select {
 
 
 .margin10 {
-	margin: 10px;
+	margin : 10px;
 }
 
 /****************************************************
@@ -185,7 +186,6 @@ select {
    display: inline-block;
 }
 
-
 .inlineContainer >  * {
    display: inline-block;
 }
@@ -209,4 +209,5 @@ select {
 .underLined {
 	padding : 3px;
 	border-bottom : 1px solid;	
+	height : 100%;
 }

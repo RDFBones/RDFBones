@@ -1,5 +1,6 @@
  @prefix display: <http://vitro.mannlib.cornell.edu/ontologies/display/1.1#> .
 @prefix bibo:    <http://purl.org/ontology/bibo/> .
+@prefix vivoweb: <http://vivoweb.org/ontology#> .
 
 
 bibo:Document display:hasDataGetter display:documentsDataGetter.
@@ -20,7 +21,7 @@ display:documentsDataGetter a <java:edu.cornell.mannlib.vitro.webapp.utils.dataG
      }        
      
      """ .
-     
+
      
 <http://vivoweb.org/ontology/core#UndergraduateStudent> display:hasDataGetter display:classHierarchyDataGetter .
 display:classHierarchyDataGetter a <java:edu.cornell.mannlib.vitro.webapp.utils.dataGetter.SparqlQueryDataGetter>;                       
@@ -35,3 +36,8 @@ display:classHierarchyDataGetter a <java:edu.cornell.mannlib.vitro.webapp.utils.
 	   ?superClass  rdfs:label  ?superClassLabel .
      } ORDER BY ?superClassLabel
      """ .
+
+display:documentDataGetter
+      a <java:edu.cornell.mannlib.vitro.webapp.utils.dataGetter.ClassGroupPageData>;
+      display:forClassGroup
+              vivoweb:vitroClassGroupdocuments .

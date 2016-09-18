@@ -17,4 +17,3 @@
  
 <http://w3id.org/rdfbones/core#SkeletalInventory>
 	vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupSkeletalInventory> .
-   

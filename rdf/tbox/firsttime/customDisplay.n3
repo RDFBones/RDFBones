@@ -21,3 +21,8 @@ bibo:Document
 <http://purl.obolibrary.org/obo/FMA_5018>
       vitro:customDisplayViewAnnot
               "boneOrgan.ftl"^^xsd:string .
+
+bibo:Image				
+      vitro:customDisplayViewAnnot
+              "imageProfilePage.ftl"^^xsd:string .
+              

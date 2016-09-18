@@ -19,6 +19,9 @@ import edu.cornell.mannlib.vitro.webapp.beans.ObjectPropertyStatementImpl;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.controller.ajax.VitroAjaxController;
 import edu.cornell.mannlib.vitro.webapp.dao.DataPropertyStatementDao;
+
+import edu.cornell.mannlib.vitro.webapp.dao.InsertException;
+
 import edu.cornell.mannlib.vitro.webapp.dao.NewURIMakerVitro;
 import edu.cornell.mannlib.vitro.webapp.dao.ObjectPropertyStatementDao;
 import edu.cornell.mannlib.vitro.webapp.dao.PropertyInstanceDao;
@@ -68,15 +71,15 @@ public class AjaxDataController extends VitroAjaxController {
         switch(vreq.getParameter("dataOperation")){
 
         case "editLiteral":
-              N3Utils.setInputMap(inputMap, EditDataInputParams, vreq);
-              N3Utils.setOutputMap(outputMap, EditDataOutputParams, inputMap);
-              this.dataTriplesAdd= N3Utils.subInputMap(inputMap, EditTriplesAdd);
-              this.dataTriplesRemove = N3Utils.subInputMap(inputMap, EditTriplesRemove);
-              log.info("editLiteral");
-              this.removeData();
-              this.addData();
-              log.info("afterDataoperation");
-              break;
+          N3Utils.setInputMap(inputMap, EditDataInputParams, vreq);
+          N3Utils.setOutputMap(outputMap, EditDataOutputParams, inputMap);
+          this.dataTriplesAdd= N3Utils.subInputMap(inputMap, EditTriplesAdd);
+          this.dataTriplesRemove = N3Utils.subInputMap(inputMap, EditTriplesRemove);
+          log.info("editLiteral");
+          this.removeData();
+          this.addData();
+          log.info("afterDataoperation");
+          break;
         
         case "editObject":
           N3Utils.setInputMap(inputMap, EditDataInputParams, vreq);
@@ -106,6 +109,7 @@ public class AjaxDataController extends VitroAjaxController {
           this.addObject();
           log.info("afterDataoperation");
           break;      
+
         case "saveImage" :
               log.info("SaveImage");
               N3Utils.setInputMap(inputMap,ImageUploadInputParams, vreq);
@@ -228,7 +232,18 @@ public class AjaxDataController extends VitroAjaxController {
       */
      private static String[] ImageUploadInputParams = {"subject", "imageIndividual", "byteStreamIndividual",
        "fileIndividual", "filename", "mimetype", "downloadLocation"};
-   
+     
+     private static String[] EditLiteralInputParams = 
+         {"subjectUri", "predicate", "oldValue", "newValue"};
+     private static String[] EditLiteralOutputParams = {};
+
+     private static String[] EditLiteralDataTriplesRemove = {
+           "?subjectUri ?predicate ?oldValue"
+     };
+     private static String[] EditLiteralDataTriplesAdd = {
+          "?subjectUri ?predicate ?newValue"
+     };
+     
      private static String[] ImageUploadOutputParams = {};
 
      private static String[] ImageUploadObjectTriplesAdd = {

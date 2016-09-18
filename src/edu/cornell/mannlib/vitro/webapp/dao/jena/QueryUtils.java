@@ -95,9 +95,7 @@ public class QueryUtils {
       }
       return resultList;
     }
-    
-    
-    
+
     public static Map<String,Object> querySolutionToObjectValueMap( QuerySolution soln){
         Map<String,Object> map = new HashMap<String,Object>();
         Iterator<String> varNames = soln.varNames();

@@ -157,7 +157,7 @@ public class JenaIngestController extends BaseEditController {
             processSmushSingleModelRequest(vreq);
         } else if("csv2rdf".equals(actionStr)) {
             processCsv2rdfRequest(vreq);
-        } else if("processStrings".equals(actionStr)) {
+        }else if("processStrings".equals(actionStr)) {
             processProcessStringsRequest(vreq);
         } else if("splitPropertyValues".equals(actionStr)) {
             processSplitPropertyValuesRequest(vreq);

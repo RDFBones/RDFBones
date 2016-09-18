@@ -152,7 +152,7 @@ public class MultiValueEditSubmission {
         log.debug(key + " uri " + urisFromForm.get(key));
       }
     }
-
+    //This checks the editElements of the fields
     processEditElementFields(editConfig, queryParameters);
     // Incorporating basic validation
     // Validate URIS

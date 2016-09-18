@@ -7,8 +7,6 @@
 @prefix vitro:   <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-
-
 display:Documents
     a display:Page ;    
     a display:ClassGroupPage;
@@ -16,23 +14,21 @@ display:Documents
     display:title "Documents" ;
     display:urlMapping "/documents" ;
     display:hasDataGetter display:documentDataGetter .
-    
+
 display:DocumentsMenuItem
     a display:NavigationElement ;
     display:menuPosition "6";
     display:linkText "Documents";
     display:toPage display:Documents .    
-    
+
 display:DefaultMenu 
 	display:hasElement display:DocumentsMenuItem .
-    
+
 display:documentDataGetter
       a <java:edu.cornell.mannlib.vitro.webapp.utils.dataGetter.ClassGroupPageData>;
       display:forClassGroup
               vivoweb:vitroClassGroupdocuments .
-              
-   
-   
+
              
 display:SkeletalInventory
     a display:Page ;    
@@ -51,9 +47,7 @@ display:SkeletalInventoryMenuItem
 display:DefaultMenu 
 	display:hasElement display:SkeletalInventoryMenuItem .
 	
-
 display:skeletalInventoryDataGetter
    	a <java:edu.cornell.mannlib.vitro.webapp.utils.dataGetter.CustomPageDataGetter>;
       display:forClassGroup
               vivoweb:vitroClassGroupSkeletalInventory . 
-

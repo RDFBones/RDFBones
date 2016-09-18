@@ -106,6 +106,7 @@ public class SkeletalInventoryQueryController extends VitroAjaxController {
       "classUri" };
   private static String[] BoneQueryLiterals = { "label", "description", "classLabel"};
 
+
   private static String[] CoherentQueryPrefixes = { "obo", "rdfs", "rdfbones",
       "rdf", "vitro" };
   private static String CoherentQuery = ""
@@ -125,7 +126,8 @@ public class SkeletalInventoryQueryController extends VitroAjaxController {
       + "    OPTIONAL { ?boneUri  rdfbones:description  ?description . } "
       + "    ?boneUri rdf:type <http://purl.obolibrary.org/obo/FMA_53673> . "
       + "    <http://purl.obolibrary.org/obo/FMA_53673> rdfs:label ?classLabel ."
-      + "   }" + "} ";
+      + "   }"
+      + "} ";
 
   private static String[] SingleQueryPrefixes = { "obo", "rdfs", "rdfbones",
       "rdf", "vitro" };
@@ -145,8 +147,8 @@ public class SkeletalInventoryQueryController extends VitroAjaxController {
 
   private static String[] SystemicPartsQueryInputs = { "parentUri" };
   private static String[] SystemicPartsQueryUris = { "boneUri", "classUri" };
-  private static String[] SystemicPartsQueryLiterals = { "label",
-      "description", "classLabel" };
+  private static String[] SystemicPartsQueryLiterals = { "label", "description", "classLabel" };
+
   private static String[] SystemicPartsQueryPrefixes = { "obo", "rdfs",
       "rdfbones", "vitro" };
 
