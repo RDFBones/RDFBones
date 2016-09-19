@@ -12,31 +12,31 @@ var treeUI = {
 	classViewer : $("#classViewer"),
 
 	getChildrenContainer : function() {
-		return html.getNewDiv("childrenContainer")
+		return html.div("childrenContainer")
 	},
 
 	getClassNameDiv : function(classLabel) {
-		return html.getNewDivT(classLabel).addClass("classLabel")
+		return html.divT(classLabel).addClass("classLabel")
 	},
 
 	getSearchHitDiv : function() {
-		return html.getNewDivT().addClass("searchHit classLabel")
+		return html.divT().addClass("searchHit classLabel")
 	},
 
 	getPlusImg : function() {
-		var container = html.getNewDiv("imgContainer1")
+		var container = html.div("imgContainer1")
 		var img = $("<img/>").attr("src", ImgSrc.plus)
 		return container.append(img)
 	},
 
 	getMinusImg : function() {
-		var container = html.getNewDiv("imgContainer1")
+		var container = html.div("imgContainer1")
 		var img = $("<img/>").attr("src", ImgSrc.minus)
 		return container.append(img)
 	},
 
 	addInstanceImg : function(classUri) {
-		var container = html.getNewDiv("imgContainer1")
+		var container = html.div("imgContainer1")
 		var img = $("<img/>").attr("src", ImgSrc.addInstance)
 		return container.append(img).click(function() {
 			Controller.addNewBone(classUri)
@@ -44,19 +44,19 @@ var treeUI = {
 	},
 
 	getLoadindGif : function(){
-		var container = html.getNewDiv("imgContainer1")
+		var container = html.div("imgContainer1")
 		var img = $("<img/>").attr("src", ImgSrc.loadingGif).attr("width", "50px")
 		return container.append(img)
 	},
 	
 	getArrowImg : function() {
-		var container = html.getNewDiv("imgContainer1")
+		var container = html.div("imgContainer1")
 		var img = $("<img/>").attr("src", ImgSrc.arrows)
 		return container.append(img)
 	},
 
 	getFillerDiv : function() {
-		return html.getNewDiv("imgContainer1")
+		return html.div("imgContainer1")
 	},
 	
 	getImageView : function(src){

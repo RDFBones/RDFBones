@@ -10,6 +10,7 @@ ${scripts.add(
 
 ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/UILib/html.js"></script>',	
+    '<script type="text/javascript" src="${urls.base}/js/UIModules/UILib/PopUpController.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/UILib/ImgUI.js"></script>',	
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/UILib/UI.js"></script>')}
 
@@ -42,7 +43,6 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/generalElements/TextField.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/generalElements/TextButton.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/generalElements/ExistingSelector.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/UIModules/generalElements/PopUpController.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/generalElements/SelectorField.js"></script>')}
 
 ${scripts.add(

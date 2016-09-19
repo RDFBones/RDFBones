@@ -50,7 +50,7 @@ var csv2rdfUI = {
 	},
 
 	replaceSubjectDivWithTmp : function(subjectDiv) {
-		var subTmpDiv = ui.getNewDivT("Select subject!")
+		var subTmpDiv = html.div("Select subject!")
 		subTmpDiv.insertAfter(subjectDiv)
 		subjectDiv.remove()
 		return subTmpDiv
@@ -80,7 +80,7 @@ var csv2rdfUI = {
 	},
 
 	resetPredicate : function(name, oldPredicateDiv) {
-		var predicateDiv = ui.getNewDiv("varField", name)
+		var predicateDiv = html.div("varField", name)
 		predicateDiv.insertAfter(oldPredicateDiv)
 		oldPredicateDiv.remove()
 		return predicateDiv

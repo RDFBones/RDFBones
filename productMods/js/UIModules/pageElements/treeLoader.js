@@ -2,7 +2,7 @@ var treeLoader = {
 
 	showTree1 : function(module, treeData) {
 		
-		var treeContainer = html.getDivId(module.id)
+		var treeContainer = html.divId(module.id)
 		//TreeTitle
 		treeContainer.append(UI.getTitle(module.title))
 		//Treedata
@@ -14,7 +14,7 @@ var treeLoader = {
 
 	showTree2 : function(module, treeData) {
 		
-		var treeContainer = html.getDivId(module.id)
+		var treeContainer = html.divId(module.id)
 		//TreeTitle
 		treeContainer.append(UI.getTitle(module.title))
 		//Treedata
@@ -34,7 +34,7 @@ var treeLoader = {
 		classNameNameContainer.append(className1).append(searchHit).append(
 				className2)
 
-		var childrenContainer = html.getNewDiv()
+		var childrenContainer = html.div()
 		if ("children" in parent){
 			$.each(parent.children, function(index, value) {
 				childrenContainer.append(treeLoader.getChildrenDiv(value, single))

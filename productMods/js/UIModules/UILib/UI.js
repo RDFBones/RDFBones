@@ -27,7 +27,7 @@ var UI = {
 	},
 
 	getHorizontalImg : function(src) {
-		return html.div("horizontalMiddle").append(html.getImg(src))
+		return html.div("horizontalMiddle").append(html.img(src))
 	},
 
 	/***************************************************************************
@@ -98,8 +98,8 @@ var UI = {
 	 **************************************************************************/
 
 	getFieldWithAddButton : function(value, clickFunction) {
-		return html.getNewDiv("addFieldContainer").append(
-				html.getNewDiv("addFieldText").text(value)).append(
+		return html.div("addFieldContainer").append(
+				html.div("addFieldText").text(value)).append(
 				ImgUI.libImg("add", "addFieldImg").click(clickFunction))
 	},
 
@@ -111,29 +111,29 @@ var UI = {
 	 * Checkbox with text
 	 **************************************************************************/
 
-	getCheckboxText : function(text) {
-		return html.getNewDiv().append(html.getCheckBox()).append(
-				html.getNewDiv("inline").text(text))
+	checkboxText : function(text) {
+		return html.div().append(html.checkBox()).append(
+				html.div("inline").text(text))
 	},
 
-	getTextBoxContainer : function() {
-		return html.getNewDiv("inline").append(html.getTextBox())
+	textBoxContainer : function() {
+		return html.div("inline").append(html.textBox())
 	},
 
-	getTextBoxContainer : function(text) {
-		return html.getNewDiv("inline").append(html.getTextBox().val(text))
+	textBoxContainer : function(text) {
+		return html.div("inline").append(html.textBox().val(text))
 	},
 
-	getTextBoxContainerClass : function(_class, text) {
-		return html.getNewDiv(_class).append(html.getTextBox().val(text))
+	textBoxContainerClass : function(_class, text) {
+		return html.div(_class).append(html.textBox().val(text))
 	},
 
 	getTitle : function(title) {
-		return html.getNewDiv("moduleTitle").text(title)
+		return html.div("moduleTitle").text(title)
 	},
 
 	getNewLine : function() {
-		return html.getNewDiv("newLine")
+		return html.div("newLine")
 	},
 
 	showInline : function(div) {

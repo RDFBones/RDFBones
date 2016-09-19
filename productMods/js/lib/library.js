@@ -54,7 +54,6 @@ var k = function(){
 var folder = imgSrc
 var ImgSrc = {
 		add : this.folder + "add.png",
-		addInstance : this.folder + "addInstance.png",
 		arrows : this.folder + "arrows.png",
 		backToParent : this.folder + "backToParent.png",
 		close : this.folder + "close.png",

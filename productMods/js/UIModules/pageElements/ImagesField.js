@@ -13,7 +13,7 @@ var ImagesField = function(parent, configData) {
 
 	this.waitGif = ImgUI.libImg("waitBar", "margin10")
 
-	this.noImageMsg = html.getNewDiv("margin10").text(
+	this.noImageMsg = html.div("margin10").text(
 			"There is no image loaded to this bone")
 
 	this.form = html.form("margin10").attr("id", "imageForm").attr("enctype","multipart/form-data")
@@ -121,7 +121,7 @@ ImagesField.prototype = {
 	},
 
 	getImgElement : function(src) {
-		return html.getNewDiv("boneImageContainer").append(
+		return html.div("boneImageContainer").append(
 				html.getPreviewImage(src, "boneImage", "viewer"))
 	},
 

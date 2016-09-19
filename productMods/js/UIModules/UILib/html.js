@@ -17,24 +17,13 @@ var html = {
 		return $("<div/>").addClass(classes).text(text)
 	},
 	
-	getNewDiv : function() {
-		return $("<div/>")
+
+	divId : function(id){
+		return html.div().attr("id", id)
 	},
 
-	getDivId : function(id){
-		return html.getNewDiv().attr("id", id)
-	},
-	
-	getNewDiv : function(classes) {
-		return $("<div/>").addClass(classes)
-	},
-
-	getNewDivT : function(text) {
+	divT : function(text) {
 		return $("<div/>").text(text)
-	},
-
-	getNewDiv : function(classes, text) {
-		return $("<div/>").addClass(classes).text(text)
 	},
 
 	getFullScreen : function(id){
@@ -63,26 +52,22 @@ var html = {
 	
 	getPreviewImage : function(src, class_, index) {
 		return $("<a/>").attr("href", src).attr("data-lightbox", index).append(
-				this.getImg(src, class_))
+				this.img(src, class_))
 	},
 	
-	getImg : function(src) {
+	img : function(src) {
 		return $("<img/>").attr("src", src)
 	},
 	
-	getImg : function(src, class_) {
+	img : function(src, class_) {
 		return $("<img/>").attr("src", src).addClass(class_)
-	},
-	
-	getCheckBox : function(){
-		return $("<input>").attr("type", "checkbox")
 	},
 	
 	checkBox : function(){
 		return $("<input>").attr("type", "checkbox")
 	},
 	
-	getTextBox : function(){
+	textBox : function(){
 		return $("<input>").attr("type", "text")
 	},
 	

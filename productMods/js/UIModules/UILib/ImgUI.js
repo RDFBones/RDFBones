@@ -29,15 +29,15 @@ var ImgUI = {
 	},
 		
 	libImg : function(type) {
-		return html.getImg(ImgSrc[type])
+		return html.img(ImgSrc[type])
 	},
 
 	libImg : function(type, _class) {
-		return html.getImg(ImgSrc[type], _class)
+		return html.img(ImgSrc[type], _class)
 	},
 
 	libSize : function(type, size){
-		return html.getImg(ImgSrc[type], size + "Img")
+		return html.img(ImgSrc[type], size + "Img")
 	},
 	
 	/***************************************************************************
@@ -73,7 +73,7 @@ var ImgUI = {
 	},
 	
 	libImgWidth : function(type, _class, width){
-		return html.div(_class).append(html.getImg(ImgSrc[type]).attr("width", width + "px"))
+		return html.div(_class).append(html.img(ImgSrc[type]).attr("width", width + "px"))
 	},
 	
 	/***************************************************************************
@@ -81,15 +81,15 @@ var ImgUI = {
 	 **************************************************************************/
 
 	generalImgCont : function(src) {
-		return html.div().append(html.getImg(src))
+		return html.div().append(html.img(src))
 	},
 
 	generalImgCont : function(src, _class) {
-		return html.getNewDiv(_class).append(html.getImg(src))
+		return html.div(_class).append(html.img(src))
 	},
 
 	generalImgCont : function(src, _class, size) {
-		return html.getNewDiv(_class).append(html.getImg(src, size + "Img"))
+		return html.div(_class).append(html.img(src, size + "Img"))
 	}
 
 }
