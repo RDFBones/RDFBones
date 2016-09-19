@@ -39,7 +39,6 @@ public class AjaxQueryController extends VitroAjaxController {
   protected void doRequest(VitroRequest vreq, HttpServletResponse response)
     throws IOException, ServletException {
 
-    log.info("Data");
     Map<String, String> queryVars = new HashMap<String, String>();
     List<Map<String, String>> result = new ArrayList<Map<String, String>>();
     String readyQuery = new String();
@@ -92,7 +91,6 @@ public class AjaxQueryController extends VitroAjaxController {
     if (result.size() > 0) {
       JSONArray arrayToSend = new JSONArray();
       N3Utils.setJsonArray(arrayToSend, result);
-      log.info(arrayToSend);
       response.getWriter().write(arrayToSend.toString());
     } else {
       JSONObject obj = new JSONObject();
