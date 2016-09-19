@@ -1,12 +1,15 @@
 package rdfbones.pageload;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
 
 import edu.cornell.mannlib.vitro.webapp.beans.Individual;
@@ -17,6 +20,7 @@ import edu.cornell.mannlib.vitro.webapp.dao.DataPropertyStatementDao;
 import edu.cornell.mannlib.vitro.webapp.dao.IndividualDao;
 import edu.cornell.mannlib.vitro.webapp.dao.VClassDao;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.N3Utils;
+import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
 
 public class TemplateGetter {
 
@@ -26,35 +30,10 @@ public class TemplateGetter {
   
   public static String getTemplateByIndividual(String individualUri, VitroRequest vreq){
     
-
-    IndividualDao iDao = vreq.getWebappDaoFactory().getIndividualDao();
-    Individual ind = iDao.getIndividualByURI(individualUri);
-    
-    //Getting type of the individual
-    List<ObjectPropertyStatement> ops = ind.getObjectPropertyStatements(N3Utils.getOnlyPredicate("vitro:mostSpecificType"));
-    String classUri = ops.get(0).getObjectURI();
-    log.info(classUri);
-    return getTemplateByClass(classUri, vreq);
-  }
-  
-  public static String getTemplateByClass(String classUri, VitroRequest vreq){
-    
     String template = new String();
-    //Dao for class
-    DataPropertyStatementDao dpsd = vreq.getWebappDaoFactory().getDataPropertyStatementDao();
+    List<String> superClasses = getSuperClasses(individualUri, vreq);
 
-    VClassDao vdao = vreq.getWebappDaoFactory().getVClassDao();
-    List<String> superClasses = new ArrayList<String>();
-    superClasses.add(classUri);
-    while(true){
-      classUri = getSuperClass(classUri, vdao);
-      if(StringUtils.isEmpty(classUri)){
-        break;
-      } else {
-        superClasses.add(classUri);
-      }
-    }
-    
+    DataPropertyStatementDao dpsd = vreq.getWebappDaoFactory().getDataPropertyStatementDao();
     for(String uri : superClasses){
       List<Literal> customTemplates = dpsd.getDataPropertyValuesForIndividualByProperty(uri, "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#customDisplayViewAnnot");
       if(customTemplates.size() > 0){
@@ -62,32 +41,38 @@ public class TemplateGetter {
         break;
       }
     }
-
     if(StringUtils.isEmpty(template)){
       template = "noTemplate.ftl";
     }
-    
     return template;
-    
   }
-
   
-  public static String getSuperClass(String classUri, VClassDao vdao){
+  static String superClassQuery = "" +
+     " SELECT ?class (COUNT(?superClass) AS ?superClassCount) " +
+     "    WHERE { " +
+     "       ?individual  rdf:type ?class . " +
+     "       FILTER ( NOT EXISTS { ?class   rdf:type owl:Restriction })  . " +
+     "       FILTER ( NOT EXISTS { ?superClass   rdf:type owl:Restriction })  . " +
+     "       ?class rdfs:subClassOf ?superClass .  " +
+     "    } GROUP BY ?class " + 
+     "    ORDER BY DESC(?superClassCount) ";
+  
+  
+  public static List<String> getSuperClasses(String individual, VitroRequest vreq){
 
-    String toReturn = new String("");
-    List<String> superClasses = vdao.getSuperClassURIs(classUri, true);
-    log.info("length " + superClasses.size());
-    for(String uri : superClasses){
-      VClass vc = vdao.getVClassByURI(uri);
-      if(vc != null){
-        if(!vc.getLabel().startsWith("restriction")){
-          log.info(vc.getLabel());
-          toReturn = vc.getURI();
-          break;
-        }
-      }
+    List<String> superClasses = new ArrayList<String>();
+    String readyQuery = new String();
+    ResultSet resultSet;
+    Map<String, String> queryVars = new HashMap<String, String>();
+    readyQuery = N3Utils.setPrefixes(null, superClassQuery);
+    readyQuery = readyQuery.replace("?individual", "<" + individual + ">");
+    resultSet = QueryUtils.getQueryResults(readyQuery, vreq);
+    String[] uris = {"class"};
+    List<Map<String, String>> res =  QueryUtils.getQueryVars(resultSet, uris, null);
+    for(Map<String, String> field : res){
+      superClasses.add(field.get("class"));
     }
-    return toReturn;
+    return superClasses;
   }
   
 }
