@@ -33,7 +33,7 @@ public class TemplateGetter {
     //Getting type of the individual
     List<ObjectPropertyStatement> ops = ind.getObjectPropertyStatements(N3Utils.getOnlyPredicate("vitro:mostSpecificType"));
     String classUri = ops.get(0).getObjectURI();
-    
+    log.info(classUri);
     return getTemplateByClass(classUri, vreq);
   }
   
@@ -76,6 +76,7 @@ public class TemplateGetter {
 
     String toReturn = new String("");
     List<String> superClasses = vdao.getSuperClassURIs(classUri, true);
+    log.info("length " + superClasses.size());
     for(String uri : superClasses){
       VClass vc = vdao.getVClassByURI(uri);
       if(vc != null){
