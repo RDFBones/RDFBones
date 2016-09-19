@@ -98,7 +98,7 @@ lowerLimbTab = {
 
 tabcontainer = {
 	type : sw.tabContainer,
-	tabs : [ skullTab, shoulderGirdleTab, upperLimbTab, vertebralTab, lowerLimbTab]
+	tabs : [ skullTab, shoulderGirdleTab, upperLimbTab, vertebralTab, ribCageTab, lowerLimbTab]
 }
 
 pageData.pageElements = [{

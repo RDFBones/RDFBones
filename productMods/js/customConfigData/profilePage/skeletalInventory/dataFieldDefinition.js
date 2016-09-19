@@ -124,7 +124,7 @@ coherentSkeletalDivisionData = {
 		}
 	}, {
 		type : sw.literalFieldMiddle,
-		title : "Number Skeletal Divisions",
+		title : "Number of skeletal subdivisions",
 		value : {
 			type : sw.local,
 			key : "skeletalDivisionCount",

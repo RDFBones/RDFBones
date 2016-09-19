@@ -37,7 +37,7 @@ coherentBonyPelvis = {
 			key : "simpleQuery",
 		}, {
 			type : sw.constant,
-			value : "Skeletal Divisions of Bony Pelvis",
+			value : "Skeletal subdivisions of Bony Pelvis",
 			key : "typeLabel",
 		}],
 		elements : [ skeletalDivisionData]
@@ -70,6 +70,6 @@ singleBonyPelvis = {
 
 bonyPelvisTab = {
 	type : sw.tab,
-	tabTitle : "Pelvic Girdle",
+	tabTitle : "Bony Pelvis",
 	elements : [bonypelvis,coherentBonyPelvis,  singleBonyPelvis]
 }

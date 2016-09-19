@@ -25,7 +25,7 @@ skullDivision = {
 					key : "skeletalDivisionType"
 				}, {
 					type : sw.constant,
-					value : "Skeletal Divisions of Skull",
+					value : "Skeletal subdivisions of Skull",
 					key : "typeLabel",
 				},{
 					type : sw.constant,

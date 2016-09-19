@@ -33,7 +33,7 @@ coherentVertebra = {
 			key : "classSelection"
 		}, {
 			type : sw.constant,
-			value : "Skeletal Divisions of Vertebral Column",
+			value : "Skeletal subdivisions of Vertebral Column",
 			key : "typeLabel",
 		}],
 		elements : [ skeletalDivisionData]
