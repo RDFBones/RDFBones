@@ -20,10 +20,7 @@ pageData.pageElements = [
     	formId : "skeletalInventory",
     	title : "Add new Skeletal Inventory",
     	listElements : [
-    	    { 
-    	    	uri : "http://w3id.org/rdfbones/core#PrimarySkeletalInventory",
-    	    	label : "Primary Skeletal Inventory",
-    	    },{
+    	    {
     	    	uri : "http://w3id.org/rdfbones/core#PrimarySkeletalInventoryFreshBone",
     	    	label : "Primary skeletal inventory for fresh bone material",
     	    },{
