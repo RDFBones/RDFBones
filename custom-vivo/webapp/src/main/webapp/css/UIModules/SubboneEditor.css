@@ -1,0 +1,50 @@
+.listContainer {
+	margin-left : 5px;
+}
+
+.listContainer:hover {
+	cursor : pointer;
+}
+
+.entryContainer:hover {
+	cursor : pointer;
+}
+
+.container {
+	float : left;
+	border : 1px solid black;
+	width : 320px;
+	height : 200px;	
+	margin : 5px;
+	overflow-y : auto;
+}
+
+.noEntryContainer {
+	margin : 5px;
+	color : red;
+}
+
+.entryContainer {
+	margin : 5px;
+}
+
+.entryContainer:hover {
+	cursor : pointer;
+	font-weight: bold;
+}
+
+.completeSelector {
+	float : left;
+	margin : 5px;
+}
+
+.subContainer {
+	padding-left : 20px;
+}
+
+.titleContainer1 {
+	display: flex;
+	align-items: center;
+	height: 36px;
+	//border-bottom : 1px solid;
+}

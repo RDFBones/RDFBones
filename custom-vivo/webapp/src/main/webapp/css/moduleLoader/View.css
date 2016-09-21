@@ -1,0 +1,45 @@
+.moduleTitle {
+	font-style : italic;	
+	margin : 10px 2px;
+	display : inline-block;
+	font-size : 17px;
+ 	border-bottom : 1px solid;
+	padding : 3px;
+}
+
+.newLine {
+	display : block;
+}
+
+.outerContainer {
+	opacity : 1;
+	background-color : white;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding: 3px;
+	border: 2px solid black;
+	width : 700px;
+}
+
+.innerContainer {
+	max-height : 500px;
+	overflow : auto;
+}
+
+.childrenContainer {
+	margin-left : 17px;
+}
+
+.imgContainer {
+	vertical-align : middle;
+	display : inline-block;
+	margin : 3px;
+	width : 16px;
+}
+
+.classLabel {
+	line-height : 20px;
+	display : inline-block;
+}

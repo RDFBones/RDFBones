@@ -1,0 +1,88 @@
+
+.imgFrame:hover {
+	cursor: pointer;
+}
+
+.imgMiddle {
+	vertical-align: middle;
+}
+
+.imgHelper {
+	display: inline-block;
+	height: 100%;
+	vertical-align: middle;
+}
+
+.imgFrame {
+	height: 25px;
+	width: 25px;
+	text-align: center;
+	float: left;
+}
+
+.smallImg {
+	width : 30px;
+	height : 30px;
+}
+
+.middleImg {
+	width : 60px;
+	height : 60px;
+}
+
+.normalImg {
+  max-width:120px;
+  max-height:90px;
+  width: auto;
+  height: auto;	
+}
+
+.largeImg {
+	width : 120px;
+	height : 120px;
+}
+
+.XLargeImg {
+	width : 150px;
+	height : 150px;
+}
+
+.XXLargeImg {
+	width : 200px;
+	height : 200px;
+}
+
+.loadingGif {
+	width: auto;
+	max-width: 100%;
+	height: auto;
+	max-height: 100%;
+}
+
+.gifContainer {
+	width: 50%;
+	height: 50%;
+	transform: translate(50%, 50%);
+	text-align: center;
+}
+/*
+*  User in UI.getHorizontalMiddleImg
+*/
+.horizontalMiddle {
+	display: table;
+    margin-left: auto;
+    margin-right: auto
+}
+
+.verticalMiddleContainer {
+	display : flex;
+	align-items : center;
+	height : 100%;
+	background : white;
+}
+
+
+.enabledImg:hover {
+	cursor : pointer
+}
+
