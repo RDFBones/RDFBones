@@ -1,0 +1,33 @@
+
+
+
+.contentContainer{
+	display : table;
+	margin : 10px;
+	padding : 3px;
+	border : 1px solid #D3D3D3;	
+}
+
+.tabContainer {
+	margin : 8px;		
+}
+
+.tab {
+	display : inline-block;
+	padding : 5px;
+	margin : 2px;
+	background-color :  #D0D0D0;
+}
+
+.tab:hover {
+	cursor : pointer;
+}
+
+.selectedTab {
+	background-color : #FFFFFF;
+	border : 1px solid #585858;
+}
+
+.selectedTab:hover {
+	cursor : auto;
+}

@@ -1,3 +1,31 @@
+
+.select {
+    height: 21px;
+    font-size: 12px;
+    margin-bottom : 0px;
+}
+
+/****************************************************
+*** Text with add button afterwards
+*****************************************************/
+.addFieldContainer {
+	display: flex;
+	align-items: center;
+	height: 46px;
+	font-size: 18px;
+}
+
+.addFieldText {
+	display: inline-block;
+	margin-left: 8px;
+	font-size: 18px;
+}
+
+.addFieldImg {
+	display: inline-block;
+	margin-left: 8px;
+}
+
 .moduleTitle {
 	font-style: italic;
 	margin: 10px 2px;
@@ -18,19 +46,21 @@
 	right: 0;
 	overflow: hidden;
 	z-index: 1;
-	//background-color: rgba(0, 0, 0, 0.4);
+	background-color: rgba(0, 0, 0, 0.4);
 }
 
 .fullScreenInner {
-	opacity : 1;
-	background-color : white;
+	opacity: 1;
+	background-color: white;
+}
+
+.fullScreenInner {
 	position: fixed;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	padding: 3px;
 	border: 2px solid black;
-	
 }
 
 .hoverCursor:hover {
@@ -39,9 +69,27 @@
 }
 
 .generalButton {
+	margin-left: 10px;
+	display: inline-block;
 	border: 1px solid black;
 	border-radius: 3px;
-	padding: 2px 5px;
+	background-color: #9D9696;
+}
+
+.smallButton {
+	margin-left: 10px;
+	display: inline-block;
+	border: 1px solid black;
+	border-radius: 3px;
+	padding: 1px 2px;
+}
+
+.enabledButton {
+	opacity: 1;
+}
+
+.disabledButton {
+	opacity: 0.4;
 }
 
 .redBorder {
@@ -52,7 +100,7 @@
 	border: 1px solid black;
 }
 
-.generalButton:hover {
+.enabledButton:hover {
 	cursor: pointer;
 }
 
@@ -80,6 +128,27 @@
 	float: left;
 }
 
+.margin3 {
+	margin: 3px;
+}
+
+.margin5 {
+	margin: 5px;
+}
+
+.margin5H {
+	margin: 0 5px;
+}
+
+.margin10H {
+	margin: 0 10px;
+}
+
+.margin15H {
+	margin: 0 15px;
+}
+
+
 .margin10 {
 	margin : 10px;
 }
@@ -100,5 +169,45 @@
 }
 
 .height100 {
+	height: 100%;
+}
+
+
+#pageContent{
+	width : 900px;
+	display : table;	
+}
+
+.iInlineContainer {
+   display: inline-block;
+}
+
+.iInlineContainer >  * {
+   display: inline-block;
+}
+
+.inlineContainer >  * {
+   display: inline-block;
+}
+
+.separator {
+	display : inline-block;
+	margin : 0px 15px;
+	height : 22px;
+	width : 0px;
+	border : 1px solid;
+}
+
+.existingContainer {
+	padding : 5px;
+	margin : 5px 10px; 
+	display : table;
+	background-color : #afb3b3;
+	border-radius : 5px;
+}
+
+.underLined {
+	padding : 3px;
+	border-bottom : 1px solid;	
 	height : 100%;
 }

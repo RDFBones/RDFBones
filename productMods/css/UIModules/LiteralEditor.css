@@ -1,0 +1,33 @@
+.valueDiv {
+	margin : 5px 0 0 5px;
+}
+
+.button1{
+	background-color : #E8E8E8;
+	padding : 4px;
+	margin : 5px 0 0 5px;
+	float : left;
+	border-radius : 4px;
+}
+
+.button1:hover{
+ 	cursor : pointer;	
+}
+
+.literalTextBox {
+	margin-left : 5px;
+	margin-top : 8px;
+	font-size : 15px;
+	width : 300px;
+	border : 1px solid black;
+}
+.descriptionTextBox{
+	margin-left : 5px;
+	margin-top : 8px;
+	height : 28px;
+	width : 200px;
+	border : 1px solid black;	
+}
+.multiLineTextBox {
+	
+}

@@ -2,39 +2,26 @@ package edu.cornell.mannlib.vitro.webapp.search.controller;
 
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.Literal;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
-
-import edu.cornell.mannlib.vitro.webapp.application.ApplicationUtils;
 import edu.cornell.mannlib.vitro.webapp.beans.DataPropertyStatementImpl;
 import edu.cornell.mannlib.vitro.webapp.beans.ObjectPropertyStatementImpl;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.controller.ajax.VitroAjaxController;
 import edu.cornell.mannlib.vitro.webapp.dao.DataPropertyStatementDao;
+
 import edu.cornell.mannlib.vitro.webapp.dao.InsertException;
+
 import edu.cornell.mannlib.vitro.webapp.dao.NewURIMakerVitro;
 import edu.cornell.mannlib.vitro.webapp.dao.ObjectPropertyStatementDao;
 import edu.cornell.mannlib.vitro.webapp.dao.PropertyInstanceDao;
@@ -84,16 +71,45 @@ public class AjaxDataController extends VitroAjaxController {
         switch(vreq.getParameter("dataOperation")){
 
         case "editLiteral":
-              N3Utils.setInputMap(inputMap, EditLiteralInputParams, vreq);
-              N3Utils.setOutputMap(outputMap, EditLiteralOutputParams, inputMap);
-              this.dataTriplesAdd= N3Utils.subInputMap(inputMap, EditLiteralDataTriplesAdd);
-              this.dataTriplesRemove = N3Utils.subInputMap(inputMap, EditLiteralDataTriplesRemove);
-              log.info("editLiteral");
-              this.removeData();
-              this.addData();
-              log.info("afterDataoperatio");
-              break;
-              
+          N3Utils.setInputMap(inputMap, EditDataInputParams, vreq);
+          N3Utils.setOutputMap(outputMap, EditDataOutputParams, inputMap);
+          this.dataTriplesAdd= N3Utils.subInputMap(inputMap, EditTriplesAdd);
+          this.dataTriplesRemove = N3Utils.subInputMap(inputMap, EditTriplesRemove);
+          log.info("editLiteral");
+          this.removeData();
+          this.addData();
+          log.info("afterDataoperation");
+          break;
+        
+        case "editObject":
+          N3Utils.setInputMap(inputMap, EditDataInputParams, vreq);
+          N3Utils.setOutputMap(outputMap, EditDataOutputParams, inputMap);
+          this.objectTriplesAdd= N3Utils.subInputMap(inputMap, EditTriplesAdd);
+          this.objectTriplesRemove = N3Utils.subInputMap(inputMap, EditTriplesRemove);
+          log.info("editLiteral");
+          this.removeObject();
+          this.addObject();
+          log.info("afterDataoperation");
+          break;
+         
+        case "addLiteral":
+          N3Utils.setInputMap(inputMap, EditDataInputParamsAdd, vreq);
+          N3Utils.setOutputMap(outputMap, EditDataOutputParams, inputMap);
+          this.dataTriplesAdd= N3Utils.subInputMap(inputMap, EditTriplesAdd);
+          log.info("editLiteral");
+          this.addData();
+          log.info("afterDataoperation");
+          break;
+    
+        case "addObject":
+          N3Utils.setInputMap(inputMap, EditDataInputParamsAdd, vreq);
+          N3Utils.setOutputMap(outputMap, EditDataOutputParams, inputMap);
+          this.objectTriplesAdd= N3Utils.subInputMap(inputMap, EditTriplesAdd);
+          log.info("editLiteral");
+          this.addObject();
+          log.info("afterDataoperation");
+          break;      
+
         case "saveImage" :
               log.info("SaveImage");
               N3Utils.setInputMap(inputMap,ImageUploadInputParams, vreq);
@@ -197,6 +213,26 @@ public class AjaxDataController extends VitroAjaxController {
      /*
       * EditLiteral
       */
+      private static String[] EditDataInputParamsAdd = 
+      {"subject", "predicate", "newValue"};
+    
+     private static String[] EditDataInputParams = 
+         {"subject", "predicate", "oldValue", "newValue"};
+     private static String[] EditDataOutputParams = {};
+
+     private static String[] EditTriplesRemove = {
+           "?subject ?predicate ?oldValue"
+     };
+     private static String[] EditTriplesAdd = {
+          "?subject ?predicate ?newValue"
+     };
+     
+     /*
+      * Image Upload
+      */
+     private static String[] ImageUploadInputParams = {"subject", "imageIndividual", "byteStreamIndividual",
+       "fileIndividual", "filename", "mimetype", "downloadLocation"};
+     
      private static String[] EditLiteralInputParams = 
          {"subjectUri", "predicate", "oldValue", "newValue"};
      private static String[] EditLiteralOutputParams = {};
@@ -208,17 +244,10 @@ public class AjaxDataController extends VitroAjaxController {
           "?subjectUri ?predicate ?newValue"
      };
      
-     
-     /*
-      * Image Upload
-      */
-     private static String[] ImageUploadInputParams = {"subjectUri", "imageIndividual", "byteStreamIndividual",
-       "fileIndividual", "filename", "mimetype", "downloadLocation"};
-   
      private static String[] ImageUploadOutputParams = {};
 
      private static String[] ImageUploadObjectTriplesAdd = {
-        "?subjectUri rdfbones:isDepicted ?imageIndividual",
+        "?subject rdfbones:isDepicted ?imageIndividual",
         "?imageIndividual rdf:type bibo:Image",
         "?fileIndividual rdf:type vitro-public:File",
         "?imageIndividual http://vivo.mydomain.edu/individual/hasFile ?fileIndividual",

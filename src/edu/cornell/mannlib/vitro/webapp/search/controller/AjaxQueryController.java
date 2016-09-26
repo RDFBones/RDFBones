@@ -39,12 +39,28 @@ public class AjaxQueryController extends VitroAjaxController {
   protected void doRequest(VitroRequest vreq, HttpServletResponse response)
     throws IOException, ServletException {
 
-    log.info("Data");
     Map<String, String> queryVars = new HashMap<String, String>();
     List<Map<String, String>> result = new ArrayList<Map<String, String>>();
     String readyQuery = new String();
     ResultSet resultSet;
     switch (vreq.getParameter("dataOperation")) {
+
+    case "getObject":
+      readyQuery = N3Utils.setPrefixes(null, query);
+      readyQuery = N3Utils.subInputUriQuery(readyQuery, subject, vreq);
+      readyQuery = N3Utils.subPredicateUriQuery(readyQuery, predicate, vreq);
+      resultSet = QueryUtils.getQueryResults(readyQuery, vreq);
+      result = QueryUtils.getQueryVars(resultSet, object, null);
+      break;
+    case "getLiteral":
+      readyQuery = N3Utils.setPrefixes(null, query);
+      readyQuery = N3Utils.subInputUriQuery(readyQuery, subject, vreq);
+      readyQuery = N3Utils.subPredicateUriQuery(readyQuery, predicate, vreq);
+      log.info(readyQuery);
+      resultSet = QueryUtils.getQueryResults(readyQuery, vreq);
+      result = QueryUtils.getQueryVars(resultSet, null, object);
+
+      break;
 
     case "imagesOfNotIndividual":
 
@@ -53,34 +69,28 @@ public class AjaxQueryController extends VitroAjaxController {
       readyQuery =
           N3Utils.subInputUriQuery(readyQuery,
               ImagesOfNOTIndividualQueryInputs, vreq);
-      log.info("sub Are set");
-      log.info(readyQuery);
       resultSet = QueryUtils.getQueryResults(readyQuery, vreq);
-      log.info("resultSet");
-        result =
-            QueryUtils.getQueryVars(resultSet, ImagesOfNOTIndividualQueryUris,
-                ImagesOfNOTIndividualQueryLiterals);
-      log.info("Result");
-      log.info(result.toString());
+
+      result =
+          QueryUtils.getQueryVars(resultSet, ImagesOfNOTIndividualQueryUris,
+              ImagesOfNOTIndividualQueryLiterals);
+      
       break;
     case "imagesOfIndividual":
-      log.info("imagesOfIndividual");
       readyQuery = N3Utils.setPrefixes(null, ImagesOfIndividualQuery);
       readyQuery =
-          N3Utils.subInputUriQuery(readyQuery, ImagesOfIndividualQueryInputs, vreq);
+          N3Utils.subInputUriQuery(readyQuery, ImagesOfIndividualQueryInputs,
+              vreq);
       resultSet = QueryUtils.getQueryResults(readyQuery, vreq);
       result =
           QueryUtils.getQueryVars(resultSet, ImagesOfIndividualQueryUris,
               ImagesOfIndividualQueryLiterals);
-      log.info("Result");
-      log.info(result.toString());
       break;
     }
-    
+
     if (result.size() > 0) {
       JSONArray arrayToSend = new JSONArray();
       N3Utils.setJsonArray(arrayToSend, result);
-      log.info(arrayToSend);
       response.getWriter().write(arrayToSend.toString());
     } else {
       JSONObject obj = new JSONObject();
@@ -93,6 +103,14 @@ public class AjaxQueryController extends VitroAjaxController {
       response.getWriter().write(obj.toString());
     }
   }
+
+  private static String[] subject = { "subject"};
+  private static String[] predicate = { "predicate"};
+  private static String[] object = { "object" };
+
+  private static String query = "" + "SELECT  ?object "
+      + " WHERE { \n" + "    ?subject   ?predicate   ?object . " + "   } ";
+
 
   private static String[] ImagesOfIndividualQueryInputs = { "subject" };
   private static String[] ImagesOfIndividualQueryUris = {};

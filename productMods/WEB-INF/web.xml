@@ -946,6 +946,17 @@
     <url-pattern>/populateselect</url-pattern>
   </servlet-mapping>
   
+  <!-- My servlets -->
+  
+  <servlet>
+    <servlet-name>CustomFormGenerator</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.CustomFormGenerator</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CustomFormGenerator</servlet-name>
+    <url-pattern>/customForm</url-pattern>
+  </servlet-mapping>
+  
   <servlet>
     <servlet-name>InstanceToOfferConroller</servlet-name>
     <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.InstanceToOfferController</servlet-class>
@@ -999,6 +1010,91 @@
     <servlet-name>SkeletalInventoryQueryController</servlet-name>
     <url-pattern>/skeletalInventoryQuery</url-pattern>
   </servlet-mapping>
+  
+   <servlet>
+    <servlet-name>CustomPageLoadController</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.CustomPageLoadController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CustomPageLoadController</servlet-name>
+    <url-pattern>/customPageLoad</url-pattern>
+  </servlet-mapping>
+   
+  <servlet>
+    <servlet-name>DataInput</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.DataInput</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DataInput</servlet-name>
+    <url-pattern>/dataInput</url-pattern>
+  </servlet-mapping>
+   
+  <servlet>
+    <servlet-name>DataLoader</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.DataLoader</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DataLoader</servlet-name>
+    <url-pattern>/dataLoader</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>DeleteController</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.DeleteController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteController</servlet-name>
+    <url-pattern>/delete</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>PageLoader</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.PageLoader</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PageLoader</servlet-name>
+    <url-pattern>/pageLoader</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+    <servlet-name>EntryFormLoader</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.EntryFormLoader</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EntryFormLoader</servlet-name>
+    <url-pattern>/entryFormLoad</url-pattern>
+  </servlet-mapping>
+   
+  <servlet>
+    <servlet-name>AnatomicalModelLoader</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.AnatomicalModelLoader</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AnatomicalModelLoader</servlet-name>
+    <url-pattern>/anatomicalModelLoader</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>NewInstance</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.NewInstance</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>NewInstance</servlet-name>
+    <url-pattern>/newInstance</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>DefaultPageLoad</servlet-name>
+    <servlet-class>rdfbones.pageload.DefaultPageLoad</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DefaultPageLoad</servlet-name>
+    <url-pattern>/defaultPageLoad</url-pattern>
+  </servlet-mapping>  
+
+   <!--
+   END - just to know where to place the additional servlets
+    -->
    
    <servlet>
     <servlet-name>DataAutocompleteController</servlet-name>
@@ -1007,6 +1103,16 @@
   <servlet-mapping>
     <servlet-name>DataAutocompleteController</servlet-name>
     <url-pattern>/dataautocomplete</url-pattern>
+  </servlet-mapping>
+ 
+ 
+  <servlet>
+    <servlet-name>PageConfigurationLoader</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.PageConfigurationLoader</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PageConfigurationLoader</servlet-name>
+    <url-pattern>/pageConfigLoad</url-pattern>
   </servlet-mapping>
  
   <servlet>

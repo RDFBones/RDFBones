@@ -48,7 +48,7 @@ var csv2rdfHTML = {
 			$.each(csv2rdfData.triplesToStore, function(index, value) {
 				var str = value.subject + "   ,   " + value.predicate
 						+ "   ,   " + value.object
-				var d = ui.getNewDiv().text(str).appendTo(csv2rdfHTML.scheme)
+				var d = html.div().text(str).appendTo(csv2rdfHTML.scheme)
 			})
 		})
 

@@ -104,37 +104,42 @@ public class SkeletalInventoryQueryController extends VitroAjaxController {
   private static String[] BoneQueryInputUris = { "skeletalInventory" };
   private static String[] BoneQueryUris = { "boneUri", "completeness",
       "classUri" };
-  private static String[] BoneQueryLiterals = { "label", "description" };
+  private static String[] BoneQueryLiterals = { "label", "description", "classLabel"};
+
 
   private static String[] CoherentQueryPrefixes = { "obo", "rdfs", "rdfbones",
       "rdf", "vitro" };
   private static String CoherentQuery = ""
-      + "SELECT ?boneUri ?classUri ?completeness ?label ?description "
-      + " WHERE { " + "   ?boneUri  vitro:mostSpecificType ?classUri ."
+      + "SELECT ?boneUri ?classUri ?completeness ?label ?description ?classLabel "
+      + " WHERE { " + "   "
       + "   { "
       + "    ?completeness    obo:BFO_0000050   ?skeletalInventory ."
       + "    ?completeness    obo:IAO_0000136   ?boneUri . "
       + "    ?boneUri  rdfs:label  ?label  . \n"
       + "    OPTIONAL { ?boneUri  rdfbones:description  ?description  .  } "
       + "    ?boneUri rdf:type <http://purl.obolibrary.org/obo/FMA_53672> . "
+      + "    <http://purl.obolibrary.org/obo/FMA_53672> rdfs:label ?classLabel ." 
       + "   }  UNION { "
       + "    ?completeness    obo:BFO_0000050   ?skeletalInventory . "
       + "    ?completeness    obo:IAO_0000136   ?boneUri . "
       + "    ?boneUri  rdfs:label  ?label  . "
       + "    OPTIONAL { ?boneUri  rdfbones:description  ?description . } "
       + "    ?boneUri rdf:type <http://purl.obolibrary.org/obo/FMA_53673> . "
-      + "   }" + "} ";
+      + "    <http://purl.obolibrary.org/obo/FMA_53673> rdfs:label ?classLabel ."
+      + "   }"
+      + "} ";
 
   private static String[] SingleQueryPrefixes = { "obo", "rdfs", "rdfbones",
       "rdf", "vitro" };
   private static String SingleQuery =
       ""
-          + "SELECT  ?boneUri ?classUri ?completeness ?label ?description"
+          + "SELECT  ?boneUri ?classUri ?completeness ?label ?description ?classLabel"
           + " WHERE { \n"
           + "    ?completeness    obo:BFO_0000050   ?skeletalInventory ."
           + "    ?completeness    obo:IAO_0000136   ?boneUri . "
           + "    ?boneUri  rdfs:label  ?label  . "
           + "    ?boneUri  vitro:mostSpecificType  ?classUri ."
+          + "    ?classUri rdfs:label  ?classLabel ."
           + "    OPTIONAL { ?boneUri  rdfbones:description  ?description  . } "
           + " FILTER NOT EXISTS { ?boneUri rdf:type <http://purl.obolibrary.org/obo/FMA_53672> } ."
           + " FILTER NOT EXISTS { ?boneUri rdf:type <http://purl.obolibrary.org/obo/FMA_53673> } ."
@@ -142,17 +147,37 @@ public class SkeletalInventoryQueryController extends VitroAjaxController {
 
   private static String[] SystemicPartsQueryInputs = { "parentUri" };
   private static String[] SystemicPartsQueryUris = { "boneUri", "classUri" };
-  private static String[] SystemicPartsQueryLiterals = { "label",
-      "description" };
+  private static String[] SystemicPartsQueryLiterals = { "label", "description", "classLabel" };
+
   private static String[] SystemicPartsQueryPrefixes = { "obo", "rdfs",
       "rdfbones", "vitro" };
 
   private static String SystemicPartsQuery = ""
-      + "SELECT ?boneUri ?classUri ?label ?description " + " WHERE { "
-      + "    ?boneUri    obo:systemic_part_of  ?parentUri . "
+      + "SELECT ?boneUri ?classUri ?label ?description ?classLabel"
+      + " WHERE { " + "    ?boneUri    obo:systemic_part_of  ?parentUri . "
       + "    ?boneUri  rdfs:label  ?label  . "
       + "    ?boneUri  vitro:mostSpecificType  ?classUri ."
-      + "    OPTIONAL { ?boneUri  rdfbones:description  ?description  . } "
+      + "    ?classUri rdfs:label  ?classLabel ."
+      + "    OPTIONAL { ?boneUri  rdfbones:description  ?description . } "
       + "} ";
   
+  private static String[] BoneSegemntInputs = { "skeletalInventory" };
+  private static String[] BoneSegemntUris = { "boneUri", "classUri" };
+  private static String[] BoneSegemntLiterals = { "label",
+      "description", "classLabel" };
+  private static String[] BoneSegemntPrefixes = { "obo", "rdfs",
+      "rdfbones", "vitro" };
+
+  private static String BoneSegemntQuery = ""
+      + "SELECT ?boneUri ?classUri ?label ?description ?classLabel"
+      + " WHERE { " + "    ?boneUri    obo:systemic_part_of  ?parentUri . "
+      + "    ?completeness    obo:BFO_0000050   ?skeletalInventory ."
+      + "    ?completeness    obo:IAO_0000136   ?boneSegment . "
+      + "    ?boneSegment     obo:regional_part_of ?boneOrgan"
+      + "    ?boneOrgan  vitro:mostSpecificType  ?boneOrganClass ."
+      + "    OPTIONAL {  "
+      + "       ?boneOrgan  obo:systemic_part_of ?boneDivision . " 
+      + "       ?boneOrgan  vitro:mostSpecificType ?boneOrgan . "
+      + "    } "
+      + "} ";
 }

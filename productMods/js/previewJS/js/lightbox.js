@@ -450,4 +450,5 @@
   };
 
   return new Lightbox();
+
 }));

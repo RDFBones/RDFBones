@@ -22,8 +22,10 @@
 
 <http://vivo.mydomain.edu/individual/hasFile>
 	vitro:customEntryFormAnnot 
-	"edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.FileUploadToDocumentFormGenerator"^^<http://www.w3.org/2001/XMLSchema#string> .
+	"edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.FileUploadToDocumentFormGenerator"^^<http://www.w3.org/2001/XMLSchema#string> ;
+    vitro:inPropertyGroupAnnot
+    <http://vivoweb.org/ontology#vitroPropertyGroupFile>.
 
 <http://w3id.org/rdfbones/core#isDepicted>
-    					vitro:customEntryFormAnnot 
-							"edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.ImageUploadFormGenerator"^^<http://www.w3.org/2001/XMLSchema#string> .
+					vitro:customEntryFormAnnot 
+						"edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.ImageUploadFormGenerator"^^<http://www.w3.org/2001/XMLSchema#string> .

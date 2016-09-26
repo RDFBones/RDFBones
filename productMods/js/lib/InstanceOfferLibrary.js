@@ -21,9 +21,9 @@ var ImageColumn = function(src){
 
 var AddInstanceButton = function(instanceOffer, container, instanceURI){
 	
-	return ImgUI.libImgCont("addInstance", "middle")
+	return ImgUI.libImgCont("add", "middle enabledImg")
 			.click(function(){
-			PopUpController.initWaiting()
+			PopUpController.init()
 			$.ajax({
 				url : baseUrl + "ajaxData",
 				data : {

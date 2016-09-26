@@ -14,3 +14,6 @@
  
 <http://purl.org/ontology/bibo/Slideshow>
  	   vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupdocuments> .
+ 
+<http://w3id.org/rdfbones/core#SkeletalInventory>
+	vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupSkeletalInventory> .

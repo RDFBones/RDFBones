@@ -4,19 +4,19 @@
 
 <#import "lib-vitro-form.ftl" as lvf>
 
+${scripts.add('<script type="text/javascript" src="${urls.base}/js/UIModules/UILib/html.js"></script>',
+        	  '<script type="text/javascript" src="${urls.base}/js/UIModules/UILib/PopUpController.js"></script>',
+              '<script type="text/javascript" src="${urls.base}/js/UIModules/UILib/UI.js"></script>',
+              '<script type="text/javascript" src="${urls.base}/js/UIModules/UILib/ImgUI.js"></script>')}
+
 ${scripts.add('<script type="text/javascript" src="${urls.base}/js/imageUpload/imageUploadUtils.js"></script>',
         	  '<script type="text/javascript" src="${urls.base}/js/lib/AJAXController.js"></script>',
         	  '<script type="text/javascript" src="${urls.base}/js/lib/DataLibrary.js"></script>',
-        	  '<script type="text/javascript" src="${urls.base}/js/lib/html.js"></script>',
         	  '<script type="text/javascript" src="${urls.base}/js/lib/InstanceOffer.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/lib/ImageInstanceOffer.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/lib/InstanceOfferLibrary.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/lib/jquery.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/lib/library.js"></script>',
-              '<script type="text/javascript" src="${urls.base}/js/lib/PopUpController.js"></script>',
-              '<script type="text/javascript" src="${urls.base}/js/lib/TableUI.js"></script>',
-              '<script type="text/javascript" src="${urls.base}/js/UI/UI.js"></script>',
-              '<script type="text/javascript" src="${urls.base}/js/UI/ImgUI.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/previewJS/js/lightbox.js"></script>')}
 
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/lib.css" />')}

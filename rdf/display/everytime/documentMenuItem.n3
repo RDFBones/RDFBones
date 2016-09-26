@@ -15,7 +15,6 @@ display:Documents
     display:urlMapping "/documents" ;
     display:hasDataGetter display:documentDataGetter .
 
-
 display:DocumentsMenuItem
     a display:NavigationElement ;
     display:menuPosition "6";
@@ -29,3 +28,26 @@ display:documentDataGetter
       a <java:edu.cornell.mannlib.vitro.webapp.utils.dataGetter.ClassGroupPageData>;
       display:forClassGroup
               vivoweb:vitroClassGroupdocuments .
+
+             
+display:SkeletalInventory
+    a display:Page ;    
+    a display:ClassGroupPage;
+    display:forClassGroup vivoweb:vitroClassGroupSkeletalInventory ;
+    display:title "Skeletal Inventories" ;
+    display:urlMapping "/skeletalInventories" ;
+    display:hasDataGetter display:skeletalInventoryDataGetter .
+    
+display:SkeletalInventoryMenuItem
+    a display:NavigationElement ;
+    display:menuPosition "7";
+    display:linkText "Skeletal Inventories";
+    display:toPage display:SkeletalInventory .    
+    
+display:DefaultMenu 
+	display:hasElement display:SkeletalInventoryMenuItem .
+	
+display:skeletalInventoryDataGetter
+   	a <java:edu.cornell.mannlib.vitro.webapp.utils.dataGetter.CustomPageDataGetter>;
+      display:forClassGroup
+              vivoweb:vitroClassGroupSkeletalInventory . 

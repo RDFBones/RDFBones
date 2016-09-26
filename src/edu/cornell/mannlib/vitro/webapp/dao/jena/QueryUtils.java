@@ -39,38 +39,63 @@ public class QueryUtils {
     public static List<Map<String, String>> getQueryVars(ResultSet results, String[] uris, String[] literals){
       
       List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
-      log.info("before");
       while(results.hasNext()){
-        log.info("inside");
-       
         QuerySolution sol = results.next();
         //Map for the row of the result
         Map<String, String> resultMap  = new HashMap<String, String>();
-        if(literals != null){
-          for(String literal : literals){
-            if(sol.getLiteral(literal) == null){
-              resultMap.put(literal, null);
-            } else {
-              resultMap.put(literal, sol.getLiteral(literal).getString());  
-            }
-          }
-        }
         if(uris != null){
           for(String uri : uris){
-            if(sol.get(uri) == null){
-              resultMap.put(uri, null);
-            } else {
-              resultMap.put(uri, sol.get(uri).asResource().getURI());  
+            //og.info(uri);
+            if(sol.get(uri) != null){
+              resultMap.put(uri, sol.get(uri).asResource().getURI());
             }
           }
         }
+        if(literals != null){
+          for(String literal : literals){
+            //log.info(literal);
+            if(sol.getLiteral(literal) != null){
+              resultMap.put(literal, sol.getLiteral(literal).getString());
+            }
+          }
+        }
+        //log.info(resultMap);
+
         resultList.add(resultMap);
       }
-      log.info("after");
       return resultList;
     }
     
-    
+   public static List<Map<String, String>> getQueryVarsList(ResultSet results, List<String> uris, List<String> literals){
+      
+      List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
+      while(results.hasNext()){
+        QuerySolution sol = results.next();
+        //Map for the row of the result
+        Map<String, String> resultMap  = new HashMap<String, String>();
+        if(uris != null){
+          for(String uri : uris){
+            //og.info(uri);
+            if(sol.get(uri) != null){
+              resultMap.put(uri, sol.get(uri).asResource().getURI());
+            }
+          }
+        }
+        if(literals != null){
+          for(String literal : literals){
+            //log.info(literal);
+            if(sol.getLiteral(literal) != null){
+              resultMap.put(literal, sol.getLiteral(literal).getString());
+            }
+          }
+        }
+        //log.info(resultMap);
+
+        resultList.add(resultMap);
+      }
+      return resultList;
+    }
+
     public static Map<String,Object> querySolutionToObjectValueMap( QuerySolution soln){
         Map<String,Object> map = new HashMap<String,Object>();
         Iterator<String> varNames = soln.varNames();

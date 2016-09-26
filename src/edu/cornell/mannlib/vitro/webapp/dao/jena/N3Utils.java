@@ -23,6 +23,9 @@ public class N3Utils {
       put("rdfbones","http://w3id.org/rdfbones/core#");
       put("vitro-public", "http://vitro.mannlib.cornell.edu/ns/vitro/public#");
       put("vitro", "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#");
+      put("owl", "http://www.w3.org/2002/07/owl#");
+      put("sw", "http://softwareOntology.com/");
+
     }};
     
     public static void setInputMap(Map<String, String> inputMap, 
@@ -75,6 +78,16 @@ public class N3Utils {
        return predicate;
     }
     
+    public static String getOnlyPredicate(String predicate){
+      for(String prefix : prefixDef.keySet()){
+        if(predicate.contains(prefix + ":")){
+          predicate = predicate.replace(prefix + ":", prefixDef.get(prefix));
+          break;
+        } 
+       }
+      return predicate;
+    }
+    
     public static String getObject(String triple){
       String object = triple.split("\\s+")[2];
       for(String prefix : prefixDef.keySet()){
@@ -116,6 +129,24 @@ public class N3Utils {
       String toReturn = query;
       for(String param : parameters){
         toReturn = toReturn.replace("?" + param, "<" + vreq.getParameter(param) + ">");
+       }
+      return toReturn;
+    }
+    
+    public static String subInputUriQueryList(String query, 
+      List<String> parameters, VitroRequest vreq){
+      String toReturn = query;
+      for(String param : parameters){
+        toReturn = toReturn.replace("?" + param, "<" + vreq.getParameter(param) + ">");
+       }
+      return toReturn;
+    }
+    
+    public static String subPredicateUriQuery(String query, 
+      String[] parameters, VitroRequest vreq){
+      String toReturn = query;
+      for(String param : parameters){
+        toReturn = toReturn.replace("?" + param,  vreq.getParameter(param));
        }
       return toReturn;
     }
