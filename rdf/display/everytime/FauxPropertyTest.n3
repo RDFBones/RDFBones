@@ -1,0 +1,223 @@
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix : <http://vitro.mannlib.cornell.edu/ns/vitro/ApplicationConfiguration#> .
+@prefix display: <http://vitro.mannlib.cornell.edu/ontologies/display/1.1#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix datagetter: <java:edu/cornell/mannlib/vitro/webapp/utils/datagetter/> .
+@prefix vitro: <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#> .
+@prefix role:  <http://vitro.mannlib.cornell.edu/ns/vitro/role#> .
+@prefix local: <http://vitro.mannlib.cornell.edu/ns/vitro/siteConfig/> .
+@prefix vivo: <http://vivoweb.org/ontology/core#> . 
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix rdfbones: <http://w3id.org/rdfbones/core#> .
+
+@base <http://vitro.mannlib.cornell.edu/ns/vitro/ApplicationConfiguration> .
+
+
+# warning: don't use blank nodes; the display model doesn't currently support them.
+        
+# planning
+local:planningContext a :ConfigContext ;
+    :hasConfiguration local:planningConfig ;
+    :configContextFor obo:BFO_0000051 ;
+    :qualifiedByDomain <http://purl.obolibrary.org/obo/OBI_0000066> ;
+    :qualifiedBy obo:OBI_0000339 .
+
+local:planningConfig a :ObjectPropertyDisplayConfig ;
+    rdfs:label "planning"@en-US;
+    :displayName "planning" ;
+    :listViewConfigFile "listViewConfig-fauxPropertyDefault.xml"^^xsd:string ;
+    vitro:displayRankAnnot 40;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+
+# study desing execution
+local:studydesignexecContext a :ConfigContext ;
+    :hasConfiguration local:studydesignexecConfig ;
+    :configContextFor obo:BFO_0000051 ;
+    :qualifiedByDomain <http://purl.obolibrary.org/obo/OBI_0000066> ;
+    :qualifiedBy obo:OBI_0000471 .
+
+local:studydesignexecConfig a :ObjectPropertyDisplayConfig ;
+    rdfs:label "study design execution"@en-US;
+    :displayName "study design execution" ;
+    :listViewConfigFile "listViewConfig-fauxPropertyDefault.xml"^^xsd:string ;
+    vitro:displayRankAnnot 40;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+
+# study desing execution
+local:conclusionbasedonContext a :ConfigContext ;
+    :hasConfiguration local:conclusionbasedonConfig ;
+    :configContextFor obo:BFO_0000051 ;
+    :qualifiedByDomain <http://purl.obolibrary.org/obo/OBI_0000066> ;
+    :qualifiedBy obo:OBI_0000338 .
+
+local:conclusionbasedonConfig a :ObjectPropertyDisplayConfig ;
+    rdfs:label "conclusion based on data"@en-US;
+    :displayName "conclusion based on data" ;
+    :listViewConfigFile "listViewConfig-fauxPropertyDefault.xml"^^xsd:string ;
+    vitro:displayRankAnnot 40;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+
+# documenting
+local:documentingContext a :ConfigContext ;
+    :hasConfiguration local:documentingConfig ;
+    :configContextFor obo:BFO_0000051 ;
+    :qualifiedByDomain <http://purl.obolibrary.org/obo/OBI_0000066> ;
+    :qualifiedBy obo:IAO_0000572 .
+
+local:documentingConfig a :ObjectPropertyDisplayConfig ;
+    rdfs:label "documenting"@en-US;
+    :displayName "documenting" ;
+    :listViewConfigFile "listViewConfig-fauxPropertyDefault.xml"^^xsd:string ;
+    vitro:displayRankAnnot 40;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+
+# planning for investigation
+local:planningforinvestContext a :ConfigContext ;
+    :hasConfiguration local:planningforinvestConfig ;
+    :configContextFor obo:BFO_0000050 ;
+    :qualifiedByDomain <http://purl.obolibrary.org/obo/OBI_0000339> ;
+    :qualifiedBy obo:OBI_0000066 .
+
+local:planningforinvestConfig a :ObjectPropertyDisplayConfig ;
+    rdfs:label "planning for investigation"@en-US;
+    :displayName "planning for investigation" ;
+    :listViewConfigFile "listViewConfig-fauxPropertyDefault.xml"^^xsd:string ;
+    vitro:displayRankAnnot 40;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+
+# execution of investigation
+local:execofinvestContext a :ConfigContext ;
+    :hasConfiguration local:execofinvestConfig ;
+    :configContextFor obo:BFO_0000050 ;
+    :qualifiedByDomain <http://purl.obolibrary.org/obo/OBI_0000471> ;
+    :qualifiedBy obo:OBI_0000066 .
+
+local:execofinvestConfig a :ObjectPropertyDisplayConfig ;
+    rdfs:label "execution of investigation"@en-US;
+    :displayName "execution of investigation" ;
+    :listViewConfigFile "listViewConfig-fauxPropertyDefault.xml"^^xsd:string ;
+    vitro:displayRankAnnot 40;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+
+# conclusion from investigation
+local:conclusionfrominvestContext a :ConfigContext ;
+    :hasConfiguration local:conclusionfrominvestConfig ;
+    :configContextFor obo:BFO_0000050 ;
+    :qualifiedByDomain <http://purl.obolibrary.org/obo/OBI_0000338> ;
+    :qualifiedBy obo:OBI_0000066 .
+
+local:conclusionfrominvestConfig a :ObjectPropertyDisplayConfig ;
+    rdfs:label "conclusion from investigation"@en-US;
+    :displayName "conclusion from investigation" ;
+    :listViewConfigFile "listViewConfig-fauxPropertyDefault.xml"^^xsd:string ;
+    vitro:displayRankAnnot 40;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+
+# documenting of investigation
+local:documentofinvestContext a :ConfigContext ;
+    :hasConfiguration local:documentofinvestConfig ;
+    :configContextFor obo:BFO_0000050 ;
+    :qualifiedByDomain <http://purl.obolibrary.org/obo/OBI_0000572> ;
+    :qualifiedBy obo:OBI_0000066 .
+
+local:documentofinvestConfig a :ObjectPropertyDisplayConfig ;
+    rdfs:label "documenting of investigation"@en-US;
+    :displayName "documenting of investigation" ;
+    :listViewConfigFile "listViewConfig-fauxPropertyDefault.xml"^^xsd:string ;
+    vitro:displayRankAnnot 40;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+
+
+# skeletal material specification
+local:skeletmatspecificContext a :ConfigContext ;
+    :hasConfiguration local:skeletmatspecificConfig ;
+    :configContextFor obo:BFO_0000051 ;
+    :qualifiedByDomain <http://purl.obolibrary.org/obo/OBI_0000260> ;
+    :qualifiedBy rdfbones:SkeletalMaterialSpecification .
+
+local:skeletmatspecificConfig a :ObjectPropertyDisplayConfig ;
+    rdfs:label "skeletal material specification"@en-US;
+    :displayName "skeletal material specification" ;
+    :listViewConfigFile "listViewConfig-fauxPropertyDefault.xml"^^xsd:string ;
+    vitro:displayRankAnnot 40;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+
+# skeletal material specification for plan
+local:skelmatspecplanContext a :ConfigContext ;
+    :hasConfiguration local:skelmatspecplanConfig ;
+    :configContextFor obo:BFO_0000050 ;
+    :qualifiedByDomain rdfbones:SkeletalMaterialSpecification ;
+    :qualifiedBy obo:OBI_0000260 .
+
+local:skelmatspecplanConfig a :ObjectPropertyDisplayConfig ;
+    rdfs:label "skeletal material specification for plan"@en-US;
+    :displayName "skeletal material specification for plan" ;
+    :listViewConfigFile "listViewConfig-fauxPropertyDefault.xml"^^xsd:string ;
+    vitro:displayRankAnnot 40;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+
+# study design
+local:studydesignContext a :ConfigContext ;
+    :hasConfiguration local:studydesignConfig ;
+    :configContextFor obo:OBI_0000299 ;
+    :qualifiedByDomain <http://purl.obolibrary.org/obo/OBI_0000339> ;
+    :qualifiedBy obo:OBI_0500000 .
+
+local:studydesignConfig a :ObjectPropertyDisplayConfig ;
+    rdfs:label "study design"@en-US;
+    :displayName "study design" ;
+    :listViewConfigFile "listViewConfig-fauxPropertyDefault.xml"^^xsd:string ;
+    vitro:displayRankAnnot 40;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+
+# tests hypothesis
+local:testshypothesisContext a :ConfigContext ;
+    :hasConfiguration local:testshypothesisConfig ;
+    :configContextFor obo:OBI_0000293 ;
+    :qualifiedByDomain <http://purl.obolibrary.org/obo/OBI_0000339> ;
+    :qualifiedBy obo:OBI_0001908 .
+
+local:testshypothesisConfig a :ObjectPropertyDisplayConfig ;
+    rdfs:label "tests hypothesis"@en-US;
+    :displayName "tests hypothesis" ;
+    :listViewConfigFile "listViewConfig-fauxPropertyDefault.xml"^^xsd:string ;
+    vitro:displayRankAnnot 40;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
