@@ -32,7 +32,8 @@ local:planningConfig a :ObjectPropertyDisplayConfig ;
     vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
     vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
     vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
-    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview> .
 
 # study desing execution
 local:studydesignexecContext a :ConfigContext ;
@@ -49,7 +50,8 @@ local:studydesignexecConfig a :ObjectPropertyDisplayConfig ;
     vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
     vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
     vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
-    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview> .
 
 # study desing execution
 local:conclusionbasedonContext a :ConfigContext ;
@@ -66,7 +68,8 @@ local:conclusionbasedonConfig a :ObjectPropertyDisplayConfig ;
     vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
     vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
     vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
-    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview>.
 
 # documenting
 local:documentingContext a :ConfigContext ;
@@ -83,7 +86,8 @@ local:documentingConfig a :ObjectPropertyDisplayConfig ;
     vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
     vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
     vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
-    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview>.
 
 # planning for investigation
 local:planningforinvestContext a :ConfigContext ;
@@ -100,7 +104,8 @@ local:planningforinvestConfig a :ObjectPropertyDisplayConfig ;
     vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
     vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
     vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
-    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview>.
 
 # execution of investigation
 local:execofinvestContext a :ConfigContext ;
@@ -117,7 +122,8 @@ local:execofinvestConfig a :ObjectPropertyDisplayConfig ;
     vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
     vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
     vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
-    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview>.
 
 # conclusion from investigation
 local:conclusionfrominvestContext a :ConfigContext ;
@@ -134,7 +140,8 @@ local:conclusionfrominvestConfig a :ObjectPropertyDisplayConfig ;
     vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
     vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
     vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
-    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview>.
 
 # documenting of investigation
 local:documentofinvestContext a :ConfigContext ;
@@ -151,7 +158,8 @@ local:documentofinvestConfig a :ObjectPropertyDisplayConfig ;
     vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
     vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
     vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
-    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview> .
 
 
 # skeletal material specification
@@ -169,7 +177,8 @@ local:skeletmatspecificConfig a :ObjectPropertyDisplayConfig ;
     vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
     vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
     vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
-    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview>.
 
 # skeletal material specification for plan
 local:skelmatspecplanContext a :ConfigContext ;
@@ -186,7 +195,8 @@ local:skelmatspecplanConfig a :ObjectPropertyDisplayConfig ;
     vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
     vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
     vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
-    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview>.
 
 # study design
 local:studydesignContext a :ConfigContext ;
@@ -203,7 +213,8 @@ local:studydesignConfig a :ObjectPropertyDisplayConfig ;
     vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
     vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
     vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
-    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview>.
 
 # tests hypothesis
 local:testshypothesisContext a :ConfigContext ;
@@ -220,4 +231,5 @@ local:testshypothesisConfig a :ObjectPropertyDisplayConfig ;
     vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
     vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
     vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
-    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean .
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview>.
