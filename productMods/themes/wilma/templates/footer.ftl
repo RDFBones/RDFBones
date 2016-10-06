@@ -17,7 +17,7 @@
          <#if user.hasRevisionInfoAccess>
              | ${i18n().menu_version} <a href="${version.moreInfoUrl}" title="${i18n().menu_version}">${version.label}</a>
         </#if> -->
-	 RDFBones is funded by <a class="powered-by-vivo" href=http://www.dfg.de/" target="_blank"><strong>DFG</strong></a>: Grant Nr. WI 863/9-1
+	 RDFBones is funded by <a class="powered-by-vivo" href="http://www.dfg.de/" target="_blank"><strong>DFG</strong></a>: Grant Nr. <strong>WI 863/9-1</strong>
     </p>
     
     <nav role="navigation">
