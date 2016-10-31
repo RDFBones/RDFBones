@@ -211,3 +211,12 @@
 	border-bottom : 1px solid;	
 	height : 100%;
 }
+
+.flexInlineContainer {
+	display : flex;
+}
+
+.flexInlineContainer >  * {
+   display: inline-block;
+}
+

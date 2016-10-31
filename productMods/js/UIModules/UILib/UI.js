@@ -155,6 +155,18 @@ var UI = {
 		return this.selectorField
 	},
 
+	classSelectorMap : function(dataSet) {
+		this.selectorField = html.getSelectorField().addClass("inline margin5H")
+
+		$.each(dataSet, (function(key, value) {
+			$("<option/>", {
+				value : key,
+				text : value.label,
+			}).appendTo(this.selectorField)
+		}).bind(this))
+		return this.selectorField
+	},
+	
 	dataSetSelector : function(dataSet, setData){
 		
 		this.setData = setData

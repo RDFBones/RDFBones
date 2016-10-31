@@ -56,6 +56,10 @@ var PopUpController = {
 		setTimeout((function(){
 			this.container.remove()
 		}).bind(this), 2000)
+	},
+	
+	done : function(){
+		this.container.remove()
 	}
 }
 
