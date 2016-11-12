@@ -60,23 +60,23 @@ public class Triple {
     
     String subject = this.getSubject().getVarName();
     if(subject.contains(":") || subject.contains("<")){
-      t += "\t " + subject; 
+      t += subject; 
     } else {
-      t += "\t ?" + subject;
+      t += "?" + subject;
     }
     
     String predicate = this.predicate;
     if(predicate.contains(":") || predicate.contains("<")){
-      t += " " + predicate + " "; 
+      t += "\t" + predicate + "\t"; 
     } else {
-      t += " ?" + predicate + " ";
+      t += "\t?" + predicate + "\t";
     }
     
     String object = this.getObject().getVarName();
     if(object.contains(":") || object.contains("<")){
-      t += " " + object + " . \n"; 
+      t += object + "."; 
     } else {
-      t += " ?" + object + " . \n";
+      t += "?" + object + ".";
     }
     
     return t;
