@@ -13,6 +13,9 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
@@ -214,6 +217,18 @@ public class QueryUtils {
         return getQueryResults(queryStr, vreq.getRDFService());
     }
 
+    public static List<Map<String, String>> getResult(String queryStr, List<String> uris, List<String> literals, VitroRequest vreq){
+      
+      String[] urisList = new String[uris.size()];
+      String[] literalList = new String[literals.size()];
+      return getResult(queryStr, urisList, literalList, vreq);
+  }
+    
+  public static List<Map<String, String>> getResult(String queryStr, String[] uris, String[] literals, VitroRequest vreq){
+      ResultSet resultSet = getQueryResults(queryStr, vreq);
+      return getQueryVars(resultSet, uris, literals);
+  }
+    
     public static ResultSet getQueryResults(String queryStr, QuerySolution initialBindings, RDFService rdfService) {
     	return getQueryResults(bindVariables(queryStr, initialBindings), rdfService);
     }
@@ -265,5 +280,16 @@ public class QueryUtils {
 		return buffer.toString();
 	}
 
-
+  public static JSONArray getJSON(List<Map<String, String>> results) throws JSONException{
+    
+    JSONArray resultArray = new JSONArray();
+    for(Map<String, String> result : results){
+      JSONObject jsonObject = new JSONObject();
+      for(String key : result.keySet()){
+        jsonObject.put(key, result.get(key));
+      }
+      resultArray.put(jsonObject);
+    }   
+    return resultArray;
+  }
 }
