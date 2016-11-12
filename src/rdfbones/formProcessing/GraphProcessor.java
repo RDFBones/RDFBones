@@ -12,7 +12,7 @@ import rdfbones.lib.GraphLib;
 
 public class GraphProcessor {
 
-  public static Graph getGraph(List<Triple> triples, List<Triple> restrictionTriples, String startNode){
+  public static Graph getGraph(List<Triple> triples, List<Triple> schemeTriples, String startNode){
 
     Triple multiTriple = null;
     boolean valid = true;
@@ -30,24 +30,25 @@ public class GraphProcessor {
       }
     }
     if(valid){
-        List<Triple> graphTriples = new ArrayList<Triple>();
-        graphTriples.add(multiTriple);
-        triples.remove(multiTriple);
-        return getSubGraph(triples, restrictionTriples, startNode, GraphLib.getObject(multiTriple, startNode), graphTriples);  
+      List<Triple> graphTriples = new ArrayList<Triple>();
+      graphTriples.add(multiTriple);
+      triples.remove(multiTriple);
+      return getSubGraph(triples, schemeTriples, startNode, 
+          GraphLib.getObject(multiTriple, startNode), graphTriples);  
     } else {
       List<Triple> graphTriples = new ArrayList<Triple>();
-      return getSubGraph(triples, restrictionTriples, null, startNode, graphTriples);
+      return getSubGraph(triples, schemeTriples, null, startNode, graphTriples);
     }
   }
   
-  public static Graph getSubGraph(List<Triple> triples, List<Triple> restrictionTriples, String initialNode, String startNode, List<Triple> graphTriples){
+  public static Graph getSubGraph(List<Triple> triples, List<Triple> schemeTriples, 
+    String inputNode, String startNode, List<Triple> graphTriples){
     
     Graph graph = new Graph();
     if(graphTriples.size() > 0){
-      graph.multiTriple = graphTriples.get(0);
-      graph.startNode = initialNode;
+      graph.inputNode = inputNode;
     } else {
-      graph.startNode = startNode;
+      graph.inputNode = startNode;
     }
     Map<String, String> subGraphNodes = new HashMap<String, String>();
     List<String> graphNodes = new ArrayList<String>();
@@ -83,33 +84,12 @@ public class GraphProcessor {
       }
     }
     //Set the found triple to the graph
-    graph.dataTriples = graphTriples;
-    graph.restrictionTriples = getRestrictionTriples(graphTriples, restrictionTriples);
-    graph.initNodes();
+    graph.initNodes(graphTriples, schemeTriples);
     for(String subGraphNode : subGraphNodes.keySet()){
       String node = subGraphNodes.get(subGraphNode);
-      graph.subGraphs.put(subGraphNode, getGraph(triples, restrictionTriples, node));
+      graph.subGraphs.put(subGraphNode, getGraph(triples, schemeTriples, node));
     }
     return graph;
-  }
-  
-  static List<Triple> getRestrictionTriples(List<Triple> graphTriples, 
-      List<Triple> restrictionTriples){
-    
-    /*
-     * Note :
-     * 
-     * Now the algorithm does not remove the found restriction triples
-     * it works but due to efficiency it has to implemented later.
-     */
-    List<Triple> restTriples = new ArrayList<Triple>();
-    List<String> nodes = GraphLib.getNodes(graphTriples);
-    //Get type triples
-    restTriples.addAll(GraphLib.getAndRemoveTypeTriples(restrictionTriples, nodes));
-    List<String> typeNodes = GraphLib.getObjectNodes(restTriples);
-    restTriples.addAll(GraphLib.getAndRemoveRestrictionTriples(typeNodes, restrictionTriples));
-    restTriples.addAll(GraphLib.getAndRemoveSubClassTriples(restrictionTriples, typeNodes));
-    return restTriples;
   }
 }
 
