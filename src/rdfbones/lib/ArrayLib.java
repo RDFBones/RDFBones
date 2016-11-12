@@ -1,5 +1,6 @@
 package rdfbones.lib;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rdfbones.rdfdataset.Triple;
@@ -30,8 +31,23 @@ public class ArrayLib {
     
     String arr = new String("");
     for(String str : list){
-      arr += str + " \t ";
+      arr += "?" + str + " \t| ";
     }
     return arr;
+  }
+  
+  public static String debugTriples(String tab, List<Triple> list){
+    
+    String arr = new String("\n");
+    for(Triple triple : list){
+      arr  += tab + "\t" +  triple.subject.varName + " \t " + triple.predicate + " \t " + triple.object.varName + "\n";
+    }
+    return arr;
+  }
+  
+  public static List<String> getList(String str){
+    List<String> strArray = new ArrayList<String>();
+    strArray.add(str);
+    return strArray;
   }
 }

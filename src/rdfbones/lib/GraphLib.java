@@ -147,67 +147,143 @@ public class GraphLib {
     return toReturn;
   }
   
-  public static List<String> getNewInstanceNodes(List<Triple> triples){
+  public static List<String> getNewInstances(List<Triple> triples){
     
     List<String> newInstances = new ArrayList<String>();
     for(Triple triple : triples){
-      ArrayLib.addDistinct(newInstances, triple.subject.varName);
-      ArrayLib.addDistinct(newInstances, triple.object.varName);
+      if(!(triple.subject instanceof ExistingInstance) && !(triple.subject instanceof InputNode)){
+        ArrayLib.addDistinct(newInstances, triple.subject.varName);
+      }
+      if(!(triple.object instanceof ExistingInstance) && !(triple.object instanceof InputNode)){
+        ArrayLib.addDistinct(newInstances, triple.object.varName);
+      }
     }
     return newInstances;
   }
   
-  public static List<String> getResourceNodes(List<Triple> triples){
-
-    List<String> uris = new ArrayList<String>();
-    for(Triple triple : triples){
-      if(!(triple instanceof LiteralTriple)){
-        ArrayLib.addDistinct(uris, triple.subject.varName);
-        ArrayLib.addDistinct(uris, triple.object.varName);
-      }
-    }
-    return uris;
-  }
-  
-  public static List<String> getLiteralNodes(List<Triple> triples){
-
-    List<String> literals = new ArrayList<String>();
-    for(Triple triple : triples){
-      if(triple instanceof LiteralTriple){
-        ArrayLib.addDistinct(literals, triple.object.varName);
-      }
-    }
-    return literals;
-  }
-  
-  public static List<String> getInputNodes(List<Triple> triples){
-
-    List<String> inputNodes = new ArrayList<String>();
-    for(Triple triple : triples){
-      if(triple.subject instanceof InputNode){
-        ArrayLib.addDistinct(inputNodes, triple.subject.varName);
-      }
-      if(triple.object instanceof InputNode){
-        ArrayLib.addDistinct(inputNodes, triple.object.varName);
-      }
-    }
-    return inputNodes;
-  }  
-  
-  public static List<String> getClassNodes(List<Triple> restrictionTriples){
+  public static List<String> getExistingInstances(List<Triple> triples){
     
-    List<String> classNodes = new ArrayList<String>();
-    for(Triple triple : restrictionTriples){
-      if(triple instanceof RestrictionTriple){
-        ArrayLib.addDistinct(classNodes, triple.subject.varName);
-        ArrayLib.addDistinct(classNodes, triple.object.varName);
+    List<String> newInstances = new ArrayList<String>();
+    for(Triple triple : triples){
+      if((triple.subject instanceof ExistingInstance)){
+        ArrayLib.addDistinct(newInstances, triple.subject.varName);
+      }
+      if(triple.object instanceof ExistingInstance){
+        ArrayLib.addDistinct(newInstances, triple.object.varName);
+      }
+    }
+    return newInstances;
+  }
+  
+  public static List<Triple> getSchemeTriples(List<Triple> graphTriples,List<Triple> restrictionTriples){
+    
+    /*
+     * Note :
+     * 
+     * Now the algorithm does not remove the found restriction triples
+     * it works but due to efficiency it has to implemented later.
+     */
+    List<Triple> restTriples = new ArrayList<Triple>();
+    List<String> nodes = GraphLib.getNodes(graphTriples);
+    //Get type triples
+    restTriples.addAll(GraphLib.getAndRemoveTypeTriples(restrictionTriples, nodes));
+    List<String> typeNodes = GraphLib.getObjectNodes(restTriples);
+    restTriples.addAll(GraphLib.getAndRemoveRestrictionTriples(typeNodes, restrictionTriples));
+    restTriples.addAll(GraphLib.getAndRemoveSubClassTriples(restrictionTriples, typeNodes));
+    return restTriples;
+  }
+  
+  public static void setDataInputVars(Graph graph){
+    
+    //Variables to set
+    graph.triplesToStore = new ArrayList<Triple>();
+    graph.newInstances = new ArrayList<String>();
+    graph.inputInstances = new ArrayList<String>();
+    graph.constantLiterals = new ArrayList<String>();
+    graph.inputLiterals = new ArrayList<String>();
+    graph.inputClasses = new ArrayList<String>();
+
+    graph.typeQueryTriples = new ArrayList<Triple>();
+    graph.classesToSelect = new ArrayList<String>();
+    
+    graph.triplesToStore.addAll(graph.dataTriples);
+
+    //newInstamces, literals inputs
+    for(Triple triple : graph.schemeTriples){
+      if(!triple.predicate.equals("rdf:type")){
+        graph.typeQueryTriples.add(triple);  
+      }
+    }
+      
+    for(Triple triple : graph.dataTriples){
+      if(triple.subject instanceof InputNode){
+        ArrayLib.addDistinct(graph.inputInstances, triple.subject.varName);
       } else {
-        if(triple.predicate.equals("rdf:type")){
-          ArrayLib.addDistinct(classNodes, triple.object.varName);
+        ArrayLib.addDistinct(graph.newInstances, triple.subject.varName);
+      }
+      
+      if(triple.object instanceof InputNode){
+        if(triple instanceof LiteralTriple){
+          ArrayLib.addDistinct(graph.inputLiterals, triple.object.varName);
+        } else {
+          ArrayLib.addDistinct(graph.inputInstances, triple.object.varName);
+        }
+      } else {
+        if(triple instanceof LiteralTriple){
+          ArrayLib.addDistinct(graph.constantLiterals, triple.object.varName);
+        } else {
+          ArrayLib.addDistinct(graph.newInstances, triple.object.varName);
         }
       }
     }
-    return classNodes;
+    
+    //triplesToStore, typeQueryTriples, classesToSelect
+    for(Triple triple : graph.schemeTriples){
+      if(triple instanceof RestrictionTriple){
+         ArrayLib.addDistinct(graph.classesToSelect, triple.subject.varName);
+         ArrayLib.addDistinct(graph.classesToSelect, triple.object.varName);
+      } else {
+        if(triple.predicate.equals("rdf:type")){
+          if(!(triple.subject instanceof InputNode)){
+            graph.triplesToStore.add(triple);
+          }
+         ArrayLib.addDistinct(graph.classesToSelect, triple.object.varName);
+         if(triple.subject instanceof InputNode){
+           graph.typeQueryTriples.add(triple);
+         }
+        }
+      }
+    }
   }
   
+  public static void setDataRetrievalVars(Graph graph){
+    
+    //Variables to set
+    graph.dataRetreivalQuery = new ArrayList<Triple>();
+    graph.urisToSelect = new ArrayList<String>();
+    graph.literalsToSelect = new ArrayList<String>();
+    graph.dataRetreivalQuery.addAll(graph.dataTriples);
+    
+    for(String var : graph.newInstances){
+      graph.urisToSelect.add(var);
+      graph.urisToSelect.add(var + "Type");
+      graph.dataRetreivalQuery.add(QueryLib.getMSTTriple(var));
+    }
+    
+    for(String var : graph.inputInstances){
+      graph.urisToSelect.add(var);
+      graph.urisToSelect.add(var + "Type");
+      graph.typeQueryTriples.add(QueryLib.getMSTTriple(var));
+      graph.urisToSelect.add(var + "Label");
+      graph.dataRetreivalQuery.add(QueryLib.getOptionalLabelTriple(var));
+    };
+    
+    for(String var : graph.inputLiterals){
+      graph.literalsToSelect.add(var);
+    }
+    for(String var : graph.constantLiterals){
+      graph.literalsToSelect.add(var);
+    }
+  }
+    
 }
