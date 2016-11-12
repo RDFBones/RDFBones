@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.json.JSONArray;
 
-import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
+import rdfbones.rdfdataset.Triple;
 
 
 public class SubSPARQLDataGetter extends SPARQLDataGetter{
@@ -14,10 +14,10 @@ public class SubSPARQLDataGetter extends SPARQLDataGetter{
   public String inputKey = new String("");
   public String inputValue = new String("");
 
-  public SubSPARQLDataGetter(VitroRequest vreq,  String selectVars, 
-    String queryTriples, List<String> uris, List<String> literals, String inputKey){
+  public SubSPARQLDataGetter(VitroRequest vreq, List<Triple> queryTriples, 
+    List<String> uris, List<String> literals, String inputKey){
      
-    super(vreq, selectVars, queryTriples, uris, literals);
+    super(vreq, queryTriples, uris, literals);
     this.inputKey = inputKey;
   }
   
@@ -31,7 +31,7 @@ public class SubSPARQLDataGetter extends SPARQLDataGetter{
   String getQueryTriples(){
    
     String queryTriples = this.queryTriples;
-    queryTriples += "\nFILTER { ?" + this.inputKey + "= <" + this.inputValue + "> } . ";  
+    queryTriples += "\nFILTER { ?" + this.inputKey + " = <" + this.inputValue + "> } . ";  
     return queryTriples;
   }
 }
