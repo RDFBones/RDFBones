@@ -32,7 +32,30 @@ MainForm.prototype = {
 	},
 	
 	submit : function(){
-		console.log(this.dataObject)
+		
+		var toSend = new Object();
+		toSend.subject = {
+				uri : subjectUri,
+		}
+		toSend.editKey = editKey
+		toSend.dataToStore = this.dataObject
+		console.log(toSend)
+		$.ajax({
+			type : 'POST',
+			context : this,
+			dataType : 'json',
+			url : baseUrl + "dataGenerator",
+			data : "requestData=" + JSON.stringify(toSend)})
+			.done((function(msg) {
+				
+				console.log("Response")
+				console.log(msg);
+				/*
+				window.location = baseUrl
+						+ "pageLoader?"
+						+ DataLib.getUrl(this.generateRedirectMap(msg.object))	
+				*/	
+			}).bind(this))
 	}
 }
 

@@ -1091,7 +1091,16 @@
     <servlet-name>DefaultPageLoad</servlet-name>
     <url-pattern>/defaultPageLoad</url-pattern>
   </servlet-mapping>  
-
+  
+  <servlet>
+    <servlet-name>DataGenerator</servlet-name>
+    <servlet-class>rdfbones.formProcessing.DataGenerator</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DataGenerator</servlet-name>
+    <url-pattern>/dataGenerator</url-pattern>
+  </servlet-mapping>  
+  
    <!--
    END - just to know where to place the additional servlets
     -->
