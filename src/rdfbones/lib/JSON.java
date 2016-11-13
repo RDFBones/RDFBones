@@ -33,7 +33,7 @@ public class JSON {
     
     JSONArray specimenCollectionProcessArray = new JSONArray();
     JSONObject specimenCollectionProcess = new JSONObject();
-    specimenCollectionProcess.put("assayType", "assayType1");
+    specimenCollectionProcess.put("assayType", "http://w3id.org/rdfbones/extensions/FrSexEst#Assay.ExternalOccipitalProtuberance");
     specimenCollectionProcess.put("measurementDatum", measurementDatum);
     specimenCollectionProcess.put("boneSegment", boneSegment);
 
@@ -41,7 +41,7 @@ public class JSON {
     
     JSONObject data = obj();
     
-    data.put("subject", "subjectUri");
+    data.put("subject", "http://vivo.mydomain.edu/individual/n5195");
     data.put("specimenCollectionProcess", specimenCollectionProcessArray);
     
     return data;
@@ -96,7 +96,6 @@ public class JSON {
     }
     return new JSONObject();
   }
-  
   
   public static JSONArray array(JSONObject obj, String key){
     if(obj.has(key)){

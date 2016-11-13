@@ -28,6 +28,24 @@ public class N3Utils {
 
     }};
     
+    public static String getPrefixes(){
+      
+      String prefixes = new String();
+      for(String prefix : prefixDef.keySet()){
+        prefixes += "@prefix " + prefix + ": <" + prefixDef.get(prefix) + ">. \n";
+      }
+      return prefixes;
+    }
+    
+    public static String getQueryPrefixes(){
+      
+      String prefixes = new String("");
+      for(String prefix : prefixDef.keySet()){
+        prefixes += "PREFIX " + prefix + ": <" + prefixDef.get(prefix) + "> \n";
+      }
+      return prefixes;
+    }
+    
     public static void setInputMap(Map<String, String> inputMap, 
       String[] inputParameters, VitroRequest vreq){
         for(String param : inputParameters){
