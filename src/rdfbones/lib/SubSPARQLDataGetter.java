@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import rdfbones.rdfdataset.Triple;
+import webappconnector.WebappConnector;
 
 
 public class SubSPARQLDataGetter extends SPARQLDataGetter{
@@ -28,7 +29,7 @@ public class SubSPARQLDataGetter extends SPARQLDataGetter{
   String getQueryTriples(){
    
     String queryTriples = this.queryTriples;
-    queryTriples += "\nFILTER { ?" + this.inputKey + " = <" + this.inputValue + "> } . ";  
+    queryTriples += "\nFILTER ( ?" + this.inputKey + " = <" + this.inputValue + "> ) . ";  
     return queryTriples;
   }
 }

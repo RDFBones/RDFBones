@@ -3,7 +3,10 @@ package rdfbones.lib;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import edu.cornell.mannlib.vitro.webapp.dao.jena.N3Utils;
 import rdfbones.rdfdataset.Triple;
+import webappconnector.WebappConnector;
 
 public class SPARQLDataGetter {
 
@@ -12,7 +15,7 @@ public class SPARQLDataGetter {
   String query;
   List<String> urisToSelect;
   List<String> literalsToSelect;
-  WebappConnector webapp;
+  public WebappConnector webapp;
 
   public SPARQLDataGetter(WebappConnector webapp, List<Triple> queryTriples,
       List<String> uris, List<String> literals) {
@@ -30,13 +33,14 @@ public class SPARQLDataGetter {
   public List<Map<String, String>> getData() {
 
     String query = this.getQuery();
-    System.out.println(this.getReadableQuery() + "\n\n");
+    this.webapp.log(query + "\n\n");
     return this.webapp.sparqlResult(query, this.urisToSelect, this.literalsToSelect);
   }
 
   public String getQuery() {
-
-    String query = new String("SELECT ");
+    String query = new String("");
+    query += N3Utils.getQueryPrefixes();
+    query += "\nSELECT ";
     query += this.selectVars;
     query += "\nWHERE { \n ";
     query += this.getQueryTriples();
