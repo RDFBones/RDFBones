@@ -213,8 +213,14 @@ public class GraphLib {
       if(!triple.predicate.equals("rdf:type")){
         graph.typeQueryTriples.add(triple);  
       }
+      if(triple.subject instanceof InputNode){
+        graph.inputClasses.add(triple.subject.varName);
+      }
+      if(triple.object instanceof InputNode){
+        graph.inputClasses.add(triple.object.varName);
+      }
     }
-      
+    
     for(Triple triple : graph.dataTriples){
       if(triple.subject instanceof InputNode){
         ArrayLib.addDistinct(graph.inputInstances, triple.subject.varName);
@@ -247,7 +253,9 @@ public class GraphLib {
           if(!(triple.subject instanceof InputNode)){
             graph.triplesToStore.add(triple);
           }
-         ArrayLib.addDistinct(graph.classesToSelect, triple.object.varName);
+          if(!(triple.object instanceof InputNode)){
+            ArrayLib.addDistinct(graph.classesToSelect, triple.object.varName);
+          }
          if(triple.subject instanceof InputNode){
            graph.typeQueryTriples.add(triple);
          }
