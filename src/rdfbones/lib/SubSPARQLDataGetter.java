@@ -3,9 +3,6 @@ package rdfbones.lib;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONArray;
-
-import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import rdfbones.rdfdataset.Triple;
 
 
@@ -14,10 +11,10 @@ public class SubSPARQLDataGetter extends SPARQLDataGetter{
   public String inputKey = new String("");
   public String inputValue = new String("");
 
-  public SubSPARQLDataGetter(VitroRequest vreq, List<Triple> queryTriples, 
+  public SubSPARQLDataGetter(WebappConnector webapp, List<Triple> queryTriples, 
     List<String> uris, List<String> literals, String inputKey){
      
-    super(vreq, queryTriples, uris, literals);
+    super(webapp, queryTriples, uris, literals);
     this.inputKey = inputKey;
   }
   
