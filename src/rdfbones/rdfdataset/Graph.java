@@ -14,7 +14,7 @@ import rdfbones.lib.GraphLib;
 import rdfbones.lib.JSON;
 import rdfbones.lib.SPARQLUtils;
 import rdfbones.lib.SubSPARQLDataGetter;
-import rdfbones.lib.WebappConnector;
+import webappconnector.WebappConnector;
 
 public class Graph {
 
@@ -64,13 +64,27 @@ public class Graph {
     GraphLib.setDataRetrievalVars(this);
   }
 
+  public void initWebappConnetor(WebappConnector webapp) {
+    this.webapp = webapp;
+    this.dataRetriever.webapp = webapp;
+    if(this.typeRetriever != null){
+      this.typeRetriever.webapp = webapp;
+    }
+    for (String subGraphKey : this.subGraphs.keySet()) {
+      Graph subGraph = this.subGraphs.get(subGraphKey);
+      subGraph.initWebappConnetor(webapp);
+    }
+  }
+
   public void init(WebappConnector webapp) {
 
     this.webapp = webapp;
     this.dataRetriever =
         new SubSPARQLDataGetter(webapp, this.dataRetreivalQuery, this.urisToSelect,
             this.literalsToSelect, this.inputNode);
-    if (this.typeQueryTriples.size() > 0 && this.inputClasses.size() > 0) {
+    if (this.typeQueryTriples.size() > 0 && this.inputClasses.size() > 0
+        && this.classesToSelect.size() > 0) {
+      this.webapp.log("Graph.java 84 : typeRetriever");
       this.typeRetriever =
           new SubSPARQLDataGetter(webapp, this.typeQueryTriples, this.classesToSelect,
               null, this.inputClasses.get(0));
@@ -82,6 +96,10 @@ public class Graph {
     }
   }
 
+  /*
+   * Data Retrieval
+   */
+  
   public void getExistingData() {
     // This runs only at the main graph
     if (this.inputNode.equals("subject")) {
@@ -116,38 +134,37 @@ public class Graph {
     }
   }
 
-  public String saveData(JSONObject inputObject) {
-
-    Map<String, String> variableMap = new HashMap<String, String>();
-    this.setInstanceMap(inputObject, variableMap);
-    if (this.typeRetriever != null) {
-      List<Map<String, String>> data =
-          this.typeRetriever.getData(variableMap.get(this.inputClasses.get(0)));
-      variableMap.putAll(data.get(0));
-    }
-    return generateN3(inputObject, variableMap);
-  }
-
-  public Map<String, String> getVariableMap(JSONObject inputObject) {
-
-    Map<String, String> variableMap = new HashMap<String, String>();
-    this.setInstanceMap(inputObject, variableMap);
-    if (this.typeRetriever != null) {
-      List<Map<String, String>> data =
-          this.typeRetriever.getData(variableMap.get(this.inputClasses.get(0)));
-      variableMap.putAll(data.get(0));
-    }
-    return variableMap;
-  }
-
+  /*
+   * Saving Data
+   */
+  
   public String saveInitialData(JSONObject inputObject) {
-    return generateN3(inputObject, this.getVariableMap(inputObject));
+    Map<String, String> variableMap = new HashMap<String, String>();
+    return this.setMapAndSave(inputObject, variableMap);
   }
 
   public String saveData(JSONObject inputObject, String key, String value) {
 
-    Map<String, String> variableMap = this.getVariableMap(inputObject);
+    Map<String, String> variableMap = new HashMap<String, String>();
     variableMap.put(key, value);
+    return this.setMapAndSave(inputObject, variableMap);
+  }
+  
+  public String setMapAndSave(JSONObject inputObject, Map<String, String> variableMap) {
+
+    this.setInstanceMap(inputObject, variableMap);
+    if (this.typeRetriever != null) {
+      this.webapp.log("Graph.java 135 : TypeRetriever is performed");
+      this.webapp.log("Graph.java 135 : inputClass.get(0) : " + this.inputClasses.get(0));
+      List<Map<String, String>> data =
+          this.typeRetriever.getData(variableMap.get(this.inputClasses.get(0)));
+      if(data.size() > 0){
+        variableMap.putAll(data.get(0));
+      } else {
+        this.webapp.log("noResult");
+      }
+    }
+    this.webapp.log("variableMap : " + variableMap.toString());
     return generateN3(inputObject, variableMap);
   }
 
@@ -171,6 +188,7 @@ public class Graph {
     for (String inputLiterals : this.inputLiterals) {
       instanceMap.put(inputLiterals, JSON.string(obj, inputLiterals));
     }
+    this.webapp.log("Graph.java 186 : " + instanceMap.toString());
   }
 
   public String generateN3(JSONObject inputObject, Map<String, String> variableMap) {
