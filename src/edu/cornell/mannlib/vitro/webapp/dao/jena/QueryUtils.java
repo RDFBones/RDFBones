@@ -74,17 +74,14 @@ public class QueryUtils {
   public static List<Map<String, String>> getQueryVarsList(ResultSet results,
     List<String> uris, List<String> literals) {
 
-    log.info("getQueryVarsList");
     List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
     while (results.hasNext()) {
       
-      log.info("getQueryVarsList");
       QuerySolution sol = results.next();
       // Map for the row of the result
       Map<String, String> resultMap = new HashMap<String, String>();
       if (uris != null) {
         for (String uri : uris) {
-          log.info(uri);
           if (sol.get(uri) != null) {
             resultMap.put(uri, sol.get(uri).asResource().getURI());
           }
@@ -92,14 +89,12 @@ public class QueryUtils {
       }
       if (literals != null) {
         for (String literal : literals) {
-          log.info(literal);
           if (sol.getLiteral(literal) != null) {
             resultMap.put(literal, sol.getLiteral(literal).getString());
           }
         }
       }
-      log.info(resultMap);
-
+      log.info("QueryResult : \n " + resultMap.toString());
       resultList.add(resultMap);
     }
     return resultList;
@@ -230,9 +225,7 @@ public class QueryUtils {
   public static List<Map<String, String>> getResult(String queryStr, List<String> uris,
       List<String> literals, VitroRequest vreq) {
 
-    log.info("getResult1");
     ResultSet resultSet = getQueryResults(queryStr, vreq);
-    log.info("getResult2");
     return getQueryVarsList(resultSet, uris, literals);
   }
   

@@ -282,7 +282,7 @@ public class GraphLib {
       graph.urisToSelect.add(var);
       graph.urisToSelect.add(var + "Type");
       graph.typeQueryTriples.add(QueryLib.getMSTTriple(var));
-      graph.urisToSelect.add(var + "Label");
+      graph.literalsToSelect.add(var + "Label");
       graph.dataRetreivalQuery.add(QueryLib.getOptionalLabelTriple(var));
     };
     

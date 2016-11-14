@@ -79,6 +79,6 @@ public class Triple {
       t += "?" + object + ".";
     }
     
-    return t;
+    return t += "\n";
   }
 }

@@ -10,11 +10,11 @@ public class JSON {
   public static JSONObject getDummy1() throws JSONException{
     
     JSONObject measurementDatum1 = obj();
-    measurementDatum1.put("measurementDatumType", "measType1");
+    measurementDatum1.put("measurementDatumType", "http://purl.obolibrary.org/obo/OBI_0000938");
     measurementDatum1.put("categoricalLabel", "catLab1");
     
     JSONObject measurementDatum2 = obj();
-    measurementDatum2.put("measurementDatumType", "measType2");
+    measurementDatum2.put("measurementDatumType", "http://purl.obolibrary.org/obo/OBI_0000938");
     measurementDatum2.put("categoricalLabel", "catLab2");
     
     JSONArray measurementDatum = arr();
