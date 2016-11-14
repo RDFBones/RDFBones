@@ -12,6 +12,8 @@ import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
 import rdfbones.lib.ArrayLib;
 import rdfbones.lib.GraphLib;
 import rdfbones.lib.JSON;
+import rdfbones.lib.MainGraphSPARQLDataGetter;
+import rdfbones.lib.SPARQLDataGetter;
 import rdfbones.lib.SPARQLUtils;
 import rdfbones.lib.SubSPARQLDataGetter;
 import webappconnector.WebappConnector;
@@ -47,11 +49,21 @@ public class Graph {
 
   public JSONArray existingData = new JSONArray();
   public Map<String, String> existingTriples;
+  public Map<String, String> graphDataMap;
 
-  public SubSPARQLDataGetter dataRetriever;
+  public SPARQLDataGetter dataRetriever;
   public SubSPARQLDataGetter typeRetriever;
-  private WebappConnector webapp;
+  WebappConnector webapp;
+  Graph mainGraph;
+  
+  public WebappConnector getWebapp() {
+    return webapp;
+  }
 
+  public void setWebapp(WebappConnector webapp) {
+    this.webapp = webapp;
+  }
+  
   public Graph() {
     // TODO Auto-generated constructor stub
   }
@@ -63,36 +75,33 @@ public class Graph {
     GraphLib.setDataInputVars(this);
     GraphLib.setDataRetrievalVars(this);
   }
-
-  public void initWebappConnetor(WebappConnector webapp) {
-    this.webapp = webapp;
-    this.dataRetriever.webapp = webapp;
-    if(this.typeRetriever != null){
-      this.typeRetriever.webapp = webapp;
-    }
-    for (String subGraphKey : this.subGraphs.keySet()) {
-      Graph subGraph = this.subGraphs.get(subGraphKey);
-      subGraph.initWebappConnetor(webapp);
-    }
-  }
-
+  
   public void init(WebappConnector webapp) {
-
     this.webapp = webapp;
-    this.dataRetriever =
-        new SubSPARQLDataGetter(webapp, this.dataRetreivalQuery, this.urisToSelect,
-            this.literalsToSelect, this.inputNode);
+    init(this);
+  }
+  public void init(Graph mainGraph) {
+
+    this.mainGraph = mainGraph;
+    if(this.inputNode.equals("subject")){
+      this.dataRetriever =
+          new MainGraphSPARQLDataGetter(mainGraph, this.dataRetreivalQuery, this.urisToSelect,
+              this.literalsToSelect);
+    } else {
+      this.dataRetriever =
+          new SubSPARQLDataGetter(mainGraph, this.dataRetreivalQuery, this.urisToSelect,
+              this.literalsToSelect, this.inputNode);
+    }
     if (this.typeQueryTriples.size() > 0 && this.inputClasses.size() > 0
         && this.classesToSelect.size() > 0) {
-      this.webapp.log("Graph.java 84 : typeRetriever");
       this.typeRetriever =
-          new SubSPARQLDataGetter(webapp, this.typeQueryTriples, this.classesToSelect,
+          new SubSPARQLDataGetter(mainGraph, this.typeQueryTriples, this.classesToSelect,
               null, this.inputClasses.get(0));
     }
     // Subgraph initialisation
     for (String subGraphKey : this.subGraphs.keySet()) {
       Graph subGraph = this.subGraphs.get(subGraphKey);
-      subGraph.init(webapp);
+      subGraph.init(mainGraph);
     }
   }
 
@@ -100,19 +109,14 @@ public class Graph {
    * Data Retrieval
    */
   
-  public void getExistingData() {
-    // This runs only at the main graph
-    if (this.inputNode.equals("subject")) {
-      this.webapp.log("ObjectGetter");
-      if (this.webapp.requestMap.containsKey("objectUri")) {
-        // The existing data has to be queried
-        getGraphData(this.webapp.getInputParameter("subject"));
-      }
-    }
+  public void getExistingData(String subject, String object) {
+    
+    this.existingData = QueryUtils.getJSON(
+        ((MainGraphSPARQLDataGetter)this.dataRetriever).getData(subject, object));
+    this.getSubGraphData();
   }
 
   public JSONArray getGraphData(String value) {
-
     // Here the parent graph input is used as well
     this.existingData = QueryUtils.getJSON(this.dataRetriever.getData(value));
     this.getSubGraphData();
@@ -121,13 +125,17 @@ public class Graph {
 
   private void getSubGraphData() {
     for (int i = 0; i < this.existingData.length(); i++) {
+      log("Graph.java 127 " + i); 
       for (String key : this.subGraphs.keySet()) {
+        log("Graph.java 128 - key : " + key); 
         Graph subGraph = this.subGraphs.get(key);
         try {
           JSONObject object = JSON.object(this.existingData, i);
           String initialValue = JSON.string(object, subGraph.inputNode);
+          log("Graph.java 133 : " + initialValue); 
           object.put(key, subGraph.getGraphData(initialValue));
         } catch (JSONException e) {
+          log("Unsuccesful");
           e.printStackTrace();
         }
       }
@@ -154,17 +162,17 @@ public class Graph {
 
     this.setInstanceMap(inputObject, variableMap);
     if (this.typeRetriever != null) {
-      this.webapp.log("Graph.java 135 : TypeRetriever is performed");
-      this.webapp.log("Graph.java 135 : inputClass.get(0) : " + this.inputClasses.get(0));
+      this.mainGraph.getWebapp().log("Graph.java 135 : TypeRetriever is performed");
+      this.mainGraph.getWebapp().log("Graph.java 135 : inputClass.get(0) : " + this.inputClasses.get(0));
       List<Map<String, String>> data =
           this.typeRetriever.getData(variableMap.get(this.inputClasses.get(0)));
       if(data.size() > 0){
         variableMap.putAll(data.get(0));
       } else {
-        this.webapp.log("noResult");
+        this.mainGraph.getWebapp().log("noResult");
       }
     }
-    this.webapp.log("variableMap : " + variableMap.toString());
+    this.mainGraph.getWebapp().log("variableMap : " + variableMap.toString());
     return generateN3(inputObject, variableMap);
   }
 
@@ -172,10 +180,8 @@ public class Graph {
 
     // New Instances
     for (String newInstance : this.newInstances) {
-      if (this.inputNode.equals(newInstance)) {
-        instanceMap.put(newInstance, instanceMap.get(newInstance));
-      } else {
-        instanceMap.put(newInstance, this.webapp.getUnusedNewURI());
+      if (!this.inputNode.equals(newInstance)) {
+        instanceMap.put(newInstance, this.mainGraph.getWebapp().getUnusedNewURI());
       }
     }
     // InputData
@@ -188,12 +194,13 @@ public class Graph {
     for (String inputLiterals : this.inputLiterals) {
       instanceMap.put(inputLiterals, JSON.string(obj, inputLiterals));
     }
-    this.webapp.log("Graph.java 186 : " + instanceMap.toString());
+    this.mainGraph.getWebapp().log("Graph.java 186 : " + instanceMap.toString());
   }
 
   public String generateN3(JSONObject inputObject, Map<String, String> variableMap) {
 
     // Creating string to create
+    this.graphDataMap = variableMap;
     String triplesToStore = SPARQLUtils.assembleTriples(this.triplesToStore);
     triplesToStore = QueryUtils.subUrisForQueryVars(triplesToStore, variableMap);
     for (String subgraphKey : this.subGraphs.keySet()) {
@@ -212,46 +219,51 @@ public class Graph {
   public void debug(int n) {
 
     String tab = new String(new char[n]).replace("\0", "\t");
-    this.webapp.log(tab + "InputNode : " + this.inputNode);
+    this.mainGraph.getWebapp().log(tab + "InputNode : " + this.inputNode);
 
-    this.webapp.log(tab + "DataTriples : "
+    this.mainGraph.getWebapp().log(tab + "DataTriples : "
         + ArrayLib.debugTriples(tab, this.dataTriples));
-    this.webapp.log(tab + "SchemeTriples : "
+    this.mainGraph.getWebapp().log(tab + "SchemeTriples : "
         + ArrayLib.debugTriples(tab, this.schemeTriples));
-    this.webapp.log(tab + "TriplesToStore : "
+    this.mainGraph.getWebapp().log(tab + "TriplesToStore : "
         + ArrayLib.debugTriples(tab, this.triplesToStore));
 
-    this.webapp
+    this.mainGraph.getWebapp()
         .log(tab + "newInstances :      " + ArrayLib.debugList(this.newInstances));
-    this.webapp.log(tab + "inputInstances :      "
+    this.mainGraph.getWebapp().log(tab + "inputInstances :      "
         + ArrayLib.debugList(this.inputInstances));
-    this.webapp.log(tab + "constantLiterals :      "
+    this.mainGraph.getWebapp().log(tab + "constantLiterals :      "
         + ArrayLib.debugList(this.constantLiterals));
-    this.webapp.log(tab + "inputLiterals :      "
+    this.mainGraph.getWebapp().log(tab + "inputLiterals :      "
         + ArrayLib.debugList(this.inputLiterals));
-    this.webapp
+    this.mainGraph.getWebapp()
         .log(tab + "inputClasses :      " + ArrayLib.debugList(this.inputClasses));
-    this.webapp.log(tab + "classesToSelect :      "
+    this.mainGraph.getWebapp().log(tab + "classesToSelect :      "
         + ArrayLib.debugList(this.classesToSelect));
-    this.webapp.log(tab + "typeQueryTriples :      "
+    this.mainGraph.getWebapp().log(tab + "typeQueryTriples :      "
         + ArrayLib.debugTriples(tab, this.typeQueryTriples));
 
     if (this.dataRetriever != null) {
-      this.webapp.log(tab + "DataRetriever Query : \n      "
+      this.mainGraph.getWebapp().log(tab + "DataRetriever Query : \n      "
           + this.dataRetriever.getReadableQuery());
     }
+    
     if (this.typeRetriever != null) {
-      this.webapp.log(tab + "TypeRetriver Query :      "
+      this.mainGraph.getWebapp().log(tab + "TypeRetriver Query :      "
           + this.typeRetriever.getReadableQuery() + "\n");
     }
 
     int k = n + 1;
-    this.webapp.log(tab + "Subgraphs :  " + subGraphs.keySet().size());
+    this.mainGraph.getWebapp().log(tab + "Subgraphs :  " + subGraphs.keySet().size());
     if (subGraphs.keySet().size() > 0) {
       for (String key : subGraphs.keySet()) {
-        this.webapp.log(tab + "Key : " + key);
+        this.mainGraph.getWebapp().log(tab + "Key : " + key);
         subGraphs.get(key).debug(k);
       }
     }
+  }
+  
+  void log(String msg){
+    this.mainGraph.getWebapp().log(msg);
   }
 }
