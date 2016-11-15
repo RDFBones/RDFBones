@@ -4,11 +4,12 @@
 var SelectorField = function(dataSet, changeFunction, config){
 	
 	this.container = html.div()
+	
 	this.selectorField = html.getSelectorField(config.id, config.name)
 		.change(function(){
 			changeFunction(this.value)
 		})
-		
+	
 	$.each(dataSet, (function(index, data) {
 		$("<option/>", {
 			value : data.uri,
@@ -51,3 +52,30 @@ var DataSetterSelectorField = function(dataSet, dataToSet, key){
 
 }
 
+var DataSetterSelectorFieldMap = function(dataSet, dataToSet, key){
+	
+	this.key = key
+	this.dataToSet = dataToSet
+	this.container = html.div("inline")
+	this.selectorField = html.getSelectorField()
+		.change((function(){
+			console.log(this.selectorField.val())
+			this.dataToSet[this.key] = this.selectorField.val()
+		}).bind(this))
+		
+	$.each(dataSet, (function(key, value) {
+		$("<option/>", {
+			value : key,
+			text : value.label,
+		}).appendTo(this.selectorField)
+	}).bind(this))
+	this.container.append(this.selectorField)
+
+}
+
+DataSetterSelectorFieldMap.prototype = {
+		
+	set : function(value){
+		this.selectorField.val(value);
+	}
+}
