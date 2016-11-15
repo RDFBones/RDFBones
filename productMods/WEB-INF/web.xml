@@ -1101,6 +1101,25 @@
     <url-pattern>/dataGenerator</url-pattern>
   </servlet-mapping>  
   
+  <servlet>
+    <servlet-name>ExistingFormDataLoader</servlet-name>
+    <servlet-class>rdfbones.formProcessing.ExistingFormDataLoader</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ExistingFormDataLoader</servlet-name>
+    <url-pattern>/existingFormDataLoader</url-pattern>
+  </servlet-mapping>  
+  
+   <servlet>
+    <servlet-name>FormDataLoader</servlet-name>
+    <servlet-class>rdfbones.formProcessing.FormDataLoader</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FormDataLoader</servlet-name>
+    <url-pattern>/formDataLoader</url-pattern>
+  </servlet-mapping>  
+  
+  
    <!--
    END - just to know where to place the additional servlets
     -->

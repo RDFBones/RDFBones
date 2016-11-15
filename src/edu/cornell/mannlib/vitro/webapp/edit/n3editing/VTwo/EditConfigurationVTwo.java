@@ -22,6 +22,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 
+import rdfbones.rdfdataset.Graph;
+
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -191,6 +193,16 @@ public class EditConfigurationVTwo {
     
     private boolean hasBeenPreparedForUpdate;
     
+    Graph customGraph = null;
+    
+    public Graph getCustomGraph() {
+      return customGraph;
+    }
+
+    public void setCustomGraph(Graph customGraph) {
+      this.customGraph = customGraph;
+    }
+
     public EditConfigurationVTwo(){ 
         writeModelSelector = StandardModelSelector.selector;
         queryModelSelector = StandardModelSelector.selector;   
