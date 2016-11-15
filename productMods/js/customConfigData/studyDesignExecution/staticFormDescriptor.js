@@ -1,19 +1,28 @@
 
-
-var formDescription = [ {
-	type : "adder",
-	label : "Study Design Execution",
-	dataKey : "assayType",
-	subform :  {
-	    style : "inline",        
-	    elements : [{
+var formDescriptor = {
+	title : "Study Design Execution",	
+	formElements : {
+		specimenCollectionProcess : {
 			type : "adder",
-			label : "Bone Segment",
-			dataKey : "boneSegment",
-		}, {
-			type : "selector",
-			label : "Measurement Datum",
-			dataKey : "measurementDatum",
-		}]
+			title : "Assays",
+			//If dataKey is defined, then it is different form key of the object
+			dataKey : "assayType",
+			formElements : {
+				boneSegment : {
+					title : "Bone Segment",
+					type : "adder",
+				},
+				measurementDatum : {
+					dataKey : "measurementDatumType",
+					type : "adder",
+					title : "Measurement Datum",
+					formElements : {
+						categoricalLabel : {
+							type : "selector",
+						}
+					},
+				},
+			}
+		}
 	}
-}]
+}
