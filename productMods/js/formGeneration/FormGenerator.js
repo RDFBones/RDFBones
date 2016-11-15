@@ -56,6 +56,7 @@ FormGenerator.prototype = {
 			dataToStore[element.varName] = element.dataObject
 		})
 		
+		
 		ext = this.generateSubmissionMap()
 		$.extend(dataToStore, ext)
 		

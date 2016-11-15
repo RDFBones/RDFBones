@@ -1,43 +1,82 @@
-
 var elementMap = {
-	adder	 : Adder ,
+	adder : Adder,
 	selector : Selector,
 	stringInput : StringInput,
 }
 
-var MainForm = function(){
+var Form = function(parentForm, data){
 	
-	/*
-	 * This will be sent to the server
-	 */
-	this.parentContainer = null
-	this.dataObject = new Object()
-	this.load()
+	this.parentForm = parentForm
+	this.dataObject = data
+	this.container = parentForm.subContainer
+	this.formElementDescriptor = parentForm.descriptor.formElements
+
+	// The subform does not modify the dataObject. It just saves it
+	DataController.loadSubformData(this)
 }
 
-MainForm.prototype = {
+Form.prototype = {
 		
-	load : function(){
-
-		elements = []
-		$.each(formDescription, (function(i, value){
-			elements.push(new elementMap[value.type](value, this).container)
+	//This is called by the DataController
+	init : function() {
+		
+		//Pre UI
+		this.container.append(html.div("title").text(this.parentForm.title))
+		this.subFormContainer = html.div("subFormContainer")
+		this.container.append(this.subFormContainer)
+		this.subFormElements = new Object()
+		$.each(this.formElementDescriptor, (function(key, value){
+			this.subFormElements[key] = new elementMap[value.type](key, value, this)
 		}).bind(this))
-
-		//SubmitButton
-		this.submitButton = new TextButton("Submit", (this.submit).bind(this))//.disable()
-		elements.push(this.submitButton.container)
-		
-		$("#form").append(elements)	
+		this.loadUI()
 	},
 	
-	submit : function(){
+	loadUI : function(elements){
 		
+		UIelements = []
+		$.each(this.subFormElements, (function(key, element){
+			UIelements.push(element.container)
+		}).bind(this))
+		this.container.append(UIelements)
+	},
+}
+
+var MainForm = function(){
+	
+	if (objectUri != null) {
+		this.loadExistingData()
+	} else {
+		formData.existingData = new Object()
+		this.init()
+	}
+}
+
+MainForm.prototype =  {
+
+	init : function(){
+		
+		//Data
+		this.descriptor = formDescriptor
+		this.dataObject = formData.existingData
+		this.title = this.descriptor.title
+		//UI
+		this.container = html.div()
+		this.subContainer = html.div("subContainer")
+		new Form(this, formData.existingData)
+		this.submitButton = new TextButton("Submit", (this.submit).bind(this)).container
+		this.container.append(this.subContainer).append(this.submitButton)	
+		$("#form").append(this.container)	
+	},	
+		
+	
+	submit : function() {
+
 		var toSend = new Object();
 		toSend.subject = {
-				uri : subjectUri,
+			uri : subjectUri,
 		}
 		toSend.editKey = editKey
+		this.dataObject.subject = subjectUri
 		toSend.dataToStore = this.dataObject
 		console.log(toSend)
 		$.ajax({
@@ -45,66 +84,29 @@ MainForm.prototype = {
 			context : this,
 			dataType : 'json',
 			url : baseUrl + "dataGenerator",
-			data : "requestData=" + JSON.stringify(toSend)})
-			.done((function(msg) {
-				
-				console.log("Response")
-				console.log(msg);
-				/*
-				window.location = baseUrl
-						+ "pageLoader?"
-						+ DataLib.getUrl(this.generateRedirectMap(msg.object))	
-				*/	
-			}).bind(this))
-	}
-}
+			data : "requestData=" + JSON.stringify(toSend)
+		}).done((function(msg) {
+			console.log("Response")
+			console.log(msg);
+			window.location = baseUrl + "display/" +
+			 	subjectUri.split("/")[subjectUri.split("/").length-1]
+		}).bind(this)) 
+	},
 
-
-var SubForm = function(parentForm, dataObject){
-	
-	this.parentContainer = parentForm.formContainer
-	this.parentForm = parentForm
-	
-	this.container = parentForm.subContainer
-	this.descriptor = parentForm.descriptor.subform
-	
-	//The subform does not modify the dataObject. It just saves it
-	this.dataObject = dataObject;
-	
-	DataController.loadSubformData(this)
-}
-
-SubForm.prototype = {
-
-	//This is called by the dataController if the data arrived
-	init : function(){
-	
-		elements = []
-		
-		if(this.parentForm.descriptor.style != "offerAll"){
-			elements.push(html.div("title").text(this.dataObject.label))
-		}
-		
-		this.subFormContainer = html.div()
-		if(this.descriptor.style !== undefined){
-			this.subFormContainer.addClass("flexInlineContainer")
-		}
-		
-		$.each(this.descriptor.elements, (function(i, descriptor){
-			this.subFormContainer.append(new elementMap[descriptor.type](descriptor, this).container)
+	loadExistingData : function() {
+		$.ajax({
+			type : 'POST',
+			context : this,
+			dataType : 'json',
+			url : baseUrl + "existingFormDataLoader",
+			data : {
+				subject : subjectUri,
+				object : objectUri,
+				editKey : editKey
+			}
+		}).done((function(msg) {
+			formData.existingData = msg[0]
+			this.init()
 		}).bind(this))
-		
-		elements.push(this.subFormContainer)
-		this.container.append(elements)
-	}, 	
-
-	remove : function(){
-		
-		/*
-		 * Later this handles the data 
-		 * Moreover it has to ask its parent form if it is abmissible to 
-		 * delete the entry. 
-		 */
-	}	
+	},
 }
-
