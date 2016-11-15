@@ -44,21 +44,9 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.NewURIMaker;
 public class DataGenerator extends VitroAjaxController {
 
   public static final String PARAMETER_UPLOADED_FILE = "datafile";
-
   private static final long serialVersionUID = 1L;
   private static final Log log = LogFactory.getLog(DataGenerator.class);
-
-  private DataPropertyStatementDao dataDao;
-  private ObjectPropertyStatementDao objectDao;
-  private PropertyInstanceDao propDao;
-
-  private String[] objectTriplesAdd;
-  private String[] dataTriplesAdd;
-  private String[] objectTriplesRemove;
-  private String[] dataTriplesRemove;
-
-  private static Map<String, String> prefixDef = new HashMap<String, String>();
-
+  
   @Override
   protected void doRequest(VitroRequest vreq, HttpServletResponse response)
     throws IOException, ServletException {
@@ -75,30 +63,24 @@ public class DataGenerator extends VitroAjaxController {
 
   public JSONObject responseFunction(VitroRequest vreq) throws JSONException {
 
-    this.dataDao = vreq.getWebappDaoFactory().getDataPropertyStatementDao();
-    this.objectDao = vreq.getWebappDaoFactory().getObjectPropertyStatementDao();
-    this.propDao = vreq.getWebappDaoFactory().getPropertyInstanceDao();
-
     JSONObject requestData = new JSONObject(vreq.getParameter("requestData"));
     String editKey = requestData.getString("editKey");
     JSONObject inputData = requestData.getJSONObject("dataToStore");
-
     EditConfigurationVTwo editConfig = getEditConfig(vreq, editKey);
 
     Graph graph = editConfig.getCustomGraph();
-    graph.initWebappConnetor(new WebappConnector(vreq));
-    // graph.debug(0);
+    graph.setWebapp(new WebappConnector(vreq));
+    graph.debug(0);
 
-    String triplesToCreate = graph.saveInitialData(JSON.getDummy1());
-    log.info("Itt meg megy!");
+    String triplesToCreate = graph.saveInitialData(inputData);
+    log.info(triplesToCreate);
     ServletContext context = getServletContext();
     saveTriples(vreq, editConfig, triplesToCreate, context);
 
     JSONObject response = new JSONObject();
     response.put("triplesCreate", triplesToCreate);
     response.put("inputData", inputData);
-    log.info("Last");
-    log.info(response.toString());
+    response.put("existingData", graph.existingData);
     return response;
   }
 
@@ -111,21 +93,17 @@ public class DataGenerator extends VitroAjaxController {
     String triples, ServletContext servletContext) {
 
     String triplesToStore = N3Utils.getPrefixes() + triples;
-    log.info("SaveTriples start!");
-    log.info(triplesToStore);
     Model writeModel = editConfig.getWriteModelSelector().getModel(vreq, servletContext);
-    log.info("SaveTriples writemodel");
     Model model = null;
     try {
       model = ModelFactory.createDefaultModel();
       StringReader reader = new StringReader(triplesToStore);
       model.read(reader, "", "N3");
+      log.info("Succesfully read N3 triples");
     } catch (Throwable t) {
       // Catch
       log.info("Failed to read N3 triples");
     }
-    log.info("SaveTriples after read");
-
     Lock lock = null;
     try {
       lock = writeModel.getLock();
@@ -137,6 +115,5 @@ public class DataGenerator extends VitroAjaxController {
     } finally {
       lock.leaveCriticalSection();
     }
-    log.info("SaveTriples end!");
   }
 }

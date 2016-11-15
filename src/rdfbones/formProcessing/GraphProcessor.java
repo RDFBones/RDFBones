@@ -29,14 +29,13 @@ public class GraphProcessor {
         }
       }
     }
+    List<Triple> graphTriples = new ArrayList<Triple>();
     if(valid){
-      List<Triple> graphTriples = new ArrayList<Triple>();
       graphTriples.add(multiTriple);
       triples.remove(multiTriple);
       return getSubGraph(triples, schemeTriples, startNode, 
           GraphLib.getObject(multiTriple, startNode), graphTriples);  
     } else {
-      List<Triple> graphTriples = new ArrayList<Triple>();
       return getSubGraph(triples, schemeTriples, null, startNode, graphTriples);
     }
   }
