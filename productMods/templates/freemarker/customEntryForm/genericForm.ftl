@@ -21,9 +21,17 @@ ${scripts.add(
 
 	var imgSrc = "${urls.base}/images/general/"
 	var baseUrl = "${urls.base}/"
+	var editKey = "${editConfiguration.editKey}"
+	var subjectUri = "${editConfiguration.subjectUri}"
+	var dataSaveUri = baseUrl + "dataGenerator"
 	
+	<#if editConfiguration.objectUri?has_content>
+    var	objectUri = '${editConfiguration.objectUri}'
+    <#else>
+    var	objectUri = null
+    </#if>
 	$(document).ready(function(){
 		new MainForm(); 
-	})	
+	})
 	
 </script>
