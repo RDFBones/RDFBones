@@ -7,7 +7,6 @@ import java.util.Map;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.N3Utils;
 import rdfbones.rdfdataset.Graph;
 import rdfbones.rdfdataset.Triple;
-import webappconnector.WebappConnector;
 
 public class SPARQLDataGetter {
 

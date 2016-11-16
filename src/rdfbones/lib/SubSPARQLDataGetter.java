@@ -5,7 +5,6 @@ import java.util.Map;
 
 import rdfbones.rdfdataset.Graph;
 import rdfbones.rdfdataset.Triple;
-import webappconnector.WebappConnector;
 
 
 public class SubSPARQLDataGetter extends SPARQLDataGetter{

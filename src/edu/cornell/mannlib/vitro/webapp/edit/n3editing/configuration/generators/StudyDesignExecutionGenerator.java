@@ -2,11 +2,6 @@
 
 package edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators;
 
-import static edu.cornell.mannlib.vitro.webapp.modelaccess.ModelNames.DISPLAY;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
@@ -14,12 +9,8 @@ import org.apache.commons.logging.LogFactory;
 
 import rdfbones.formProcessing.GraphProcessor;
 import rdfbones.lib.TripleLib;
-import webappconnector.WebappConnector;
+import webappconnector.VIVOWebappConnector;
 import rdfbones.rdfdataset.Graph;
-import rdfbones.rdfdataset.InputNode;
-import rdfbones.rdfdataset.MultiTriple;
-import rdfbones.rdfdataset.RestrictionTriple;
-import rdfbones.rdfdataset.Triple;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationUtils;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTwo;
@@ -38,7 +29,7 @@ public class StudyDesignExecutionGenerator implements EditConfigurationGenerator
     Graph graph =
         GraphProcessor.getGraph(TripleLib.sdeDataTiples(), TripleLib.sdeSchemeTriples(),
             "subject");
-    graph.init(new WebappConnector(vreq));
+    graph.init(new VIVOWebappConnector(vreq));
     // graph.debug(0);
     editConfiguration.setCustomGraph(graph);  
     editConfiguration.setObject(EditConfigurationUtils.getObjectUri(vreq));

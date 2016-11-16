@@ -16,7 +16,7 @@ import rdfbones.lib.MainGraphSPARQLDataGetter;
 import rdfbones.lib.SPARQLDataGetter;
 import rdfbones.lib.SPARQLUtils;
 import rdfbones.lib.SubSPARQLDataGetter;
-import webappconnector.WebappConnector;
+import rdfbones.formProcessing.WebappConnector;
 
 public class Graph {
 
@@ -181,7 +181,7 @@ public class Graph {
     // New Instances
     for (String newInstance : this.newInstances) {
       if (!this.inputNode.equals(newInstance)) {
-        instanceMap.put(newInstance, this.mainGraph.getWebapp().getUnusedNewURI());
+        instanceMap.put(newInstance, this.mainGraph.getWebapp().getUnusedURI());
       }
     }
     // InputData

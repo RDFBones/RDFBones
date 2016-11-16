@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,8 +17,6 @@ import org.json.JSONObject;
 import com.hp.hpl.jena.query.ResultSet;
 
 import rdfbones.lib.JSON;
-import rdfbones.rdfdataset.Graph;
-import webappconnector.WebappConnector;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.controller.ajax.VitroAjaxController;
 import edu.cornell.mannlib.vitro.webapp.dao.DataPropertyStatementDao;
