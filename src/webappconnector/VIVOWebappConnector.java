@@ -7,13 +7,14 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import rdfbones.formProcessing.WebappConnector;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.dao.InsertException;
 import edu.cornell.mannlib.vitro.webapp.dao.NewURIMakerVitro;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.NewURIMaker;
  
- public class WebappConnector {
+ public class VIVOWebappConnector implements WebappConnector{
  
   private Log log = LogFactory.getLog(WebappConnector.class); 
 
@@ -22,29 +23,19 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.NewURIMaker;
   NewURIMaker newURIMaker;
   boolean logEnabled = true;
    
-  public WebappConnector(VitroRequest vreq){
+  public VIVOWebappConnector(VitroRequest vreq){
     this.vreq = vreq;
     newURIMaker = new NewURIMakerVitro(vreq.getWebappDaoFactory());
   }
   
-  public WebappConnector(){
+  public VIVOWebappConnector(){
     
    }
    
-   public WebappConnector(boolean log){
+   public VIVOWebappConnector(boolean log){
      this.logEnabled = log;
    }
-   
-   public String getUnusedNewURI(){
 
-    try {
-      return newURIMaker.getUnusedNewURI(null);
-    } catch (InsertException e){
-      e.printStackTrace();
-    }
-    return new String("");
-   }
-   
    public String getInputParameter(String parameterName){
      return vreq.getParameter(parameterName);
    }
@@ -60,4 +51,13 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.NewURIMaker;
       log.info(msg);
      }
    }
+
+  public String getUnusedURI() {
+    try {
+      return newURIMaker.getUnusedNewURI(null);
+    } catch (InsertException e){
+      e.printStackTrace();
+    }
+    return new String("");
+  }
  }
