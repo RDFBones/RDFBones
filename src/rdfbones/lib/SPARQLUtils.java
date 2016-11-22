@@ -23,11 +23,7 @@ public class SPARQLUtils {
     
     String tripleString = new String("");
     for(Triple triple : triples){
-      if(triple instanceof OptionalTriple){
-        tripleString += "OPTIONAL { " + triple.getTriple() + "}";
-      } else {
-        tripleString += triple.getTriple();
-      }
+      tripleString += triple.getTriple();
     }
     return tripleString;
   }

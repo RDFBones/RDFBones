@@ -22,4 +22,9 @@ public class OptionalTriple extends Triple{
     super(subject, predicate, object);
   }  
 
+  @Override
+  public String getTriple(){
+    String triple = super.getTriple();
+    return "\tOPTIONAL { " + triple.substring(1, triple.length() - 2 ) + " } \n" ;
+  }
 }

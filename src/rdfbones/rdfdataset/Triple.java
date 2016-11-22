@@ -62,7 +62,7 @@ public class Triple {
     if(subject.contains(":") || subject.contains("<")){
       t += subject; 
     } else {
-      t += "?" + subject;
+      t += "\t?" + subject;
     }
     
     String predicate = this.predicate;
