@@ -426,13 +426,11 @@ public class GraphLib {
         break;
       }
     }
-    System.out.println("TripleLengt : " + graphTriples.size());
     return new UnionForm(graphTriples, greedyNode);  
   }
   
   public static SubGraphInfo subGraphInfoRemove(List<Triple> triples, String startNode, String node){
 
-    System.out.println("Node : " + node);
     SubGraphInfo info = new SubGraphInfo();
     List<Integer> nums = new ArrayList<Integer>();
     Integer i = 0;
@@ -441,7 +439,6 @@ public class GraphLib {
         info.triples.add(triple);
         nums.add(i);
         if(triple instanceof GreedyRestrictionTriple && !startNode.equals(node)){
-          System.out.println("Greedy found : " + node);
           info.greedyNode = node;
         } else {
           info.nodes.add(GraphLib.getObject(triple, node));

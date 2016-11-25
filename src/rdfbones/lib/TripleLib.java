@@ -56,8 +56,8 @@ public class TripleLib {
     triple.add(new RestrictionTriple("bonyPart", "obo-fma:constitutional_part_of",
         "boneOrganType", "owl:someValuesFrom"));
     triple.add(new RestrictionTriple("assayType", "obo:OBI_0000299",
-        "measurementDatumType"));
-    triple.add(new GreedyRestrictionTriple("measurementDatumType", "obo:OBI_0000299",
+        new FormInputNode( "measurementDatumType")));
+    triple.add(new GreedyRestrictionTriple(new FormInputNode("measurementDatumType"), "obo:OBI_0000299",
         "categoricalLabelType", "owl:onClass"));
     triple.addAll(schemeTriplesSubClasses());
     triple.addAll(schemeTriplesTypes());
@@ -73,6 +73,8 @@ public class TripleLib {
         new Constant("obo:OBI_0000659")));
     triple.add(new Triple("assayType", "rdfs:subClassOf",
         new Constant("obo:OBI_0000070")));
+    triple.add(new Triple("measurementDatumType", "rdfs:subClassOf",
+        new Constant("obo:OBI_0000070MDType")));
     return triple;
   }
   
@@ -88,26 +90,7 @@ public class TripleLib {
         "measurementDatumType")));
     triple.add(new Triple("object", "rdf:type", "studyDesignExecutionType"));
     triple.add(new ExistingRestrictionTriple("boneOrgan", "rdf:type", "boneOrganType"));
-    triple.add(new Triple("categoricalLabel", "rdf:type", "categoricalLabelType"));
-    return triple;
-  }
-  
-  public static List<Triple> greedy1() {
-
-    List<Triple> triple = new ArrayList<Triple>();
-    triple.add(new RestrictionTriple("aaaa", "obo:BFO_0000051",  "bbbb"));
-    //triple.add(new GreedyRestrictionTriple("bbbb", "obo:BFO_0000051", "cccc"));
-    triple.add(new RestrictionTriple("bbbb", "obo:BFO_0000051", "cccc"));
-    triple.add(new Triple("bbbb", "rdfs:subClassOf", "anyCcc"));
-    return triple;
-  }
-
-  public static List<Triple> greedy2() {
-
-    List<Triple> triple = new ArrayList<Triple>();
-    triple.add(new GreedyRestrictionTriple("a1", "obo:BFO_0000051", "b1"));
-    triple.add(new GreedyRestrictionTriple("b1", "obo:BFO_0000051", "c1"));
-    triple.add(new Triple("b1", "rdfs:subClassOf", "c2"));
+    triple.add(new ExistingRestrictionTriple("categoricalLabel", "rdf:type", "categoricalLabelType"));
     return triple;
   }
   
