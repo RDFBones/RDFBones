@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.cornell.mannlib.vitro.webapp.dao.jena.N3Utils;
+import rdfbones.graphData.QueryStructure;
 import rdfbones.rdfdataset.Graph;
 import rdfbones.rdfdataset.Triple;
 
@@ -54,7 +55,9 @@ public class SPARQLDataGetter {
     }
     GraphLib.incrementRestrictionTriples(queryTriples);
     this.selectVars = SPARQLUtils.assembleSelectVars(uris, literals);
-    this.queryTriples = SPARQLUtils.assembleQueryTriples(queryTriples);
+    QueryStructure qs = new QueryStructure(queryTriples, this.inputKeys.get(0));
+    this.queryTriples = qs.getQuery();
+    //this.queryTriples = SPARQLUtils.assembleQueryTriples(queryTriples);
     this.urisToSelect = uris;
     this.literalsToSelect = literals;
   }

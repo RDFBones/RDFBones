@@ -14,22 +14,12 @@ public class MainGraphSPARQLDataGetter extends SPARQLDataGetter{
   public MainGraphSPARQLDataGetter(Graph mainGraph, List<Triple> queryTriples, 
     List<String> uris, List<String> literals){
 
-    super(mainGraph, queryTriples, uris, literals);
+    super(mainGraph, queryTriples, uris, literals, ArrayLib.getList("subject", "object"));
   }
   
   public List<Map<String, String>> getData(String subject, String object){
     
-    this.subject = subject;
-    this.object = object;
+    this.inputValues = ArrayLib.getList(subject, object);
     return super.getData();
-  }
-
-  @Override
-  String getQueryTriples(){
-   
-    String queryTriples = this.queryTriples;
-    queryTriples += "\nFILTER ( ?subject = <" + this.subject + "> ) . ";  
-    queryTriples += "\nFILTER ( ?object = <" + this.object + "> ) . ";  
-    return queryTriples;
   }
 }
