@@ -12,6 +12,7 @@ import rdfbones.rdfdataset.Constant;
 import rdfbones.rdfdataset.ExistingInstance;
 import rdfbones.rdfdataset.ExistingRestrictionTriple;
 import rdfbones.rdfdataset.FormInputNode;
+import rdfbones.rdfdataset.GreedyRestrictionTriple;
 import rdfbones.rdfdataset.InputNode;
 import rdfbones.rdfdataset.MainInputNode;
 import rdfbones.rdfdataset.MultiTriple;
@@ -24,10 +25,9 @@ public class TripleLib {
   public static List<Triple> sdeDataTiples() {
 
     List<Triple> triple = new ArrayList<Triple>();
-    triple.add(new Triple(new MainInputNode("subject"), "obo:BFO_0000051",
-        "object"));
-    triple.add(new MultiTriple("object", "obo:BFO_0000051",
-        "specimenCollectionProcess"));
+    triple.add(new Triple(new MainInputNode("subject"), "obo:BFO_0000051", "object"));
+    triple
+        .add(new MultiTriple("object", "obo:BFO_0000051", "specimenCollectionProcess"));
     triple.add(new MultiTriple("specimenCollectionProcess", "obo:OBI_0000293",
         new ExistingInstance("boneSegment")));
     triple.add(new Triple("specimenCollectionProcess", "obo:OBI_0000299", "specimen"));
@@ -37,29 +37,14 @@ public class TripleLib {
         "categoricalLabel")));
     return triple;
   }
-  
+
   public static List<Triple> sdeSchemeTriples() {
 
     List<Triple> triple = new ArrayList<Triple>();
-    triple.add(new Triple(new MainInputNode("subject"), "rdf:type", "subjectType"));
     triple.add(new RestrictionTriple("subjectType", "obo:BFO_0000051",
         "studyDesignExecutionType"));
-    triple.add(new RestrictionTriple("studyDesignExecutionType","obo:BFO_0000051", 
+    triple.add(new RestrictionTriple("studyDesignExecutionType", "obo:BFO_0000051",
         new InputNode("assayType")));
-    triple
-        .add(new Triple("object", "rdf:type", "studyDesignExecutionType"));
-    triple.add(new Triple("studyDesignExecutionType", "rdfs:subClassOf",
-        new Constant("obo:OBI_0000471")));
-    triple.add(new Triple("specimenCollectionProcess", "rdf:type",
-        "specimenCollectionProcessType"));
-    triple.add(new Triple("assay", "rdf:type", new FormInputNode("assayType")));
-    triple.add(new Triple("specimen", "rdf:type", "specimenType"));
-    triple.add(new Triple("specimenCollectionProcessType", "rdfs:subClassOf", new Constant("obo:OBI_0000659")));
-    triple.add(new Triple("assayType", "rdfs:subClassOf", new Constant("obo:OBI_0000070")));
-    triple.add(new Triple("specimenType", "rdfs:subClassOf", new Constant("obo:OBI_0100051")));
-    triple.add(new RestrictionTriple("assayType", "obo:OBI_0000299", "measurementDatumType"));
-    triple.add(new Triple("measurementDatum", "rdf:type", new InputNode(
-        "measurementDatumType")));
     triple.add(new RestrictionTriple(new FormInputNode("assayType"), "obo:OBI_0000293",
         "specimenType"));
     triple.add(new RestrictionTriple("specimenCollectionProcessType", "obo:OBI_0000299",
@@ -70,48 +55,82 @@ public class TripleLib {
         "bonyPart", "owl:allValuesFrom"));
     triple.add(new RestrictionTriple("bonyPart", "obo-fma:constitutional_part_of",
         "boneOrganType", "owl:someValuesFrom"));
-    triple.add(new ExistingRestrictionTriple("boneOrgan", "rdf:type", "boneOrganType")); 
+    triple.add(new RestrictionTriple("assayType", "obo:OBI_0000299",
+        "measurementDatumType"));
+    triple.add(new GreedyRestrictionTriple("measurementDatumType", "obo:OBI_0000299",
+        "categoricalLabelType", "owl:onClass"));
+    triple.addAll(schemeTriplesSubClasses());
+    triple.addAll(schemeTriplesTypes());
+    return triple;
+  }
+
+  public static List<Triple> schemeTriplesSubClasses(){
+    
+    List<Triple> triple = new ArrayList<Triple>();
+    triple.add(new Triple("studyDesignExecutionType", "rdfs:subClassOf", 
+        new Constant("obo:OBI_0000471")));
+    triple.add(new Triple("specimenCollectionProcessType", "rdfs:subClassOf",
+        new Constant("obo:OBI_0000659")));
+    triple.add(new Triple("assayType", "rdfs:subClassOf",
+        new Constant("obo:OBI_0000070")));
     return triple;
   }
   
-  public static Form sdeForm(){
+  public static List<Triple> schemeTriplesTypes(){
     
+    List<Triple> triple = new ArrayList<Triple>();
+    triple.add(new Triple(new MainInputNode("subject"), "rdf:type", "subjectType"));
+    triple.add(new Triple("assay", "rdf:type", new FormInputNode("assayType")));
+    triple.add(new Triple("specimen", "rdf:type", "specimenType"));
+    triple.add(new Triple("specimenCollectionProcess", "rdf:type",
+        "specimenCollectionProcessType"));
+    triple.add(new Triple("measurementDatum", "rdf:type", new FormInputNode(
+        "measurementDatumType")));
+    triple.add(new Triple("object", "rdf:type", "studyDesignExecutionType"));
+    triple.add(new ExistingRestrictionTriple("boneOrgan", "rdf:type", "boneOrganType"));
+    triple.add(new Triple("categoricalLabel", "rdf:type", "categoricalLabelType"));
+    return triple;
+  }
+  
+  public static List<Triple> greedy1() {
+
+    List<Triple> triple = new ArrayList<Triple>();
+    triple.add(new RestrictionTriple("aaaa", "obo:BFO_0000051",  "bbbb"));
+    //triple.add(new GreedyRestrictionTriple("bbbb", "obo:BFO_0000051", "cccc"));
+    triple.add(new RestrictionTriple("bbbb", "obo:BFO_0000051", "cccc"));
+    triple.add(new Triple("bbbb", "rdfs:subClassOf", "anyCcc"));
+    return triple;
+  }
+
+  public static List<Triple> greedy2() {
+
+    List<Triple> triple = new ArrayList<Triple>();
+    triple.add(new GreedyRestrictionTriple("a1", "obo:BFO_0000051", "b1"));
+    triple.add(new GreedyRestrictionTriple("b1", "obo:BFO_0000051", "c1"));
+    triple.add(new Triple("b1", "rdfs:subClassOf", "c2"));
+    return triple;
+  }
+  
+  public static Form sdeForm() {
+
     Form measDatumSubForm = new Form();
     FormElement categoricalLabel = new Selector("categoricalLabel");
     measDatumSubForm.formElements.add(categoricalLabel);
 
-    SubformAdder measurementDatum = new SubformAdder("measurementDatum");
+    SubformAdder measurementDatum = new SubformAdder("measurementDatumType");
     measurementDatum.subForm = measDatumSubForm;
-    
+
     FormElement boneOrgan = new ExistingInstanceSelector("boneOrgan");
-    
+
     Form assySubForm = new Form();
     assySubForm.formElements.add(boneOrgan);
-    //assySubForm.formElements.add(measurementDatum);
-    
+    assySubForm.formElements.add(measurementDatum);
+
     SubformAdder assayType = new SubformAdder("assayType");
     assayType.subForm = assySubForm;
     Form mainForm = new Form();
     mainForm.formElements.add(assayType);
-    
-    return mainForm;
-  }
-  
-  public static Form sdeForm1(){
-    
-    Form measDatumSubForm = new Form();
-    FormElement categoricalLabel = new Selector("categoricalLabel");
-    measDatumSubForm.formElements.add(categoricalLabel);
 
-    SubformAdder measurementDatum = new SubformAdder("measurementDatum");
-    measurementDatum.subForm = measDatumSubForm;
-    
-    FormElement boneOrgan = new ExistingInstanceSelector("boneOrgan");
-    
-    Form assySubForm = new Form();
-    assySubForm.formElements.add(boneOrgan);
-    
-    
-    return assySubForm;
+    return mainForm;
   }
 }
