@@ -34,15 +34,21 @@ public class DependencyCalculator {
     for (FormElement element : form.formElements) {
       List<Triple> copy = new ArrayList<Triple>();
       copy.addAll(triples);
-      System.out.println("\nNode name : " + element.node.varName + "\n");
+      String node = element.node.varName;
+      if(element instanceof SubformAdder){
+        if(((SubformAdder) element).dataKey != null){
+          node = (((SubformAdder) element).dataKey);
+        }
+      }
+      System.out.println("\nNode name : " + node + "\n");
       GraphPath graphPath =
-          getGraphPath(new GraphPath(), copy, inputVariables, element.node.varName);
+          getGraphPath(new GraphPath(), copy, inputVariables, node);
       graphPath.validate(inputVariables, TripleLib.sdeSchemeTriples());
       //System.out.println("Valid Debug" );
       //System.out.println(graphPath.debugValid());
-      graph.variableDependencies.put(element.node.varName, new VariableDependency(graph,
-          graphPath, element.node.varName)); 
-      inputVariables.add(element.node.varName);
+      graph.variableDependencies.put(node, new VariableDependency(graph,
+          graphPath, node)); 
+      inputVariables.add(node);
     }
     // Do the iteration for the subforms
     for (FormElement element : form.formElements) {
