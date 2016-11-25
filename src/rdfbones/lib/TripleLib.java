@@ -96,22 +96,23 @@ public class TripleLib {
   
   public static Form sdeForm() {
 
-    Form measDatumSubForm = new Form();
-    FormElement categoricalLabel = new Selector("categoricalLabel");
+    Form measDatumSubForm = new Form("Measurement Datum");
+
+    FormElement categoricalLabel = new Selector("categoricalLabel", "");
     measDatumSubForm.formElements.add(categoricalLabel);
 
-    SubformAdder measurementDatum = new SubformAdder("measurementDatumType");
+    SubformAdder measurementDatum = new SubformAdder("measurementDatumType", "Measurement Type");
     measurementDatum.subForm = measDatumSubForm;
 
-    FormElement boneOrgan = new ExistingInstanceSelector("boneOrgan");
+    FormElement boneOrgan = new ExistingInstanceSelector("boneOrgan", "Bone Segment");
 
-    Form assySubForm = new Form();
+    Form assySubForm = new Form("Assays");
     assySubForm.formElements.add(boneOrgan);
     assySubForm.formElements.add(measurementDatum);
 
-    SubformAdder assayType = new SubformAdder("assayType");
+    SubformAdder assayType = new SubformAdder("specimenCollectionProcess", "Assays", "assayType");
     assayType.subForm = assySubForm;
-    Form mainForm = new Form();
+    Form mainForm = new Form("Study Design Execution");
     mainForm.formElements.add(assayType);
 
     return mainForm;

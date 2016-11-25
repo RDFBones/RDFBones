@@ -1,5 +1,7 @@
 package rdfbones.lib;
 
+import java.util.Iterator;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -76,6 +78,16 @@ public class JSON {
     return new String("");
   }
  
+  public static Object obj(JSONObject obj, String key){
+    try {
+      return obj.get(key);
+    } catch (JSONException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return null;
+  }
+  
   public static JSONObject object(JSONObject obj, String key){
     if(obj.has(key)){
       try {
@@ -108,4 +120,39 @@ public class JSON {
     return new JSONArray();
   }
   
+  public static void put(JSONObject obj, String key, Object value){
+    
+    try {
+      obj.put(key, value);
+    } catch (JSONException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  public static void add(JSONArray array, JSONObject object){
+    
+    array.put(object);
+  }
+  
+  public static String JSONDebug(JSONObject object, int n){
+    
+    String json = new String("");
+    String tab = new String(new char[n]).replace("\0", "\t");
+    Iterator<?> keys = object.keys();
+    n++;
+    json += "{";
+    while(keys.hasNext()){
+      String key = (String)keys.next();
+      Object value = JSON.obj(object, key);
+      if(value instanceof String){
+        json += "\n" + tab + key + " : \"" + value + "\"";
+      } else {
+        json += "\n" + tab + key + " : " + JSONDebug((JSONObject)value, n);
+      } 
+    json += "}";
+
+    }
+    return json;
+  }
 }

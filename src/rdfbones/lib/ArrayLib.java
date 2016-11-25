@@ -50,4 +50,11 @@ public class ArrayLib {
     strArray.add(str);
     return strArray;
   }
+  
+  public static List<String> getList(String str1, String str2){
+    List<String> strArray = new ArrayList<String>();
+    strArray.add(str1);
+    strArray.add(str2);
+    return strArray;
+  }
 }
