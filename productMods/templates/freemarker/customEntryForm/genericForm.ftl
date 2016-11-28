@@ -16,7 +16,8 @@ ${scripts.add(
 <div id = "form">
 	<!-- Here will be the form loaded by the FormGenerator class -->
 </div>
-
+<div id = "popUpContainer">
+</div>
 <script>
 
 	var imgSrc = "${urls.base}/images/general/"
