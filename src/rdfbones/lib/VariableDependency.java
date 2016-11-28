@@ -1,7 +1,12 @@
 package rdfbones.lib;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
 import rdfbones.graphData.GraphPath;
 import rdfbones.rdfdataset.Graph;
 import rdfbones.rdfdataset.OptionalTriple;
@@ -32,6 +37,15 @@ public class VariableDependency {
         triple.object.varName = "uri";
       }
     }
+  }
+  
+  public JSONArray getData(JSONObject inputs){
+    
+    List<String> inputData = new ArrayList<String>();
+    for(String input : this.inputs){
+      inputData.add(JSON.string(inputs, input));
+    }
+    return QueryUtils.getJSON(this.dataGetter.getData(inputData));
   }
   
 }
