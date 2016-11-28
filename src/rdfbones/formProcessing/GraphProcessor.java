@@ -8,11 +8,13 @@ import java.util.Map;
 import rdfbones.rdfdataset.Triple;
 import rdfbones.rdfdataset.MultiTriple;
 import rdfbones.rdfdataset.Graph;
+import rdfbones.form.Form;
 import rdfbones.lib.GraphLib;
 
 public class GraphProcessor {
 
-  public static Graph getGraph(List<Triple> triples, List<Triple> schemeTriples, String startNode){
+  public static Graph getGraph(List<Triple> triples, List<Triple> schemeTriples, 
+      String startNode){
 
     Triple multiTriple = null;
     boolean valid = true;

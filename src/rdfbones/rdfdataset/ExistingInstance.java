@@ -1,7 +1,7 @@
 package rdfbones.rdfdataset;
 
 
-public class ExistingInstance extends RDFNode {
+public class ExistingInstance extends InputNode {
 
   public ExistingInstance(String varName) {
     super(varName);

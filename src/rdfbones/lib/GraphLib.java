@@ -261,6 +261,10 @@ public class GraphLib {
       if (!triple.predicate.equals("rdf:type")) {
         graph.typeQueryTriples.add(triple);
       }
+      /*
+      if (triple.predicate.equals("rdf:type") && triple.subject instanceof InputNode) {
+        graph.typeQueryTriples.add(triple);
+      } */
       if (triple.subject instanceof InputNode) {
         graph.inputClasses.add(triple.subject.varName);
       }
@@ -304,9 +308,10 @@ public class GraphLib {
           if (!(triple.object instanceof InputNode)) {
             ArrayLib.addDistinct(graph.classesToSelect, triple.object.varName);
           }
+          /*
           if (triple.subject instanceof InputNode) {
             graph.typeQueryTriples.add(triple);
-          }
+          }*/
         }
       }
     }
@@ -333,8 +338,7 @@ public class GraphLib {
       graph.literalsToSelect.add(var + "Label");
       graph.dataRetreivalQuery.add(QueryLib.getOptionalLabelTriple(var));
     }
-    ;
-
+    
     for (String var : graph.inputLiterals) {
       graph.literalsToSelect.add(var);
     }

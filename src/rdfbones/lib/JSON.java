@@ -1,6 +1,7 @@
 package rdfbones.lib;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,10 +58,6 @@ public class JSON {
     return new JSONArray();
   }
   
-  public static JSONObject obj(String varName) throws JSONException{
-    return obj().put(varName, varName + "URI");
-  }
-  
   public static JSONObject obj1(String varName) throws JSONException{
     return obj().put("uri", varName);
   }
@@ -109,6 +106,15 @@ public class JSON {
     return new JSONObject();
   }
   
+  public static JSONArray array(List<String> array){
+    
+    JSONArray jsonArray = new JSONArray();
+    for(String element : array){
+      jsonArray.put(element);
+    }
+    return jsonArray;
+  }
+  
   public static JSONArray array(JSONObject obj, String key){
     if(obj.has(key)){
       try {
@@ -129,13 +135,24 @@ public class JSON {
       e.printStackTrace();
     }
   }
-
+  
+  public static Object get(JSONArray array, int i){
+    
+    try {
+      return array.get(i);
+    } catch (JSONException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return null;
+  }
+  
   public static void add(JSONArray array, JSONObject object){
     
     array.put(object);
   }
   
-  public static String JSONDebug(JSONObject object, int n){
+  public static String debug(JSONObject object, int n){
     
     String json = new String("");
     String tab = new String(new char[n]).replace("\0", "\t");
@@ -146,13 +163,44 @@ public class JSON {
       String key = (String)keys.next();
       Object value = JSON.obj(object, key);
       if(value instanceof String){
-        json += "\n" + tab + key + " : \"" + value + "\"";
+        json += "\n" + tab + key + " : \"" + value + "\",";
+      } else if(value instanceof JSONArray){
+        json += "\n" + tab + key + " : " + debugArray((JSONArray) value, n) + ",";
       } else {
-        json += "\n" + tab + key + " : " + JSONDebug((JSONObject)value, n);
+        json += "\n" + tab + key + " : " + debug((JSONObject)value, n);
       } 
-    json += "}";
-
     }
+    json += "}";
     return json;
   }
+  
+  public static String debugArray(JSONArray array, int n){
+    
+    String str = new String("");
+    String tab = new String(new char[n]).replace("\0", "\t");
+    n++;
+    str += "[";
+    for(int i = 0; i < ((JSONArray)array).length(); i++){
+      Object element;
+      element = JSON.get((JSONArray)array, i);
+      if(element instanceof String){
+         str += "\"" + element + "\"";
+      } else if(element instanceof JSONObject){
+         str += debug((JSONObject)element, n);
+      }
+    }
+    str += "]";
+    return str;
+  }
+  
+  public static JSONObject obj(String objectDescriptor){
+    
+    try {
+      return new JSONObject(objectDescriptor); 
+    } catch(JSONException e){
+      e.printStackTrace();
+    }
+    return null;
+  }
+  
 }

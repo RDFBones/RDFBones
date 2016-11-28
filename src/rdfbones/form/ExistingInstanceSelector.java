@@ -4,6 +4,6 @@ public class ExistingInstanceSelector extends FormElement {
 
   public ExistingInstanceSelector(String varName, String title){
     super(varName, title);
-    this.type = new String("existingInstanceSelector");
+    this.type = new String("adder");
   }
 }

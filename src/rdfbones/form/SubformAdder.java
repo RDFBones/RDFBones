@@ -6,16 +6,17 @@ import rdfbones.lib.JSON;
 
 public class SubformAdder extends FormElement{
   
-  String type = "subFormAdder";
   public String dataKey;
   public Form subForm;
   public SubformAdder(String name, String title){
     super(name, title);
+    this.type = new String("adder");
   }
   
   public SubformAdder(String name, String title, String dataKey ){
     super(name, title);
     this.dataKey = dataKey;
+    this.type = new String("adder");
   }
   
   @Override

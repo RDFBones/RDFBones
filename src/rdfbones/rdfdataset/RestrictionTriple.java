@@ -36,7 +36,7 @@ public class RestrictionTriple extends Triple{
 
     //It returns three triples
     String triples = new String();
-    String restriction = new String("?R_" + this.subject.varName + "_" + i);
+    String restriction = new String("?R" + i + "_" + this.subject.varName);
     triples += "\t?" + this.subject.varName + " rdfs:subClassOf " + restriction + ".\n";
     triples += "\t" + restriction + " owl:onProperty " + this.predicate + ".\n";
     triples += "\t" + restriction + " " + this.restrictionType + " ?" + this.object.varName + ".\n"; 

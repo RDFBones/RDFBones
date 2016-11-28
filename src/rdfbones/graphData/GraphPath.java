@@ -36,7 +36,7 @@ public class GraphPath {
   public String debugValid(){
     
     String debug = new String("");
-    debug += "Input : " + this.inputs + "\n";
+    debug += "Inputs : " + this.inputs + "\n";
     for(Triple triple : this.triples){
       debug += triple.subject.varName + "   " + triple.object.varName + " .  \n ";
     }

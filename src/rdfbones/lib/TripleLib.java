@@ -57,8 +57,9 @@ public class TripleLib {
         "boneOrganType", "owl:someValuesFrom"));
     triple.add(new RestrictionTriple("assayType", "obo:OBI_0000299",
         new FormInputNode( "measurementDatumType")));
-    triple.add(new GreedyRestrictionTriple(new FormInputNode("measurementDatumType"), "obo:OBI_0000299",
-        "categoricalLabelType", "owl:onClass"));
+    triple.add(new GreedyRestrictionTriple(new FormInputNode("measurementDatumType"), "obo:OBI_0000999",
+        "categoricalLabelType"));
+    //    "categoricalLabelType", "owl:onClass"));
     triple.addAll(schemeTriplesSubClasses());
     triple.addAll(schemeTriplesTypes());
     return triple;
@@ -73,8 +74,8 @@ public class TripleLib {
         new Constant("obo:OBI_0000659")));
     triple.add(new Triple("assayType", "rdfs:subClassOf",
         new Constant("obo:OBI_0000070")));
-    triple.add(new Triple("measurementDatumType", "rdfs:subClassOf",
-        new Constant("obo:OBI_0000070MDType")));
+    //triple.add(new Triple("measurementDatumType", "rdfs:subClassOf",
+    //    new Constant("obo:OBI_0000070MDType")));
     return triple;
   }
   

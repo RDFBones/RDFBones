@@ -3,8 +3,6 @@ package rdfbones.lib;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,7 +11,6 @@ import org.json.JSONObject;
 public class TripleSet {
 
   private List<TripleStrings> triples = new ArrayList<TripleStrings>();
-  private static final Log log = LogFactory.getLog(TripleSet.class);
 
   public TripleSet(String tripleString){
     String[] tripleArray = tripleString.split("\\.");
@@ -38,7 +35,7 @@ public class TripleSet {
   
   public void javaDebug(){
     for(TripleStrings triple : this.triples){
-      log.info(triple.getSubject() + "\t" + triple.getPredicate() + "\t" + triple.getObject());
+      //log.info(triple.getSubject() + "\t" + triple.getPredicate() + "\t" + triple.getObject());
     }
   }
 }
