@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import rdfbones.formProcessing.DependencyCalculator;
 import rdfbones.formProcessing.GraphProcessor;
 import rdfbones.lib.TripleLib;
 import webappconnector.VIVOWebappConnector;
@@ -30,12 +31,11 @@ public class StudyDesignExecutionGenerator implements EditConfigurationGenerator
         GraphProcessor.getGraph(TripleLib.sdeDataTiples(), TripleLib.sdeSchemeTriples(),
             "subject");
     graph.init(new VIVOWebappConnector(vreq));
-    // graph.debug(0);
+    DependencyCalculator.calculate(graph, TripleLib.sdeSchemeTriples(), TripleLib.sdeForm());
+
+    editConfiguration.customForm(TripleLib.sdeForm());
     editConfiguration.setCustomGraph(graph);  
     editConfiguration.setObject(EditConfigurationUtils.getObjectUri(vreq));
-    // TripleSet triples = new TripleSet(triplesToCreate);
-    // triples.javaDebug();
-
     return editConfiguration;
   }
 }

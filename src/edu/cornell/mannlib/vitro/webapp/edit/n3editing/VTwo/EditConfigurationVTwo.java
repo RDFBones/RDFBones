@@ -22,6 +22,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 
+import rdfbones.form.Form;
 import rdfbones.rdfdataset.Graph;
 
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
@@ -194,7 +195,16 @@ public class EditConfigurationVTwo {
     private boolean hasBeenPreparedForUpdate;
     
     Graph customGraph = null;
-    
+    Form customForm = null;
+
+    public Form customForm() {
+      return customForm;
+    }
+
+    public void customForm(Form customForm) {
+      this.customForm = customForm;
+    }
+
     public Graph getCustomGraph() {
       return customGraph;
     }
