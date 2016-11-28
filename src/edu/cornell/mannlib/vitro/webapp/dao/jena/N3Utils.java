@@ -25,7 +25,7 @@ public class N3Utils {
       put("vitro", "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#");
       put("owl", "http://www.w3.org/2002/07/owl#");
       put("sw", "http://softwareOntology.com/");
-
+      put("obo-fma", "http://purl.obolibrary.org/obo/fma#");
     }};
     
     public static String getPrefixes(){
