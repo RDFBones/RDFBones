@@ -74,8 +74,9 @@ public class SPARQLDataGetter {
     this.inputValues.add(0, value);
     return this.getData();
   }
+
   
-  public List<Map<String, String>> getData(List<String> inputValues){
+public List<Map<String, String>> getData(List<String> inputValues){
     
     this.inputValues = inputValues;
     return this.getData();
@@ -94,8 +95,8 @@ public class SPARQLDataGetter {
   
   public String getQuery() {
     String query = new String("");
-    //query += N3Utils.getQueryPrefixes();
-    query += "\nSELECT ";
+    query += N3Utils.getQueryPrefixes();
+    query += "\nSELECT DISTINCT ";
     query += this.selectVars;
     query += "\nWHERE { \n ";
     query += this.getQueryTriples();
