@@ -35,31 +35,34 @@ var DataController = {
 	},
 	
 	loadSubformData : function(form){
-		
-		PopUpController.init()
+	
+		PopUpController.init("Loading form data")
+		var start = new Date()
+
 		//Only one AJAX call comes
-		varsThroughAjax = []
+		dependentVars = new Object()
 		$.each(form.formElementDescriptor, function(key, formElement){
 			//Check if dependent or independent the data is
 			dataKey = DataController.getDataKey(key, formElement)
-			if(formData[dataKey] === undefined){
-				//It is dependent variable
-				inputObject = DataController.getInputObject(form, dataKey)
-				varsThroughAjax.push(inputObject)
-			}
+			dependentVars[dataKey] = DataController.getInputObject(form, dataKey)
 		})
-		
-		if(varsThroughAjax.length > 0){
+		var toSend = {
+			editKey : editKey,
+			dependentVars : dependentVars,
+		}
+		if(Object.keys(dependentVars).length > 0){
 			$.ajax({
 				type : 'POST',
 				context : this,
 				dataType : 'json',
 				url : baseUrl + "formDataLoader",
-				data : "requestData=" + JSON.stringify(varsThroughAjax)})
+				data : "requestData=" + JSON.stringify(toSend)})
 				.done((function(msg) {
 					//We just copy the result to the dataFromAJAX variable
-					DataController.setInputData(msg)
-					DataController.done(form)
+					PopUpController.doneTime(start, 500, function(){
+						DataController.setInputData(msg)
+						DataController.done(form)
+					})
 				}).bind(this))
 		} else {
 			DataController.done(form)
@@ -92,7 +95,6 @@ var DataController = {
 	getInputObject : function(subForm, dataKey){
 		
 		var msgObject = new Object()
-		msgObject["varToGet"] = dataKey
 		console.log()
 		$.each(dataDependencies[dataKey], function(i, variable){
 			console.log(variable)

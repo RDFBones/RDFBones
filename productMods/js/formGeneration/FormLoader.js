@@ -43,16 +43,36 @@ Form.prototype = {
 
 var MainForm = function(){
 	
-	if (objectUri != null) {
-		this.loadExistingData()
-	} else {
-		formData.existingData = new Object()
-		this.init()
-	}
+	this.loadFormConfiguration()
 }
 
 MainForm.prototype =  {
 
+	loadFormConfiguration : function(){
+		
+	PopUpController.init();
+		$.ajax({
+			type : 'POST',
+			context : this,
+			dataType : 'json',
+			url : baseUrl + "formConfigLoader",
+			data : {
+				editKey : editKey
+			}
+		}).done((function(msg) {
+			formDescriptor = msg.formDescriptor
+			dataDependencies = msg.dataDependencies
+			PopUpController.done();
+			if (objectUri != null) {
+				this.loadExistingData()
+			} else {
+				formData.existingData = new Object()
+				formData.existingData.subject = subjectUri;
+				this.init()
+			}
+		}).bind(this)) 
+	},
+	
 	init : function(){
 		
 		//Data
@@ -67,10 +87,10 @@ MainForm.prototype =  {
 		this.container.append(this.subContainer).append(this.submitButton)	
 		$("#form").append(this.container)	
 	},	
-		
 	
 	submit : function() {
 
+		PopUpController.init("RDF data generation is in progress")
 		var toSend = new Object();
 		toSend.subject = {
 			uri : subjectUri,
@@ -86,10 +106,12 @@ MainForm.prototype =  {
 			url : baseUrl + "dataGenerator",
 			data : "requestData=" + JSON.stringify(toSend)
 		}).done((function(msg) {
-			console.log("Response")
-			console.log(msg);
+			
+			PopUpController.doneMsg("Triples are successfully saved", 2000, null,
+			function(){
 			window.location = baseUrl + "display/" +
-			 	subjectUri.split("/")[subjectUri.split("/").length-1]
+			 		subjectUri.split("/")[subjectUri.split("/").length-1]
+			})
 		}).bind(this)) 
 	},
 

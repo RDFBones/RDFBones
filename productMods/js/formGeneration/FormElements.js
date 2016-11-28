@@ -31,7 +31,6 @@ var Selector = function(dataKey, descriptor, parentForm) {
 Selector.prototype = {
 
 	changeData : function(selectedValue, text) {
-		
 		this.parentDataObject[this.dataKey] = selectedValue
 	},
  }
