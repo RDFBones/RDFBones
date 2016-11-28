@@ -1120,6 +1120,16 @@
   </servlet-mapping>  
   
   
+  <servlet>
+    <servlet-name>FormConfigLoader</servlet-name>
+    <servlet-class>rdfbones.pageload.FormConfigurationLoader</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FormConfigLoader</servlet-name>
+    <url-pattern>/formConfigLoader</url-pattern>
+  </servlet-mapping>  
+  
+  
    <!--
    END - just to know where to place the additional servlets
     -->
