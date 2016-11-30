@@ -15,9 +15,7 @@
 display:DefaultMenu 
     a  display:MainMenu ;
     rdfs:label "Default Menu" ;
-    display:hasElement display:EventsMenuItem ;
     display:hasElement display:HomeMenuItem ;
-    display:hasElement display:OrganizationsMenuItem ;
     display:hasElement display:PeopleMenuItem ;
     display:hasElement display:ResearchMenuItem .
 
@@ -35,24 +33,12 @@ display:PeopleMenuItem
     display:linkText "People";
     display:toPage display:People .
 
-display:OrganizationsMenuItem 
-    a display:NavigationElement ;
-    display:menuPosition 3;
-    display:linkText "Organizations";
-    display:toPage display:Organizations .
-
 display:ResearchMenuItem     
     a display:NavigationElement ;
-    display:menuPosition 4;
+    display:menuPosition 3;
     display:linkText "Research";
     display:toPage display:Research .
 
-display:EventsMenuItem 
-    a display:NavigationElement ;
-    display:menuPosition 5;
-    display:linkText "Events";
-    display:toPage display:Events .        
-    
 display:Home 
     a display:HomePage ;    
     a display:Page ;
@@ -60,22 +46,6 @@ display:Home
     display:urlMapping "/" ;
     display:hasDataGetter display:homeDataGetter;
     display:cannotDeletePage "true" .
-
-display:Events 
-    a display:Page ;    
-    a display:ClassGroupPage;
-    display:forClassGroup vivoweb:vitroClassGroupevents ;
-    display:title "Events" ;
-    display:urlMapping "/events" ; 
-    display:hasDataGetter display:eventsDataGetter .
-
-display:Organizations 
-    a display:Page ;
-    a display:ClassGroupPage;
-    display:forClassGroup vivoweb:vitroClassGrouporganizations ;
-    display:title "Organizations" ;
-    display:urlMapping "/organizations";
-    display:hasDataGetter display:organizationsDataGetter .
 
 display:People 
     a display:Page ;    
@@ -92,8 +62,6 @@ display:Research
     display:title "Research" ;
     display:urlMapping "/research" ;
     display:hasDataGetter display:researchDataGetter .
-
-
     
 #The data getter objects used above
 display:peopleDataGetter
@@ -105,16 +73,6 @@ display:researchDataGetter
       a <java:edu.cornell.mannlib.vitro.webapp.utils.dataGetter.ClassGroupPageData>;
       display:forClassGroup
               vivoweb:vitroClassGrouppublications .
-
-display:organizationsDataGetter
-      a <java:edu.cornell.mannlib.vitro.webapp.utils.dataGetter.ClassGroupPageData>;
-      display:forClassGroup
-              vivoweb:vitroClassGrouporganizations .
-                            
-display:eventsDataGetter
-      a <java:edu.cornell.mannlib.vitro.webapp.utils.dataGetter.ClassGroupPageData>;
-      display:forClassGroup
-              vivoweb:vitroClassGroupevents .
               
 display:homeDataGetter
       a <java:edu.cornell.mannlib.vitro.webapp.utils.dataGetter.BrowseDataGetter> .
