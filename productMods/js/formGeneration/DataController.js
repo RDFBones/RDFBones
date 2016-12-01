@@ -12,7 +12,7 @@ var DataController = {
 			return key
 		}
 	},
-		
+	
 	prepareOptions : function(object){
 		
 		$.each(object, function(key, value){
@@ -94,36 +94,38 @@ var DataController = {
 	
 	getInputObject : function(subForm, dataKey){
 		
+		
 		var msgObject = new Object()
-		console.log()
+		console.log("subForm")
+		console.log(subForm)
 		$.each(dataDependencies[dataKey], function(i, variable){
 			console.log(variable)
+			console.log(subForm.dataObject)
 			if(subForm.dataObject[variable] !== undefined){
 				msgObject[variable] = subForm.dataObject[variable]
+				console.log()
 			} else {
-				/*
-				 * The variable maybe in some upper parents
-				 */
-				/*
-				parentContainer = subForm.parentContainer
+				parentContainer = subForm.parentForm
 				while(true){
-					if(parentContainer != null){
-						if(parentContainer.dataObject.dataKey == dataKey){
-							msgObject[dataKey] = formContainer.dataObject.uri
-							break
-						} else {
-							if(parentContainer.dataObject[dataKey] !== undefined){
-								msgObject[dataKey] = parentContainer.dataObject[dataKey]
+					console.log("ParentSearch")
+					console.log(parentContainer)
+					if(parentContainer !== undefined){
+						if(parentContainer.dataObject !== undefined){
+							if(parentContainer.dataObject[variable] !== undefined){
+								console.log("DataKey Found : " + variable)
+								msgObject[variable] = parentContainer.dataObject[variable]
 								break
 							} else {
-								parentContainer = parentContainer.parentContainer
+								parentContainer = parentContainer.parentForm
 							}
+						} else {
+							parentContainer = parentContainer.parentForm
 						}
 					} else {
 						console.log("Variable is not found")
 						break
 					}		
-				} */
+				} 
 			}
 		})
 		return msgObject

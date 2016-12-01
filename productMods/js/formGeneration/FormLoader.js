@@ -57,7 +57,7 @@ MainForm.prototype =  {
 			dataType : 'json',
 			url : baseUrl + "formConfigLoader",
 			data : {
-				editKey : editKey
+				editKey : editKey,
 			}
 		}).done((function(msg) {
 			formDescriptor = msg.formDescriptor
@@ -68,6 +68,8 @@ MainForm.prototype =  {
 			} else {
 				formData.existingData = new Object()
 				formData.existingData.subject = subjectUri;
+				formData.existingData.rangeUri = rangeUri;
+				console.log(formData.existingData)
 				this.init()
 			}
 		}).bind(this)) 
