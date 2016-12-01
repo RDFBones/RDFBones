@@ -23,7 +23,6 @@ public class GraphProcessor {
         if(triple.subject.varName.equals(startNode)
             || triple.object.varName.equals(startNode)){
         if(triple instanceof MultiTriple){
-          //We are here only once
           multiTriple = triple;
         } else { //If we are here then the condition is not fulfilled
           valid = false;
@@ -32,7 +31,7 @@ public class GraphProcessor {
       }
     }
     List<Triple> graphTriples = new ArrayList<Triple>();
-    if(valid){
+    if(valid && multiTriple != null){
       graphTriples.add(multiTriple);
       triples.remove(multiTriple);
       return getSubGraph(triples, schemeTriples, startNode, 
