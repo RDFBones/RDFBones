@@ -7,6 +7,16 @@ import rdfbones.rdfdataset.Triple;
 
 public class ArrayLib {
 
+  
+  public static List<Triple> copyList(List<Triple> source){
+    
+    List<Triple> dest = new ArrayList<Triple>();
+    for(Triple triple : source){
+      dest.add(triple);
+    }
+    return dest;
+  }
+  
   public static void addDistinct(List<String> list, String object) {
     if(!list.contains(object)){
       list.add(object);
@@ -32,6 +42,15 @@ public class ArrayLib {
     String arr = new String("");
     for(String str : list){
       arr += "?" + str + " \t| ";
+    }
+    return arr;
+  }
+  
+  public static String debugInteger(List<Integer> list){
+    
+    String arr = new String("");
+    for(Integer str : list){
+      arr += str.toString() + " \t| ";
     }
     return arr;
   }
