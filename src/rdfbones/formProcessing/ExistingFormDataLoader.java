@@ -9,22 +9,28 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import webappconnector.VIVOWebappConnector;
+import rdfbones.form.FormConfiguration;
 import rdfbones.rdfdataset.Graph;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.controller.ajax.VitroAjaxController;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTwo;
+import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.DocumentUploadFormGenerator;
 
 public class ExistingFormDataLoader extends VitroAjaxController {
 
   private static final long serialVersionUID = 1L;
+  private Log log = LogFactory.getLog(ExistingFormDataLoader.class); 
 
   @Override
   protected void doRequest(VitroRequest vreq, HttpServletResponse response)
     throws IOException, ServletException {
+
 
     JSONArray json = new JSONArray();
     try {
@@ -42,8 +48,9 @@ public class ExistingFormDataLoader extends VitroAjaxController {
     String object = vreq.getParameter("object");
     String editKey = vreq.getParameter("editKey");
     EditConfigurationVTwo editConfig = getEditConfig(vreq, editKey);
-    Graph graph = editConfig.getCustomGraph();
-    graph.init(new VIVOWebappConnector(vreq));
+    FormConfiguration formConfig = editConfig.getFormConfig();
+    Graph graph = formConfig.dataGraph;
+    graph.setWebapp(new VIVOWebappConnector(vreq));
     graph.getExistingData(subject, object);
     return graph.existingData;
   }

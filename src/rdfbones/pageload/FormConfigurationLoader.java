@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import com.hp.hpl.jena.query.ResultSet;
 
 import rdfbones.form.Form;
+import rdfbones.form.FormConfiguration;
 import rdfbones.lib.JSON;
 import rdfbones.rdfdataset.Graph;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
@@ -38,8 +39,9 @@ public class FormConfigurationLoader extends VitroAjaxController {
 
     String editKey = vreq.getParameter("editKey");
     EditConfigurationVTwo editConfig = getEditConfig(vreq, editKey);
-    Graph graph = editConfig.getCustomGraph();
-    Form form = editConfig.customForm();
+    FormConfiguration formConfig = editConfig.getFormConfig();
+    Graph graph = formConfig.dataGraph;
+    Form form = formConfig.form;
     
     JSONObject json = new JSONObject();
     JSON.put(json, "formDescriptor", form.getJSON());

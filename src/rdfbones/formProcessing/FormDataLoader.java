@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import com.hp.hpl.jena.query.ResultSet;
 
+import rdfbones.form.FormConfiguration;
 import rdfbones.lib.JSON;
 import rdfbones.lib.VariableDependency;
 import rdfbones.rdfdataset.Graph;
@@ -41,7 +42,8 @@ public class FormDataLoader extends VitroAjaxController {
     JSONObject requestData = JSON.obj(vreq.getParameter("requestData"));
     String editKey = JSON.string(requestData, "editKey");
     EditConfigurationVTwo editConfig = getEditConfig(vreq, editKey);
-    Graph graph = editConfig.getCustomGraph();
+    FormConfiguration formConfig = editConfig.getFormConfig();
+    Graph graph = formConfig.dataGraph;
     graph.setWebapp(new VIVOWebappConnector(vreq));
     JSONObject respJSON  = this.dependentData(JSON.object(requestData, "dependentVars"), graph);
     response.getWriter().write(respJSON.toString());

@@ -17,8 +17,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import webappconnector.VIVOWebappConnector;
+import rdfbones.form.FormConfiguration;
 import rdfbones.rdfdataset.Graph;
-
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.controller.ajax.VitroAjaxController;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.N3Utils;
@@ -51,9 +51,9 @@ public class DataGenerator extends VitroAjaxController {
     JSONObject inputData = requestData.getJSONObject("dataToStore");
     EditConfigurationVTwo editConfig = getEditConfig(vreq, editKey);
 
-    Graph graph = editConfig.getCustomGraph();
+    FormConfiguration formConfig = editConfig.getFormConfig();
+    Graph graph = formConfig.dataGraph;
     graph.setWebapp(new VIVOWebappConnector(vreq));
-    graph.debug(0);
 
     String triplesToCreate = graph.saveInitialData(inputData);
     log.info(triplesToCreate);
