@@ -1,14 +1,31 @@
 package rdfbones.lib;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import rdfbones.form.Form;
+import rdfbones.form.FormConfiguration;
+import rdfbones.formProcessing.DependencyCalculator;
+import rdfbones.formProcessing.GraphProcessor;
+import rdfbones.formProcessing.WebappConnector;
 import rdfbones.graphData.SubGraphInfo;
 import rdfbones.graphData.UnionForm;
 import rdfbones.rdfdataset.*;
 
 public class GraphLib {
 
+  public static FormConfiguration getFormConfig(List<Triple> dataTriples, 
+    List<Triple> schemeTriples, Form form, WebappConnector webapp){
+    
+    List<Triple> schemeCopy1 = ArrayLib.copyList(schemeTriples);
+    Graph graph = GraphProcessor.getGraph(dataTriples, schemeCopy1, "object");
+    List<Triple> schemeCopy2 = ArrayLib.copyList(schemeTriples);
+    DependencyCalculator.calculate(graph, schemeCopy2, form); 
+    graph.init(webapp);
+    return new FormConfiguration(graph, form);
+  }
+ 
   public static List<String> getNodes(List<Triple> dataTriples,
     List<Triple> restrictionTriples) {
 
@@ -301,6 +318,7 @@ public class GraphLib {
         ArrayLib.addDistinct(graph.classesToSelect, triple.subject.varName);
         ArrayLib.addDistinct(graph.classesToSelect, triple.object.varName);
       } else {
+        
         if (triple.predicate.equals("rdf:type")) {
           if (!(triple.subject instanceof InputNode)) {
             graph.triplesToStore.add(triple);
@@ -451,6 +469,7 @@ public class GraphLib {
       i++;
     }
     if(info.greedyNode == null){
+      System.out.println("DebugTriples - END :" + ArrayLib.debugInteger(nums));
       ArrayLib.remove(triples, nums);
       return info;
     } else {
