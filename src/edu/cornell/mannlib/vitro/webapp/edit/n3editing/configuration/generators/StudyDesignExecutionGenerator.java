@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 
 import rdfbones.formProcessing.DependencyCalculator;
 import rdfbones.formProcessing.GraphProcessor;
+import rdfbones.lib.RDFBonesUtils;
 import rdfbones.lib.TripleLib;
 import webappconnector.VIVOWebappConnector;
 import rdfbones.rdfdataset.Graph;
@@ -24,18 +25,7 @@ public class StudyDesignExecutionGenerator implements EditConfigurationGenerator
   public EditConfigurationVTwo getEditConfiguration(VitroRequest vreq,
     HttpSession session) throws Exception {
 
-    EditConfigurationVTwo editConfiguration = new EditConfigurationVTwo();
-    editConfiguration.setTemplate("genericForm.ftl");
-    editConfiguration.setSubjectUri(vreq.getParameter("subjectUri"));
-    Graph graph =
-        GraphProcessor.getGraph(TripleLib.sdeDataTiples(), TripleLib.sdeSchemeTriples(),
-            "subject");
-    graph.init(new VIVOWebappConnector(vreq));
-    DependencyCalculator.calculate(graph, TripleLib.sdeSchemeTriples(), TripleLib.sdeForm());
-
-    editConfiguration.customForm(TripleLib.sdeForm());
-    editConfiguration.setCustomGraph(graph);  
-    editConfiguration.setObject(EditConfigurationUtils.getObjectUri(vreq));
-    return editConfiguration;
+    return RDFBonesUtils.getEditConfiguration(vreq, TripleLib.sdeDataTiples(), 
+        TripleLib.sdeSchemeTriples(), TripleLib.sdeForm(), new VIVOWebappConnector(vreq));
   }
 }
