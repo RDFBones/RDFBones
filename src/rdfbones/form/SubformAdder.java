@@ -26,10 +26,12 @@ public class SubformAdder extends FormElement{
     if(this.dataKey != null){
       JSON.put(obj, "dataKey", this.dataKey);
     }
-    JSONObject formElements = this.subForm.getSubFormJSON();
-    if(formElements.length() > 0){
-      JSON.put(obj, "formElements", formElements);
-    }   
+    if(this.subForm != null){
+      JSONObject formElements = this.subForm.getSubFormJSON();
+      if(formElements.length() > 0){
+        JSON.put(obj, "formElements", formElements);
+      } 
+    }
     return obj;
   }
 }
