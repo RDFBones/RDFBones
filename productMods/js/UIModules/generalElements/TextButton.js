@@ -4,8 +4,9 @@ var TextButton = function(text, returnFunction, style){
 	
 	this.enabled = true
 	this.returnFunction = returnFunction
-	this.container = UI.getTextButton(text).addClass(this.getStyle())
-		.click((this.clickEvent).bind(this))
+	this.container = UI.getTextButton(text, "button" +  buttonID).addClass(this.getStyle())
+	$(document).on("click", "#button" +  buttonID, (this.clickEvent).bind(this))
+	buttonID++
 }
 
 TextButton.prototype = {
