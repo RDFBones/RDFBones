@@ -8,8 +8,9 @@ var Form = function(parentForm, data){
 	
 	this.parentForm = parentForm
 	this.dataObject = data
-	this.container = parentForm.subContainer
-	this.formElementDescriptor = parentForm.descriptor.formElements
+	//this.container = parentForm.subContainer
+	this.container = html.div()
+	this.descriptor = parentForm.descriptor
 
 	// The subform does not modify the dataObject. It just saves it
 	DataController.loadSubformData(this)
@@ -21,11 +22,11 @@ Form.prototype = {
 	init : function() {
 		
 		//Pre UI
-		this.container.append(html.div("title").text(this.parentForm.title))
-		this.subFormContainer = html.div("subFormContainer")
-		this.container.append(this.subFormContainer)
+		titleStyle = (this.descriptor.style === undefined) ? "title" : "inlineTitle"
+		this.container.append(html.div("formTitle").text(this.parentForm.title))
+		this.formContainer = html.div("inline")
 		this.subFormElements = new Object()
-		$.each(this.formElementDescriptor, (function(key, value){
+		$.each(this.descriptor.formElements, (function(key, value){
 			this.subFormElements[key] = new elementMap[value.type](key, value, this)
 		}).bind(this))
 		this.loadUI()
@@ -37,7 +38,10 @@ Form.prototype = {
 		$.each(this.subFormElements, (function(key, element){
 			UIelements.push(element.container)
 		}).bind(this))
-		this.container.append(UIelements)
+		//this.container.append(UIelements)
+		this.formContainer.append(UIelements)
+		this.container.append(this.formContainer)
+		this.parentForm.ready()
 	},
 }
 
@@ -50,7 +54,7 @@ MainForm.prototype =  {
 
 	loadFormConfiguration : function(){
 		
-	PopUpController.init();
+	PopUpController.init($("#form"));
 		$.ajax({
 			type : 'POST',
 			context : this,
@@ -75,6 +79,13 @@ MainForm.prototype =  {
 		}).bind(this)) 
 	},
 	
+	ready : function(){
+		this.container = html.div()
+		this.submitButton = new TextButton("Submit", (this.submit).bind(this)).container
+		this.container.append(this.subForm.container).append(this.submitButton)
+		PopUpController.removeWaitGif($("#form"), this.container)
+	},
+	
 	init : function(){
 		
 		//Data
@@ -82,12 +93,10 @@ MainForm.prototype =  {
 		this.dataObject = formData.existingData
 		this.title = this.descriptor.title
 		//UI
-		this.container = html.div()
+		
 		this.subContainer = html.div("subContainer")
-		new Form(this, formData.existingData)
-		this.submitButton = new TextButton("Submit", (this.submit).bind(this)).container
-		this.container.append(this.subContainer).append(this.submitButton)	
-		$("#form").append(this.container)	
+		PopUpController.addWaitGif(this.subContainer)
+		this.subForm = new Form(this, formData.existingData)
 	},	
 	
 	submit : function() {

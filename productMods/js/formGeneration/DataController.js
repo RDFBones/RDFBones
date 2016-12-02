@@ -36,12 +36,12 @@ var DataController = {
 	
 	loadSubformData : function(form){
 	
-		PopUpController.init("Loading form data")
+		//PopUpController.init("Loading form data")
 		var start = new Date()
 
 		//Only one AJAX call comes
 		dependentVars = new Object()
-		$.each(form.formElementDescriptor, function(key, formElement){
+		$.each(form.descriptor.formElements, function(key, formElement){
 			//Check if dependent or independent the data is
 			dataKey = DataController.getDataKey(key, formElement)
 			dependentVars[dataKey] = DataController.getInputObject(form, dataKey)
@@ -70,7 +70,7 @@ var DataController = {
 	},
 
 	done : function(form){
-		PopUpController.done()
+		//PopUpController.done()
 		form.init();
 	},
 	
@@ -93,7 +93,6 @@ var DataController = {
 	},
 	
 	getInputObject : function(subForm, dataKey){
-		
 		
 		var msgObject = new Object()
 		console.log("subForm")

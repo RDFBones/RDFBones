@@ -43,7 +43,8 @@ var Adder = function(formDataKey, descriptor, parentForm) {
  	this.descriptor = descriptor
 	this.parentForm = parentForm
 	this.parentData = parentForm.dataObject
-	this.container =  parentForm.container
+	this.container =  html.div()
+	this.cnt = 0
 
 	if(this.parentData[formDataKey] !== undefined){
 		this.localData = this.parentData[formDataKey]
@@ -68,10 +69,9 @@ Adder.prototype = {
 		this.subContainer = html.div("subContainer")
 		this.container.append(this.title).append(this.selector).append(
 				this.addButton.container).append(this.subContainer)
-		
 		this.loadExistingData()
 	},
-
+	
 	loadExistingData : function(array) {
 		$.each(this.localData, (function(i, data){
 			this.title = DataController.getLabel(data[this.dataKey]) 
@@ -91,9 +91,19 @@ Adder.prototype = {
 	addSubForm : function(object){
 
 		if(this.descriptor.formElements !== undefined) {
-			new Form(this, object)
+			PopUpController.addWaitGif(this.subContainer)
+			this.subForm = new Form(this, object)
 		} else {
 			this.subContainer.append(html.div("subElement").text(object[this.dataKey + "Label"]))
+		}
+	},
+	
+	ready : function(){
+		
+		if(this.cnt != 0){
+			cnt--
+		} else {
+			PopUpController.removeWaitGif(this.subContainer, this.subForm.container)
 		}
 	}
 }
