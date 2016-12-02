@@ -9,6 +9,13 @@
 	margin: 10px;
 }
 
+.inlineTitle {
+	padding: 3px;
+	display: inline-block;
+	border-bottom: 1px solid black;
+	text-align: center;
+}
+
 .columnTitle {
 	padding: 3px;
 	display: inline-block;
