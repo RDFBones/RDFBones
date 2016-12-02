@@ -3,6 +3,7 @@ package rdfbones.graphData;
 import java.util.ArrayList;
 import java.util.List;
 
+import rdfbones.lib.ArrayLib;
 import rdfbones.lib.GraphLib;
 import rdfbones.rdfdataset.Constant;
 import rdfbones.rdfdataset.Triple;
@@ -63,10 +64,13 @@ public class GraphPath {
     //System.out.println("Nodes : " + ArrayLib.debugList(nodes));
     for(String node : nodes){
       if(inputs.contains(node)){
+        //System.out.println("Contains!");
         this.valid = true;
         this.inputs.add(node);
       } else {
+        //System.out.println("Not contains! : " + node);
         List<Triple> otherTriples = GraphLib.getNotRestrictionTriples(triples, node);
+        //System.out.println("otherTriples.length : " + otherTriples.size());
         for(Triple triple : otherTriples){
           if(inputs.contains(GraphLib.getObject(triple, node))){
             //System.out.println("Found : " + GraphLib.getObject(triple, node));

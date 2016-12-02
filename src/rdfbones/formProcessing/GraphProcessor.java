@@ -57,15 +57,15 @@ public class GraphProcessor {
     while(true){
       List<Integer> tripleNums = new ArrayList<Integer>();
       for(Triple triple : triples){
-        if(triple.subject.varName.equals(startNode) || triple.object.varName.equals(startNode)){
-          String object = GraphLib.getObject(triple, startNode);
-          if(triple instanceof MultiTriple){
+        String object = GraphLib.getObject(triple, startNode);
+        if(object != null){
+           if(triple instanceof MultiTriple){
              subGraphNodes.put(object, GraphLib.getSubject(triple, startNode));
-          } else {
+           } else {
              graphTriples.add(triple);
              graphNodes.add(object);
              tripleNums.add(i);
-          }
+           }  
         }
         i++;
       }
