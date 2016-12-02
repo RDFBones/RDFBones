@@ -9,7 +9,6 @@ public class OptionalTriple extends Triple{
 
   @Override
   public String getTriple(){
-    System.out.println("Optional");
     String triple = super.getTriple();
     return "\tOPTIONAL { " + triple.substring(1, triple.length() - 2 ) + " } \n" ;
   }

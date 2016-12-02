@@ -20,7 +20,6 @@ public class VariableDependency {
   public VariableDependency(Graph graph, GraphPath path, String varToGet){
     
     this.inputs = path.inputs;
-    System.out.println("Path inputs : " + path.inputs);
     path.triples.add(new OptionalTriple("uri", "rdfs:label", "label"));
     this.dataGetter = new UriLabelSPARQLDataGetter(graph, path.triples, varToGet, this.inputs);
   }

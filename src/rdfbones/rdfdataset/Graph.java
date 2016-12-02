@@ -76,15 +76,13 @@ public class Graph {
     this.schemeTriples = GraphLib.getSchemeTriples(dataTriples, schemeTriples);
     GraphLib.setDataInputVars(this);
     GraphLib.setDataRetrievalVars(this);
-    System.out.println("typeQueryTriples :      "
-        + ArrayLib.debugTriples("\t", this.typeQueryTriples));
-
   }
   
   public void init(WebappConnector webapp) {
     this.webapp = webapp;
     init(this);
   }
+  
   public void init(Graph mainGraph) {
 
     this.mainGraph = mainGraph;
@@ -115,8 +113,10 @@ public class Graph {
    */
   public void getExistingData(String subject, String object) {
     
+    log("DataRetriever Query : \n      " + this.dataRetriever.getQuery());
     this.existingData = QueryUtils.getJSON(
         ((MainGraphSPARQLDataGetter)this.dataRetriever).getData(subject, object));
+    
     this.getSubGraphData();
   }
 
@@ -129,14 +129,11 @@ public class Graph {
 
   private void getSubGraphData() {
     for (int i = 0; i < this.existingData.length(); i++) {
-      log("Graph.java 127 " + i); 
       for (String key : this.subGraphs.keySet()) {
-        log("Graph.java 128 - key : " + key); 
         Graph subGraph = this.subGraphs.get(key);
         try {
           JSONObject object = JSON.object(this.existingData, i);
           String initialValue = JSON.string(object, subGraph.inputNode);
-          log("Graph.java 133 : " + initialValue); 
           object.put(key, subGraph.getGraphData(initialValue));
         } catch (JSONException e) {
           log("Unsuccesful");
@@ -219,7 +216,11 @@ public class Graph {
     }
     return triplesToStore;
   }
-
+  
+  public void debug(){
+    this.debug(0);
+  }
+  
   public void debug(int n) {
 
     String tab = new String(new char[n]).replace("\0", "\t");
@@ -246,7 +247,7 @@ public class Graph {
         + ArrayLib.debugList(this.classesToSelect));
     this.mainGraph.getWebapp().log(tab + "typeQueryTriples :      "
         + ArrayLib.debugTriples(tab, this.typeQueryTriples));
-
+    
     if (this.dataRetriever != null) {
       this.mainGraph.getWebapp().log(tab + "DataRetriever Query : \n      "
           + this.dataRetriever.getQuery());
@@ -256,7 +257,7 @@ public class Graph {
       this.mainGraph.getWebapp().log(tab + "TypeRetriver Query :      "
           + this.typeRetriever.getQuery() + "\n");
     }
-
+    
     int k = n + 1;
     this.mainGraph.getWebapp().log(tab + "Subgraphs :  " + subGraphs.keySet().size());
     if (subGraphs.keySet().size() > 0) {
