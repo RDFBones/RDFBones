@@ -22,10 +22,6 @@ var UI = {
 		return ImgUI.libImg("loading", "largeImg")
 	},
 
-	getHorizontalDiv : function() {
-
-	},
-
 	getHorizontalImg : function(src) {
 		return html.div("horizontalMiddle").append(html.img(src))
 	},
@@ -103,8 +99,8 @@ var UI = {
 				ImgUI.libImg("add", "addFieldImg").click(clickFunction))
 	},
 
-	getTextButton : function(text) {
-		return html.div("enabledButton").text(text)
+	getTextButton : function(text, id) {
+		return html.div("enabledButton").text(text).attr("id", id)
 	},
 
 	/***************************************************************************
@@ -197,5 +193,6 @@ var UI = {
 	
 	inlineCont : function(_class){
 		return html.div("inlineContainer " + _class)
-	}	
+	},
+
 }

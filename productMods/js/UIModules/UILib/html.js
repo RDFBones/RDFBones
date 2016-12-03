@@ -63,6 +63,10 @@ var html = {
 		return $("<img/>").attr("src", src).addClass(class_)
 	},
 	
+	imgHeight : function(src, height) {
+		return $("<img/>").attr("src", src).attr("height", height)
+	},
+	
 	checkBox : function(){
 		return $("<input>").attr("type", "checkbox")
 	},

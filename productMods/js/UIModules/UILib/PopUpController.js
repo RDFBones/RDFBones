@@ -105,29 +105,25 @@ var PopUpController = {
 	
 	addWaitGif : function(div){
 		this.startDate = new Date()
-		waitGif = html.div("loadingContainer").append(UI.getLoadindGif()) 
-		//waitGif.hide()
-		div.append(waitGif)
-		//waitGif.show('fast')
+		div.append(ImgUI.waitGif())
+	},
+	
+	addSubWaitGif : function(div){
+		this.startDate = new Date()
+		div.append(ImgUI.subWaitGif())
 	},
 	
 	removeWaitGif : function(div, input){
 
-		endDate = new Date()
-		diff = 1500 - (endDate - this.startDate)
-		if(diff > 0){
-			setTimeout(function(){
-				input.hide()
-				div.empty()
-				div.append(input)
-				input.show('slow')
-			}, diff)
-		} else {
+		diff = 1000 - ((new Date()) - this.startDate)
+		diff = (diff > 0) ? diff : 0
+		setTimeout(function(){
 			input.hide()
 			div.empty()
 			div.append(input)
-			input.show('slow')
-		}
+			input.fadeIn(1000)
+			//input.show('slow')
+		}, diff)	
 	}
 }
 

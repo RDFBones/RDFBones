@@ -90,6 +90,23 @@ var ImgUI = {
 
 	generalImgCont : function(src, _class, size) {
 		return html.div(_class).append(html.img(src, size + "Img"))
-	}
+	},
 
+	/***************************************************************************
+	 * Loading gifContainer
+	 **************************************************************************/
+
+	waitGif : function(){
+		return html.div("mainFormLoadingContainer").append(this.gif("100px"))
+	},
+	
+	subWaitGif : function(){
+		return html.div("subFormLoadingContainer").append(this.gif())
+	},
+	
+	gif : function(size){
+		size = util.setUndefined(size, "50px")
+		console.log(size)
+		return html.div("horizontalMiddle").append(html.imgHeight(ImgSrc.loading, size))
+	}
 }
