@@ -59,19 +59,12 @@ var DataController = {
 				data : "requestData=" + JSON.stringify(toSend)})
 				.done((function(msg) {
 					//We just copy the result to the dataFromAJAX variable
-					PopUpController.doneTime(start, 500, function(){
-						DataController.setInputData(msg)
-						DataController.done(form)
-					})
+					DataController.setInputData(msg)
+					form.init()
 				}).bind(this))
 		} else {
-			DataController.done(form)
+			form.init()
 		}
-	},
-
-	done : function(form){
-		//PopUpController.done()
-		form.init();
 	},
 	
 	setInputData : function(msg){
