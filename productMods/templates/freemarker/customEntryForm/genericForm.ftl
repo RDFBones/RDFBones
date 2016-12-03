@@ -3,7 +3,7 @@
 	var baseUrl = "${urls.base}/"
 </script>
 
-<#include "cssImport.ftl">
+<#include "formCSS.ftl">
 <#include "UIscriptImport.ftl">
 
 ${scripts.add(
@@ -24,6 +24,7 @@ ${scripts.add(
 	var subjectUri = "${editConfiguration.subjectUri}"
 	var dataSaveUri = baseUrl + "dataGenerator"
 	var formData = new Object()
+	var	buttonID = 0;
 	
 	<#if editConfiguration.objectUri?has_content>
     var	objectUri = '${editConfiguration.objectUri}'
@@ -38,5 +39,6 @@ ${scripts.add(
 	$(document).ready(function(){
 		new MainForm(); 
 	})
+	
 	
 </script>

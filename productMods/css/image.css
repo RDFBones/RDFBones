@@ -1,4 +1,3 @@
-
 .imgFrame:hover {
 	cursor: pointer;
 }
@@ -21,35 +20,35 @@
 }
 
 .smallImg {
-	width : 30px;
-	height : 30px;
+	width: 30px;
+	height: 30px;
 }
 
 .middleImg {
-	width : 60px;
-	height : 60px;
+	width: 60px;
+	height: 60px;
 }
 
 .normalImg {
-  max-width:120px;
-  max-height:90px;
-  width: auto;
-  height: auto;	
+	max-width: 120px;
+	max-height: 90px;
+	width: auto;
+	height: auto;
 }
 
 .largeImg {
-	width : 120px;
-	height : 120px;
+	width: 120px;
+	height: 120px;
 }
 
 .XLargeImg {
-	width : 150px;
-	height : 150px;
+	width: 150px;
+	height: 150px;
 }
 
 .XXLargeImg {
-	width : 200px;
-	height : 200px;
+	width: 200px;
+	height: 200px;
 }
 
 .loadingGif {
@@ -65,24 +64,20 @@
 	transform: translate(50%, 50%);
 	text-align: center;
 }
-/*
-*  User in UI.getHorizontalMiddleImg
-*/
+
 .horizontalMiddle {
 	display: table;
-    margin-left: auto;
-    margin-right: auto
+	margin-left: auto;
+	margin-right: auto
 }
 
 .verticalMiddleContainer {
-	display : flex;
-	align-items : center;
-	height : 100%;
-	background : white;
+	display: flex;
+	align-items: center;
+	height: 100%;
+	background: white;
 }
-
 
 .enabledImg:hover {
-	cursor : pointer
+	cursor: pointer
 }
-

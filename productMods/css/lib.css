@@ -148,9 +148,20 @@
 	margin: 0 15px;
 }
 
-
 .margin10 {
 	margin : 10px;
+}
+
+/****************************************************
+*** Fonts  
+*****************************************************/
+
+.italic {
+	font-style: italic;
+}
+
+bold {
+    font-weight: bold;
 }
 
 /****************************************************
@@ -220,23 +231,8 @@
    display: inline-block;
 }
 
-.loadingContainer{
-	width : 300px;
-	height : 200px;
-}
 
-.formTitle {
-	margin-bottom : 6px;
-	padding : 3px;
-	border-bottom : 1px solid;
-	display : table;
-}
 
-.formTitleInline {
-	margin-bottom : 6px;
-	padding : 3px;
-	display : inline;
-}
 
 
 

@@ -1,0 +1,13 @@
+
+.mainFormLoadingContainer{
+	width : 100%;
+	height : auto;
+	margin-top : 15px;
+	padding : 5px;	
+}
+
+.subFormLoadingContainer{
+	width : 200px;
+	height : auto;
+	padding : 5px;	
+}
