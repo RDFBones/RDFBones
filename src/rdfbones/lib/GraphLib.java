@@ -56,10 +56,12 @@ public class GraphLib {
 
   public static String getObject(Triple triple, String varName) {
 
-    if (triple.subject.varName.equals(varName)) {
+    if (triple.subject.varName.equals(varName) && !Boolean.FALSE.equals(triple.fromSubject)) {
       return triple.object.varName;
-    } else {
+    } else if(triple.object.varName.equals(varName) && !Boolean.TRUE.equals(triple.fromSubject)){
       return triple.subject.varName;
+    } else {
+      return null;
     }
   }
 
@@ -278,15 +280,11 @@ public class GraphLib {
       if (!triple.predicate.equals("rdf:type")) {
         graph.typeQueryTriples.add(triple);
       }
-      /*
-      if (triple.predicate.equals("rdf:type") && triple.subject instanceof InputNode) {
-        graph.typeQueryTriples.add(triple);
-      } */
-      if (triple.subject instanceof InputNode) {
-        graph.inputClasses.add(triple.subject.varName);
+      if (triple.subject instanceof InputNode && !(triple instanceof ExistingRestrictionTriple)){
+        ArrayLib.addDistinct(graph.inputClasses, triple.subject.varName);
       }
       if (triple.object instanceof InputNode) {
-        graph.inputClasses.add(triple.object.varName);
+        ArrayLib.addDistinct(graph.inputClasses, triple.object.varName);
       }
     }
 
@@ -352,7 +350,9 @@ public class GraphLib {
     for (String var : graph.inputInstances) {
       graph.urisToSelect.add(var);
       graph.urisToSelect.add(var + "Type");
-      graph.typeQueryTriples.add(QueryLib.getMSTTriple(var));
+      if(graph.typeQueryTriples.size() > 0){
+        graph.typeQueryTriples.add(QueryLib.getMSTTriple(var));
+      }
       graph.literalsToSelect.add(var + "Label");
       graph.dataRetreivalQuery.add(QueryLib.getOptionalLabelTriple(var));
     }
@@ -438,12 +438,12 @@ public class GraphLib {
     nodeBuffer.add(startNode);
     while(true){
       SubGraphInfo info = GraphLib.subGraphInfoRemove(triples, startNode, nodeBuffer.remove(0));
-      if(info.greedyNode != null){
+      if(info.greedyNode != null && greedyNode == null){
         greedyNode = info.greedyNode;
-      } else {
+      } 
+      
         graphTriples.addAll(info.triples);
         nodeBuffer.addAll(info.nodes);
-      }
       if(nodeBuffer.size() == 0){
         break;
       }
@@ -458,23 +458,19 @@ public class GraphLib {
     Integer i = 0;
     for(Triple triple : triples){
       if(triple.subject.varName.equals(node) || triple.object.varName.equals(node)){
-        info.triples.add(triple);
-        nums.add(i);
         if(triple instanceof GreedyRestrictionTriple && !startNode.equals(node)){
           info.greedyNode = node;
+          info.greedyTriple = triple;
         } else {
+          info.triples.add(triple);
+          nums.add(i);
           info.nodes.add(GraphLib.getObject(triple, node));
         }
       }
       i++;
     }
-    if(info.greedyNode == null){
-      System.out.println("DebugTriples - END :" + ArrayLib.debugInteger(nums));
-      ArrayLib.remove(triples, nums);
-      return info;
-    } else {
-      return info;
-    }
+    ArrayLib.remove(triples, nums);
+    return info;
   }
   
   public static SubGraphInfo subGraphInfo(List<Triple> triples, String node){

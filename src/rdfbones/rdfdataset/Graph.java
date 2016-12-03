@@ -99,7 +99,7 @@ public class Graph {
         && this.classesToSelect.size() > 0) {
       this.typeRetriever =
           new SPARQLDataGetter(mainGraph, this.typeQueryTriples, this.classesToSelect,
-              null, this.inputClasses.get(0));
+              null, this.inputClasses);
     }
     // Subgraph initialisation
     for (String subGraphKey : this.subGraphs.keySet()) {
@@ -265,6 +265,15 @@ public class Graph {
         this.mainGraph.getWebapp().log(tab + "Key : " + key);
         subGraphs.get(key).debug(k);
       }
+    }
+  }
+  
+  public void dependencyDebug(){
+    
+    this.mainGraph.getWebapp().log(JSON.debug(this.dependencyDescriptor()));
+    for(String key : this.variableDependencies.keySet()){
+      VariableDependency dep = this.variableDependencies.get(key);
+      this.mainGraph.getWebapp().log(dep.queryDebug());
     }
   }
   

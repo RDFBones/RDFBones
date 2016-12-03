@@ -58,7 +58,6 @@ public class SPARQLDataGetter {
     if(GraphLib.containsGreedy(queryTriples)){
       QueryStructure qs = new QueryStructure(queryTriples, this.inputKeys.get(0));
       this.queryTriples = qs.getQuery();
-      System.out.println("QueryTriples : " + this.queryTriples);
     } else {
       this.queryTriples = SPARQLUtils.assembleQueryTriples(queryTriples);
     }
