@@ -87,12 +87,19 @@ Adder.prototype = {
 	},
 	
 	add : function(){
-		var object = new Object()
-		object[this.dataKey] = this.selector.val()
-		object[this.dataKey + "Label"] = this.selector.find("option[value='" + this.selector.val() + "']").text()
-		this.title = object[this.dataKey + "Label"] 
-		this.localData.push(object)
-		this.addSubForm(object)
+		if(this.addAllFlag){
+			PopUpController.note("All types have been already added!")
+		} else if(this.localData.getObjectByKey(this.dataKey, this.selector.val()) != null){
+			var text = this.selector.find("option[value='" + this.selector.val() + "']").text()
+			PopUpController.note(text + " have already been added!");
+		} else {
+			var object = new Object()
+			object[this.dataKey] = this.selector.val()
+			object[this.dataKey + "Label"] = this.selector.find("option[value='" + this.selector.val() + "']").text()
+			this.title = object[this.dataKey + "Label"] 
+			this.localData.push(object)
+			this.addSubForm(object)			
+		}
 	},
 	
 	addAll : function(){
@@ -101,13 +108,20 @@ Adder.prototype = {
 		this.addAllFlag = true
 		PopUpController.addSubWaitGif(this.subContainer)
 		$.each(this.options, (function(key, value){
-			var object = new Object()
-			object[this.dataKey] = key
-			object[this.dataKey + "Label"] = value.label
-			this.title = value.label
-			this.subForms.push(new Form(this, object))
-			this.cnt++
+			if(this.localData.getObjectByKey(this.dataKey, key) == null){
+				var object = new Object()
+				object[this.dataKey] = key
+				object[this.dataKey + "Label"] = value.label
+				this.localData.push(object)
+				this.title = value.label
+				this.subForms.push(new Form(this, object))
+				this.cnt++
+			}
 		}).bind(this))
+		if(this.cnt == 0){
+			PopUpController.remove()
+			PopUpController.note("All types have been already added!")
+		}
 	},
 	
 	addSubForm : function(object){
@@ -144,7 +158,6 @@ Adder.prototype = {
 			this.subContainer.append(subForm.container)
 		}).bind(this))
 	}
-	
 }
 
 var StringInput = function(descriptor) {
