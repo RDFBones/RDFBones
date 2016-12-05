@@ -10,10 +10,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
+import rdfbones.lib.ArrayLib;
 import rdfbones.lib.DebugLib;
 import rdfbones.lib.GraphLib;
 import rdfbones.lib.JSON;
 import rdfbones.lib.MainGraphSPARQLDataGetter;
+import rdfbones.lib.QueryLib;
 import rdfbones.lib.SPARQLDataGetter;
 import rdfbones.lib.SPARQLUtils;
 import rdfbones.lib.VariableDependency;
@@ -67,7 +69,7 @@ public class Graph {
 
   public Graph(List<Triple> triples, List<Triple> schemeTriples, WebappConnector webapp) {
 
-    this.inputNode = new String("object");
+    this.inputNode = new String("subject");
     this.mainGraph = this;
     this.webapp = webapp;
     this.initialize(triples);
@@ -101,17 +103,17 @@ public class Graph {
 
   public void initGraphMap(Graph graph) {
 
-    for (RDFNode key : this.initialGraphMap.keySet()) {
+   for (RDFNode key : this.initialGraphMap.keySet()) {
       Graph subGraph = this.initialGraphMap.get(key);
       Triple triple = subGraph.triple;
       if (triple instanceof MultiTriple) {
-        subGraph.inputNode = GraphLib.getObject(triple, key.varName);
+        subGraph.inputNode = GraphLib.getObject1(triple, key.varName);
         subGraph.inputPredicate = triple.predicate;
-        subGraph.mainGraph = this.mainGraph;
+        subGraph.mainGraph = graph.mainGraph;
         subGraph.initGraphStructure();
         if (subGraph.triple != null)
           subGraph.dataTriples.add(triple);
-        this.subGraphs.put(triple.predicate, (Graph) subGraph);
+        graph.subGraphs.put(QueryLib.getPredicateKey(triple.predicate), (Graph) subGraph);
       } else {
         graph.dataTriples.add(triple);
         subGraph.initGraphMap(graph);
@@ -139,7 +141,7 @@ public class Graph {
         && this.classesToSelect.size() > 0) {
       this.typeRetriever =
           new SPARQLDataGetter(mainGraph, this.typeQueryTriples, this.classesToSelect,
-              null, this.inputClasses);
+              null, this.inputClasses, true);
     }
     for (String key : this.subGraphs.keySet()) {
       this.subGraphs.get(key).setGraphDescriptor(schemeTriples);
@@ -159,7 +161,6 @@ public class Graph {
    */
   public void getExistingData(String subject, String object) {
 
-    log("DataRetriever Query : \n      " + this.dataRetriever.getQuery());
     this.existingData =
         QueryUtils.getJSON(((MainGraphSPARQLDataGetter) this.dataRetriever).getData(
             subject, object));
@@ -167,6 +168,7 @@ public class Graph {
   }
 
   public JSONArray getGraphData(String value) {
+
     // Here the parent graph input is used as well
     this.existingData = QueryUtils.getJSON(this.dataRetriever.getData(value));
     this.getGraphData();
@@ -209,18 +211,17 @@ public class Graph {
 
     this.setInstanceMap(inputObject, variableMap);
     if (this.typeRetriever != null) {
-      this.mainGraph.getWebapp().log("Graph.java 135 : TypeRetriever is performed");
-      this.mainGraph.getWebapp().log(
-          "Graph.java 135 : inputClass.get(0) : " + this.inputClasses.get(0));
+      String inputValue = JSON.string(inputObject, this.inputClasses.get(0));
+      log("InputValue : " + inputValue);
       List<Map<String, String>> data =
           this.typeRetriever.getData(variableMap.get(this.inputClasses.get(0)));
       if (data.size() > 0) {
         variableMap.putAll(data.get(0));
       } else {
-        this.mainGraph.getWebapp().log("noResult");
+        log("noResult");
       }
     }
-    this.mainGraph.getWebapp().log("variableMap : " + variableMap.toString());
+    log("variableMap : " + variableMap.toString());
     return generateN3(inputObject, variableMap);
   }
 
@@ -239,10 +240,9 @@ public class Graph {
     for (String inputInstance : this.inputInstances) {
       instanceMap.put(inputInstance, JSON.string(obj, inputInstance));
     }
-    for (String inputLiterals : this.inputLiterals) {
-      instanceMap.put(inputLiterals, JSON.string(obj, inputLiterals));
+    for (String inputLiteral : this.inputLiterals) {
+      instanceMap.put(inputLiteral, JSON.string(obj, inputLiteral));
     }
-    this.mainGraph.getWebapp().log("Graph.java 186 : " + instanceMap.toString());
   }
 
   public String generateN3(JSONObject inputObject, Map<String, String> variableMap) {
