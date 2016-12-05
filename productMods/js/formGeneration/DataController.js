@@ -88,23 +88,15 @@ var DataController = {
 	getInputObject : function(subForm, dataKey){
 		
 		var msgObject = new Object()
-		console.log("subForm")
-		console.log(subForm)
 		$.each(dataDependencies[dataKey], function(i, variable){
-			console.log(variable)
-			console.log(subForm.dataObject)
 			if(subForm.dataObject[variable] !== undefined){
 				msgObject[variable] = subForm.dataObject[variable]
-				console.log()
 			} else {
 				parentContainer = subForm.parentForm
 				while(true){
-					console.log("ParentSearch")
-					console.log(parentContainer)
 					if(parentContainer !== undefined){
 						if(parentContainer.dataObject !== undefined){
 							if(parentContainer.dataObject[variable] !== undefined){
-								console.log("DataKey Found : " + variable)
 								msgObject[variable] = parentContainer.dataObject[variable]
 								break
 							} else {
