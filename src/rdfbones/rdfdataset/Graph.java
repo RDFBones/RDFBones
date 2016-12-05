@@ -216,16 +216,13 @@ public class Graph {
     this.setInstanceMap(inputObject, variableMap);
     if (this.typeRetriever != null) {
       String inputValue = JSON.string(inputObject, this.inputClasses.get(0));
-      log("InputValue : " + inputValue);
-      List<Map<String, String>> data =
-          this.typeRetriever.getData(variableMap.get(this.inputClasses.get(0)));
+      List<Map<String, String>> data = this.typeRetriever.getData(inputValue);
       if (data.size() > 0) {
         variableMap.putAll(data.get(0));
       } else {
         log("noResult");
       }
     }
-    log("variableMap : " + variableMap.toString());
     return generateN3(inputObject, variableMap);
   }
 
@@ -237,12 +234,16 @@ public class Graph {
         instanceMap.put(newInstance, this.mainGraph.getWebapp().getUnusedURI());
       }
     }
+    for(String mainInputNode : this.mainInputNodes){
+      instanceMap.put(mainInputNode, this.mainGraph.mainInputValues.get(mainInputNode));
+    }
     // InputData
     for (String inputClass : this.inputClasses) {
       instanceMap.put(inputClass, JSON.string(obj, inputClass));
     }
     for (String inputInstance : this.inputInstances) {
-      instanceMap.put(inputInstance, JSON.string(obj, inputInstance));
+      if(!this.mainInputNodes.contains(inputInstance))
+        instanceMap.put(inputInstance, JSON.string(obj, inputInstance));
     }
     for (String inputLiteral : this.inputLiterals) {
       instanceMap.put(inputLiteral, JSON.string(obj, inputLiteral));
