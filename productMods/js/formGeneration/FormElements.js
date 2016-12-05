@@ -44,10 +44,13 @@ var Adder = function(predicate, descriptor, formData, parentForm) {
 	this.parentData = parentForm.dataObject
 	this.container =  html.div("adderContainer")
 	this.cnt = 0
+	this.addingAll = false
 	this.subForms = []
 	if(this.parentData[predicate] !== undefined){
 		this.localData = this.parentData[predicate]
-		parentForm.existingCounter++
+		if(this.localData.length > 0){
+			parentForm.existingCounter++
+		}
 		this.existingLoad = true
 	} else {
 		this.existingLoad = false
@@ -66,9 +69,11 @@ Adder.prototype = {
 		DataController.prepareOptions(this.options)
 		this.selector = UI.classSelectorMap(this.options)
 		this.addButton = new TextButton("Add", (this.add).bind(this))
+		this.addAllButton = new TextButton("Add all", (this.addAll).bind(this))
 		this.subContainer = html.div("subContainer")
 		this.container.append(this.title).append(this.selector).append(
-				this.addButton.container).append(this.subContainer)
+				this.addButton.container).append(this.addAllButton.container)
+				.append(this.subContainer)
 		//Loading existing data if it is some
 		$.each(this.localData, (function(i, object){
 			this.title = DataController.getLabel(this.options, object[this.dataKey]) 
@@ -90,9 +95,25 @@ Adder.prototype = {
 		this.addSubForm(object)
 	},
 	
+	addAll : function(){
+		
+		var arr = []
+		this.addAllFlag = true
+		PopUpController.addSubWaitGif(this.subContainer)
+		$.each(this.options, (function(key, value){
+			var object = new Object()
+			object[this.dataKey] = key
+			object[this.dataKey + "Label"] = value.label
+			this.title = value.label
+			this.subForms.push(new Form(this, object))
+			this.cnt++
+		}).bind(this))
+	},
+	
 	addSubForm : function(object){
 
 		if(this.descriptor.formElements !== undefined) {
+			this.cnt++
 			PopUpController.addSubWaitGif(this.subContainer)
 			this.subForms.push(new Form(this, object))
 		} else {
@@ -102,18 +123,28 @@ Adder.prototype = {
 	
 	ready : function(){
 		
-		if(this.existingLoad){
-			this.cnt--
-			if(this.cnt == 0){
-				$.each(this.subForms, (function(i, subForm){
-					this.subContainer.append(subForm.container)
-				}).bind(this))
+		this.cnt--
+		if(this.cnt == 0){
+			if(this.existingLoad){
+				this.addSubForms()
 				this.parentForm.ready()
+				this.existingLoad = false
+			} else if(this.addAllFlag){
+				this.addSubForms()
+				PopUpController.remove()
+			} else {
+				PopUpController.removeWaitGif(this.subContainer, this.subForms[this.subForms.length - 1].container)
 			}
-		} else {
-			PopUpController.removeWaitGif(this.subContainer, this.subForms[this.subForms.length - 1].container)
 		}
+	},
+	
+	addSubForms : function(){
+		
+		$.each(this.subForms, (function(i, subForm){
+			this.subContainer.append(subForm.container)
+		}).bind(this))
 	}
+	
 }
 
 var StringInput = function(descriptor) {
