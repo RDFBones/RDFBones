@@ -7,7 +7,6 @@ import java.util.List;
 import rdfbones.form.Form;
 import rdfbones.form.FormConfiguration;
 import rdfbones.formProcessing.DependencyCalculator;
-import rdfbones.formProcessing.GraphProcessor;
 import rdfbones.formProcessing.WebappConnector;
 import rdfbones.graphData.SubGraphInfo;
 import rdfbones.graphData.UnionForm;
@@ -17,13 +16,22 @@ public class GraphLib {
 
   public static FormConfiguration getFormConfig(List<Triple> dataTriples, 
     List<Triple> schemeTriples, Form form, WebappConnector webapp){
-    
+
     List<Triple> schemeCopy1 = ArrayLib.copyList(schemeTriples);
-    Graph graph = GraphProcessor.getGraph(dataTriples, schemeCopy1, "object");
+    Graph graph = new Graph(dataTriples, schemeCopy1, webapp);
+    form.setGraph(graph);
     List<Triple> schemeCopy2 = ArrayLib.copyList(schemeTriples);
     DependencyCalculator.calculate(graph, schemeCopy2, form); 
-    graph.init(webapp);
     return new FormConfiguration(graph, form);
+  }
+  
+  public static void setGraphMap(Graph graph){
+    for(String node : graph.nodes){
+      if(!graph.inputNode.equals(node)){
+        //graph.log(graph.inputNode + "   " + node);
+        graph.mainGraph.graphMap.put(node, graph);  
+      }
+    }
   }
  
   public static List<String> getNodes(List<Triple> dataTriples,
@@ -54,6 +62,17 @@ public class GraphLib {
     }
   }
 
+  public static String getObject1(Triple triple, String varName) {
+
+    if (triple.subject.varName.equals(varName)) {
+      return triple.object.varName;
+    } else if(triple.object.varName.equals(varName)){
+      return triple.subject.varName;
+    } else {
+      return null;
+    }
+  }
+  
   public static String getObject(Triple triple, String varName) {
 
     if (triple.subject.varName.equals(varName) && !Boolean.FALSE.equals(triple.fromSubject)) {
@@ -148,7 +167,7 @@ public class GraphLib {
     }
     return typeNums;
   }
-
+  
   public static List<Triple> getTypeTriples(List<Triple> triples, List<String> nodes) {
     return getTriples(triples, nodes, "rdf:type");
   }
@@ -178,6 +197,27 @@ public class GraphLib {
     return null;
   }
 
+  
+  public static List<Triple> getAndRemoveTriples(List<Triple> triples, String node){
+    
+    List<Integer> typeNums = new ArrayList<Integer>();
+    Integer i = 0;
+    List<Triple> neighbours = new ArrayList<Triple>();
+    for(Triple triple : triples){
+      if(triple.subject.varName.equals(node) && !(Boolean.FALSE.equals(triple.fromSubject))){
+        neighbours.add(triple);
+        typeNums.add(i);
+      }
+      if(triple.object.varName.equals(node) && !(Boolean.TRUE.equals(triple.fromSubject))){
+        neighbours.add(triple);
+        typeNums.add(i);
+      }
+      i++;
+    }
+    ArrayLib.remove(triples, typeNums);
+    return neighbours;
+  }
+  
   public static List<Triple> getRestrictionTriples(List<String> nodes,
     List<Triple> triples) {
 
@@ -238,26 +278,20 @@ public class GraphLib {
     }
     return newInstances;
   }
-
-  public static List<Triple> getSchemeTriples(List<Triple> graphTriples,
+  
+  public static void setSchemeTriples(Graph graph,
     List<Triple> restrictionTriples) {
 
-    /*
-     * Note :
-     * 
-     * Now the algorithm does not remove the found restriction triples it works
-     * but due to efficiency it has to implemented later.
-     */
     List<Triple> restTriples = new ArrayList<Triple>();
-    List<String> nodes = GraphLib.getNodes(graphTriples);
-    // Get type triples
-    restTriples.addAll(GraphLib.getAndRemoveTypeTriples(restrictionTriples, nodes));
-    List<String> typeNodes = GraphLib.getObjectNodes(restTriples);
-    restTriples.addAll(GraphLib.getAndRemoveRestrictionTriples(typeNodes,
+    graph.nodes = GraphLib.getNodes(graph.dataTriples);
+    restTriples.addAll(GraphLib.getAndRemoveTypeTriples(restrictionTriples, graph.nodes));
+    graph.typeNodes = GraphLib.getObjectNodes(restTriples);
+    restTriples.addAll(GraphLib.getAndRemoveRestrictionTriples(graph.typeNodes,
         restrictionTriples));
     restTriples.addAll(GraphLib.getAndRemoveSubClassTriples(restrictionTriples,
-        typeNodes));
-    return restTriples;
+        graph.typeNodes));
+    graph.nodes.addAll(graph.typeNodes);
+    graph.schemeTriples = restTriples;
   }
 
   public static void setDataInputVars(Graph graph) {
@@ -441,9 +475,8 @@ public class GraphLib {
       if(info.greedyNode != null && greedyNode == null){
         greedyNode = info.greedyNode;
       } 
-      
-        graphTriples.addAll(info.triples);
-        nodeBuffer.addAll(info.nodes);
+      graphTriples.addAll(info.triples);
+      nodeBuffer.addAll(info.nodes);
       if(nodeBuffer.size() == 0){
         break;
       }

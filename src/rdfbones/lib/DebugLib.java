@@ -11,7 +11,7 @@ public class DebugLib {
   static public void debug(int n, Graph graph) {
 
     String tab = new String(new char[n]).replace("\0", "\t");
-    graph.mainGraph.getWebapp().log(tab + "InputNode : ");// + graph.inputNode);
+    graph.mainGraph.getWebapp().log(tab + "InputNode : " +  graph.inputNode);
     graph.mainGraph.getWebapp().log(
         tab + "DataTriples : " + ArrayLib.debugTriples(tab, graph.dataTriples));
     graph.mainGraph.getWebapp().log(

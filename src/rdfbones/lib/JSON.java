@@ -152,6 +152,15 @@ public class JSON {
     array.put(object);
   }
   
+  public static String debug(JSONArray array){
+    JSONObject obj = JSON.obj();
+    JSON.put(obj, "array", array);
+    return debug(obj, 0);
+  }
+  
+  public static String debug(JSONObject object){
+    return debug(object, 0);
+  }
   public static String debug(JSONObject object, int n){
     
     String json = new String("");
@@ -167,7 +176,7 @@ public class JSON {
       } else if(value instanceof JSONArray){
         json += "\n" + tab + key + " : " + debugArray((JSONArray) value, n) + ",";
       } else {
-        json += "\n" + tab + key + " : " + debug((JSONObject)value, n);
+        json += "\n" + tab + key + " : " + debug((JSONObject)value, n) + ",";
       } 
     }
     json += "}";
@@ -184,7 +193,7 @@ public class JSON {
       Object element;
       element = JSON.get((JSONArray)array, i);
       if(element instanceof String){
-         str += "\"" + element + "\"";
+         str += "\"" + element + "\", ";
       } else if(element instanceof JSONObject){
          str += debug((JSONObject)element, n);
       }

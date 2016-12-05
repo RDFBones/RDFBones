@@ -12,6 +12,7 @@ import rdfbones.rdfdataset.Constant;
 import rdfbones.rdfdataset.ExistingInstance;
 import rdfbones.rdfdataset.ExistingRestrictionTriple;
 import rdfbones.rdfdataset.FormInputNode;
+import rdfbones.rdfdataset.Graph;
 import rdfbones.rdfdataset.GreedyRestrictionTriple;
 import rdfbones.rdfdataset.InputNode;
 import rdfbones.rdfdataset.MainInputNode;
@@ -125,20 +126,14 @@ public class TripleLib {
 
   public static Form csrForm() {
 
-    SubformAdder measurementFormElement =
-        new SubformAdder("measurementDatumType", "Bone Segment");
+    Selector catLabelSelector =  new Selector("categoricalLabel");
     Form measurementForm = new Form("");
-    measurementForm.formElements.add(measurementFormElement);
-
-    SubformAdder boneSegmentFormElement =
-        new SubformAdder("bonyPartSegmentType", "Bone Segment");
-    boneSegmentFormElement.subForm = measurementForm;
-    Form boneSegmentForm = new Form("");
-    boneSegmentForm.formElements.add(boneSegmentFormElement);
+    measurementForm.style = "inline";
+    measurementForm.formElements.add(catLabelSelector);
 
     SubformAdder boneOrganFormElement = new SubformAdder("boneOrganType", "BoneOrgans");
     boneOrganFormElement.style = "inline";
-    boneOrganFormElement.subForm = boneSegmentForm;
+    boneOrganFormElement.subForm = measurementForm;
     Form boneOrganForm = new Form("");
     boneOrganForm.formElements.add(boneOrganFormElement);
 
@@ -167,7 +162,6 @@ public class TripleLib {
     triples.add(new MultiTriple("boneOrgan", "obo-fma:systemic_part_of",
         "skeletalRegion"));
     triples.add(new MultiTriple("skeletalRegion", "obo-fma:systemic_part_of", "object"));
-    
     return triples;
   }
 
@@ -176,14 +170,14 @@ public class TripleLib {
     List<Triple> triples = new ArrayList<Triple>();
     // RestrictionTriples
     triples.add(new RestrictionTriple("skeletalInventoryType", "obo:BFO_0000051",
-        new FormInputNode("measurementDatumType"), "owl:someValuesFrom"));
-    triples.add(new GreedyRestrictionTriple(new FormInputNode("measurementDatumType"),
+        "measurementDatumType", "owl:someValuesFrom"));
+    triples.add(new GreedyRestrictionTriple("measurementDatumType",
         "obo:OBI_0000999", "categoricalLabelType", "owl:allValuesFrom"));
     triples.add(new RestrictionTriple("measurementDatumType", "obo:IAO_0000136",
-        new FormInputNode("bonyPartSegmentType"), "owl:allValuesFrom"));
+        "bonyPartSegmentType", "owl:allValuesFrom"));
     triples.add(new RestrictionTriple("bonyPartSegmentType", "obo-fma:regional_part_of",
-        new FormInputNode("bonyPartType"), "owl:allValuesFrom"));
-    triples.add(new RestrictionTriple(new FormInputNode("bonyPartType"),
+        "bonyPartType", "owl:allValuesFrom"));
+    triples.add(new RestrictionTriple("bonyPartType",
         "obo-fma:constitutional_part_of", new FormInputNode("boneOrganType"),
         "owl:someValuesFrom"));
     triples.add(new RestrictionTriple(new FormInputNode("boneOrganType"),
@@ -201,9 +195,9 @@ public class TripleLib {
 
     List<Triple> triples = new ArrayList<Triple>();
     triples.add(new Triple("object", "rdf:type", new MainInputNode("rangeUri")));
-    triples.add(new MultiTriple("skeletalRegion", "rdf:type", new FormInputNode(
+    triples.add(new Triple("skeletalRegion", "rdf:type", new FormInputNode(
         "skeletalRegionType")));
-    triples.add(new MultiTriple("boneOrgan", "rdf:type", new FormInputNode(
+    triples.add(new Triple("boneOrgan", "rdf:type", new FormInputNode(
         "boneOrganType")));
     triples.add(new Triple("bonyPart", "rdf:type", "bonyPartType"));
     triples.add(new Triple("bonyPartSegment", "rdf:type", "bonyPartSegmentType"));
@@ -218,18 +212,19 @@ public class TripleLib {
   public static Form srForm() {
 
     SubformAdder measurementFormElement =
-        new SubformAdder("measurementDatumType", "Bone Segment");
+        new SubformAdder("measurementDatumType", "Categorical Label");
     Form measurementForm = new Form("");
     measurementForm.formElements.add(measurementFormElement);
 
+    /*
     SubformAdder boneSegmentFormElement =
         new SubformAdder("bonyPartSegmentType", "Bone Segment");
     boneSegmentFormElement.subForm = measurementForm;
     Form boneSegmentForm = new Form("");
     boneSegmentForm.formElements.add(boneSegmentFormElement);
-
+    */
     SubformAdder boneOrganFormElement = new SubformAdder("boneOrganType", "BoneOrgans");
-    boneOrganFormElement.subForm = boneSegmentForm;
+    boneOrganFormElement.subForm = measurementForm;
     Form boneOrganForm = new Form("");
     boneOrganForm.formElements.add(boneOrganFormElement);
 

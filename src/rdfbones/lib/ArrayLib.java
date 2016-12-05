@@ -17,6 +17,15 @@ public class ArrayLib {
     return dest;
   }
   
+  public static List<String> copyStrList(List<String> source){
+    
+    List<String> dest = new ArrayList<String>();
+    for(String triple : source){
+      dest.add(triple);
+    }
+    return dest;
+  }
+  
   public static void addDistinct(List<String> list, String object) {
     if(!list.contains(object)){
       list.add(object);

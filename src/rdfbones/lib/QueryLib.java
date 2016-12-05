@@ -30,4 +30,8 @@ public class QueryLib {
     return new OptionalTriple(varName, "rdfs:label", varName + "Label");
   }
   
+  public static String getPredicateKey(String predicate){
+    
+    return predicate.substring(predicate.indexOf(":") + 1, predicate.length());
+  }
 }
