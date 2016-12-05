@@ -133,6 +133,11 @@ name will be used as the label. -->
     <#else>
         <#local domainUri = "" /> 
     </#if>
+    <#if property.parameterClass?? >
+        <#local parameterClass = property.parameterClass /> 
+    <#else>
+        <#local parameterClass = "" /> 
+    </#if>
     <#if editable>
         <#if property.addUrl?has_content>
         	<#local url = property.addUrl>
@@ -154,7 +159,6 @@ name will be used as the label. -->
 <#macro propertyLabel property label="${property.name?capitalize}">
     <h2 id="${property.localName}" title="${property.publicDescription!}">${label}  <@verboseDisplay property /></h2>     
 </#macro>
-
 
 <#macro propertyListItem property statement editable >
     <#if property.rangeUri?? >

@@ -5,6 +5,10 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/pageInit/SWMAP.js"></script>')}
 
 ${scripts.add(
+	'<script type="text/javascript" src="${urls.base}/js/lib/utils.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/lib/dataOperation/DataLibrary.js"></script>')}
+
+${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/UILib/html.js"></script>',	
     '<script type="text/javascript" src="${urls.base}/js/UIModules/UILib/PopUpController.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/UIModules/UILib/ImgUI.js"></script>',	
@@ -12,8 +16,6 @@ ${scripts.add(
 
 ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/lib/debug/TripleDebug.js"></script>')}
-
-
 
 ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/lib/dataOperation/Arithmetic.js"></script>',
