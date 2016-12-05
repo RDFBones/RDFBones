@@ -22,8 +22,20 @@ var DataController = {
 		})
 	},
 	
-	getLabel : function(value){
-		return value.split("#")[1]
+	getLabel : function(object, key){
+		
+		if(object[key] === undefined){
+			return "Unknown"
+		}
+		if(object[key].label !== undefined){
+			return object[key].label
+		} else {
+			if(key.indexOf("#") > -1){
+				return strUtil.splitLast(key, "#")
+			} else {
+				return strUtil.splitLast(key, "/")
+			}
+		}
 	},
 	
 	getData : function(dataKey){

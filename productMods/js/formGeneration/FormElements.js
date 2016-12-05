@@ -48,7 +48,7 @@ var Adder = function(predicate, descriptor, parentForm) {
 	this.cnt = 0
 
 	if(this.parentData[predicate] !== undefined){
-		this.localData = this.parentData[formDataKey]
+		this.localData = this.parentData[predicate]
 	} else {
 		this.localData = []
 		this.parentData[predicate] = this.localData
@@ -73,7 +73,7 @@ Adder.prototype = {
 	
 	loadExistingData : function(array) {
 		$.each(this.localData, (function(i, data){
-			this.title = DataController.getLabel(data[this.dataKey]) 
+			this.title = DataController.getLabel(this.options, data[this.dataKey]) 
 			this.addSubForm(data)
 		}).bind(this))
 	},
