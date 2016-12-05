@@ -1,5 +1,6 @@
 package rdfbones.lib;
 
+import java.util.List;
 import java.util.Map;
 
 import rdfbones.graphData.GraphPath;
@@ -11,53 +12,62 @@ public class DebugLib {
   static public void debug(int n, Graph graph) {
 
     String tab = new String(new char[n]).replace("\0", "\t");
-    graph.mainGraph.getWebapp().log(tab + "InputNode : " +  graph.inputNode);
-    graph.mainGraph.getWebapp().log(
-        tab + "DataTriples : \t" + ArrayLib.debugTriples(tab, graph.dataTriples));
-    graph.mainGraph.getWebapp().log(
-        tab + "SchemeTriples : \t" + ArrayLib.debugTriples(tab, graph.schemeTriples));
-    graph.mainGraph.getWebapp().log(
-        tab + "TriplesToStore : \t" + ArrayLib.debugTriples(tab, graph.triplesToStore));
-    graph.mainGraph.getWebapp().log(
-        tab + "newInstances : \t" + ArrayLib.debugList(graph.newInstances));
-    graph.mainGraph.getWebapp().log(
-        tab + "inputInstances : \t" + ArrayLib.debugList(graph.inputInstances));
-    graph.mainGraph.getWebapp().log(
-        tab + "constantLiterals : \t" + ArrayLib.debugList(graph.constantLiterals));
-    graph.mainGraph.getWebapp().log(
-        tab + "inputLiterals : \t" + ArrayLib.debugList(graph.inputLiterals));
-    graph.mainGraph.getWebapp().log(
-        tab + "inputClasses :  \t" + ArrayLib.debugList(graph.inputClasses));
-    graph.mainGraph.getWebapp().log(
-        tab + "classesToSelect : \t" + ArrayLib.debugList(graph.classesToSelect));
-    if(graph.mainInputNodes != null)
-       graph.mainGraph.getWebapp().log(
-            tab + "mainInputNode : \t" + ArrayLib.debugList(graph.mainInputNodes));
-
-    graph.mainGraph.getWebapp().log(
-        tab + "typeQueryTriples :      "
-            + ArrayLib.debugTriples(tab, graph.typeQueryTriples));
-    
-    if (graph.dataRetriever != null) {
-      graph.mainGraph.getWebapp()
-          .log(
-              tab + "DataRetriever Query : \n      "
-                  + graph.dataRetriever.getQueryTriples());
-    }
-
-    if (graph.typeRetriever != null) {
-      graph.mainGraph.getWebapp().log(
-          tab + "TypeRetriver Query :      " + graph.typeRetriever.getQueryTriples()
-              + "\n");
-    }
+    DebugLib.logString("inputNode", tab, graph, graph.inputNode);
+    DebugLib.logTripleList("dataTriples", tab, graph, graph.dataTriples);
+    DebugLib.logTripleList("schemeTriples", tab, graph, graph.schemeTriples);
+    DebugLib.logTripleList("triplesToStore", tab, graph, graph.triplesToStore);
+    DebugLib.logList("newInstances", tab, graph, graph.newInstances);
+    DebugLib.logList("inputInstances", tab, graph, graph.inputInstances);
+    DebugLib.logList("constantLiterals", tab, graph, graph.constantLiterals);
+    DebugLib.logList("inputLiterals", tab, graph, graph.inputLiterals);
+    DebugLib.logList("inputClasses", tab, graph, graph.inputClasses);
+    DebugLib.logList("classesToSelect", tab, graph, graph.classesToSelect);
+    DebugLib.logList("mainInputNodes", tab, graph, graph.mainInputNodes);
+    DebugLib.logMap("mainInputValues", tab, graph, graph.mainInputValues);
+    DebugLib.logTripleList("TypeQueryTriple", tab, graph, graph.typeQueryTriples);
+    DebugLib.logDataGetter("DataRetriever Query", tab, graph, graph.dataRetriever);
+    DebugLib.logDataGetter("TypeRetriever Query", tab, graph, graph.typeRetriever);
     int k = n + 1;
-    graph.mainGraph.getWebapp().log(
-        tab + "Subgraphs :  " + graph.subGraphs.keySet().size());
-    if (graph.subGraphs.keySet().size() > 0) {
-      for (String key : graph.subGraphs.keySet()) {
-        graph.mainGraph.getWebapp().log(tab + "Key : " + key);
-        graph.subGraphs.get(key).debug(k);
-      }
+    graph.log(tab + "Subgraphs :  " + graph.subGraphs.keySet().size());
+    for (String key : graph.subGraphs.keySet()) {
+      graph.mainGraph.getWebapp().log(tab + "Key : " + key);
+      graph.subGraphs.get(key).debug(k);
+    }
+  }
+
+  public static void logString(String msg, String tab, Graph graph, String str) {
+    
+    if (str != null || str != "") {
+      graph.log(tab + msg + ":\t" + str);
+    }
+  }
+
+  public static void logList(String msg, String tab, Graph graph, List<String> logList) {
+    
+    if(logList != null && logList.size() > 0){
+      graph.log(tab + msg + ":\t" + StringUtil.debugList(logList));
+    } 
+  }
+
+  public static void logMap(String msg, String tab, Graph graph, Map<String, String> map) {
+    
+    if(map != null){
+      graph.log(tab + msg + ":\t" + map.toString());
+    } 
+  }
+
+  
+  public static void logTripleList(String msg, String tab, Graph graph,
+    List<Triple> logList) {
+    if(logList != null && logList.size() > 0){
+      graph.log(tab + msg + StringUtil.debugTriples(tab, logList));
+    }
+  }
+
+  public static void logDataGetter(String msg, String tab, Graph graph,
+    SPARQLDataGetter dataGetter) {
+    if(dataGetter != null){
+      graph.log(tab + msg + "\n" + StringUtil.getQuery(dataGetter.getQueryTriples(), tab));
     }
   }
 
