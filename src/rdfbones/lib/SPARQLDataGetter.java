@@ -21,7 +21,8 @@ public class SPARQLDataGetter {
   public List<String> inputValues = new ArrayList<String>();
   public List<String> inputKeys;
   public Graph mainGraph;
-
+  public boolean typeRetriever = false;
+  
   public SPARQLDataGetter(Graph mainGraph, List<Triple> queryTriples, List<String> uris,
       List<String> literals) {
 
@@ -35,10 +36,23 @@ public class SPARQLDataGetter {
     this.mainGraph = mainGraph;
     this.inputKeys = ArrayLib.getList(inputKey);
     this.inputValues = ArrayLib.getList(inputKey);
-
     init(queryTriples, uris, literals);
   }
 
+  public SPARQLDataGetter(Graph mainGraph, List<Triple> queryTriples, List<String> uris,
+    List<String> literals, List<String> inputKeys, boolean typeRetriever) {
+
+  this.mainGraph = mainGraph;
+  this.inputKeys = inputKeys;
+  this.inputValues = inputKeys;
+  this.typeRetriever = typeRetriever;
+  init(queryTriples, uris, literals);
+}
+  
+  public SPARQLDataGetter(Graph mainGraph){
+    this.mainGraph = mainGraph;
+  }
+  
   public SPARQLDataGetter(Graph mainGraph, List<Triple> queryTriples, List<String> uris,
       List<String> literals, List<String> inputKeys) {
 
@@ -48,6 +62,14 @@ public class SPARQLDataGetter {
     init(queryTriples, uris, literals);
   }
 
+  void preInit( List<Triple> queryTriples, List<String> uris,
+      List<String> literals, List<String> inputKeys){
+    
+    this.inputKeys = inputKeys;
+    this.inputValues = inputKeys;
+    init(queryTriples, uris, literals);
+  }
+  
   void init(List<Triple> queryTriples, List<String> uris, List<String> literals) {
 
     if (literals == null) {
@@ -55,11 +77,11 @@ public class SPARQLDataGetter {
     }
     GraphLib.incrementRestrictionTriples(queryTriples);
     this.selectVars = SPARQLUtils.assembleSelectVars(uris, literals);
-    if(GraphLib.containsGreedy(queryTriples)){
+    if(!GraphLib.containsGreedy(queryTriples)){
+      this.queryTriples = SPARQLUtils.assembleQueryTriples(queryTriples);
+    } else {
       QueryStructure qs = new QueryStructure(queryTriples, this.inputKeys.get(0));
       this.queryTriples = qs.getQuery();
-    } else {
-      this.queryTriples = SPARQLUtils.assembleQueryTriples(queryTriples);
     }
     this.urisToSelect = uris;
     this.literalsToSelect = literals;
@@ -76,7 +98,7 @@ public class SPARQLDataGetter {
 
   public List<Map<String, String>> getData(String value) {
 
-    this.inputValues.add(0, value);
+    this.inputValues = ArrayLib.getList(value);
     return this.getData();
   }
 
