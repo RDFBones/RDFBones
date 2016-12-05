@@ -106,7 +106,6 @@ var ImgUI = {
 	
 	gif : function(size){
 		size = util.setUndefined(size, "50px")
-		console.log(size)
 		return html.div("horizontalMiddle").append(html.imgHeight(ImgSrc.loading, size))
 	}
 }

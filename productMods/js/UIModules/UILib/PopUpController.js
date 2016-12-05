@@ -4,6 +4,7 @@ var PopUpController = {
 	
 	initialized : false,
 	startDate : null,
+	waitGif : null,
 	
 	init : function(text){
 		
@@ -37,6 +38,11 @@ var PopUpController = {
 			this.container.append(this.innerContainer)
 			$("#popUpContainer").append(this.container)			
 		}
+	},
+	
+	defaultDoneMsg : function(msg){
+		
+		this.doneMsg(msg, 1500, function(){}, function(){})
 	},
 	
 	doneMsg : function(msg, time, returnFunction, directReturnFunction){
@@ -105,25 +111,27 @@ var PopUpController = {
 	
 	addWaitGif : function(div){
 		this.startDate = new Date()
-		div.append(ImgUI.waitGif())
+		this.waitGif = ImgUI.waitGif()
+		div.append(this.waitGif)
 	},
 	
 	addSubWaitGif : function(div){
 		this.startDate = new Date()
-		div.append(ImgUI.subWaitGif())
+		this.waitGif = ImgUI.subWaitGif()
+		div.append(this.waitGif)
 	},
 	
 	removeWaitGif : function(div, input){
 
-		diff = 1000 - ((new Date()) - this.startDate)
+		diff = 200 - ((new Date()) - this.startDate)
 		diff = (diff > 0) ? diff : 0
-		setTimeout(function(){
+		setTimeout((function(){
 			input.hide()
-			div.empty()
+			this.waitGif.remove()
 			div.append(input)
 			input.fadeIn(1000)
 			//input.show('slow')
-		}, diff)	
+		}).bind(this), diff)	
 	}
 }
 
