@@ -44,14 +44,14 @@ public class ExistingFormDataLoader extends VitroAjaxController {
 
   public JSONArray responseFunction(VitroRequest vreq) throws JSONException {
 
-    String subject = vreq.getParameter("subject");
-    String object = vreq.getParameter("object");
+    String subjectUri = vreq.getParameter("subjectUri");
+    String objectUri = vreq.getParameter("objectUri");
     String editKey = vreq.getParameter("editKey");
     EditConfigurationVTwo editConfig = getEditConfig(vreq, editKey);
     FormConfiguration formConfig = editConfig.getFormConfig();
     Graph graph = formConfig.dataGraph;
     graph.setWebapp(new VIVOWebappConnector(vreq));
-    graph.getExistingData(subject, object);
+    graph.getExistingData(subjectUri, objectUri);
     return graph.existingData;
   }
 

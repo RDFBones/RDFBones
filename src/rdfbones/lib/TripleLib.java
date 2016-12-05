@@ -148,9 +148,9 @@ public class TripleLib {
   public static List<Triple> csrDataTriples() {
 
     List<Triple> triples = new ArrayList<Triple>();
-    RDFNode subject = new MainInputNode("subject");
+    RDFNode subject = new MainInputNode("subjectUri");
 
-    triples.add(new Triple(subject, "rdfbones:hasCoherentSkeletalRegion", "object"));
+    triples.add(new Triple(subject, "rdfbones:hasCoherentSkeletalRegion", "objectUri"));
     triples.add(new Triple(subject, "obo:BFO_0000051", "measurementDatum", false));
     triples.add(new Triple("measurementDatum", "obo:IAO_0000299", new FormInputNode(
         "categoricalLabel")));
@@ -161,7 +161,7 @@ public class TripleLib {
     triples.add(new Triple("bonyPart", "obo-fma:constitutional_part_of", "boneOrgan"));
     triples.add(new MultiTriple("boneOrgan", "obo-fma:systemic_part_of",
         "skeletalRegion"));
-    triples.add(new MultiTriple("skeletalRegion", "obo-fma:systemic_part_of", "object"));
+    triples.add(new MultiTriple("skeletalRegion", "obo-fma:systemic_part_of", "objectUri"));
     return triples;
   }
 
@@ -194,7 +194,7 @@ public class TripleLib {
   public static List<Triple> csrTypeTriples() {
 
     List<Triple> triples = new ArrayList<Triple>();
-    triples.add(new Triple("object", "rdf:type", new MainInputNode("rangeUri")));
+    triples.add(new Triple("objectUri", "rdf:type", new MainInputNode("rangeUri")));
     triples.add(new Triple("skeletalRegion", "rdf:type", new FormInputNode(
         "skeletalRegionType")));
     triples.add(new Triple("boneOrgan", "rdf:type", new FormInputNode(
@@ -202,7 +202,7 @@ public class TripleLib {
     triples.add(new Triple("bonyPart", "rdf:type", "bonyPartType"));
     triples.add(new Triple("bonyPartSegment", "rdf:type", "bonyPartSegmentType"));
     triples.add(new Triple("measurementDatum", "rdf:type", "measurementDatumType"));
-    triples.add(new Triple(new MainInputNode("subject"), "rdf:type",
+    triples.add(new Triple(new MainInputNode("subjectUri"), "rdf:type",
         "skeletalInventoryType"));
     triples.add(new ExistingRestrictionTriple(new InputNode("categoricalLabel"),
         "rdf:type", "categoricalLabelType"));
