@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import rdfbones.lib.JSON;
+import rdfbones.lib.QueryLib;
 import rdfbones.rdfdataset.Graph;
 
 public class Form {
@@ -63,7 +64,7 @@ public class Form {
     JSONObject formElements = JSON.obj();
     for(FormElement element : this.formElements){
         String predicate = this.graph.graphMap.get(element.node.varName).inputPredicate;
-        String key = predicate.substring(predicate.indexOf(":") + 1, predicate.length());
+        String key = QueryLib.getPredicateKey(predicate);
         JSON.put(formElements, key, element.getJSON());
     }
     JSON.put(descriptor, "formElements", formElements);
