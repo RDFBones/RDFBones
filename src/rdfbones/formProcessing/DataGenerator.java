@@ -29,6 +29,7 @@ public class DataGenerator extends VitroAjaxController {
   public static final String PARAMETER_UPLOADED_FILE = "datafile";
   private static final long serialVersionUID = 1L;
   private static final Log log = LogFactory.getLog(DataGenerator.class);
+  boolean failed = false;
   
   @Override
   protected void doRequest(VitroRequest vreq, HttpServletResponse response)
@@ -64,6 +65,9 @@ public class DataGenerator extends VitroAjaxController {
     response.put("triplesCreate", triplesToCreate);
     response.put("inputData", inputData);
     response.put("existingData", graph.existingData);
+    if(this.failed){
+      response.put("failed", true);
+    }
     return response;
   }
 
@@ -72,7 +76,7 @@ public class DataGenerator extends VitroAjaxController {
     return EditConfigurationVTwo.getConfigFromSession(vreq.getSession(), editKey);
   }
 
-  public static void saveTriples(VitroRequest vreq, EditConfigurationVTwo editConfig,
+  public void saveTriples(VitroRequest vreq, EditConfigurationVTwo editConfig,
     String triples, ServletContext servletContext) {
 
     String triplesToStore = N3Utils.getPrefixes() + triples;
@@ -86,6 +90,7 @@ public class DataGenerator extends VitroAjaxController {
     } catch (Throwable t) {
       // Catch
       log.info("Failed to read N3 triples");
+      this.failed = true;
     }
     Lock lock = null;
     try {
