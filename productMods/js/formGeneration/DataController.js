@@ -70,20 +70,19 @@ var DataController = {
 				url : baseUrl + "formDataLoader",
 				data : "requestData=" + JSON.stringify(toSend)})
 				.done((function(msg) {
-					//We just copy the result to the dataFromAJAX variable
-					DataController.setInputData(msg)
-					form.init()
+					form.init(this.prepare(msg))
 				}).bind(this))
 		} else {
 			form.init()
 		}
 	},
 	
-	setInputData : function(msg){
-		dataFromAJAX = new Object()
+	prepare : function(msg){
+		var dataFromAJAX = new Object()
 		$.each(msg, function(key, array){
 			dataFromAJAX[key] = DataController.getObjectFormArray(array)
 		})
+		return dataFromAJAX
 	},
 	
 	getObjectFormArray : function(arr){
@@ -97,14 +96,14 @@ var DataController = {
 		return obj
 	},
 	
-	getInputObject : function(subForm, dataKey){
+	getInputObject : function(form, dataKey){
 		
 		var msgObject = new Object()
 		$.each(dataDependencies[dataKey], function(i, variable){
-			if(subForm.dataObject[variable] !== undefined){
-				msgObject[variable] = subForm.dataObject[variable]
+			if(form.dataObject[variable] !== undefined){
+				msgObject[variable] = form.dataObject[variable]
 			} else {
-				parentContainer = subForm.parentForm
+				parentContainer = form.parentForm
 				while(true){
 					if(parentContainer !== undefined){
 						if(parentContainer.dataObject !== undefined){

@@ -4,15 +4,17 @@ var elementMap = {
 	stringInput : StringInput,
 }
 
-var Form = function(parentForm, data, mainForm){
+var Form = function(parentForm, data, mainForm, title){
 	
 	this.mainForm = util.setUndefined(mainForm, false)
 	this.parentForm = parentForm
 	this.dataObject = data
+	
 	//this.container = parentForm.subContainer
 	this.container = html.div()
 	this.descriptor = parentForm.descriptor
-
+	this.title = parentForm.title
+	this.existingCounter = 0
 	// The subform does not modify the dataObject. It just saves it
 	DataController.loadSubformData(this)
 }
@@ -20,29 +22,37 @@ var Form = function(parentForm, data, mainForm){
 Form.prototype = {
 		
 	//This is called by the DataController
-	init : function() {
+	init : function(formData) {
 		//Pre UI
+		console.log(formData)
 		titleStyle = (this.descriptor.style === undefined) ? "formTitle" : "formTitleInline"
 		titleStyle = this.mainForm ? "mainFormTitle" : titleStyle
-		this.container.append(html.div(titleStyle).text(this.parentForm.title))
+		this.container.append(html.div(titleStyle).text(this.title))
 		this.formContainer = html.div("inline")
 		this.subFormElements = new Object()
 		$.each(this.descriptor.formElements, (function(key, value){
-			this.subFormElements[key] = new elementMap[value.type](key, value, this)
+			this.subFormElements[key] = new elementMap[value.type](key, value, formData, this)
 		}).bind(this))
+		this.loadUI()
+	},
+	
+	ready : function(){
+		
+		this.existingCounter--
 		this.loadUI()
 	},
 	
 	loadUI : function(elements){
 		
-		UIelements = []
-		$.each(this.subFormElements, (function(key, element){
-			UIelements.push(element.container)
-		}).bind(this))
-		//this.container.append(UIelements)
-		this.formContainer.append(UIelements)
-		this.container.append(this.formContainer)
-		this.parentForm.ready()
+		if(this.existingCounter == 0){
+			UIelements = []
+			$.each(this.subFormElements, (function(key, element){
+				UIelements.push(element.container)
+			}).bind(this))
+			this.formContainer.append(UIelements)
+			this.container.append(this.formContainer)
+			this.parentForm.ready()			
+		}
 	},
 }
 
@@ -64,7 +74,7 @@ var MainForm = function(){
 			this.loadExistingData()
 		} else {
 			formData.existingData = new Object()
-			formData.existingData.subject = subjectUri;
+			formData.existingData.subjectUri = subjectUri;
 			formData.existingData.rangeUri = rangeUri;
 			this.init()
 		}
@@ -98,7 +108,7 @@ MainForm.prototype =  {
 			uri : subjectUri,
 		}
 		toSend.editKey = editKey
-		this.dataObject.subject = subjectUri
+		//this.dataObject.subjectUri = subjectUri
 		toSend.dataToStore = this.dataObject
 		console.log()
 		DataLib.debugObject(toSend.dataToStore)
@@ -130,12 +140,14 @@ MainForm.prototype =  {
 			dataType : 'json',
 			url : baseUrl + "existingFormDataLoader",
 			data : {
-				subject : subjectUri,
-				object : objectUri,
+				subjectUri : subjectUri,
+				objectUri : objectUri,
 				editKey : editKey
 			}
 		}).done((function(msg) {
 			formData.existingData = msg[0]
+			formData.existingData.subjectUri = subjectUri;
+			formData.existingData.rangeUri = rangeUri;
 			this.init()
 		}).bind(this))
 	},
