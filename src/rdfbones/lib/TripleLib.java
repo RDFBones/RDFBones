@@ -41,7 +41,7 @@ public class TripleLib {
     assySubForm.formElements.add(measurementDatum);
 
     SubformAdder assayType =
-        new SubformAdder("specimenCollectionProcess", "Assays", "assayType");
+        new SubformAdder("assayType", "Assays", "assayType");
     assayType.subForm = assySubForm;
     Form mainForm = new Form("Study Design Execution");
     mainForm.formElements.add(assayType);
@@ -52,9 +52,9 @@ public class TripleLib {
   public static List<Triple> sdeDataTiples() {
 
     List<Triple> triple = new ArrayList<Triple>();
-    triple.add(new Triple(new MainInputNode("subject"), "obo:BFO_0000051", "object"));
+    triple.add(new Triple(new MainInputNode("subjectUri"), "obo:BFO_0000051", "objectUri"));
     triple
-        .add(new MultiTriple("object", "obo:BFO_0000051", "specimenCollectionProcess"));
+        .add(new MultiTriple("objectUri", "obo:BFO_0000051", "specimenCollectionProcess"));
     triple.add(new MultiTriple("specimenCollectionProcess", "obo:OBI_0000293",
         new ExistingInstance("boneOrgan")));
     triple.add(new Triple("specimenCollectionProcess", "obo:OBI_0000299", "specimen"));
@@ -109,14 +109,14 @@ public class TripleLib {
   public static List<Triple> sdeschemeTriplesTypes() {
 
     List<Triple> triple = new ArrayList<Triple>();
-    triple.add(new Triple(new MainInputNode("subject"), "rdf:type", "subjectType"));
+    triple.add(new Triple(new MainInputNode("subjectUri"), "rdf:type", "subjectType"));
     triple.add(new Triple("assay", "rdf:type", new FormInputNode("assayType")));
     triple.add(new Triple("specimen", "rdf:type", "specimenType"));
     triple.add(new Triple("specimenCollectionProcess", "rdf:type",
         "specimenCollectionProcessType"));
     triple.add(new Triple("measurementDatum", "rdf:type", new FormInputNode(
         "measurementDatumType")));
-    triple.add(new Triple("object", "rdf:type", "studyDesignExecutionType"));
+    triple.add(new Triple("objectUri", "rdf:type", "studyDesignExecutionType"));
     triple.add(new ExistingRestrictionTriple(new InputNode("boneOrgan"), "rdf:type",
         "boneOrganType"));
     triple.add(new ExistingRestrictionTriple(new InputNode("categoricalLabel"),
