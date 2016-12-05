@@ -13,18 +13,18 @@ var Selector = function(dataKey, descriptor, parentForm) {
 	this.selector = new DataSetterSelectorFieldMap(this.options,
 			this.parentData, this.dataKey)
 	if (descriptor.arrangement !== undefined) {
-		this.container = html.div("margin10 inline");
+		this.container = html.div("margin10H inline");
 	} else {
-		this.container = html.div("margin10");
+		this.container = html.div("margin10H");
 	}
 	this.title = html.div("inline").text(descriptor.name)
 	this.container.append(this.title).append(this.selector.container)
 	
 	if(this.parentData[this.dataKey] !== undefined){
-		console.log(this.parentData[this.dataKey])
 		this.selector.set(this.parentData[this.dataKey])
 	} else {
-		this.parentData[this.dataKey] = this.options[Object.keys(this.options)[0]].label
+		console.log(this.options)
+		this.parentData[this.dataKey] = Object.keys(this.options)[0]
 	}
 }
 
@@ -35,22 +35,23 @@ Selector.prototype = {
 	},
  }
 
-var Adder = function(formDataKey, descriptor, parentForm) {
-
-	this.dataKey = DataController.getDataKey(formDataKey, descriptor)
+var Adder = function(predicate, descriptor, parentForm) {
+	
+	this.descriptor = descriptor
+	this.dataKey = descriptor.dataKey
 	this.options = DataController.getData(this.dataKey)
 
- 	this.descriptor = descriptor
+	 	
 	this.parentForm = parentForm
 	this.parentData = parentForm.dataObject
-	this.container =  html.div()
+	this.container =  html.div("adderContainer")
 	this.cnt = 0
 
-	if(this.parentData[formDataKey] !== undefined){
+	if(this.parentData[predicate] !== undefined){
 		this.localData = this.parentData[formDataKey]
 	} else {
 		this.localData = []
-		this.parentData[formDataKey] = this.localData
+		this.parentData[predicate] = this.localData
 	}
 	this.init()
 }
@@ -59,8 +60,6 @@ Adder.prototype = {
 
 	init : function() {
 
-		// Later implemented the handling of the
-		// if(this.descriptor.style === "offerAll"){
 		this.addedValues = []
 		this.title = html.div("inline").text(this.descriptor.title)
 		DataController.prepareOptions(this.options)
@@ -91,7 +90,7 @@ Adder.prototype = {
 	addSubForm : function(object){
 
 		if(this.descriptor.formElements !== undefined) {
-			PopUpController.addWaitGif(this.subContainer)
+			PopUpController.addSubWaitGif(this.subContainer)
 			this.subForm = new Form(this, object)
 		} else {
 			this.subContainer.append(html.div("subElement").text(object[this.dataKey + "Label"]))

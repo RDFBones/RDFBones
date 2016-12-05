@@ -11,3 +11,67 @@
 	height : auto;
 	padding : 5px;	
 }
+
+
+.loadingImg {
+	height : 150px;
+	width : auto;
+	background : black;
+}
+
+.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+}
+
+.popUpOuter {
+	position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+	background-color : rgba(0, 0, 0, 0.6);
+}
+
+.popUpInner {
+	position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 3px;
+}
+
+#popUpContainer{
+	overflow : hidden;
+}
+
+.popUpOuterNew {
+    
+    position:fixed;
+    width:100%;
+    height:100%;
+    
+    top:0px;
+    left:0px;
+    z-index:1000;
+    background-color : rgba(0, 0, 0, 0.6);
+}
+
+.popUpInnerNew {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 3px;
+    background-color : white;
+    border : 2px solid;
+}
+
+.pleaseWait{
+	font-size : 19px;
+}
+
+.loading2 {
+	margin : 10px;
+	width : 70px;
+}
