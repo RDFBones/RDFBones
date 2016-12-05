@@ -7,6 +7,7 @@ import java.util.Map;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.N3Utils;
 import rdfbones.graphData.QueryStructure;
 import rdfbones.rdfdataset.Graph;
+import rdfbones.rdfdataset.OptionalTriple;
 import rdfbones.rdfdataset.Triple;
 
 public class UriLabelSPARQLDataGetter extends SPARQLDataGetter {
@@ -16,8 +17,9 @@ public class UriLabelSPARQLDataGetter extends SPARQLDataGetter {
   public UriLabelSPARQLDataGetter(Graph mainGraph, List<Triple> queryTriples, String varToGet,
     List<String> inputs){
     
-    super(mainGraph, queryTriples, ArrayLib.getList("uri"), ArrayLib.getList("label"), inputs);
+    super(mainGraph);
     this.varToGet = varToGet;
+    this.preInit(queryTriples, ArrayLib.getList("uri"), ArrayLib.getList("label"), inputs);
   }
   
   @Override

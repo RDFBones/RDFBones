@@ -16,21 +16,26 @@ public class VariableDependency {
 
   public List<String> inputs;
   public SPARQLDataGetter dataGetter;
-  
-  public VariableDependency(Graph graph, GraphPath path, String varToGet){
-    
+
+  public VariableDependency(Graph graph, GraphPath path, String varToGet) {
+
     this.inputs = path.inputs;
-    path.triples.add(new OptionalTriple("uri", "rdfs:label", "label"));
-    this.dataGetter = new UriLabelSPARQLDataGetter(graph, path.triples, varToGet, this.inputs);
+    path.triples.add(new OptionalTriple(varToGet, "rdfs:label", "label"));
+    this.dataGetter =
+        new UriLabelSPARQLDataGetter(graph, path.triples, varToGet, this.inputs);
   }
-  
-  public JSONArray getData(JSONObject inputs){
-    
+
+  public JSONArray getData(JSONObject inputs) {
+
     List<String> inputData = new ArrayList<String>();
-    for(String input : this.inputs){
+    for (String input : this.inputs) {
       inputData.add(JSON.string(inputs, input));
     }
     return QueryUtils.getJSON(this.dataGetter.getData(inputData));
   }
-  
+
+  public String queryDebug() {
+    return this.dataGetter.getQueryTriples();
+  }
+
 }

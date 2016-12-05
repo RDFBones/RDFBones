@@ -8,6 +8,13 @@ public class SubformAdder extends FormElement{
   
   public String dataKey;
   public Form subForm;
+
+  public SubformAdder(String name){
+
+    super(name, new String(""));
+    this.type = new String("adder");
+  }
+  
   public SubformAdder(String name, String title){
     super(name, title);
     this.type = new String("adder");
