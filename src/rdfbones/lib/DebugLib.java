@@ -13,27 +13,31 @@ public class DebugLib {
     String tab = new String(new char[n]).replace("\0", "\t");
     graph.mainGraph.getWebapp().log(tab + "InputNode : " +  graph.inputNode);
     graph.mainGraph.getWebapp().log(
-        tab + "DataTriples : " + ArrayLib.debugTriples(tab, graph.dataTriples));
+        tab + "DataTriples : \t" + ArrayLib.debugTriples(tab, graph.dataTriples));
     graph.mainGraph.getWebapp().log(
-        tab + "SchemeTriples : " + ArrayLib.debugTriples(tab, graph.schemeTriples));
+        tab + "SchemeTriples : \t" + ArrayLib.debugTriples(tab, graph.schemeTriples));
     graph.mainGraph.getWebapp().log(
-        tab + "TriplesToStore : " + ArrayLib.debugTriples(tab, graph.triplesToStore));
+        tab + "TriplesToStore : \t" + ArrayLib.debugTriples(tab, graph.triplesToStore));
     graph.mainGraph.getWebapp().log(
-        tab + "newInstances :      " + ArrayLib.debugList(graph.newInstances));
+        tab + "newInstances : \t" + ArrayLib.debugList(graph.newInstances));
     graph.mainGraph.getWebapp().log(
-        tab + "inputInstances :      " + ArrayLib.debugList(graph.inputInstances));
+        tab + "inputInstances : \t" + ArrayLib.debugList(graph.inputInstances));
     graph.mainGraph.getWebapp().log(
-        tab + "constantLiterals :      " + ArrayLib.debugList(graph.constantLiterals));
+        tab + "constantLiterals : \t" + ArrayLib.debugList(graph.constantLiterals));
     graph.mainGraph.getWebapp().log(
-        tab + "inputLiterals :      " + ArrayLib.debugList(graph.inputLiterals));
+        tab + "inputLiterals : \t" + ArrayLib.debugList(graph.inputLiterals));
     graph.mainGraph.getWebapp().log(
-        tab + "inputClasses :      " + ArrayLib.debugList(graph.inputClasses));
+        tab + "inputClasses :  \t" + ArrayLib.debugList(graph.inputClasses));
     graph.mainGraph.getWebapp().log(
-        tab + "classesToSelect :      " + ArrayLib.debugList(graph.classesToSelect));
+        tab + "classesToSelect : \t" + ArrayLib.debugList(graph.classesToSelect));
+    if(graph.mainInputNodes != null)
+       graph.mainGraph.getWebapp().log(
+            tab + "mainInputNode : \t" + ArrayLib.debugList(graph.mainInputNodes));
+
     graph.mainGraph.getWebapp().log(
         tab + "typeQueryTriples :      "
             + ArrayLib.debugTriples(tab, graph.typeQueryTriples));
-
+    
     if (graph.dataRetriever != null) {
       graph.mainGraph.getWebapp()
           .log(
