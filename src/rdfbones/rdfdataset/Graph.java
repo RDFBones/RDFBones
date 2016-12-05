@@ -42,6 +42,9 @@ public class Graph {
   public List<String> constantLiterals;
   public List<String> inputLiterals;
   public List<String> inputClasses;
+  public List<String> mainInputNodes;
+  public Map<String, String> mainInputValues;
+
   // Data Input - type query
   public List<String> classesToSelect;
   public List<Triple> typeQueryTriples;
@@ -75,6 +78,7 @@ public class Graph {
     this.initialize(triples);
     this.initGraphStructure();
     this.setGraphDescriptor(schemeTriples);
+    this.setMainInputMap();
   }
 
   public Graph(Triple triple, String inputNode, List<Triple> triples) {
@@ -148,12 +152,12 @@ public class Graph {
     }
   }
 
-  public WebappConnector getWebapp() {
-    return webapp;
-  }
-
-  public void setWebapp(WebappConnector webapp) {
-    this.webapp = webapp;
+  public void setMainInputMap(){
+    
+    this.mainInputValues = new HashMap<String, String>();
+    for(String mainInput : this.mainInputNodes){
+      this.mainInputValues.put(mainInput, this.webapp.getInputParameter(mainInput));
+    }
   }
 
   /*
@@ -311,5 +315,12 @@ public class Graph {
     this.mainGraph.getWebapp().log(msg);
   }
   
+  public WebappConnector getWebapp() {
+    return webapp;
+  }
+
+  public void setWebapp(WebappConnector webapp) {
+    this.webapp = webapp;
+  }
   
 }

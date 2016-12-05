@@ -303,7 +303,8 @@ public class GraphLib {
     graph.constantLiterals = new ArrayList<String>();
     graph.inputLiterals = new ArrayList<String>();
     graph.inputClasses = new ArrayList<String>();
-
+    graph.mainInputNodes = new ArrayList<String>();
+    
     graph.typeQueryTriples = new ArrayList<Triple>();
     graph.classesToSelect = new ArrayList<String>();
 
@@ -316,15 +317,18 @@ public class GraphLib {
       }
       if (triple.subject instanceof InputNode && !(triple instanceof ExistingRestrictionTriple)){
         ArrayLib.addDistinct(graph.inputClasses, triple.subject.varName);
+        GraphLib.setMainInputNode(triple.subject, graph);
       }
       if (triple.object instanceof InputNode) {
         ArrayLib.addDistinct(graph.inputClasses, triple.object.varName);
+        GraphLib.setMainInputNode(triple.object, graph);
       }
     }
 
     for (Triple triple : graph.dataTriples) {
       if (triple.subject instanceof InputNode) {
         ArrayLib.addDistinct(graph.inputInstances, triple.subject.varName);
+        GraphLib.setMainInputNode(triple.subject, graph);
       } else {
         ArrayLib.addDistinct(graph.newInstances, triple.subject.varName);
       }
@@ -332,6 +336,7 @@ public class GraphLib {
       if (triple.object instanceof InputNode) {
         if (triple instanceof LiteralTriple) {
           ArrayLib.addDistinct(graph.inputLiterals, triple.object.varName);
+          GraphLib.setMainInputNode(triple.object, graph);
         } else {
           ArrayLib.addDistinct(graph.inputInstances, triple.object.varName);
         }
@@ -399,6 +404,13 @@ public class GraphLib {
     }
   }
 
+  public static void setMainInputNode(RDFNode node, Graph graph){
+    if(node instanceof MainInputNode){
+      ArrayLib.addDistinct(graph.mainGraph.mainInputNodes, node.varName);
+      ArrayLib.addDistinct(graph.mainInputNodes, node.varName);
+    }
+  }
+  
   public static List<String> getMainInputVars(List<Triple> triples) {
     List<String> mainInputVars = new ArrayList<String>();
     for (Triple triple : triples) {
