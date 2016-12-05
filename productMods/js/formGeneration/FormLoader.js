@@ -4,8 +4,9 @@ var elementMap = {
 	stringInput : StringInput,
 }
 
-var Form = function(parentForm, data){
+var Form = function(parentForm, data, mainForm){
 	
+	this.mainForm = util.setUndefined(mainForm, false)
 	this.parentForm = parentForm
 	this.dataObject = data
 	//this.container = parentForm.subContainer
@@ -20,10 +21,10 @@ Form.prototype = {
 		
 	//This is called by the DataController
 	init : function() {
-		
 		//Pre UI
-		titleStyle = (this.descriptor.style === undefined) ? "title" : "inlineTitle"
-		this.container.append(html.div("formTitle").text(this.parentForm.title))
+		titleStyle = (this.descriptor.style === undefined) ? "formTitle" : "formTitleInline"
+		titleStyle = this.mainForm ? "mainFormTitle" : titleStyle
+		this.container.append(html.div(titleStyle).text(this.parentForm.title))
 		this.formContainer = html.div("inline")
 		this.subFormElements = new Object()
 		$.each(this.descriptor.formElements, (function(key, value){
@@ -47,38 +48,31 @@ Form.prototype = {
 
 var MainForm = function(){
 	
-	this.loadFormConfiguration()
+	PopUpController.addWaitGif($("#form"))
+	$.ajax({
+		type : 'POST',
+		context : this,
+		dataType : 'json',
+		url : baseUrl + "formConfigLoader",
+		data : {
+			editKey : editKey,
+		}
+	}).done((function(msg) {
+		formDescriptor = msg.formDescriptor
+		dataDependencies = msg.dataDependencies
+		if (objectUri != null) {
+			this.loadExistingData()
+		} else {
+			formData.existingData = new Object()
+			formData.existingData.subject = subjectUri;
+			formData.existingData.rangeUri = rangeUri;
+			this.init()
+		}
+	}).bind(this)) 
 }
 
 MainForm.prototype =  {
 
-	loadFormConfiguration : function(){
-		
-	PopUpController.init($("#form"));
-		$.ajax({
-			type : 'POST',
-			context : this,
-			dataType : 'json',
-			url : baseUrl + "formConfigLoader",
-			data : {
-				editKey : editKey,
-			}
-		}).done((function(msg) {
-			formDescriptor = msg.formDescriptor
-			dataDependencies = msg.dataDependencies
-			PopUpController.done();
-			if (objectUri != null) {
-				this.loadExistingData()
-			} else {
-				formData.existingData = new Object()
-				formData.existingData.subject = subjectUri;
-				formData.existingData.rangeUri = rangeUri;
-				console.log(formData.existingData)
-				this.init()
-			}
-		}).bind(this)) 
-	},
-	
 	ready : function(){
 		this.container = html.div()
 		this.submitButton = new TextButton("Submit", (this.submit).bind(this)).container
@@ -87,16 +81,13 @@ MainForm.prototype =  {
 	},
 	
 	init : function(){
-		
 		//Data
 		this.descriptor = formDescriptor
 		this.dataObject = formData.existingData
 		this.title = this.descriptor.title
 		//UI
-		
 		this.subContainer = html.div("subContainer")
-		PopUpController.addWaitGif(this.subContainer)
-		this.subForm = new Form(this, formData.existingData)
+		this.subForm = new Form(this, formData.existingData, true)
 	},	
 	
 	submit : function() {
@@ -109,7 +100,8 @@ MainForm.prototype =  {
 		toSend.editKey = editKey
 		this.dataObject.subject = subjectUri
 		toSend.dataToStore = this.dataObject
-		console.log(toSend)
+		console.log()
+		DataLib.debugObject(toSend.dataToStore)
 		$.ajax({
 			type : 'POST',
 			context : this,
@@ -117,12 +109,17 @@ MainForm.prototype =  {
 			url : baseUrl + "dataGenerator",
 			data : "requestData=" + JSON.stringify(toSend)
 		}).done((function(msg) {
-			
-			PopUpController.doneMsg("Triples are successfully saved", 2000, null,
-			function(){
-			window.location = baseUrl + "display/" +
-			 		subjectUri.split("/")[subjectUri.split("/").length-1]
-			})
+			if(msg.failed !== undefined){
+				PopUpController.defaultDoneMsg("Triple creation failed!");
+				console.log(msg)
+				var ajaxmsg = msg
+			} else {
+				PopUpController.doneMsg("Triples are successfully saved", 2000, null,
+				function(){
+				window.location = baseUrl + "display/" +
+				 		subjectUri.split("/")[subjectUri.split("/").length-1]
+				})
+			}
 		}).bind(this)) 
 	},
 
