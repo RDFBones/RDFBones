@@ -7,14 +7,10 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import rdfbones.formProcessing.DependencyCalculator;
-import rdfbones.formProcessing.GraphProcessor;
 import rdfbones.lib.RDFBonesUtils;
 import rdfbones.lib.TripleLib;
 import webappconnector.VIVOWebappConnector;
-import rdfbones.rdfdataset.Graph;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
-import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationUtils;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTwo;
 
 public class StudyDesignExecutionGenerator implements EditConfigurationGenerator {
