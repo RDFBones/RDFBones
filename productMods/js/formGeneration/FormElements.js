@@ -84,6 +84,9 @@ Adder.prototype = {
 				this.subContainer.append(html.div("subElement").text(object[this.dataKey + "Label"]))
 			}
 		}).bind(this))
+		if(this.localData.length > 0 && this.descriptor.formElements === undefined){
+			this.parentForm.ready()
+		}
 	},
 	
 	add : function(){
