@@ -1,4 +1,4 @@
-package rdfbones.rdfdataset;
+package rdfbones.graphData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +18,9 @@ import rdfbones.lib.MainGraphSPARQLDataGetter;
 import rdfbones.lib.QueryLib;
 import rdfbones.lib.SPARQLDataGetter;
 import rdfbones.lib.SPARQLUtils;
-import rdfbones.lib.VariableDependency;
+import rdfbones.rdfdataset.MultiTriple;
+import rdfbones.rdfdataset.RDFNode;
+import rdfbones.rdfdataset.Triple;
 import rdfbones.formProcessing.WebappConnector;
 
 public class Graph {
@@ -44,7 +46,9 @@ public class Graph {
   public List<String> inputClasses;
   public List<String> mainInputNodes;
   public Map<String, String> mainInputValues;
+  public Map<String, String> calculatedMainInputs;
 
+  
   // Data Input - type query
   public List<String> classesToSelect;
   public List<Triple> typeQueryTriples;
@@ -72,7 +76,7 @@ public class Graph {
 
   public Graph(List<Triple> triples, List<Triple> schemeTriples, WebappConnector webapp) {
 
-    this.inputNode = new String("subject");
+    this.inputNode = new String("subjectUri");
     this.mainGraph = this;
     this.webapp = webapp;
     this.initialize(triples);
@@ -143,9 +147,12 @@ public class Graph {
     }
     if (this.typeQueryTriples.size() > 0 && this.inputClasses.size() > 0
         && this.classesToSelect.size() > 0) {
+      this.typeQueryTriples.addAll(GraphLib.optionalClassLabelTripels(this.classesToSelect));
+      List<String> literalsToSelect = GraphLib.classLabels(this.classesToSelect);
+      DebugLib.debugList(literalsToSelect, this);
       this.typeRetriever =
           new SPARQLDataGetter(mainGraph, this.typeQueryTriples, this.classesToSelect,
-              null, this.inputClasses, true);
+              literalsToSelect, this.inputClasses, true);
     }
     for (String key : this.subGraphs.keySet()) {
       this.subGraphs.get(key).setGraphDescriptor(schemeTriples);
@@ -254,8 +261,15 @@ public class Graph {
 
     // Creating string to create
     this.graphDataMap = variableMap;
-    String triplesToStore = SPARQLUtils.assembleTriples(this.triplesToStore);
-    triplesToStore = QueryUtils.subUrisForQueryVars(triplesToStore, variableMap);
+    log("VariableMap");
+    DebugLib.mapLog(variableMap, this);
+    Map<String, String> labelMap = GraphLib.getLabels(variableMap);
+    log("LabelMap");
+    DebugLib.mapLog(labelMap, this);
+    List<Triple> triplesToStore = GraphLib.addLabelTriples(this.triplesToStore);
+    String triplesString = SPARQLUtils.assembleTriples(triplesToStore);
+    triplesString = QueryUtils.subUrisForQueryLiterals(triplesString, labelMap);
+    triplesString = QueryUtils.subUrisForQueryVars(triplesString, variableMap);
     for (String subgraphKey : this.subGraphs.keySet()) {
       Graph subGraph = this.subGraphs.get(subgraphKey);
       String key = subGraph.inputNode;
@@ -263,10 +277,10 @@ public class Graph {
       JSONArray array = JSON.array(inputObject, subgraphKey);
       for (int i = 0; i < array.length(); i++) {
         JSONObject jsonObject = JSON.object(array, i);
-        triplesToStore += subGraph.saveData(jsonObject, key, value);
+        triplesString += subGraph.saveData(jsonObject, key, value);
       }
     }
-    return triplesToStore;
+    return triplesString;
   }
 
   public void debug() {
