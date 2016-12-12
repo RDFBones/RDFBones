@@ -8,8 +8,9 @@ var Selector = function(dataKey, descriptor, formData, parentForm) {
 	this.parentForm = parentForm
 	this.parentData = parentForm.dataObject
 	this.container =  parentForm.container
+
 	
-	// UI
+	
 	this.selector = new DataSetterSelectorFieldMap(this.options,
 			this.parentData, this.dataKey)
 	if (descriptor.arrangement !== undefined) {

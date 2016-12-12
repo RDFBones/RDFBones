@@ -8,9 +8,10 @@ import org.json.JSONObject;
 
 import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
 import rdfbones.graphData.GraphPath;
-import rdfbones.rdfdataset.Graph;
+import rdfbones.lib.JSON;
+import rdfbones.lib.SPARQLDataGetter;
+import rdfbones.lib.UriLabelSPARQLDataGetter;
 import rdfbones.rdfdataset.OptionalTriple;
-import rdfbones.rdfdataset.Triple;
 
 public class VariableDependency {
 
