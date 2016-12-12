@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import edu.cornell.mannlib.vitro.webapp.dao.jena.N3Utils;
+import rdfbones.graphData.Graph;
 import rdfbones.graphData.QueryStructure;
-import rdfbones.rdfdataset.Graph;
 import rdfbones.rdfdataset.OptionalTriple;
 import rdfbones.rdfdataset.Triple;
 
@@ -23,7 +23,7 @@ public class UriLabelSPARQLDataGetter extends SPARQLDataGetter {
   }
   
   @Override
-  String getQueryTriples(){
+  public String getQueryTriples(){
     return  super.getQueryTriples().replace(this.varToGet, "uri");
     //return query + "\n OPTIONAL { ?uri   rdfs:label   ?label  } ";
   }

@@ -2,38 +2,89 @@ package rdfbones.lib;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import rdfbones.form.Form;
 import rdfbones.form.FormConfiguration;
 import rdfbones.formProcessing.DependencyCalculator;
 import rdfbones.formProcessing.WebappConnector;
+import rdfbones.graphData.Graph;
 import rdfbones.graphData.SubGraphInfo;
 import rdfbones.graphData.UnionForm;
 import rdfbones.rdfdataset.*;
 
 public class GraphLib {
 
-  public static FormConfiguration getFormConfig(List<Triple> dataTriples, 
-    List<Triple> schemeTriples, Form form, WebappConnector webapp){
+  public static FormConfiguration getFormConfig(List<Triple> dataTriples,
+    List<Triple> schemeTriples, Form form, WebappConnector webapp) {
 
     List<Triple> schemeCopy1 = ArrayLib.copyList(schemeTriples);
     Graph graph = new Graph(dataTriples, schemeCopy1, webapp);
     form.setGraph(graph);
     List<Triple> schemeCopy2 = ArrayLib.copyList(schemeTriples);
-    DependencyCalculator.calculate(graph, schemeCopy2, form); 
+    DependencyCalculator.calculate(graph, schemeCopy2, form);
     return new FormConfiguration(graph, form);
   }
-  
-  public static void setGraphMap(Graph graph){
-    for(String node : graph.nodes){
-      if(!graph.inputNode.equals(node)){
-        //graph.log(graph.inputNode + "   " + node);
-        graph.mainGraph.graphMap.put(node, graph);  
+
+  public static void setGraphMap(Graph graph) {
+    for (String node : graph.nodes) {
+      if (!graph.inputNode.equals(node)) {
+        // graph.log(graph.inputNode + "   " + node);
+        graph.mainGraph.graphMap.put(node, graph);
       }
     }
   }
- 
+
+  public static Map<String, String>  getLabels(Map<String, String> map){
+    
+    Map<String, String> buf = new HashMap<String, String>();
+    for(String key : map.keySet()){
+      if(key.contains("Type") && !key.endsWith("Label")){
+        String varName = StringUtil.cutFromEnd(key, "Type");
+        String classLabel = map.get(key + "Label");
+        String instanceLabel = classLabel + " " + StringUtil.rand(5);
+        buf.put(varName + "Label", instanceLabel);
+      }
+    }
+    return buf;
+  }
+  
+  public static List<Triple> optionalClassLabelTripels(List<String> inputClasses){
+    
+    List<Triple> triples = new ArrayList<Triple>();
+    for(String inputClass : inputClasses){
+       triples.add(new OptionalTriple(inputClass, "rdfs:label", inputClass + "Label"));
+    }
+    return triples;
+  }
+  
+  public static List<String> classLabels(List<String> inputClasses){
+    
+    List<String> labels = new ArrayList<String>();
+    for(String inputClass : inputClasses){
+      if(inputClass.contains("Type"))
+        labels.add(inputClass + "Label");
+    }
+    return labels;
+  }
+  
+  public static List<Triple> addLabelTriples(List<Triple> triples) {
+
+    List<Triple> all = new ArrayList<Triple>();
+    for (Triple triple : triples) {
+      if (triple.predicate.equals("rdf:type") && triple.object.varName.contains("Type")) {
+        String labelVarName =
+            StringUtil.cutFromEnd(triple.object.varName, "Type") + "Label";
+        Triple labelTriple = new Triple(triple.subject, "rdfs:label", labelVarName);
+        all.add(labelTriple);
+      }
+    }
+    all.addAll(triples);
+    return all;
+  }
+
   public static List<String> getNodes(List<Triple> dataTriples,
     List<Triple> restrictionTriples) {
 
@@ -66,18 +117,20 @@ public class GraphLib {
 
     if (triple.subject.varName.equals(varName)) {
       return triple.object.varName;
-    } else if(triple.object.varName.equals(varName)){
+    } else if (triple.object.varName.equals(varName)) {
       return triple.subject.varName;
     } else {
       return null;
     }
   }
-  
+
   public static String getObject(Triple triple, String varName) {
 
-    if (triple.subject.varName.equals(varName) && !Boolean.FALSE.equals(triple.fromSubject)) {
+    if (triple.subject.varName.equals(varName)
+        && !Boolean.FALSE.equals(triple.fromSubject)) {
       return triple.object.varName;
-    } else if(triple.object.varName.equals(varName) && !Boolean.TRUE.equals(triple.fromSubject)){
+    } else if (triple.object.varName.equals(varName)
+        && !Boolean.TRUE.equals(triple.fromSubject)) {
       return triple.subject.varName;
     } else {
       return null;
@@ -167,7 +220,7 @@ public class GraphLib {
     }
     return typeNums;
   }
-  
+
   public static List<Triple> getTypeTriples(List<Triple> triples, List<String> nodes) {
     return getTriples(triples, nodes, "rdf:type");
   }
@@ -197,18 +250,19 @@ public class GraphLib {
     return null;
   }
 
-  
-  public static List<Triple> getAndRemoveTriples(List<Triple> triples, String node){
-    
+  public static List<Triple> getAndRemoveTriples(List<Triple> triples, String node) {
+
     List<Integer> typeNums = new ArrayList<Integer>();
     Integer i = 0;
     List<Triple> neighbours = new ArrayList<Triple>();
-    for(Triple triple : triples){
-      if(triple.subject.varName.equals(node) && !(Boolean.FALSE.equals(triple.fromSubject))){
+    for (Triple triple : triples) {
+      if (triple.subject.varName.equals(node)
+          && !(Boolean.FALSE.equals(triple.fromSubject))) {
         neighbours.add(triple);
         typeNums.add(i);
       }
-      if(triple.object.varName.equals(node) && !(Boolean.TRUE.equals(triple.fromSubject))){
+      if (triple.object.varName.equals(node)
+          && !(Boolean.TRUE.equals(triple.fromSubject))) {
         neighbours.add(triple);
         typeNums.add(i);
       }
@@ -217,7 +271,7 @@ public class GraphLib {
     ArrayLib.remove(triples, typeNums);
     return neighbours;
   }
-  
+
   public static List<Triple> getRestrictionTriples(List<String> nodes,
     List<Triple> triples) {
 
@@ -278,13 +332,13 @@ public class GraphLib {
     }
     return newInstances;
   }
-  
-  public static void setSchemeTriples(Graph graph,
-    List<Triple> restrictionTriples) {
+
+  public static void setSchemeTriples(Graph graph, List<Triple> restrictionTriples) {
 
     List<Triple> restTriples = new ArrayList<Triple>();
     graph.nodes = GraphLib.getNodes(graph.dataTriples);
-    restTriples.addAll(GraphLib.getAndRemoveTypeTriples(restrictionTriples, graph.nodes));
+    restTriples
+        .addAll(GraphLib.getAndRemoveTypeTriples(restrictionTriples, graph.nodes));
     graph.typeNodes = GraphLib.getObjectNodes(restTriples);
     restTriples.addAll(GraphLib.getAndRemoveRestrictionTriples(graph.typeNodes,
         restrictionTriples));
@@ -304,7 +358,7 @@ public class GraphLib {
     graph.inputLiterals = new ArrayList<String>();
     graph.inputClasses = new ArrayList<String>();
     graph.mainInputNodes = new ArrayList<String>();
-    
+
     graph.typeQueryTriples = new ArrayList<Triple>();
     graph.classesToSelect = new ArrayList<String>();
 
@@ -315,7 +369,8 @@ public class GraphLib {
       if (!triple.predicate.equals("rdf:type")) {
         graph.typeQueryTriples.add(triple);
       }
-      if (triple.subject instanceof InputNode && !(triple instanceof ExistingRestrictionTriple)){
+      if (triple.subject instanceof InputNode
+          && !(triple instanceof ExistingRestrictionTriple)) {
         ArrayLib.addDistinct(graph.inputClasses, triple.subject.varName);
         GraphLib.setMainInputNode(triple.subject, graph);
       }
@@ -355,7 +410,7 @@ public class GraphLib {
         ArrayLib.addDistinct(graph.classesToSelect, triple.subject.varName);
         ArrayLib.addDistinct(graph.classesToSelect, triple.object.varName);
       } else {
-        
+
         if (triple.predicate.equals("rdf:type")) {
           if (!(triple.subject instanceof InputNode)) {
             graph.triplesToStore.add(triple);
@@ -364,9 +419,9 @@ public class GraphLib {
             ArrayLib.addDistinct(graph.classesToSelect, triple.object.varName);
           }
           /*
-          if (triple.subject instanceof InputNode) {
-            graph.typeQueryTriples.add(triple);
-          }*/
+           * if (triple.subject instanceof InputNode) {
+           * graph.typeQueryTriples.add(triple); }
+           */
         }
       }
     }
@@ -389,13 +444,13 @@ public class GraphLib {
     for (String var : graph.inputInstances) {
       graph.urisToSelect.add(var);
       graph.urisToSelect.add(var + "Type");
-      if(graph.typeQueryTriples.size() > 0){
+      if (graph.typeQueryTriples.size() > 0) {
         graph.typeQueryTriples.add(QueryLib.getMSTTriple(var));
       }
       graph.literalsToSelect.add(var + "Label");
       graph.dataRetreivalQuery.add(QueryLib.getOptionalLabelTriple(var));
     }
-    
+
     for (String var : graph.inputLiterals) {
       graph.literalsToSelect.add(var);
     }
@@ -404,13 +459,13 @@ public class GraphLib {
     }
   }
 
-  public static void setMainInputNode(RDFNode node, Graph graph){
-    if(node instanceof MainInputNode){
+  public static void setMainInputNode(RDFNode node, Graph graph) {
+    if (node instanceof MainInputNode) {
       ArrayLib.addDistinct(graph.mainGraph.mainInputNodes, node.varName);
       ArrayLib.addDistinct(graph.mainInputNodes, node.varName);
     }
   }
-  
+
   public static List<String> getMainInputVars(List<Triple> triples) {
     List<String> mainInputVars = new ArrayList<String>();
     for (Triple triple : triples) {
@@ -455,7 +510,7 @@ public class GraphLib {
     }
     return false;
   }
-  
+
   public static GreedyRestrictionTriple isGreedy(List<Triple> triples, String startNode) {
 
     for (Triple triple : triples) {
@@ -466,44 +521,46 @@ public class GraphLib {
     }
     return null;
   }
-  
-  public static String assembleTriples(List<Triple> triples){
-    
+
+  public static String assembleTriples(List<Triple> triples) {
+
     String tripleString = new String("");
-    for(Triple triple : triples){
+    for (Triple triple : triples) {
       tripleString += triple.getTriple();
     }
     return tripleString;
   }
-  
-  public static UnionForm getUnionForm(List<Triple> triples, String startNode){
-    
+
+  public static UnionForm getUnionForm(List<Triple> triples, String startNode) {
+
     List<Triple> graphTriples = new ArrayList<Triple>();
     List<String> nodeBuffer = new ArrayList<String>();
     String greedyNode = null;
     nodeBuffer.add(startNode);
-    while(true){
-      SubGraphInfo info = GraphLib.subGraphInfoRemove(triples, startNode, nodeBuffer.remove(0));
-      if(info.greedyNode != null && greedyNode == null){
+    while (true) {
+      SubGraphInfo info =
+          GraphLib.subGraphInfoRemove(triples, startNode, nodeBuffer.remove(0));
+      if (info.greedyNode != null && greedyNode == null) {
         greedyNode = info.greedyNode;
-      } 
+      }
       graphTriples.addAll(info.triples);
       nodeBuffer.addAll(info.nodes);
-      if(nodeBuffer.size() == 0){
+      if (nodeBuffer.size() == 0) {
         break;
       }
     }
-    return new UnionForm(graphTriples, greedyNode);  
+    return new UnionForm(graphTriples, greedyNode);
   }
-  
-  public static SubGraphInfo subGraphInfoRemove(List<Triple> triples, String startNode, String node){
+
+  public static SubGraphInfo subGraphInfoRemove(List<Triple> triples, String startNode,
+    String node) {
 
     SubGraphInfo info = new SubGraphInfo();
     List<Integer> nums = new ArrayList<Integer>();
     Integer i = 0;
-    for(Triple triple : triples){
-      if(triple.subject.varName.equals(node) || triple.object.varName.equals(node)){
-        if(triple instanceof GreedyRestrictionTriple && !startNode.equals(node)){
+    for (Triple triple : triples) {
+      if (triple.subject.varName.equals(node) || triple.object.varName.equals(node)) {
+        if (triple instanceof GreedyRestrictionTriple && !startNode.equals(node)) {
           info.greedyNode = node;
           info.greedyTriple = triple;
         } else {
@@ -517,12 +574,12 @@ public class GraphLib {
     ArrayLib.remove(triples, nums);
     return info;
   }
-  
-  public static SubGraphInfo subGraphInfo(List<Triple> triples, String node){
-    
+
+  public static SubGraphInfo subGraphInfo(List<Triple> triples, String node) {
+
     SubGraphInfo info = new SubGraphInfo();
-    for(Triple triple : triples){
-      if(triple.subject.equals(node) || triple.object.equals(node)){
+    for (Triple triple : triples) {
+      if (triple.subject.equals(node) || triple.object.equals(node)) {
         info.triples.add(triple);
         info.nodes.add(GraphLib.getObject(triple, node));
       }

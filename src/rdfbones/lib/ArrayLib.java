@@ -7,13 +7,19 @@ import rdfbones.rdfdataset.Triple;
 
 public class ArrayLib {
 
-  
   public static List<Triple> copyList(List<Triple> source){
     
     List<Triple> dest = new ArrayList<Triple>();
     for(Triple triple : source){
       dest.add(triple);
     }
+    return dest;
+  }
+  
+public static List<Triple> getTripleList(Triple triple){
+    
+    List<Triple> dest = new ArrayList<Triple>();
+    dest.add(triple);
     return dest;
   }
   
@@ -84,5 +90,13 @@ public class ArrayLib {
     strArray.add(str1);
     strArray.add(str2);
     return strArray;
+  }
+  
+  public static List<String> concat(List<String> arr1, List<String> arr2){
+    
+    List<String> arr = new ArrayList<String>();
+    arr.addAll(arr1);
+    arr.addAll(arr2);
+    return arr;
   }
 }

@@ -203,7 +203,22 @@ public class QueryUtils {
     }
     return queryString;
   }
-
+  
+  public static String subUrisForQueryLiterals(String queryString, Map<String, String> varsToUris) {
+    
+    for (String var : varsToUris.keySet()) {
+       queryString = subUriForQueryLiteral(queryString, var, varsToUris.get(var));
+    }
+    return queryString;
+  }
+  
+  /** Manually replace a query variable with a uri when prebinding causes the query to fail, probably
+   * due to a Jena bug.
+   */
+  public static String subUriForQueryLiteral(String queryString, String varName, String literal) {
+    return queryString.replaceAll("\\?" + varName + "\\b", "\"" + literal + "\"");
+  }
+  
   /**
    * Manually replace a query variable with a uri when prebinding causes the
    * query to fail, probably due to a Jena bug.

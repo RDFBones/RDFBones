@@ -3,8 +3,8 @@ package rdfbones.lib;
 import java.util.List;
 import java.util.Map;
 
+import rdfbones.graphData.Graph;
 import rdfbones.graphData.GraphPath;
-import rdfbones.rdfdataset.Graph;
 import rdfbones.rdfdataset.Triple;
 
 public class DebugLib {
@@ -102,5 +102,15 @@ public class DebugLib {
     for (String key : map.keySet()) {
       graph.mainGraph.getWebapp().log(key + "   " + map.get(key).toString());
     }
+  }
+  
+  public static void mapLog(Map<String, String> map, Graph graph){
+    for (String key : map.keySet()) {
+      graph.log(key + "   " + map.get(key) + "\n");
+    }
+  }
+  
+  public static void debugList(List<String> list, Graph graph){
+    graph.log(ArrayLib.debugList(list));
   }
 }

@@ -1,11 +1,17 @@
 package rdfbones.lib;
 
 import java.util.List;
+import java.util.UUID;
 
 import rdfbones.rdfdataset.Triple;
 
 public class StringUtil {
 
+  
+  public static String rand(int n){
+    
+    return new String(UUID.randomUUID().toString().substring(0, n));
+  }
   
   public static String getQuery(String query, String tab){
     return tab + query.replace("\n", "\n" + tab);
@@ -29,4 +35,7 @@ public class StringUtil {
     return arr;
   }
   
+  public static String cutFromEnd(String str, String toCut){
+    return str.substring(0, str.indexOf(toCut));
+  }
 }
