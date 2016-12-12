@@ -123,15 +123,19 @@ var PopUpController = {
 	
 	removeWaitGif : function(div, input){
 
-		diff = 200 - ((new Date()) - this.startDate)
-		diff = (diff > 0) ? diff : 0
-		setTimeout((function(){
+		//diff = 200 - ((new Date()) - this.startDate)
+		//diff = (diff > 0) ? diff : 0
+		//setTimeout((function(){
 			input.hide()
 			this.waitGif.remove()
 			div.append(input)
 			input.fadeIn(1000)
 			//input.show('slow')
-		}).bind(this), diff)	
+		//}).bind(this), diff)	
+	},
+	
+	remove : function(){
+		this.waitGif.remove()
 	}
 }
 

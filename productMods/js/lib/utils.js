@@ -8,3 +8,12 @@ var util = {
 		}
 	}	
 }
+
+
+var strUtil = {
+		
+	splitLast : function(str, char){
+		arr = str.split(char)
+		return arr[arr.length -1]
+	}	
+}

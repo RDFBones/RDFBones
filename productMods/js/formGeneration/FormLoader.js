@@ -9,7 +9,6 @@ var Form = function(parentForm, data, mainForm, title){
 	this.mainForm = util.setUndefined(mainForm, false)
 	this.parentForm = parentForm
 	this.dataObject = data
-	
 	//this.container = parentForm.subContainer
 	this.container = html.div()
 	this.descriptor = parentForm.descriptor
