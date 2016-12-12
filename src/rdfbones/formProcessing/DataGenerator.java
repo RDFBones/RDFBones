@@ -11,6 +11,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.shared.Lock;
 
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
@@ -18,7 +19,7 @@ import org.json.JSONObject;
 
 import webappconnector.VIVOWebappConnector;
 import rdfbones.form.FormConfiguration;
-import rdfbones.rdfdataset.Graph;
+import rdfbones.graphData.Graph;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.controller.ajax.VitroAjaxController;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.N3Utils;

@@ -18,8 +18,8 @@ import com.hp.hpl.jena.query.ResultSet;
 
 import rdfbones.form.FormConfiguration;
 import rdfbones.lib.JSON;
-import rdfbones.lib.VariableDependency;
-import rdfbones.rdfdataset.Graph;
+import rdfbones.graphData.VariableDependency;
+import rdfbones.graphData.Graph;
 import webappconnector.VIVOWebappConnector;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.controller.ajax.VitroAjaxController;

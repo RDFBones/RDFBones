@@ -7,9 +7,9 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import rdfbones.graphData.Graph;
 import rdfbones.lib.JSON;
 import rdfbones.lib.QueryLib;
-import rdfbones.rdfdataset.Graph;
 
 public class Form {
 

@@ -1,7 +1,7 @@
 package rdfbones.form;
 
 import rdfbones.formProcessing.WebappConnector;
-import rdfbones.rdfdataset.Graph;
+import rdfbones.graphData.Graph;
 
 public class FormConfiguration {
 

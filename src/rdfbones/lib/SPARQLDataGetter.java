@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import edu.cornell.mannlib.vitro.webapp.dao.jena.N3Utils;
+import rdfbones.graphData.Graph;
 import rdfbones.graphData.QueryStructure;
-import rdfbones.rdfdataset.Graph;
 import rdfbones.rdfdataset.Triple;
 
 public class SPARQLDataGetter {
@@ -108,7 +108,7 @@ public class SPARQLDataGetter {
     return this.getData();
   }
 
-  String getQueryTriples() {
+  public String getQueryTriples() {
 
     String queryTriples = this.queryTriples;
     int i = 0;
