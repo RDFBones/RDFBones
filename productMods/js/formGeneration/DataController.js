@@ -13,13 +13,29 @@ var DataController = {
 		}
 	},
 	
-	prepareOptions : function(object){
+	prepareOptions : function(options){
 		
-		$.each(object, function(key, value){
-			if(value.label === undefined){
-				value.label = key.split("#")[1]
-			}
-		})
+		if(DataLib.getType(options) == "array"){
+			console.log("array")
+			var object = new Object
+			$.each(options, function(key, value){
+				object[value.uri] = new Object()
+				object[value.uri]
+				if(value.label === undefined){
+					object[value.uri].label = value.uri.split["#"][1]
+				} else {
+					object[value.uri].label = value.label 
+				}
+			})
+			return object
+		} else {
+			$.each(options, function(key, value){
+				if(value.label === undefined){
+					value.label = key.split("#")[1]
+				}
+			})	
+			return options
+		}
 	},
 	
 	getLabel : function(object, key){
@@ -50,7 +66,6 @@ var DataController = {
 	
 		//PopUpController.init("Loading form data")
 		var start = new Date()
-
 		//Only one AJAX call comes
 		dependentVars = new Object()
 		$.each(form.descriptor.formElements, function(key, formElement){
@@ -71,6 +86,40 @@ var DataController = {
 				data : "requestData=" + JSON.stringify(toSend)})
 				.done((function(msg) {
 					form.init(this.prepare(msg))
+				}).bind(this))
+		} else {
+			form.init()
+		}
+	},
+
+	loadSubFormDataAll : function(form, inputList){
+		
+		var dependentVars = new Object()
+		$.each(form.descriptor.formElements, function(key, formElement){
+			//Check if dependent or independent the data is
+			if(key != form.dataKey){
+				dataKey = DataController.getDataKey(key, formElement)
+				dependentVars[dataKey] = DataController.getInputObject(form.parentForm, dataKey)
+			} else {
+				dependentVars[dataKey] = inputList
+			}
+		})
+
+		var toSend = {
+				editKey : editKey,
+				arrayKey : form.dataKey,
+				dependentVars : dependentVars,
+			}
+		toSend[form.dataKey] = inputList
+		if(Object.keys(dependentVars).length > 0){
+			$.ajax({
+				type : 'POST',
+				context : this,
+				dataType : 'json',
+				url : baseUrl + "formDataLoader",
+				data : "requestData=" + JSON.stringify(toSend)})
+				.done((function(msg) {
+					form.initAll(msg)
 				}).bind(this))
 		} else {
 			form.init()
