@@ -2,15 +2,12 @@ var Selector = function(dataKey, descriptor, formData, parentForm) {
 
 	// Data
 	this.dataKey = descriptor.dataKey
-	this.options = formData[this.dataKey]
-	
+	this.options = DataController.prepareOptions(formData[this.dataKey])
 	this.descriptor = descriptor
 	this.parentForm = parentForm
 	this.parentData = parentForm.dataObject
 	this.container =  parentForm.container
 
-	
-	
 	this.selector = new DataSetterSelectorFieldMap(this.options,
 			this.parentData, this.dataKey)
 	if (descriptor.arrangement !== undefined) {
@@ -20,6 +17,9 @@ var Selector = function(dataKey, descriptor, formData, parentForm) {
 	}
 	this.title = html.div("inline").text(descriptor.name)
 	this.container.append(this.title).append(this.selector.container)
+	
+	console.log("ParentData")
+	console.log(this.parentData)
 	
 	if(this.parentData[this.dataKey] !== undefined){
 		this.selector.set(this.parentData[this.dataKey])
@@ -40,7 +40,7 @@ var Adder = function(predicate, descriptor, formData, parentForm) {
 	
 	this.descriptor = descriptor
 	this.dataKey = descriptor.dataKey
-	this.options = formData[this.dataKey]
+	this.options = DataController.prepareOptions(formData[this.dataKey])
 	this.parentForm = parentForm
 	this.parentData = parentForm.dataObject
 	this.container =  html.div("adderContainer")
@@ -58,7 +58,7 @@ var Adder = function(predicate, descriptor, formData, parentForm) {
 		this.localData = []
 		this.parentData[predicate] = this.localData
 	}
-	this.init()
+	this.init()	
 }
 
 Adder.prototype = {
@@ -67,7 +67,6 @@ Adder.prototype = {
 
 		this.addedValues = []
 		this.title = html.div("inline").text(this.descriptor.title)
-		DataController.prepareOptions(this.options)
 		this.selector = UI.classSelectorMap(this.options)
 		this.addButton = new TextButton("Add", (this.add).bind(this))
 		this.addAllButton = new TextButton("Add all", (this.addAll).bind(this))
@@ -91,6 +90,7 @@ Adder.prototype = {
 	},
 	
 	add : function(){
+
 		if(this.addAllFlag){
 			PopUpController.note("All types have been already added!")
 		} else if(this.localData.getObjectByKey(this.dataKey, this.selector.val()) != null){
@@ -108,26 +108,28 @@ Adder.prototype = {
 	
 	addAll : function(){
 		
-		var arr = []
-		this.addAllFlag = true
 		PopUpController.addSubWaitGif(this.subContainer)
-		$.each(this.options, (function(key, value){
-			if(this.localData.getObjectByKey(this.dataKey, key) == null){
-				var object = new Object()
-				object[this.dataKey] = key
-				object[this.dataKey + "Label"] = value.label
-				this.localData.push(object)
-				this.title = value.label
-				this.subForms.push(new Form(this, object))
-				this.cnt++
-			}
-		}).bind(this))
-		if(this.cnt == 0){
-			PopUpController.remove()
-			PopUpController.note("All types have been already added!")
-		}
+		DataController.loadSubFormDataAll(this, Object.keys(this.options))
 	},
 	
+	initAll : function(data){
+		
+		$.each(data, (function(key, value){
+			//The key is the uri
+			label = this.options[key].label;
+			var object = new Object()
+			object[this.dataKey] = key
+			object[this.dataKey + "Label"] = this.options[key].label
+			this.localData.push(object)
+			this.title = this.options[key].label
+			console.log("AllValue")
+			console.log(value)
+			this.subForms.push(new SubForm(this, object, value))
+		}).bind(this)) 
+		this.addSubForms()	
+		PopUpController.remove()
+	},
+
 	addSubForm : function(object){
 
 		if(this.descriptor.formElements !== undefined) {

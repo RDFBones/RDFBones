@@ -4,6 +4,41 @@ var elementMap = {
 	stringInput : StringInput,
 }
 
+var SubForm = function(parentForm, data, formData){
+	
+	//What do I have to do here?
+	this.mainForm = false
+	this.parentForm = parentForm
+	this.dataObject = data
+	this.container = html.div()
+	this.descriptor = parentForm.descriptor
+	this.title = parentForm.title
+	this.existingCounter = 0
+	this.init(formData)
+}
+
+SubForm.prototype = {
+		
+	init : function(formData) {
+		//Pre UI
+		console.log(formData)
+		titleStyle = (this.descriptor.style === undefined) ? "formTitle" : "formTitleInline"
+		titleStyle = this.mainForm ? "mainFormTitle" : titleStyle
+		this.container.append(html.div(titleStyle).text(this.title))
+		this.formContainer = html.div("inline")
+		this.subFormElements = new Object()
+		$.each(this.descriptor.formElements, (function(key, value){
+			this.subFormElements[key] = new elementMap[value.type](key, value, formData, this)
+		}).bind(this))
+		UIelements = []
+		$.each(this.subFormElements, (function(key, element){
+			UIelements.push(element.container)
+		}).bind(this))
+		this.formContainer.append(UIelements)
+		this.container.append(this.formContainer)
+	},
+}
+
 var Form = function(parentForm, data, mainForm, title){
 	
 	this.mainForm = util.setUndefined(mainForm, false)
@@ -22,8 +57,8 @@ Form.prototype = {
 		
 	//This is called by the DataController
 	init : function(formData) {
+		
 		//Pre UI
-		console.log(formData)
 		titleStyle = (this.descriptor.style === undefined) ? "formTitle" : "formTitleInline"
 		titleStyle = this.mainForm ? "mainFormTitle" : titleStyle
 		this.container.append(html.div(titleStyle).text(this.title))
