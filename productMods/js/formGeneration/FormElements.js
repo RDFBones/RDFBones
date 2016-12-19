@@ -71,6 +71,8 @@ Adder.prototype = {
 		this.addButton = new TextButton("Add", (this.add).bind(this))
 		this.addAllButton = new TextButton("Add all", (this.addAll).bind(this))
 		this.subContainer = html.div("subContainer")
+		if(Object.keys(this.options).length <= 1)
+				this.addAllButton.container = html.div()
 		this.container.append(this.title).append(this.selector).append(
 				this.addButton.container).append(this.addAllButton.container)
 				.append(this.subContainer)
