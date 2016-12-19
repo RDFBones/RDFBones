@@ -17,6 +17,7 @@ import rdfbones.rdfdataset.GreedyRestrictionTriple;
 import rdfbones.rdfdataset.InputNode;
 import rdfbones.rdfdataset.MainInputNode;
 import rdfbones.rdfdataset.MultiTriple;
+import rdfbones.rdfdataset.QualifiedRestrictionTriple;
 import rdfbones.rdfdataset.RDFNode;
 import rdfbones.rdfdataset.RestrictionTriple;
 import rdfbones.rdfdataset.Triple;
@@ -69,23 +70,23 @@ public class TripleLib {
 
     List<Triple> triple = new ArrayList<Triple>();
     triple.add(new RestrictionTriple("subjectType", "obo:BFO_0000051",
-        "studyDesignExecutionType"));
+        "studyDesignExecutionType",  "owl:someValuesFrom"));
     triple.add(new RestrictionTriple("studyDesignExecutionType", "obo:BFO_0000051",
-        new InputNode("assayType")));
-    triple.add(new RestrictionTriple(new FormInputNode("assayType"), "obo:OBI_0000293",
+        new InputNode("assayType"), "owl:someValuesFrom"));
+    triple.add(new QualifiedRestrictionTriple(new FormInputNode("assayType"), "obo:OBI_0000293",
         "specimenType"));
     triple.add(new RestrictionTriple("specimenCollectionProcessType", "obo:OBI_0000299",
-        "specimenType"));
+        "specimenType", new String("owl:allValuesFrom")));
     triple.add(new RestrictionTriple("specimenCollectionProcessType", "obo:OBI_0000293",
-        "entireBonyPart"));
+        "entireBonyPart", new String("owl:allValuesFrom")));
     triple.add(new RestrictionTriple("entireBonyPart", "obo-fma:regional_part_of",
         "bonyPart", "owl:allValuesFrom"));
     triple.add(new RestrictionTriple("bonyPart", "obo-fma:constitutional_part_of",
         "boneOrganType", "owl:someValuesFrom"));
-    triple.add(new RestrictionTriple("assayType", "obo:OBI_0000299", new FormInputNode(
+    triple.add(new QualifiedRestrictionTriple("assayType", "obo:OBI_0000299", new FormInputNode(
         "measurementDatumType")));
     triple.add(new GreedyRestrictionTriple(new FormInputNode("measurementDatumType"),
-        "obo:OBI_0000999", "categoricalLabelType"));
+        "obo:OBI_0000999", "categoricalLabelType", "owl:onClass"));
     // "categoricalLabelType", "owl:onClass"));
     triple.addAll(sdeschemeTriplesSubClasses());
     triple.addAll(sdeschemeTriplesTypes());
