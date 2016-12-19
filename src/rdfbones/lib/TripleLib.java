@@ -1,13 +1,16 @@
 package rdfbones.lib;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import rdfbones.form.ExistingInstanceSelector;
 import rdfbones.form.Form;
 import rdfbones.form.FormElement;
 import rdfbones.form.Selector;
 import rdfbones.form.SubformAdder;
+import rdfbones.graphData.FormGraph;
 import rdfbones.graphData.Graph;
 import rdfbones.rdfdataset.Constant;
 import rdfbones.rdfdataset.ExistingInstance;
@@ -21,6 +24,9 @@ import rdfbones.rdfdataset.QualifiedRestrictionTriple;
 import rdfbones.rdfdataset.RDFNode;
 import rdfbones.rdfdataset.RestrictionTriple;
 import rdfbones.rdfdataset.Triple;
+import rdfbones.table.ImagesCell;
+import rdfbones.table.Table;
+import rdfbones.table.TableCell;
 
 public class TripleLib {
 
@@ -125,7 +131,47 @@ public class TripleLib {
     return triple;
   }
 
+  public static Map<String, FormGraph> sdeFormGraph(){
+	  
+	  Map<String, FormGraph> formGraphs = new HashMap<String, FormGraph>();
+	  FormGraph formGraph = new FormGraph(boneOrganTriples(), "boneSegment");
+	  formGraph.table = boneOrganTable();
+	  formGraphs.put("bone", formGraph);
+	  return formGraphs;
+  }
+  
+  public static Table boneOrganTable(){
+	  
+	  Table boneOrgan = new Table();
+	  boneOrgan.cells.add(new TableCell("Label", "label", 0));
+	  boneOrgan.cells.add(new TableCell("Type", "typeLabel", 1));
+	  boneOrgan.cells.add(new ImagesCell(2));
+	  return boneOrgan;
+  }
+  
+  public static List<Triple> boneOrganTriples(){
+	  
+	  List<Triple> triples = new ArrayList<Triple>();
+	  triples.add(new Triple("boneSegment", "obo:systemic_part_of", "bonyPart"));
+	  triples.add(new Triple("bonyPart", "obo:systemic_part_of", "boneOrgan"));
+	  triples.add(new Triple("boneOrgan", "vitro:mostSpecificType", "type"));
+	  triples.add(new Triple("type", "rdfs:label", "typeLabel"));
+	  triples.add(new Triple("boneOrgan", "rdfs:label", "label"));
+	  triples.addAll(getImageTriples("boneOrgan"));
+	  return triples;
+  }
+  
+  public static List<Triple> getImageTriples(String varName){
+	
+	  List<Triple> triples = new ArrayList<Triple>();
+	  triples.add(new MultiTriple(varName,  "rdfbones:isDepicted", "image"));
+	  triples.add(new Triple("image",  "http://vivo.mydomain.edu/individual/hasFile", "file"));
+	  triples.add(new Triple("file",  "vitro-public:downloadLocation", "byteStream"));
+	  return triples;
+  }
+  
   public static Form csrForm() {
+	  
 
     Selector catLabelSelector =  new Selector("categoricalLabel");
     Form measurementForm = new Form("");
