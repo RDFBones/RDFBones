@@ -96,6 +96,18 @@ public class JSON {
     return new JSONObject();
   }
   
+  public static Object objectOrArray(JSONObject obj, String key){
+    if(obj.has(key)){
+      try {
+        return obj.get(key);
+      } catch (JSONException e) {
+        e.printStackTrace();
+      }
+    }
+    return new JSONObject();
+  }
+  
+  
   public static JSONObject object(JSONArray obj, int index){
     
     try {
@@ -140,6 +152,18 @@ public class JSON {
     
     try {
       return array.get(i);
+    } catch (JSONException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return null;
+  }
+  
+  
+  public static String getStr(JSONArray array, int i){
+    
+    try {
+      return array.getString(i);
     } catch (JSONException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -211,5 +235,24 @@ public class JSON {
     }
     return null;
   }
+ 
+  public static String stringArr(JSONArray array, int i){
+	  
+	  try{
+		 return array.getString(i);
+	  } catch(JSONException e){
+		  e.printStackTrace();
+	  }
+	  return null;
+  }
   
+  public static JSONObject get(JSONObject obj, String key){
+	  
+	  try {
+		  return obj.getJSONObject(key);
+	  } catch (JSONException e){
+		  e.printStackTrace();
+	  }
+	  return null;
+  }
 }
