@@ -45,21 +45,8 @@ public class FormDataLoader extends VitroAjaxController {
     FormConfiguration formConfig = editConfig.getFormConfig();
     Graph graph = formConfig.dataGraph;
     graph.setWebapp(new VIVOWebappConnector(vreq));
-    JSONObject respJSON  = this.dependentData(JSON.object(requestData, "dependentVars"), graph);
-    response.getWriter().write(respJSON.toString());
-  }
-
-  public JSONObject dependentData(JSONObject dependencies, Graph graph) {
-
-    JSONObject response = JSON.obj();
-    Iterator<?> keys = dependencies.keys();
-    while(keys.hasNext()){
-      String key = (String) keys.next();
-      JSONObject inputVars = JSON.object(dependencies, key);
-      VariableDependency dependency = graph.variableDependencies.get(key);
-      JSON.put(response, key, dependency.getData(inputVars));
-    }
-    return response;
+    JSONObject responseJSON = graph.getDependentData(requestData);
+    response.getWriter().write(responseJSON.toString());
   }
 
   EditConfigurationVTwo getEditConfig(VitroRequest vreq, String editKey) {

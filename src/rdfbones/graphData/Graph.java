@@ -2,6 +2,7 @@ package rdfbones.graphData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -338,4 +339,40 @@ public class Graph {
     this.webapp = webapp;
   }
   
+  public JSONObject getDependentData(JSONObject requestData) {
+
+    JSONArray inputArray = null;
+    String arrayKey = new String("");
+    JSONObject response = JSON.obj();
+    JSONObject dependencies = JSON.object(requestData, "dependentVars");
+    
+    if(requestData.has("arrayKey")){
+    	arrayKey = JSON.string(requestData, "arrayKey");
+    	inputArray = JSON.array(requestData, arrayKey);
+    	for(int j = 0; j < inputArray.length(); j++){
+        	String arrayElement = JSON.stringArr(inputArray, j);
+        	if(!response.has(arrayElement)){
+        		JSON.put(response, arrayElement, new JSONObject());
+        	}
+        	Iterator<?> keys = dependencies.keys();
+            while (keys.hasNext()) {
+      	      String key = (String) keys.next();
+      	      JSONObject inputVars = JSON.object(dependencies, key);
+      	      JSON.put(inputVars, arrayKey, arrayElement);
+      	      VariableDependency dependency = this.variableDependencies.get(key);
+      	      JSON.put(JSON.get(response, arrayElement), key, dependency.getData(inputVars));
+      	    }
+        }
+    } else {
+    	Iterator<?> keys = dependencies.keys();
+        while (keys.hasNext()) {
+	      String key = (String) keys.next();
+	      JSONObject inputVars = JSON.object(dependencies, key);
+	      VariableDependency dependency = this.variableDependencies.get(key);
+	      JSON.put(response, key, dependency.getData(inputVars));
+	    }
+    }
+    System.out.println(JSON.debug(response));
+    return response;
+  }
 }
