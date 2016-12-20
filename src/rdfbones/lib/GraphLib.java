@@ -10,6 +10,7 @@ import rdfbones.form.Form;
 import rdfbones.form.FormConfiguration;
 import rdfbones.formProcessing.DependencyCalculator;
 import rdfbones.formProcessing.WebappConnector;
+import rdfbones.graphData.FormGraph;
 import rdfbones.graphData.Graph;
 import rdfbones.graphData.SubGraphInfo;
 import rdfbones.graphData.UnionForm;
@@ -27,7 +28,19 @@ public class GraphLib {
     DependencyCalculator.calculate(graph, schemeCopy2, form);
     return new FormConfiguration(graph, form);
   }
+  
+  public static FormConfiguration getFormConfig(List<Triple> dataTriples,
+      List<Triple> schemeTriples, Form form, 
+      Map<String, FormGraph> formGraphs, WebappConnector webapp) {
 
+      List<Triple> schemeCopy1 = ArrayLib.copyList(schemeTriples);
+      Graph graph = new Graph(dataTriples, schemeCopy1, webapp);
+      form.setGraph(graph);
+      List<Triple> schemeCopy2 = ArrayLib.copyList(schemeTriples);
+      DependencyCalculator.calculate(graph, schemeCopy2, form);
+      return new FormConfiguration(graph, form, formGraphs);
+    }
+ 
   public static void setGraphMap(Graph graph) {
     for (String node : graph.nodes) {
       if (!graph.inputNode.equals(node)) {
