@@ -184,3 +184,27 @@ var StringInput = function(descriptor) {
 StringInput.prototype = {
 
 }
+
+var ExistingInstanceSelector = function(predicate, descriptor, formData, parentForm){
+	
+	this.title = descriptor.title;
+	//this.button = new Textbutton("Select " + this.title, (this.openSelectorWindow))
+	this.dataKey = descriptor.dataKey
+	this.container = html.div("inline").text(this.title)
+}
+
+
+ExistingInstanceSelector.prototype = {
+		
+		
+	loadTableData : function(){
+		
+		
+	},
+	
+	openSelectorWindow : function(){
+			
+	}
+
+}
+
