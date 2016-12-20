@@ -29,8 +29,6 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTw
 
 public class FormDataLoader extends VitroAjaxController {
 
-  public static final String PARAMETER_UPLOADED_FILE = "datafile";
-
   private static final long serialVersionUID = 1L;
   private static final Log log = LogFactory.getLog(ExistingFormDataLoader.class);
 
@@ -45,6 +43,7 @@ public class FormDataLoader extends VitroAjaxController {
     FormConfiguration formConfig = editConfig.getFormConfig();
     Graph graph = formConfig.dataGraph;
     graph.setWebapp(new VIVOWebappConnector(vreq));
+    log.info("FormDataLoader");
     JSONObject responseJSON = graph.getDependentData(requestData);
     response.getWriter().write(responseJSON.toString());
   }

@@ -7,6 +7,7 @@ import rdfbones.rdfdataset.Triple;
 
 public class ArrayLib {
 
+  
   public static List<Triple> copyList(List<Triple> source){
     
     List<Triple> dest = new ArrayList<Triple>();

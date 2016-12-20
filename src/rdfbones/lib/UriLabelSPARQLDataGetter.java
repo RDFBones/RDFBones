@@ -23,7 +23,8 @@ public class UriLabelSPARQLDataGetter extends SPARQLDataGetter {
   }
   
   @Override
-  public String getQueryTriples(){
+public
+  String getQueryTriples(){
     return  super.getQueryTriples().replace(this.varToGet, "uri");
     //return query + "\n OPTIONAL { ?uri   rdfs:label   ?label  } ";
   }

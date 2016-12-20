@@ -586,4 +586,27 @@ public class GraphLib {
     }
     return info;
   }
+  
+  public static List<String> getLiterals(List<Triple> triples){
+	  
+	  List<String> str = new ArrayList<String>();
+	  for(Triple triple : triples){
+		  if(triple instanceof LiteralTriple){
+			  str.add(triple.object.varName);
+		  }
+	  }
+	  return str;
+  }
+  
+  public static List<String> getUris(List<Triple> triples){
+	  
+	  List<String> str = new ArrayList<String>();
+	  for(Triple triple : triples){
+		  if(!(triple instanceof LiteralTriple)){
+			  ArrayLib.addDistinct(str, triple.subject.varName);
+			  ArrayLib.addDistinct(str, triple.object.varName);
+		  }
+	  }
+	  return str;
+  }
 }

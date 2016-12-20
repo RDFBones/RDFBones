@@ -255,4 +255,13 @@ public class JSON {
 	  }
 	  return null;
   }
+  
+  /*
+  public static void put(JSONArray array, JSONObject object){
+	  try {
+		 array.put(value)(object);
+	  } catch (JSONException e){
+		  e.printStackTrace();
+	  }
+  }*/
 }

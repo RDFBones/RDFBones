@@ -95,7 +95,7 @@ public class SPARQLDataGetter {
     return mainGraph.getWebapp().sparqlResult(query, this.urisToSelect,
         this.literalsToSelect);
   }
-
+  
   public List<Map<String, String>> getData(String value) {
 
     this.inputValues = ArrayLib.getList(value);
