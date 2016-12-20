@@ -197,10 +197,12 @@ public class JSON {
       Object value = JSON.obj(object, key);
       if(value instanceof String){
         json += "\n" + tab + key + " : \"" + value + "\",";
+      } else if(value instanceof Integer){
+        json += "\n" + tab + key + " : " + value.toString() + ",";
       } else if(value instanceof JSONArray){
         json += "\n" + tab + key + " : " + debugArray((JSONArray) value, n) + ",";
       } else {
-        json += "\n" + tab + key + " : " + debug((JSONObject)value, n) + ",";
+      	json += "\n" + tab + key + " : " + debug((JSONObject)value, n) + ",";	
       } 
     }
     json += "}";
@@ -236,6 +238,16 @@ public class JSON {
     return null;
   }
  
+  public static JSONArray arr(String arrayDescriptor){
+    
+    try {
+      return new JSONArray(arrayDescriptor); 
+    } catch(JSONException e){
+      e.printStackTrace();
+    }
+    return null;
+  }
+  
   public static String stringArr(JSONArray array, int i){
 	  
 	  try{
@@ -256,6 +268,20 @@ public class JSON {
 	  return null;
   }
   
+  public static JSONObject getObject(String string){
+	  
+	try {
+		return new JSONObject(string);
+	} catch (JSONException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return new JSONObject();
+  }
+  
+  public static void putObject(JSONArray array, JSONObject object){
+		array.put(object);
+  }
   /*
   public static void put(JSONArray array, JSONObject object){
 	  try {

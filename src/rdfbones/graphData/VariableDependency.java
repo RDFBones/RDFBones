@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
 import rdfbones.graphData.GraphPath;
+import rdfbones.lib.ArrayLib;
 import rdfbones.lib.JSON;
 import rdfbones.lib.SPARQLDataGetter;
 import rdfbones.lib.UriLabelSPARQLDataGetter;
@@ -34,7 +35,7 @@ public class VariableDependency {
     }
     return QueryUtils.getJSON(this.dataGetter.getData(inputData));
   }
-
+  
   public String queryDebug() {
     return this.dataGetter.getQueryTriples();
   }

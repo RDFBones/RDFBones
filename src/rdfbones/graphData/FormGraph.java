@@ -29,9 +29,9 @@ public class FormGraph extends Graph {
 
 	public Table table;
 	
-	public FormGraph(List<Triple> triples, String startNode, Graph mainGraph) {
+	public FormGraph(List<Triple> triples, String startNode) {
 
-		this.mainGraph = mainGraph;
+		this.mainGraph = this;
 		this.inputNode = startNode;
 		this.initialize(triples);
 		this.initGraphStructure();
@@ -42,7 +42,7 @@ public class FormGraph extends Graph {
 		super(triple, inputNode, triples);
 	}
 
-	public JSONArray getFormData(JSONArray jsonArray) {
+	public JSONArray getTableData(JSONArray jsonArray) {
 
 		this.existingData = new JSONArray();
 		for (int i = 0; i < jsonArray.length(); i++) {

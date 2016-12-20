@@ -33,7 +33,7 @@ public class FormElement {
     this.type = type;
   }
   
-  public JSONObject getJSON(){
+  public JSONObject getDescriptor(FormConfiguration formConfig){
 
     JSONObject object = JSON.obj();
     JSON.put(object, "title", this.title);

@@ -41,7 +41,7 @@ public class TripleLib {
         new SubformAdder("measurementDatum", "Measurement Type", "measurementDatumType");
     measurementDatum.subForm = measDatumSubForm;
 
-    FormElement boneOrgan = new ExistingInstanceSelector("boneOrgan", "Bone Segment");
+    FormElement boneOrgan = new ExistingInstanceSelector("boneSegment", "Bone Segment");
 
     Form assySubForm = new Form("Assays");
     assySubForm.formElements.add(boneOrgan);
@@ -63,7 +63,7 @@ public class TripleLib {
     triple
         .add(new MultiTriple("objectUri", "obo:BFO_0000051", "specimenCollectionProcess"));
     triple.add(new MultiTriple("specimenCollectionProcess", "obo:OBI_0000293",
-        new ExistingInstance("boneOrgan")));
+        new ExistingInstance("boneSegment")));
     triple.add(new Triple("specimenCollectionProcess", "obo:OBI_0000299", "specimen"));
     triple.add(new Triple("assay", "obo:OBI_0000293", "specimen"));
     triple.add(new MultiTriple("assay", "obo:OBI_0000299", "measurementDatum"));
@@ -136,7 +136,7 @@ public class TripleLib {
 	  Map<String, FormGraph> formGraphs = new HashMap<String, FormGraph>();
 	  FormGraph formGraph = new FormGraph(boneOrganTriples(), "boneSegment");
 	  formGraph.table = boneOrganTable();
-	  formGraphs.put("bone", formGraph);
+	  formGraphs.put("boneSegment", formGraph);
 	  return formGraphs;
   }
   

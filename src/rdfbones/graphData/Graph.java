@@ -187,7 +187,7 @@ public class Graph {
     return this.existingData;
   }
 
-  private void getGraphData() {
+  protected void getGraphData() {
     for (int i = 0; i < this.existingData.length(); i++) {
       for (String key : this.subGraphs.keySet()) {
         Graph subGraph = this.subGraphs.get(key);

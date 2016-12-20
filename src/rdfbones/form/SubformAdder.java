@@ -27,9 +27,9 @@ public class SubformAdder extends FormElement{
   }
   
   @Override
-  public JSONObject getJSON(){
+  public JSONObject getDescriptor(FormConfiguration formConfig){
    
-    JSONObject obj = super.getJSON();
+    JSONObject obj = super.getDescriptor(formConfig);
     if(this.dataKey != null){
       JSON.put(obj, "dataKey", this.dataKey);
     }
