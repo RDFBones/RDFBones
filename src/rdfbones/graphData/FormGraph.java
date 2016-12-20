@@ -27,19 +27,19 @@ import rdfbones.formProcessing.WebappConnector;
 
 public class FormGraph extends Graph {
 
-	public Graph mainGraph;
 	public Table table;
 	
-	public FormGraph(List<Triple> triples, String startNode) {
+	public FormGraph(List<Triple> triples, String startNode, Graph mainGraph) {
 
-		this.mainGraph = this;
+		this.mainGraph = mainGraph;
 		this.inputNode = startNode;
 		this.initialize(triples);
 		this.initGraphStructure();
 	}
 
-	public FormGraph() {
-		// TODO Auto-generated constructor stub
+	public FormGraph(Triple triple, String inputNode, List<Triple> triples) {
+	
+		super(triple, inputNode, triples);
 	}
 
 	public JSONArray getFormData(JSONArray jsonArray) {
@@ -60,7 +60,7 @@ public class FormGraph extends Graph {
 				this.inputNode);
 		for (Triple triple : neighbours) {
 			RDFNode node = GraphLib.getObjectNode(triple, this.inputNode);
-			initialGraphMap.put(node, new Graph(triple, node.varName, triples));
+			initialGraphMap.put(node, new FormGraph(triple, node.varName, triples));
 		}
 	}
 
