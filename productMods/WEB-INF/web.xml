@@ -1119,16 +1119,14 @@
     <url-pattern>/formDataLoader</url-pattern>
   </servlet-mapping>  
   
-  
   <servlet>
-    <servlet-name>FormConfigLoader</servlet-name>
-    <servlet-class>rdfbones.pageload.FormConfigurationLoader</servlet-class>
+    <servlet-name>AJAXServlet</servlet-name>
+    <servlet-class>webappconnector.AJAXServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>FormConfigLoader</servlet-name>
-    <url-pattern>/formConfigLoader</url-pattern>
+    <servlet-name>AJAXServlet</servlet-name>
+    <url-pattern>/ajaxservlet</url-pattern>
   </servlet-mapping>  
-  
   
    <!--
    END - just to know where to place the additional servlets
