@@ -15,13 +15,12 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTw
 
 public class StudyDesignExecutionGenerator implements EditConfigurationGenerator {
 
-  private Log log = LogFactory.getLog(StudyDesignExecutionGenerator.class);
-
   @Override
   public EditConfigurationVTwo getEditConfiguration(VitroRequest vreq,
     HttpSession session) throws Exception {
 
     return RDFBonesUtils.getEditConfiguration(vreq, TripleLib.sdeDataTiples(), 
-        TripleLib.sdeSchemeTriples(), TripleLib.sdeForm(), new VIVOWebappConnector(vreq));
+        TripleLib.sdeSchemeTriples(), TripleLib.sdeForm(), 
+        TripleLib.sdeFormGraph(), new VIVOWebappConnector(vreq));
   }
 }
