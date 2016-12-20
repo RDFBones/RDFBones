@@ -1,6 +1,7 @@
 var elementMap = {
 	adder : Adder,
 	selector : Selector,
+	existingInstanceSelector : ExistingInstanceSelector,
 	stringInput : StringInput,
 }
 
@@ -93,15 +94,10 @@ Form.prototype = {
 var MainForm = function(){
 	
 	PopUpController.addWaitGif($("#form"))
-	$.ajax({
-		type : 'POST',
-		context : this,
-		dataType : 'json',
-		url : baseUrl + "formConfigLoader",
-		data : {
-			editKey : editKey,
-		}
-	}).done((function(msg) {
+	
+	$.ajax(AJAX.formDescriptor())
+	.done((function(msg) {
+		AJAX.errorhandling(msg)
 		formDescriptor = msg.formDescriptor
 		dataDependencies = msg.dataDependencies
 		if (objectUri != null) {

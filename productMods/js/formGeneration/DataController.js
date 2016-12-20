@@ -175,3 +175,43 @@ var DataController = {
 		return msgObject
 	}
 }
+
+var AJAX = {
+		
+		errorhandling : function(msg){
+			
+			if(msg.errormsg !== undefined){
+				PopUpController.note(msg.errormsg)
+			}
+		},
+		
+		formDescriptor : function(){
+			return AJAX.request("formDescriptor")
+		},
+		
+		request : function(task){
+			return	AJAX.requestData({	
+						editKey : editKey,
+						task : task,
+					})
+		},
+
+		requestObject : function(task, object){
+			return	AJAX.requestData($.extend({	
+						editKey : editKey,
+						task : task,
+					}, object))
+		},
+		
+		requestData : function(object){
+			return $.extend(AJAX.base, {
+				data : "requestData=" + JSON.stringify(object)
+			})
+		},
+		
+		base : {
+			type : 'POST',
+			dataType : 'json',
+			url : baseUrl + "ajaxservlet",
+		}, 
+}
