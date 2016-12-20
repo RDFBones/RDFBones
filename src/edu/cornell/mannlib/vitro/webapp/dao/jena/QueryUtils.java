@@ -17,6 +17,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import rdfbones.lib.JSON;
+
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFactory;
@@ -94,7 +96,6 @@ public class QueryUtils {
           }
         }
       }
-      log.info("QueryResult : \n " + resultMap.toString());
       resultList.add(resultMap);
     }
     return resultList;
@@ -318,5 +319,10 @@ public class QueryUtils {
       resultArray.put(jsonObject);
     }
     return resultArray;
+  }
+  
+  public static JSONObject getJSONObject(List<Map<String, String>> results){
+    
+    return (JSONObject) JSON.get(getJSON(results), 0);
   }
 }
