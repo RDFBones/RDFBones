@@ -84,11 +84,7 @@ public class TripleLib {
     triple.add(new RestrictionTriple("specimenCollectionProcessType", "obo:OBI_0000299",
         "specimenType", new String("owl:allValuesFrom")));
     triple.add(new RestrictionTriple("specimenCollectionProcessType", "obo:OBI_0000293",
-        "entireBonyPart", new String("owl:allValuesFrom")));
-    triple.add(new RestrictionTriple("entireBonyPart", "obo-fma:regional_part_of",
-        "bonyPart", "owl:allValuesFrom"));
-    triple.add(new RestrictionTriple("bonyPart", "obo-fma:constitutional_part_of",
-        "boneOrganType", "owl:someValuesFrom"));
+        new FormInputNode("boneSegmentType"), ArrayLib.getArray("owl:allValuesFrom", "owl:someValuesFrom")));
     triple.add(new QualifiedRestrictionTriple("assayType", "obo:OBI_0000299", new FormInputNode(
         "measurementDatumType")));
     triple.add(new GreedyRestrictionTriple(new FormInputNode("measurementDatumType"),
@@ -124,8 +120,8 @@ public class TripleLib {
     triple.add(new Triple("measurementDatum", "rdf:type", new FormInputNode(
         "measurementDatumType")));
     triple.add(new Triple("objectUri", "rdf:type", "studyDesignExecutionType"));
-    triple.add(new ExistingRestrictionTriple(new InputNode("boneOrgan"), "rdf:type",
-        "boneOrganType"));
+    triple.add(new ExistingRestrictionTriple(new InputNode("boneSegment"), "rdf:type",
+        "boneSegmentType"));
     triple.add(new ExistingRestrictionTriple(new InputNode("categoricalLabel"),
         "rdf:type", "categoricalLabelType"));
     return triple;

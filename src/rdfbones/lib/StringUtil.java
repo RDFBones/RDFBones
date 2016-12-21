@@ -38,4 +38,9 @@ public class StringUtil {
   public static String cutFromEnd(String str, String toCut){
     return str.substring(0, str.indexOf(toCut));
   }
+  
+  public static String cutFromEnd(String str, int n){
+  	
+    return str.substring(0, str.length() - (n + 1));
+  }
 }
