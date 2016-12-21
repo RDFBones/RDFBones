@@ -1,7 +1,6 @@
+var FormElement = function(form, descriptor, formOptions, predicate) {
 
-var FormElement = function(form, descriptor, formOptions, predicate){
-	
-	this.form = form
+	this.parentForm = form
 	this.descriptor = descriptor
 	this.dataKey = descriptor.dataKey
 	this.options = DataController.prepareOptions(formOptions[this.dataKey])
@@ -18,9 +17,9 @@ var Selector = function(form, descriptor, formOptions, predicate) {
 	FormElement.call(this, form, descriptor, formOptions, predicate)
 }
 
-Selector.prototype = $.extend(Object.create(FormElement.prototype),{
+Selector.prototype = $.extend(Object.create(FormElement.prototype), {
 
-	initUI : function(){
+	initUI : function() {
 		this.selector = new DataSetterSelectorFieldMap(this.options,
 				this.parentData, this.dataKey)
 		if (this.descriptor.arrangement !== undefined) {
@@ -32,8 +31,8 @@ Selector.prototype = $.extend(Object.create(FormElement.prototype),{
 		this.container.append(this.title).append(this.selector.container)
 	},
 
-	initData : function(){
-		if(this.dataObject[this.dataKey] !== undefined){
+	initData : function() {
+		if (this.dataObject[this.dataKey] !== undefined) {
 			this.selector.set(this.dataObject[this.dataKey])
 		} else {
 			this.dataObject[this.dataKey] = Object.keys(this.options)[0]
@@ -43,17 +42,17 @@ Selector.prototype = $.extend(Object.create(FormElement.prototype),{
 	changeData : function(selectedValue, text) {
 		this.dataObject[this.dataKey] = selectedValue
 	},
- })
+})
 
 var Adder = function(form, descriptor, formOptions, predicate) {
-	
+
 	FormElement.call(this, form, descriptor, formOptions, predicate)
 }
 
-Adder.prototype = $.extend(Object.create(FormElement.prototype),{
+Adder.prototype = $.extend(Object.create(FormElement.prototype), {
 
-	initUI : function(){
-		this.container =  html.div("adderContainer")
+	initUI : function() {
+		this.container = html.div("adderContainer")
 		this.title = html.div("inline").text(this.descriptor.title)
 		this.selector = UI.classSelectorMap(this.options)
 		this.addButton = new TextButton("Add", (this.add).bind(this))
@@ -61,21 +60,21 @@ Adder.prototype = $.extend(Object.create(FormElement.prototype),{
 		this.subContainer = html.div("subContainer")
 		this.container.append(this.title).append(this.selector).append(
 				this.addButton.container)
-		if(Object.keys(this.options).length > 1)
-				this.container.append(this.addAllButton.container)
+		if (Object.keys(this.options).length > 1)
+			this.container.append(this.addAllButton.container)
 		this.container.append(this.subContainer)
 	},
-	
+
 	initData : function() {
 
 		this.addedValues = []
 		this.subForms = []
 		this.cnt = 0
 		this.addingAll = false
-		
-		if(this.dataObject[this.predicate] !== undefined){
+
+		if (this.dataObject[this.predicate] !== undefined) {
 			this.existingData = this.parentData[this.predicate]
-			if(this.existingData.length > 0){
+			if (this.existingData.length > 0) {
 				parentForm.existingCounter++
 			}
 			this.existingLoad = true
@@ -86,94 +85,102 @@ Adder.prototype = $.extend(Object.create(FormElement.prototype),{
 			this.dataObject[this.predicate] = this.existingData
 		}
 	},
-	
-	showExistingData : function(){
-		$.each(this.localData, (function(i, object){
-			this.title = DataController.getLabel(this.options, object[this.dataKey]) 
-			if(this.descriptor.formElements !== undefined) {
+
+	showExistingData : function() {
+		$.each(this.localData, (function(i, object) {
+			this.title = DataController.getLabel(this.options,
+					object[this.dataKey])
+			if (this.descriptor.formElements !== undefined) {
 				this.cnt++
 				this.subForms.push(new Form(this, object))
 			} else {
-				this.subContainer.append(html.div("subElement").text(object[this.dataKey + "Label"]))
+				this.subContainer.append(html.div("subElement").text(
+						object[this.dataKey + "Label"]))
 			}
 		}).bind(this))
-		if(this.localData.length > 0 && this.descriptor.formElements === undefined){
+		if (this.localData.length > 0
+				&& this.descriptor.formElements === undefined) {
 			this.parentForm.ready()
 		}
 	},
 
-	add : function(){
+	add : function() {
 
-		if(this.addAllFlag){
+		if (this.addAllFlag) {
 			PopUpController.note("All types have been already added!")
-		} else if(this.existingData.getObjectByKey(this.dataKey, this.selector.val()) != null){
-			var text = this.selector.find("option[value='" + this.selector.val() + "']").text()
+		} else if (this.existingData.getObjectByKey(this.dataKey, this.selector
+				.val()) != null) {
+			var text = this.selector.find(
+					"option[value='" + this.selector.val() + "']").text()
 			PopUpController.note(text + " have already been added!");
 		} else {
 			var object = new Object()
 			object[this.dataKey] = this.selector.val()
-			object[this.dataKey + "Label"] = this.selector.find("option[value='" + this.selector.val() + "']").text()
-			this.title = object[this.dataKey + "Label"] 
+			object[this.dataKey + "Label"] = this.selector.find(
+					"option[value='" + this.selector.val() + "']").text()
+			this.title = object[this.dataKey + "Label"]
 			this.existingData.push(object)
-			this.addSubForm(object)			
+			this.addSubForm(object)
 		}
 	},
-	
-	addAll : function(){
-		
+
+	addAll : function() {
+
 		PopUpController.addSubWaitGif(this.subContainer)
 		DataController.loadSubFormDataAll(this, Object.keys(this.options))
 	},
-	
-	initAll : function(data){
-		
-		$.each(data, (function(key, value){
-			//The key is the uri
+
+	initAll : function(data) {
+
+		$.each(data, (function(key, value) {
+			// The key is the uri
 			label = this.options[key].label;
 			var object = new Object()
 			object[this.dataKey] = key
 			object[this.dataKey + "Label"] = this.options[key].label
-			this.localData.push(object)
+			this.existingData.push(object)
 			this.title = this.options[key].label
 			console.log("AllValue")
 			console.log(value)
 			this.subForms.push(new SubForm(this, object, value))
-		}).bind(this)) 
-		this.addSubForms()	
+		}).bind(this))
+		this.addSubForms()
 		PopUpController.remove()
 	},
 
-	addSubForm : function(object){
+	addSubForm : function(object) {
 
-		if(this.descriptor.formElements !== undefined) {
+		if (this.descriptor.formElements !== undefined) {
 			this.cnt++
 			PopUpController.addSubWaitGif(this.subContainer)
 			this.subForms.push(new Form(this, object))
 		} else {
-			this.subContainer.append(html.div("subElement").text(object[this.dataKey + "Label"]))
+			this.subContainer.append(html.div("subElement").text(
+					object[this.dataKey + "Label"]))
 		}
 	},
-	
-	ready : function(){
-		
+
+	ready : function() {
+
 		this.cnt--
-		if(this.cnt == 0){
-			if(this.existingLoad){
+		if (this.cnt == 0) {
+			if (this.existingLoad) {
 				this.addSubForms()
 				this.parentForm.ready()
 				this.existingLoad = false
-			} else if(this.addAllFlag){
+			} else if (this.addAllFlag) {
 				this.addSubForms()
 				PopUpController.remove()
 			} else {
-				PopUpController.removeWaitGif(this.subContainer, this.subForms[this.subForms.length - 1].container)
+				PopUpController.removeWaitGif(this.subContainer,
+						this.subForms[this.subForms.length - 1].container)
 			}
 		}
 	},
-	
-	addSubForms : function(){
-		
-		$.each(this.subForms, (function(i, subForm){
+
+	addSubForms : function() {
+
+		$.each(this.subForms, (function(i, subForm) {
 			this.subContainer.append(subForm.container)
 		}).bind(this))
 	}
@@ -192,32 +199,51 @@ var StringInput = function(descriptor) {
 	this.container.append(this.title).append(this.textBoxDiv)
 }
 
-StringInput.prototype = {
+StringInput.prototype = {}
 
-}
+var ExistingInstanceSelector = function(form, descriptor, formOptions,
+		predicate) {
 
-var ExistingInstanceSelector = function(form, descriptor, formOptions, predicate){
-	
 	FormElement.call(this, form, descriptor, formOptions, predicate)
 }
 
-ExistingInstanceSelector.prototype = {
-		
-	initUI : function(){
-		this.container = new TextButton(this.title, (this.loadTableData).bind(this)).container
+ExistingInstanceSelector.prototype = $.extend(Object.create(FormElement.prototype), {
+
+	initUI : function() {
+
+		this.title = this.descriptor.title
+		this.container = new TextButton(this.title, (this.loadTableData).bind(this), "inline").container
 	},
-		
-	initData : function(){
-		
+
+	initData : function() {
+
+		if(this.dataObject[this.dataKey] !== undefined){
+			this.existingData = this.dataObject[this.dataKey]
+		} else {
+			this.existingData = []
+		}
 	},
-	
-	loadTableData : function(){
-		
-		if(this.descriptor.table != undefined){
-			new InstanceSelector(this, this.descriptor.table, this.existingData)
+
+	loadTableData : function() {
+
+		if (this.descriptor.table != undefined) {
+			new InstanceSelector(this, this.descriptor.table, this.getArray(),
+					Object.keys(this.options))
 		} else {
 			alert("Table is not defined")
 		}
 	},
-}
-
+	
+	getArray : function(){
+		
+		if(this.existingData.length == 0){
+			return []
+		} else {
+			var arr = []
+			$.each(this.existingData, (function(i, value){
+				arr.push(value[this.dataKey])
+			}).bind(this))
+			return arr
+		}
+	}
+})
