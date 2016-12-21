@@ -1,4 +1,4 @@
-var elementMap = {
+var ElementMap = {
 	adder : Adder,
 	selector : Selector,
 	existingInstanceSelector : ExistingInstanceSelector,
@@ -29,7 +29,7 @@ SubForm.prototype = {
 		this.formContainer = html.div("inline")
 		this.subFormElements = new Object()
 		$.each(this.descriptor.formElements, (function(key, value){
-			this.subFormElements[key] = new elementMap[value.type](key, value, formData, this)
+			this.subFormElements[key] = new ElementMap[value.type](key, value, formData, this)
 		}).bind(this))
 		UIelements = []
 		$.each(this.subFormElements, (function(key, element){
@@ -45,7 +45,6 @@ var Form = function(parentForm, data, mainForm, title){
 	this.mainForm = util.setUndefined(mainForm, false)
 	this.parentForm = parentForm
 	this.dataObject = data
-	//this.container = parentForm.subContainer
 	this.container = html.div()
 	this.descriptor = parentForm.descriptor
 	this.title = parentForm.title
@@ -57,7 +56,7 @@ var Form = function(parentForm, data, mainForm, title){
 Form.prototype = {
 		
 	//This is called by the DataController
-	init : function(formData) {
+	init : function(formOptions) {
 		
 		//Pre UI
 		titleStyle = (this.descriptor.style === undefined) ? "formTitle" : "formTitleInline"
@@ -66,7 +65,7 @@ Form.prototype = {
 		this.formContainer = html.div("inline")
 		this.subFormElements = new Object()
 		$.each(this.descriptor.formElements, (function(key, value){
-			this.subFormElements[key] = new elementMap[value.type](key, value, formData, this)
+			this.subFormElements[key] = new ElementMap[value.type](this, value, formOptions, key)
 		}).bind(this))
 		this.loadUI()
 	},
