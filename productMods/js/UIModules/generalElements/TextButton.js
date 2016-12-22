@@ -4,14 +4,13 @@ var TextButton = function(text, returnFunction, style){
 	
 	this.enabled = true
 	this.returnFunction = returnFunction
-	this.container = UI.getTextButton(text, "button" +  buttonID).addClass(this.getStyle())
+	this.container = UI.getTextButton(text, "button" +  buttonID).addClass(this.getStyle() + " " + style)
 	$(document).on("click", "#button" +  buttonID, (this.clickEvent).bind(this))
 	buttonID++
 }
 
 TextButton.prototype = {
 		
-	
 	getStyle : function(){
 		return "generalButton"
 	},

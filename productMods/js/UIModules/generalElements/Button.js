@@ -4,7 +4,10 @@ var Button = function(type, returnFunction){
 
 	this.returnFunction = returnFunction
 	this.enabled = true
-	this.container = ImgUI.libImg(type, "addFieldImg enabledImg").click((this.clickEvent).bind(this))
+	this.container = ImgUI.libImg(type, "addFieldImg enabledImg")
+	this.container.attr("id", "button" + buttonID)
+	$(document).on("click", "#button" +  buttonID, (this.clickEvent).bind(this))
+	buttonID++
 }
 
 Button.prototype = {
@@ -16,7 +19,7 @@ Button.prototype = {
 	},	
 	
 	show : function(){
-		this.container.css("display", "inline-block")
+		this.container.css("display","inline-block")
 		return this
 	},
 	
