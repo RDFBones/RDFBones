@@ -37,12 +37,17 @@ public class AJAXController {
 				if (check(KEY) && check(INSTANCEARRAY)) {
 					if (formConfig.formGraphs.containsKey(get(KEY))) {
 						FormGraph graph = formConfig.formGraphs.get(get(KEY));
+						graph.debug();
 						response(TABLEDATA, graph.getTableData(getJSONArray(INSTANCEARRAY)));
 					} else {
 						AJAXError.noFormGraphKey(response, get(KEY));
 					}
 				}
 				break;
+			case "dependentData" : 
+				break;
+				
+
 			default:
 				AJAXError.unknownTask(response, get(TASK));
 				break;
@@ -63,7 +68,7 @@ public class AJAXController {
 	}
 
 	public void response(String key, Object value){
-		JSON.put(this.requestData, key, value);
+		JSON.put(this.response, key, value);
 	}
 	
 	public String get(String key) {
