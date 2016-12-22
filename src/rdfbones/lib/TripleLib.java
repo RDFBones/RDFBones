@@ -18,6 +18,7 @@ import rdfbones.rdfdataset.ExistingRestrictionTriple;
 import rdfbones.rdfdataset.FormInputNode;
 import rdfbones.rdfdataset.GreedyRestrictionTriple;
 import rdfbones.rdfdataset.InputNode;
+import rdfbones.rdfdataset.LiteralTriple;
 import rdfbones.rdfdataset.MainInputNode;
 import rdfbones.rdfdataset.MultiTriple;
 import rdfbones.rdfdataset.QualifiedRestrictionTriple;
@@ -148,11 +149,11 @@ public class TripleLib {
   public static List<Triple> boneOrganTriples(){
 	  
 	  List<Triple> triples = new ArrayList<Triple>();
-	  triples.add(new Triple("boneSegment", "obo:systemic_part_of", "bonyPart"));
-	  triples.add(new Triple("bonyPart", "obo:systemic_part_of", "boneOrgan"));
+	  triples.add(new Triple("boneSegment", "obo-fma:regional_part_of", "bonyPart"));
+	  triples.add(new Triple("bonyPart", "obo-fma:constitutional_part_of", "boneOrgan"));
 	  triples.add(new Triple("boneOrgan", "vitro:mostSpecificType", "type"));
-	  triples.add(new Triple("type", "rdfs:label", "typeLabel"));
-	  triples.add(new Triple("boneOrgan", "rdfs:label", "label"));
+	  triples.add(new LiteralTriple("type", "rdfs:label", "typeLabel"));
+	  triples.add(new LiteralTriple("boneOrgan", "rdfs:label", "label"));
 	  triples.addAll(getImageTriples("boneOrgan"));
 	  return triples;
   }
@@ -161,8 +162,8 @@ public class TripleLib {
 	
 	  List<Triple> triples = new ArrayList<Triple>();
 	  triples.add(new MultiTriple(varName,  "rdfbones:isDepicted", "image"));
-	  triples.add(new Triple("image",  "http://vivo.mydomain.edu/individual/hasFile", "file"));
-	  triples.add(new Triple("file",  "vitro-public:downloadLocation", "byteStream"));
+	  triples.add(new Triple("image",  "<http://vivo.mydomain.edu/individual/hasFile>", "file"));
+	  triples.add(new LiteralTriple("file",  "vitro-public:downloadLocation", "url"));
 	  return triples;
   }
   
