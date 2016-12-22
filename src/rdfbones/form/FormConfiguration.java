@@ -26,7 +26,7 @@ public class FormConfiguration {
     this.formGraphs = formGraphs;
     //Setting all the main graphs
     for(String key : this.formGraphs.keySet()){
-    	this.formGraphs.get(key).mainGraph = this.dataGraph;
+    	this.formGraphs.get(key).setMainGraph(this.dataGraph);
     }
   }
   

@@ -31,7 +31,7 @@ public class FormGraph extends Graph {
 	
 	public FormGraph(List<Triple> triples, String startNode) {
 
-		this.mainGraph = this;
+		//this.mainGraph = this;
 		this.inputNode = startNode;
 		this.initialize(triples);
 		this.initGraphStructure();
@@ -91,4 +91,13 @@ public class FormGraph extends Graph {
 				GraphLib.getUris(this.dataTriples),
 				GraphLib.getLiterals(this.dataTriples), this.inputNode);
 	}
+	
+	public void setMainGraph(Graph graph){
+		this.mainGraph = graph;
+		this.dataRetriever.mainGraph = graph;
+		for(String key : this.subGraphs.keySet()){
+			((FormGraph) this.subGraphs.get(key)).setMainGraph(graph);
+		}
+	}
+	
 }
