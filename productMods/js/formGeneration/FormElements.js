@@ -227,7 +227,7 @@ ExistingInstanceSelector.prototype = $.extend(Object.create(FormElement.prototyp
 	loadTableData : function() {
 
 		if (this.descriptor.table != undefined) {
-			new InstanceSelector(this, this.descriptor.table, this.getArray(),
+			new InstanceSelector(this, this.descriptor, this.getArray(),
 					Object.keys(this.options))
 		} else {
 			alert("Table is not defined")
