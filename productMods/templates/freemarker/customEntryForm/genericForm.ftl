@@ -4,9 +4,13 @@
 </script>
 
 <#include "formCSS.ftl">
+<#include "cssImport.ftl">
 <#include "UIscriptImport.ftl">
 
 ${scripts.add(
+	'<script type="text/javascript" src="${urls.base}/js/formGeneration/Cells.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/formGeneration/TableRow.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/formGeneration/InstanceSelector.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/formGeneration/DataController.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/formGeneration/FormElements.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/formGeneration/FormLoader.js"></script>')}
