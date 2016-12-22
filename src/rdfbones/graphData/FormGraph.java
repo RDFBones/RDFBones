@@ -19,6 +19,7 @@ import rdfbones.lib.MainGraphSPARQLDataGetter;
 import rdfbones.lib.QueryLib;
 import rdfbones.lib.SPARQLDataGetter;
 import rdfbones.lib.SPARQLUtils;
+import rdfbones.lib.StringUtil;
 import rdfbones.rdfdataset.MultiTriple;
 import rdfbones.rdfdataset.RDFNode;
 import rdfbones.rdfdataset.Triple;
@@ -68,18 +69,19 @@ public class FormGraph extends Graph {
 		this.initGraphMap(this);
 	}
 
-	public void initGraphMap(FormGraph graph) {
+	
+	@Override
+	public void initGraphMap(Graph graph) {
 
-		for (RDFNode key : this.initialGraphMap.keySet()) {
+	  for (RDFNode key : this.initialGraphMap.keySet()) {
 			Graph subGraph = this.initialGraphMap.get(key);
 			Triple triple = subGraph.triple;
 			if (triple instanceof MultiTriple) {
 				subGraph.inputNode = GraphLib.getObject1(triple, key.varName);
 				subGraph.inputPredicate = triple.predicate;
 				subGraph.mainGraph = graph.mainGraph;
+				subGraph.dataTriples.add(triple);
 				subGraph.initGraphStructure();
-				if (subGraph.triple != null)
-					subGraph.dataTriples.add(triple);
 				graph.subGraphs.put(QueryLib.getPredicateKey(triple.predicate),
 						(FormGraph) subGraph);
 			} else {
