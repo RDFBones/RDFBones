@@ -8,6 +8,7 @@ public class TableCell {
 
 	String title;
 	String varName;
+	String type = new String("literalCell");
 	int num;
 	
 	public TableCell(String title, String varName, int num){
@@ -23,6 +24,7 @@ public class TableCell {
     JSON.put(object, "title", this.title);
     JSON.put(object, "dataKey", this.varName);
     JSON.put(object, "num", this.num);
+    JSON.put(object, "type", this.type);
     return object;
 	}
 }
