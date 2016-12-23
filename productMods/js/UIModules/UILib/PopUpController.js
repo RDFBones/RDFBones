@@ -5,6 +5,7 @@ var PopUpController = {
 	initialized : false,
 	startDate : null,
 	waitGif : null,
+	cont : $("#popUpContainer"),
 	
 	init : function(text){
 		
@@ -27,7 +28,16 @@ var PopUpController = {
 			this.disableScroll()
 			this.initialized = true
 		}
-
+	},
+	
+	set : function(element){
+		
+		this.container.empty()
+		this.container.append( 
+				UI.getFullScreenInner().append(element))
+		$("#popUpContainer").append(this.container)
+		this.disableScroll()
+		this.initialized = true
 	},
 	
 	initWaiting : function(){
@@ -71,8 +81,8 @@ var PopUpController = {
 			this.container = html.div("popUpOuter")
 			this.innerContainer = UI.getFullScreenInner()
 					.append(html.div("verticalMiddleContainer")
-					.append(html.div("msgText").text(msg))
-					.append(ImgUI.libImg("done32", "inline margin10")))
+							.append(html.div("msgText").text(msg))
+							.append(ImgUI.libImg("done32", "inline margin10")))
 			this.container.append(this.innerContainer)
 			this.disableScroll()
 			$("#popUpContainer").append(this.container)
