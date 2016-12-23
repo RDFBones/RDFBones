@@ -73,9 +73,9 @@ Adder.prototype = $.extend(Object.create(FormElement.prototype), {
 		this.addingAll = false
 
 		if (this.dataObject[this.predicate] !== undefined) {
-			this.existingData = this.parentData[this.predicate]
+			this.existingData = this.dataObject[this.predicate]
 			if (this.existingData.length > 0) {
-				parentForm.existingCounter++
+				this.parentForm.existingCounter++
 			}
 			this.existingLoad = true
 			this.showExistingData()
@@ -87,7 +87,7 @@ Adder.prototype = $.extend(Object.create(FormElement.prototype), {
 	},
 
 	showExistingData : function() {
-		$.each(this.localData, (function(i, object) {
+		$.each(this.existingData, (function(i, object) {
 			this.title = DataController.getLabel(this.options,
 					object[this.dataKey])
 			if (this.descriptor.formElements !== undefined) {
@@ -98,7 +98,7 @@ Adder.prototype = $.extend(Object.create(FormElement.prototype), {
 						object[this.dataKey + "Label"]))
 			}
 		}).bind(this))
-		if (this.localData.length > 0
+		if (this.existingData.length > 0
 				&& this.descriptor.formElements === undefined) {
 			this.parentForm.ready()
 		}
@@ -217,20 +217,25 @@ ExistingInstanceSelector.prototype = $.extend(Object.create(FormElement.prototyp
 
 	initData : function() {
 
-		if(this.dataObject[this.dataKey] !== undefined){
-			this.existingData = this.dataObject[this.dataKey]
+		if(this.dataObject[this.predicate] !== undefined){
+			this.existingData = this.dataObject[this.predicate]
 		} else {
 			this.existingData = []
+			this.dataObject[this.predicate] = this.existingData
 		}
 	},
 
 	loadTableData : function() {
 
-		if (this.descriptor.table != undefined) {
-			new InstanceSelector(this, this.descriptor, this.getArray(),
-					Object.keys(this.options))
+		if(this.instanceSelector != undefined){
+			 this.instanceSelector.display()
 		} else {
-			alert("Table is not defined")
+			if (this.descriptor.table != undefined) {
+				this.instanceSelector = new InstanceSelector(this, this.descriptor, this.getArray(),
+						Object.keys(this.options))
+			} else {
+				alert("Table is not defined")
+			}	
 		}
 	},
 	
