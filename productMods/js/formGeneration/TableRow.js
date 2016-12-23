@@ -25,7 +25,9 @@ DataTable.prototype = {
 
 		rows = []
 		$.each(this.dataArray, (function(i, element) {
-			rows.push(new InstanceRow(this, element, added).container)
+			instanceRow = new InstanceRow(this, element, added)
+			this.instanceSelector.instanceRows.push(instanceRow)
+			rows.push(instanceRow.container)
 		}).bind(this))
 		if (this.dataArray.length > 0) {
 			this.dataContainer.append(rows)
