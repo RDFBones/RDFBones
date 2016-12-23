@@ -23,10 +23,11 @@
 .columnContainer {
 	display: inline-block;
 	width: 180px;
-	height: 40px;
+	height: 22px;
 	vertical-align: middle;
-	padding: 2px;
+	padding: 1px;
 	border: 2px solid white;
+	font-size: 11px;
 }
 
 .columnContent {
@@ -74,4 +75,12 @@
 
 .imgCheckBoxContainer {
 	text-align: center;
+}
+
+
+.dataContainer {
+	border : 1px solid black;
+	border-radius : 3px;
+	min-height : 30px;
+	padding : 5px;
 }

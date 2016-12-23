@@ -6,7 +6,11 @@ var util = {
 		} else {
 			return value
 		}
-	}	
+	},
+
+	flip : function(bool){
+		bool = bool ? false : true
+	}
 }
 
 
@@ -16,4 +20,17 @@ var strUtil = {
 		arr = str.split(char)
 		return arr[arr.length -1]
 	}	
+}
+
+var arrayutil = {
+
+	subtract : function(base, arr){
+
+		$.each(arr, function(i, value){
+			index = base.indexOf(value)
+			if(index > -1){
+				base.splice(index, 1)
+			}
+		})	
+	}
 }
