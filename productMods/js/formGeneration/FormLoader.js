@@ -3,11 +3,12 @@ var ElementMap = {
 	selector : Selector,
 	existingInstanceSelector : ExistingInstanceSelector,
 	stringInput : StringInput,
+	literalCell : LiteralCell,
+	imagesCell : ImagesCell, 
 }
 
 var SubForm = function(parentForm, data, formData){
 	
-	//What do I have to do here?
 	this.mainForm = false
 	this.parentForm = parentForm
 	this.dataObject = data
@@ -29,7 +30,7 @@ SubForm.prototype = {
 		this.formContainer = html.div("inline")
 		this.subFormElements = new Object()
 		$.each(this.descriptor.formElements, (function(key, value){
-			this.subFormElements[key] = new ElementMap[value.type](key, value, formData, this)
+			this.subFormElements[key] = new ElementMap[value.type](this, value, formData, key)
 		}).bind(this))
 		UIelements = []
 		$.each(this.subFormElements, (function(key, element){
@@ -93,13 +94,14 @@ Form.prototype = {
 var MainForm = function(){
 	
 	PopUpController.addWaitGif($("#form"))
-	
+	this.edit = false
 	$.ajax(AJAX.formDescriptor())
 	.done((function(msg) {
 		AJAX.errorhandling(msg)
 		formDescriptor = msg.formDescriptor
 		dataDependencies = msg.dataDependencies
 		if (objectUri != null) {
+			this.edit = true
 			this.loadExistingData()
 		} else {
 			formData.existingData = new Object()
@@ -114,12 +116,17 @@ MainForm.prototype =  {
 
 	ready : function(){
 		this.container = html.div()
-		this.submitButton = new TextButton("Submit", (this.submit).bind(this)).container
-		this.container.append(this.subForm.container).append(this.submitButton)
+		this.submitButton = new TextButton("Submit", (this.submit).bind(this))
+		this.cancelButton = new TextButton("Cancel", (this.cancel).bind(this))
+		this.container.append(this.subForm.container)
+		if(!this.edit)
+			this.container.append(this.submitButton.container)
+		this.container.append(this.cancelButton.container)	
 		PopUpController.removeWaitGif($("#form"), this.container)
 	},
 	
 	init : function(){
+		
 		//Data
 		this.descriptor = formDescriptor
 		this.dataObject = formData.existingData
@@ -180,4 +187,9 @@ MainForm.prototype =  {
 			this.init()
 		}).bind(this))
 	},
+
+	cancel : function(){
+		window.location = baseUrl + "display/" +
+				 		subjectUri.split("/")[subjectUri.split("/").length-1]
+	}
 }
