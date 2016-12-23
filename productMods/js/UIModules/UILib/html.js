@@ -17,7 +17,6 @@ var html = {
 		return $("<div/>").addClass(classes).text(text)
 	},
 	
-
 	divId : function(id){
 		return html.div().attr("id", id)
 	},

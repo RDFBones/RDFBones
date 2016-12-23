@@ -1,10 +1,8 @@
 
 
-
 var SelectorField = function(dataSet, changeFunction, config){
 	
 	this.container = html.div()
-	
 	this.selectorField = html.getSelectorField(config.id, config.name)
 		.change(function(){
 			changeFunction(this.value)
@@ -16,10 +14,8 @@ var SelectorField = function(dataSet, changeFunction, config){
 			text : data.label,
 		}).appendTo(this.selectorField)
 	}).bind(this))
-	
 	this.container.append(this.selectorField)
 }
-
 
 SelectorField.prototype = {
 	
@@ -49,7 +45,6 @@ var DataSetterSelectorField = function(dataSet, dataToSet, key){
 		}).appendTo(this.selectorField)
 	}).bind(this))
 	this.container.append(this.selectorField)
-
 }
 
 var DataSetterSelectorFieldMap = function(dataSet, dataToSet, key){
@@ -62,7 +57,6 @@ var DataSetterSelectorFieldMap = function(dataSet, dataToSet, key){
 			console.log(this.selectorField.val())
 			this.dataToSet[this.key] = this.selectorField.val()
 		}).bind(this))
-		
 	$.each(dataSet, (function(key, value) {
 		$("<option/>", {
 			value : key,
@@ -70,7 +64,6 @@ var DataSetterSelectorFieldMap = function(dataSet, dataToSet, key){
 		}).appendTo(this.selectorField)
 	}).bind(this))
 	this.container.append(this.selectorField)
-
 }
 
 DataSetterSelectorFieldMap.prototype = {
