@@ -26,6 +26,7 @@ public class N3Utils {
       put("owl", "http://www.w3.org/2002/07/owl#");
       put("sw", "http://softwareOntology.com/");
       put("obo-fma", "http://purl.obolibrary.org/obo/fma#");
+      
     }};
     
     public static String getPrefixes(){

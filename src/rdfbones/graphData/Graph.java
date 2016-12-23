@@ -112,7 +112,7 @@ public class Graph {
 
   public void initGraphMap(Graph graph) {
 
-   for (RDFNode key : this.initialGraphMap.keySet()) {
+	 for (RDFNode key : this.initialGraphMap.keySet()) {
       Graph subGraph = this.initialGraphMap.get(key);
       Triple triple = subGraph.triple;
       if (triple instanceof MultiTriple) {
@@ -301,7 +301,8 @@ public class Graph {
     this.mainGraph.getWebapp().log(JSON.debug(this.dependencyDescriptor()));
     for (String key : this.variableDependencies.keySet()) {
       VariableDependency dep = this.variableDependencies.get(key);
-      this.mainGraph.getWebapp().log(dep.queryDebug());
+      this.mainGraph.log("\n" + key + "\n");
+      this.mainGraph.log(dep.queryDebug());
     }
   }
 

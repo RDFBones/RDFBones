@@ -42,7 +42,7 @@ public class RestrictionTriple extends Triple{
   			triples += restType + " = " + this.types[i] + " ||"; 
     	}
   		triples = StringUtil.cutFromEnd(triples, 2);
-  		triples += ") .";
+  		triples += ") .\n";
     } else {
       triples += "\t" + restriction + " " + this.restrictionType + " ?" + this.object.varName + ".\n"; 
     }
