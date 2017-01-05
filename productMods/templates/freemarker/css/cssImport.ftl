@@ -1,25 +1,35 @@
-	<link rel="stylesheet" type="text/css" href="${urls.base}/css/lib.css">
-	<link rel="stylesheet" type="text/css" href="${urls.base}/css/image.css">
+	<#macro css url>
+		<link rel="stylesheet" type="text/css" href="${urls.base}/css/${url}.css">
+	</#macro>
+	
+	<@css url="lib" />
+	<@css url="image" />
 	
 	<link rel="stylesheet" type="text/css" href="${urls.base}/js/previewJS/css/lightbox.css">
 	
-	<link rel="stylesheet" type="text/css" href="${urls.base}/css/moduleLoader/tableView.css">
-	<link rel="stylesheet" type="text/css" href="${urls.base}/css/moduleLoader/treeView.css">	
-	<link rel="stylesheet" type="text/css" href="${urls.base}/css/moduleLoader/View.css">	
+	<@css url="formGeneration/InstanceBrowser" />
+	<@css url="formGeneration/Item" />
+	<@css url="formGeneration/Navigator" />
+	<@css url="formGeneration/SelectorTable" />
 	
-	<link rel="stylesheet" type="text/css" href="${urls.base}/css/skeletalInventoryCEF/boneSegmentField.css">	
-	<link rel="stylesheet" type="text/css" href="${urls.base}/css/skeletalInventoryCEF/classSelector.css">	
-	<link rel="stylesheet" type="text/css" href="${urls.base}/css/skeletalInventoryCEF/systemicPartSelector.css">	
+	<@css url="moduleLoader/tableView" />
+	<@css url="moduleLoader/treeView" />	
+	<@css url="moduleLoader/View" />	
 	
-	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/pageElements/AddNew.css">	
-	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/pageElements/DataTable.css">	
-	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/pageElements/collector.css">	
-	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/pageElements/Tab.css">	
+	<@css url="pageElements/Module" />
 	
-	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/BoneEditor.css">	
-	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/LiteralEditor.css">
-	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/ImageEditor.css">
-	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/SubboneEditor.css">
-	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/SingleElements.css">
-	<link rel="stylesheet" type="text/css" href="${urls.base}/css/UIModules/PopUpController.css">
+	<@css url="skeletalInventoryCEF/boneSegmentField" />	
+	<@css url="skeletalInventoryCEF/classSelector" />	
+	<@css url="skeletalInventoryCEF/systemicPartSelector" />	
 	
+	<@css url="UIModules/pageElements/AddNew" />	
+	<@css url="UIModules/pageElements/DataTable" />	
+	<@css url="UIModules/pageElements/collector" />	
+	<@css url="UIModules/pageElements/Tab" />	
+	
+	<@css url="UIModules/BoneEditor" />	
+	<@css url="UIModules/LiteralEditor" />
+	<@css url="UIModules/ImageEditor" />
+	<@css url="UIModules/SubboneEditor" />
+	<@css url="UIModules/SingleElements" />
+	<@css url="UIModules/PopUpController" />
