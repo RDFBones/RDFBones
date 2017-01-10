@@ -7,14 +7,6 @@
 <#include "cssImport.ftl">
 <#include "UIscriptImport.ftl">
 
-${scripts.add(
-	'<script type="text/javascript" src="${urls.base}/js/formGeneration/Cells.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/formGeneration/TableRow.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/formGeneration/InstanceSelector.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/formGeneration/DataController.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/formGeneration/FormElements.js"></script>',
-	'<script type="text/javascript" src="${urls.base}/js/formGeneration/FormLoader.js"></script>')}
-	
 <div id = "form">
 	<!-- Here will be the form loaded by the FormGenerator class -->
 </div>
@@ -28,8 +20,8 @@ ${scripts.add(
 	var subjectUri = "${editConfiguration.subjectUri}"
 	var dataSaveUri = baseUrl + "dataGenerator"
 	var formData = new Object()
-	var	buttonID = 0;
-	
+	var	buttonID = 0
+	var debug = false
 	<#if editConfiguration.objectUri?has_content>
     var	objectUri = '${editConfiguration.objectUri}'
     <#else>
