@@ -1,52 +1,67 @@
-
 var DataController = {
-	
-		
+
 	id : 0,
-	getId : function(){
-		
+	getId : function() {
+
 		this.id++;
 		return "elementId" + this.id
 	},
-	
-	loadSubformData : function(form){
-	
-		//PopUpController.init("Loading form data")
+
+	loadSubformData : function(form) {
+
+		// PopUpController.init("Loading form data")
 		var start = new Date()
-		//Only one AJAX call comes
+		// Only one AJAX call comes
 		dependentVars = new Object()
-		$.each(form.descriptor.formElements, function(key, formElement){
-			//Check if dependent or independent the data is
-			dataKey = DataController.getDataKey(key, formElement)
-			dependentVars[dataKey] = DataController.getInputObject(form, dataKey)
+		$.each(form.descriptor.formElements, function(key, formElement) {
+			if (formElement.type != "existingInstanceSelector") {
+				// Check if dependent or independent the data is
+				dataKey = DataController.getDataKey(key, formElement)
+				if (dataDependencies[dataKey] !== undefined) {
+					dependentVars[dataKey] = DataController.getInputObject(
+							form, dataKey)
+				}
+			}
 		})
 		var toSend = {
 			editKey : editKey,
 			dependentVars : dependentVars,
 		}
-		if(Object.keys(dependentVars).length > 0){
+		if (Object.keys(dependentVars).length > 0) {
 			$.ajax({
 				type : 'POST',
 				context : this,
 				dataType : 'json',
 				url : baseUrl + "formDataLoader",
-				data : "requestData=" + JSON.stringify(toSend)})
-				.done((function(msg) {
-					form.init(this.prepare(msg))
-				}).bind(this))
+				data : "requestData=" + JSON.stringify(toSend)
+			}).done((function(msg) {
+				form.init(this.prepare(msg))
+			}).bind(this))
 		} else {
 			form.init()
 		}
 	},
 
-	loadSubFormDataAll : function(form, inputList){
+	getGraphDataParams : function(instanceSelector) {
+
+		var dataKey = instanceSelector.dataKey
+		var dependentVars = new Object()
+		if (dataDependencies[dataKey] !== undefined) {
+			dependentVars = DataController.getInputObject(
+					instanceSelector.formElement.parentForm, dataKey)
+		}
+		return [dependentVars, dataKey]
+	},
+
+	loadSubFormDataAll : function(form, inputList) {
 		
 		var dependentVars = new Object()
-		$.each(form.descriptor.formElements, function(key, formElement){
-			//Check if dependent or independent the data is
-			if(key != form.dataKey){
+		$.each(form.descriptor.formElements, function(key, formElement) {
+			// Check if dependent or independent the data is
+			if (key != form.dataKey) {
 				dataKey = DataController.getDataKey(key, formElement)
-				dependentVars[dataKey] = DataController.getInputObject(form.parentForm, dataKey)
+				dependentVars[dataKey] = DataController.getInputObject(
+						form.parentForm, dataKey)
 			} else {
 				dependentVars[dataKey] = inputList
 			}
@@ -57,65 +72,69 @@ var DataController = {
 			arrayKey : form.dataKey,
 			dependentVars : dependentVars,
 		}
+
 		toSend[form.dataKey] = inputList
-		if(Object.keys(dependentVars).length > 0){
+		if (Object.keys(dependentVars).length > 0) {
 			$.ajax({
 				type : 'POST',
 				context : this,
 				dataType : 'json',
 				url : baseUrl + "formDataLoader",
-				data : "requestData=" + JSON.stringify(toSend)})
-				.done((function(msg) {
-					form.initAll(msg)
-				}).bind(this))
+				data : "requestData=" + JSON.stringify(toSend)
+			}).done((function(msg) {
+				form.initAll(msg)
+			}).bind(this))
 		} else {
 			form.init()
 		}
 	},
-	
-	getInputObject : function(form, dataKey){
-		
+
+	getInputObject : function(form, dataKey) {
+
 		var msgObject = new Object()
-		$.each(dataDependencies[dataKey], function(i, variable){
-			if(form.dataObject[variable] !== undefined){
-				msgObject[variable] = form.dataObject[variable]
-			} else {
-				parentContainer = form.parentForm
-				while(true){
-					if(parentContainer !== undefined){
-						if(parentContainer.dataObject !== undefined){
-							if(parentContainer.dataObject[variable] !== undefined){
-								msgObject[variable] = parentContainer.dataObject[variable]
-								break
+		$
+				.each(
+						dataDependencies[dataKey],
+						function(i, variable) {
+							if (form.dataObject[variable] !== undefined) {
+								msgObject[variable] = form.dataObject[variable]
 							} else {
-								parentContainer = parentContainer.parentForm
+								parentContainer = form.parentForm
+								while (true) {
+									if (parentContainer !== undefined) {
+										if (parentContainer.dataObject !== undefined) {
+											if (parentContainer.dataObject[variable] !== undefined) {
+												msgObject[variable] = parentContainer.dataObject[variable]
+												break
+											} else {
+												parentContainer = parentContainer.parentForm
+											}
+										} else {
+											parentContainer = parentContainer.parentForm
+										}
+									} else {
+										console.log("Variable is not found")
+										break
+									}
+								}
 							}
-						} else {
-							parentContainer = parentContainer.parentForm
-						}
-					} else {
-						console.log("Variable is not found")
-						break
-					}		
-				} 
-			}
-		})
+						})
 		return msgObject
 	},
 
-	prepare : function(msg){
+	prepare : function(msg) {
 		var dataFromAJAX = new Object()
-		$.each(msg, function(key, array){
+		$.each(msg, function(key, array) {
 			dataFromAJAX[key] = DataController.getObjectFormArray(array)
 		})
 		return dataFromAJAX
 	},
-	
-	getObjectFormArray : function(arr){
+
+	getObjectFormArray : function(arr) {
 		var obj = new Object()
-		$.each(arr, function(i, element){
+		$.each(arr, function(i, element) {
 			obj[element.uri] = new Object()
-			if(element.label !== undefined){
+			if (element.label !== undefined) {
 				obj[element.uri].label = element.label
 			}
 		})
@@ -123,113 +142,140 @@ var DataController = {
 	},
 
 	/*
-	 * This function only retrieves the data from the JavaScript 
-	 * does not call any JSON
+	 * This function only retrieves the data from the JavaScript does not call
+	 * any JSON
 	 */
-	getDataKey : function(key, form){
-		if(form.dataKey !== undefined){
+	getDataKey : function(key, form) {
+		if (form.dataKey !== undefined) {
 			return form.dataKey
 		} else {
 			return key
 		}
 	},
-	
-	prepareOptions : function(options){
-		
-		if(DataLib.getType(options) == "array"){
+
+	prepareOptions : function(options) {
+
+		if (DataLib.getType(options) == "array") {
 			console.log("array")
 			var object = new Object
-			$.each(options, function(key, value){
+			$.each(options, function(key, value) {
 				object[value.uri] = new Object()
 				object[value.uri]
-				if(value.label === undefined){
+				if (value.label === undefined) {
 					object[value.uri].label = value.uri.split["#"][1]
 				} else {
-					object[value.uri].label = value.label 
+					object[value.uri].label = value.label
 				}
 			})
 			return object
 		} else {
-			$.each(options, function(key, value){
-				if(value.label === undefined){
+			$.each(options, function(key, value) {
+				if (value.label === undefined) {
 					value.label = key.split("#")[1]
 				}
-			})	
+			})
 			return options
 		}
 	},
-	
-	getLabel : function(object, key){
-		
-		if(object[key] === undefined){
+
+	getLabel : function(object, key) {
+
+		if (object[key] === undefined) {
 			return "Unknown"
 		}
-		if(object[key].label !== undefined){
+		if (object[key].label !== undefined) {
 			return object[key].label
 		} else {
-			if(key.indexOf("#") > -1){
+			if (key.indexOf("#") > -1) {
 				return strUtil.splitLast(key, "#")
 			} else {
 				return strUtil.splitLast(key, "/")
 			}
 		}
 	},
-	
-	getData : function(dataKey){
-		if(formData[dataKey] !== undefined){
-			return	formData[dataKey]
+
+	getData : function(dataKey) {
+		if (formData[dataKey] !== undefined) {
+			return formData[dataKey]
 		} else {
 			return dataFromAJAX[dataKey]
 		}
 	},
-	
+
 }
 
 var AJAX = {
-		
-		errorhandling : function(msg){
-			
-			if(msg.errormsg !== undefined){
-				PopUpController.note(msg.errormsg)
-			}
-		},
-		
-		formDescriptor : function(){
-			return AJAX.request("formDescriptor")
-		},
-		
-		
-		formGraphData : function(array, key){
-		
-			return AJAX.requestObject("formGraphData", {
-				instanceArray : array,
-				key : key,
-			})
-		},
-		
-		request : function(task){
-			return	AJAX.requestData({	
-						editKey : editKey,
-						task : task,
-					})
-		},
 
-		requestObject : function(task, object){
-			return	AJAX.requestData($.extend({	
-						editKey : editKey,
-						task : task,
-					}, object))
-		},
-		
-		requestData : function(object){
-			return $.extend(AJAX.base, {
-				data : "requestData=" + JSON.stringify(object)
+	errorhandling : function(msg) {
+
+		if (msg.errormsg !== undefined) {
+			PopUpController.note(msg.errormsg)
+		}
+	},
+
+	call : function(task, returnFunction, array) {
+
+		if (jsonTest && jsonMapping[task] !== undefined) {
+			returnFunction(jsonMapping[task])
+		} else {
+			if (array !== undefined) {
+				request = this.requestObject(task, array)
+			} else {
+				request = this.requestTask(task)
+			}
+			$.ajax(request).done(function(msg) {
+				if (msg.errormsg !== undefined) {
+					PopUpController.note(msg.errormsg)
+				} else {
+					returnFunction(msg)
+				}
 			})
-		},
-		
-		base : {
-			type : 'POST',
-			dataType : 'json',
-			url : baseUrl + "ajaxservlet",
-		}, 
+		}
+	},
+
+	requestTask : function(task) {
+		return AJAX.requestData({
+			editKey : editKey,
+			task : task,
+		})
+	},
+
+	requestObject : function(task, array) {
+		return AJAX.requestData($.extend({
+			editKey : editKey,
+			task : task,
+		}, AJAXParams.getObject(task, array)))
+	},
+
+	requestData : function(object) {
+		return $.extend(AJAX.base, {
+			data : "requestData=" + JSON.stringify(object)
+		})
+	},
+
+	base : {
+		type : 'POST',
+		dataType : 'json',
+		url : baseUrl + "ajaxservlet",
+	},
+}
+
+var AJAXParams = {
+
+	formGraphData : [ "inputParameters", "key" ],
+	existingFormGraphData : [ "subjectUri", "objectUri"],
+
+	getObject : function(key, array) {
+
+		if (this[key] !== undefined && DataLib.isArray(this[key])) {
+			var object = new Object()
+			$.each(this[key], function(index, value) {
+				object[value] = array[index]
+			})
+			return object
+		} else {
+			alert("Invalid AJAX parameter : " + key)
+			return null
+		}
+	}
 }
