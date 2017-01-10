@@ -5,6 +5,7 @@ import java.util.Map;
 import rdfbones.formProcessing.WebappConnector;
 import rdfbones.graphData.FormGraph;
 import rdfbones.graphData.Graph;
+import rdfbones.graphData.VariableDependency;
 
 public class FormConfiguration {
 
@@ -17,6 +18,7 @@ public class FormConfiguration {
     this.dataGraph = graph;
     this.form = form;
     this.form.setFormConfig(this);
+    this.initDependencies();
   }
   
   public FormConfiguration(Graph graph, Form form, Map<String, FormGraph> formGraphs){
@@ -26,7 +28,25 @@ public class FormConfiguration {
     this.formGraphs = formGraphs;
     //Setting all the main graphs
     for(String key : this.formGraphs.keySet()){
-    	this.formGraphs.get(key).setMainGraph(this.dataGraph);
+    	this.formGraphs.get(key).mainGraph = this.dataGraph;
+    }
+    this.initDependencies();
+  }
+  
+  public void initDependencies(){
+  	
+  	//Pairing formGraphs to variableDependencies
+    for(String key : this.dataGraph.variableDependencies.keySet()){
+    	VariableDependency varDep = this.dataGraph.variableDependencies.get(key);
+    	if(this.formGraphs != null){
+      	if(this.formGraphs.keySet().contains(key)){
+      		varDep.initDataGetter(this.formGraphs.get(key));
+      	} else {
+      		varDep.initDataGetter();
+      	}
+    	} else {
+    		varDep.initDataGetter();
+    	}
     }
   }
   
