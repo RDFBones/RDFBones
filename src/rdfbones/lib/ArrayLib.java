@@ -116,4 +116,17 @@ public class ArrayLib {
 		arr.addAll(arr2);
 		return arr;
 	}
+	
+	public static void remove(List<String> list, String toRemove){
+	
+		int cnt = 0;
+		int i = -1;
+		for(String element : list){
+			if(element.equals(toRemove)){
+				i = cnt;
+			}
+			cnt++;
+		}
+		list.remove(i);
+	}
 }

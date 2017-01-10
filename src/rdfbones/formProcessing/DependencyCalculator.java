@@ -37,11 +37,7 @@ public class DependencyCalculator {
       copy.addAll(triples);
       
       String node = element.node.varName;
-      if(element instanceof SubformAdder){
-        if(((SubformAdder) element).dataKey != null){
-          node = (((SubformAdder) element).dataKey);
-        }
-      }
+      
       GraphPath graphPath =
           getGraphPath(new GraphPath(), copy, inputVariables, node);
       graphPath.validate(inputVariables, copy);

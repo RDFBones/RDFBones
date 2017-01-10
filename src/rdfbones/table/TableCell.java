@@ -7,10 +7,10 @@ import rdfbones.lib.JSON;
 public class TableCell {
 
 	String title;
-	String varName;
 	String type = new String("literalCell");
 	int num;
-	
+	public String varName;
+
 	public TableCell(String title, String varName, int num){
 		
 		this.title = title;

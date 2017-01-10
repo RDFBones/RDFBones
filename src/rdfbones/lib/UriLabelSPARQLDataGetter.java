@@ -17,9 +17,8 @@ public class UriLabelSPARQLDataGetter extends SPARQLDataGetter {
   public UriLabelSPARQLDataGetter(Graph mainGraph, List<Triple> queryTriples, String varToGet,
     List<String> inputs){
     
-    super(mainGraph);
-    this.varToGet = varToGet;
-    this.preInit(queryTriples, ArrayLib.getList("uri"), ArrayLib.getList("label"), inputs);
+    super(mainGraph, queryTriples, ArrayLib.getList("uri"), ArrayLib.getList("label"), inputs);
+    this.varToGet = varToGet;    
   }
   
   @Override

@@ -8,7 +8,8 @@ public class RDFNode {
   }
   
   public String varName;
-
+  public String constantValue;
+  
   public String getVarName() {
     return varName;
   }

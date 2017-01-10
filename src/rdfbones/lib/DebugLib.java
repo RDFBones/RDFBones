@@ -12,7 +12,7 @@ public class DebugLib {
   static public void debug(int n, Graph graph) {
 
     String tab = new String(new char[n]).replace("\0", "\t");
-    DebugLib.logString("inputNode", tab, graph, graph.inputNode);
+    DebugLib.logString("inputNode", tab, graph, graph.varName);
     DebugLib.logTripleList("dataTriples", tab, graph, graph.dataTriples);
     DebugLib.logTripleList("schemeTriples", tab, graph, graph.schemeTriples);
     DebugLib.logTripleList("triplesToStore", tab, graph, graph.triplesToStore);
@@ -21,6 +21,7 @@ public class DebugLib {
     DebugLib.logList("constantLiterals", tab, graph, graph.constantLiterals);
     DebugLib.logList("inputLiterals", tab, graph, graph.inputLiterals);
     DebugLib.logList("inputClasses", tab, graph, graph.inputClasses);
+    DebugLib.logList("typeNodes", tab, graph, graph.typeNodes);
     DebugLib.logList("classesToSelect", tab, graph, graph.classesToSelect);
     DebugLib.logList("mainInputNodes", tab, graph, graph.mainInputNodes);
     DebugLib.logMap("mainInputValues", tab, graph, graph.mainInputValues);
@@ -56,6 +57,15 @@ public class DebugLib {
     } 
   }
 
+  public static void logTripleList(String msg, Graph graph,
+    List<Triple> logList) {
+  	logTripleList(msg, "\t", graph, logList);
+  }
+  
+  public static void logTripleList(List<Triple> triples, String msg){
+  	
+  	System.out.println(msg + "\n" + StringUtil.debugTriples("", triples));
+  }
   
   public static void logTripleList(String msg, String tab, Graph graph,
     List<Triple> logList) {
@@ -74,8 +84,8 @@ public class DebugLib {
   public static void debugMulti(int n, Graph graph) {
     String tab = new String(new char[n]).replace("\0", "\t");
     n++;
-    if (graph.inputNode != null) {
-      graph.mainGraph.getWebapp().log(tab + "InputNode : " + graph.inputNode);
+    if (graph.varName != null) {
+      graph.mainGraph.getWebapp().log(tab + "InputNode : " + graph.varName);
     }
     graph.mainGraph.getWebapp().log(tab + "Triple");
     if (graph.triple != null)
@@ -112,5 +122,15 @@ public class DebugLib {
   
   public static void debugList(List<String> list, Graph graph){
     graph.log(ArrayLib.debugList(list));
+  }
+  
+  public static void debugList(List<Map<String, String>> list){
+  	
+  	for(Map<String, String> map : list){
+  		for(String key : map.keySet()){
+  			System.out.print(key + " : " +  map.get(key) + ", ");
+  		}
+  		System.out.print("\n");
+  	}
   }
 }

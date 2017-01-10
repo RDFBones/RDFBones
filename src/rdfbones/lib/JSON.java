@@ -1,7 +1,10 @@
 package rdfbones.lib;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -148,6 +151,18 @@ public class JSON {
     }
   }
   
+  public static JSONObject getJSON(JSONArray array, int i){
+    
+    try {
+      return (JSONObject) array.get(i);
+    } catch (JSONException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return null;
+  }
+  
+  
   public static Object get(JSONArray array, int i){
     
     try {
@@ -158,7 +173,6 @@ public class JSON {
     }
     return null;
   }
-  
   
   public static String getStr(JSONArray array, int i){
     
@@ -290,4 +304,24 @@ public class JSON {
 		  e.printStackTrace();
 	  }
   }*/
+  
+  public static List<Map<String, String>> convert(JSONArray array){
+  	
+  	List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+  	for(int i = 0; i < array.length(); i++){
+  		list.add(convert(JSON.getJSON(array, i)));
+  	}
+  	return list;
+  }
+  
+  public static Map<String, String> convert(JSONObject object){
+		
+  	Map<String, String> map = new HashMap<String, String>();
+  	Iterator<?> keys = object.keys();
+  	while(keys.hasNext()){
+  		String key = (String) keys.next();
+  		map.put(key, JSON.string(object, key));
+  	}
+  	return map;
+  }
 }

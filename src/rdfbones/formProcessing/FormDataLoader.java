@@ -30,7 +30,7 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTw
 public class FormDataLoader extends VitroAjaxController {
 
   private static final long serialVersionUID = 1L;
-  private static final Log log = LogFactory.getLog(ExistingFormDataLoader.class);
+  private static final Log log = LogFactory.getLog(FormDataLoader.class);
 
   VitroRequest vreq;
 
