@@ -27,12 +27,13 @@ import rdfbones.formProcessing.WebappConnector;
 public class Graph {
 
   // Input
-  public String inputNode;
+  public String varName;
   public Triple triple = null;
   public String inputPredicate = null;
 
   // Triples
   public List<Triple> dataTriples = new ArrayList<Triple>();
+  public List<Triple> typeTriples = new ArrayList<Triple>();
   public List<Triple> schemeTriples;
 
   public List<String> nodes;
@@ -41,6 +42,7 @@ public class Graph {
   // Data Input - Storage
   public List<Triple> triplesToStore;
   public List<String> newInstances;
+  public List<String> instances;
   public List<String> inputInstances;
   public List<String> constantLiterals;
   public List<String> inputLiterals;
@@ -77,7 +79,7 @@ public class Graph {
 
   public Graph(List<Triple> triples, List<Triple> schemeTriples, WebappConnector webapp) {
 
-    this.inputNode = new String("subjectUri");
+    this.varName = new String("subjectUri");
     this.mainGraph = this;
     this.webapp = webapp;
     this.initialize(triples);
@@ -88,7 +90,7 @@ public class Graph {
 
   public Graph(Triple triple, String inputNode, List<Triple> triples) {
     this.triple = triple;
-    this.inputNode = inputNode;
+    this.varName = inputNode;
     this.initialize(triples);
   }
 
@@ -99,9 +101,9 @@ public class Graph {
   public void initialize(List<Triple> triples) {
 
     this.initialGraphMap = new HashMap<RDFNode, Graph>();
-    List<Triple> neighbours = GraphLib.getAndRemoveTriples(triples, this.inputNode);
+    List<Triple> neighbours = GraphLib.getAndRemoveTriples(triples, this.varName);
     for (Triple triple : neighbours) {
-      RDFNode node = GraphLib.getObjectNode(triple, this.inputNode);
+      RDFNode node = GraphLib.getObjectNode(triple, this.varName);
       initialGraphMap.put(node, new Graph(triple, node.varName, triples));
     }
   }
@@ -116,7 +118,7 @@ public class Graph {
       Graph subGraph = this.initialGraphMap.get(key);
       Triple triple = subGraph.triple;
       if (triple instanceof MultiTriple) {
-        subGraph.inputNode = GraphLib.getObject1(triple, key.varName);
+        subGraph.varName = GraphLib.getObject1(triple, key.varName);
         subGraph.inputPredicate = triple.predicate;
         subGraph.mainGraph = graph.mainGraph;
         subGraph.initGraphStructure();
@@ -142,9 +144,10 @@ public class Graph {
           new MainGraphSPARQLDataGetter(mainGraph, this.dataRetreivalQuery,
               this.urisToSelect, this.literalsToSelect);
     } else {
-      this.dataRetriever =
+    	System.out.println("DataRetrieverQuery - varName : " + this.varName);
+    	this.dataRetriever =
           new SPARQLDataGetter(mainGraph, this.dataRetreivalQuery, this.urisToSelect,
-              this.literalsToSelect, this.inputNode);
+              this.literalsToSelect, this.varName);
     }
     if (this.typeQueryTriples.size() > 0 && this.inputClasses.size() > 0
         && this.classesToSelect.size() > 0) {
@@ -153,7 +156,7 @@ public class Graph {
       DebugLib.debugList(literalsToSelect, this);
       this.typeRetriever =
           new SPARQLDataGetter(mainGraph, this.typeQueryTriples, this.classesToSelect,
-              literalsToSelect, this.inputClasses, true);
+              literalsToSelect, this.inputClasses);
     }
     for (String key : this.subGraphs.keySet()) {
       this.subGraphs.get(key).setGraphDescriptor(schemeTriples);
@@ -193,7 +196,7 @@ public class Graph {
         Graph subGraph = this.subGraphs.get(key);
         try {
           JSONObject object = JSON.object(this.existingData, i);
-          String initialValue = JSON.string(object, subGraph.inputNode);
+          String initialValue = JSON.string(object, subGraph.varName);
           object.put(key, subGraph.getGraphData(initialValue));
         } catch (JSONException e) {
           log("Unsuccesful");
@@ -236,12 +239,24 @@ public class Graph {
 
   void setInstanceMap(JSONObject obj, Map<String, String> instanceMap) {
 
+  	for(String instance : this.instances){
+  		if(obj.has(instance)){
+  			//Existing instance coming from the form
+        instanceMap.put(instance, JSON.string(obj, instance));
+        //We do not need type triple
+  		} else {
+  			//New instance
+  			instanceMap.put(instance, this.mainGraph.getWebapp().getUnusedURI());
+  			GraphLib.setTypeTriple(this, instance);
+  		}
+  	}
     // New Instances
-    for (String newInstance : this.newInstances) {
+    /*
+  	for (String newInstance : this.newInstances) {
       if (!this.inputNode.equals(newInstance)) {
         instanceMap.put(newInstance, this.mainGraph.getWebapp().getUnusedURI());
       }
-    }
+    } */
     for(String mainInputNode : this.mainInputNodes){
       instanceMap.put(mainInputNode, this.mainGraph.mainInputValues.get(mainInputNode));
     }
@@ -249,10 +264,11 @@ public class Graph {
     for (String inputClass : this.inputClasses) {
       instanceMap.put(inputClass, JSON.string(obj, inputClass));
     }
+    /* 
     for (String inputInstance : this.inputInstances) {
       if(!this.mainInputNodes.contains(inputInstance))
         instanceMap.put(inputInstance, JSON.string(obj, inputInstance));
-    }
+    } */
     for (String inputLiteral : this.inputLiterals) {
       instanceMap.put(inputLiteral, JSON.string(obj, inputLiteral));
     }
@@ -273,7 +289,7 @@ public class Graph {
     triplesString = QueryUtils.subUrisForQueryVars(triplesString, variableMap);
     for (String subgraphKey : this.subGraphs.keySet()) {
       Graph subGraph = this.subGraphs.get(subgraphKey);
-      String key = subGraph.inputNode;
+      String key = subGraph.varName;
       String value = variableMap.get(key);
       JSONArray array = JSON.array(inputObject, subgraphKey);
       for (int i = 0; i < array.length(); i++) {
@@ -302,7 +318,7 @@ public class Graph {
     for (String key : this.variableDependencies.keySet()) {
       VariableDependency dep = this.variableDependencies.get(key);
       this.mainGraph.log("\n" + key + "\n");
-      this.mainGraph.log(dep.queryDebug());
+      dep.debug();
     }
   }
 
