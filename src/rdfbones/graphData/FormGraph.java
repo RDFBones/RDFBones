@@ -24,82 +24,102 @@ import rdfbones.rdfdataset.MultiTriple;
 import rdfbones.rdfdataset.RDFNode;
 import rdfbones.rdfdataset.Triple;
 import rdfbones.table.Table;
+import rdfbones.table.TableCell;
 import rdfbones.formProcessing.WebappConnector;
 
 public class FormGraph extends Graph {
 
-	public Table table;
-	
-	public FormGraph(List<Triple> triples, String startNode) {
+	public Table table = null;
+	public Navigator navigator;
+	List<Triple> triples;
+	SPARQLDataGetter formDataRetriever = null;
+	public QueryInfo queryInfo;
 
-		//this.mainGraph = this;
-		this.inputNode = startNode;
-		this.initialize(triples);
-		this.initGraphStructure();
-	}
 
-	public FormGraph(Triple triple, String inputNode, List<Triple> triples) {
-	
-		super(triple, inputNode, triples);
-	}
-
-	public JSONArray getTableData(JSONArray jsonArray) {
-
-		this.existingData = new JSONArray();
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject object = QueryUtils.getJSONObject(this.dataRetriever
-					.getData(JSON.getStr(jsonArray, i)));
-			this.existingData.put(object);
-		}
-		this.getGraphData();
-		return this.existingData;
-	}
-
-	public void initialize(List<Triple> triples) {
-		this.initialGraphMap = new HashMap<RDFNode, Graph>();
-		List<Triple> neighbours = GraphLib.getAndRemoveTriples(triples,
-				this.inputNode);
-		for (Triple triple : neighbours) {
-			RDFNode node = GraphLib.getObjectNode(triple, this.inputNode);
-			initialGraphMap.put(node, new FormGraph(triple, node.varName, triples));
-		}
-	}
-
-	public void initGraphStructure() {
-		this.initGraphMap(this);
-	}
-
-	
-	@Override
-	public void initGraphMap(Graph graph) {
-
-	  for (RDFNode key : this.initialGraphMap.keySet()) {
-			Graph subGraph = this.initialGraphMap.get(key);
-			Triple triple = subGraph.triple;
-			if (triple instanceof MultiTriple) {
-				subGraph.inputNode = GraphLib.getObject1(triple, key.varName);
-				subGraph.inputPredicate = triple.predicate;
-				subGraph.mainGraph = graph.mainGraph;
-				subGraph.dataTriples.add(triple);
-				subGraph.initGraphStructure();
-				graph.subGraphs.put(QueryLib.getPredicateKey(triple.predicate),
-						(FormGraph) subGraph);
-			} else {
-				graph.dataTriples.add(triple);
-				subGraph.initGraphMap(graph);
-			}
-		}
-		this.dataRetriever = new SPARQLDataGetter(mainGraph, this.dataTriples,
-				GraphLib.getUris(this.dataTriples),
-				GraphLib.getLiterals(this.dataTriples), this.inputNode);
+	public FormGraph() {
+		
 	}
 	
-	public void setMainGraph(Graph graph){
-		this.mainGraph = graph;
-		this.dataRetriever.mainGraph = graph;
-		for(String key : this.subGraphs.keySet()){
-			((FormGraph) this.subGraphs.get(key)).setMainGraph(graph);
+	public FormGraph(List<Triple> triples, String startNode, Navigator navigator,
+		Table table) {
+
+		this.varName = startNode;
+		this.triples = triples;
+		this.navigator = navigator;
+		this.table = table;
+		this.init();
+	}
+
+	public JSONArray getData(List<Map<String, String>> data){
+		
+		if(this.navigator != null){
+			return this.navigator.group(data);
+		} else {
+			return QueryUtils.getJSON(data);
 		}
+	}
+	
+	public FormGraph(Triple triple, String varName, List<Triple> triples) {
+	
+		super(triple, varName, triples);
+	}
+	
+	public void init(){
+		this.nodes = GraphLib.getNodes(this.triples);
+		System.out.println("MainGraphNodes : " + this.nodes.toString());
+		this.setFormGraph(this);
+		this.setQueryInfo();
+	}
+	
+	public void setFormGraph(FormGraph graph){
+		
+		if(this.navigator != null){
+			this.navigator.formGraph = graph;
+			this.navigator.setFormGraph(graph);
+		}
+	}
+	
+	public void setQueryInfo(){
+		
+  	this.triples.addAll(this.navigator.getTriples());
+		List<String> uris = new ArrayList<String>();
+		List<String> literals = new ArrayList<String>();
+		this.setUrisLiterals(uris, literals);
+		this.queryInfo = new QueryInfo(this.triples, uris, literals);
+	}
+	
+	public void setUrisLiterals(List<String> uris, List<String> literals){
+		
+		//Setting literals
+		for(TableCell cell : this.table.cells){
+			literals.add(cell.varName);
+		}
+		uris.add(this.varName);
+		if(this.navigator != null){
+			this.navigator.setUrisLiterals(uris, literals);
+		}
+	}
+	
+	public JSONObject getDescriptor(){
+		
+		if(this.navigator != null){
+			System.out.println("Here 1");
+			return this.navigator.getDescriptor(this.table.getDescriptor());
+		} else {
+			System.out.println("Here 2");
+			return this.table.getDescriptor();
+		}
+	}
+	
+	public JSONArray group(List<Map<String, String>> list){
+		
+		JSONArray array = JSON.arr();
+		Map<String, List<Map<String, String>>> map = QueryLib.groupBy(list, this.varName);
+		for(String key : map.keySet()){
+			JSONObject object = QueryLib.getObject(map, key, this.nodes);
+			array.put(object);
+		}
+		return array;
 	}
 	
 }
