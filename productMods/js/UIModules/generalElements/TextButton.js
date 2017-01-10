@@ -1,12 +1,12 @@
 
 
-var TextButton = function(text, returnFunction, style){
+var TextButton = function(text, returnFunction, style, parameter){
 	
 	this.enabled = true
 	this.returnFunction = returnFunction
-	this.container = UI.getTextButton(text, "button" +  buttonID).addClass(this.getStyle() + " " + style)
+	this.container = UI.getTextButton(text, "button" +  (++buttonID)).addClass(this.getStyle() + " " + style)
 	$(document).on("click", "#button" +  buttonID, (this.clickEvent).bind(this))
-	buttonID++
+	this.parameter = util.setUndefined(parameter, null)
 }
 
 TextButton.prototype = {
@@ -17,24 +17,39 @@ TextButton.prototype = {
 		
 	clickEvent : function(){
 		if(this.enabled){
-			this.returnFunction()
+			this.returnFunction(this.parameter)
 		}
 	},
-		
+
 	disable : function(){
 		this.enabled = false
-		this.container.removeClass("enabledButton").addClass("disabledButton")
+		this.container.removeClass("enabledButton hover").addClass("disabledButton")
 		return this
 	},
 	
 	enable : function(){
 		this.enabled = true
-		this.container.removeClass("disabledButton").addClass("enabledButton")
+		this.container.removeClass("disabledButton").addClass("enabledButton hover")
 		return this
 	},
 		
 	hide : function(){
 		this.container.css("display", "none")
+		return this
+	},
+	
+	setColor : function(color){
+		this.container.css("background-color", color)
+		return this
+	},
+	
+	disableHover : function(){
+		this.container.removeClass("hover")
+		return this
+	},
+	
+	enableHover : function(){
+		this.container.removeClass("hover")
 		return this
 	},
 	
