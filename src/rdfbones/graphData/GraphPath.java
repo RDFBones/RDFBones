@@ -45,14 +45,21 @@ public class GraphPath {
   }
   
   public String debug(){
+  	
+  	return this.debug(0);
+  }
+  
+  public String debug(int n){
     
+  	String tab = new String(new char[n]).replace("\0", "\t");
     String debug = new String("");
-    debug += "Input : " + this.inputs + "\n";
+    debug += tab + "Input : " + this.inputs.toString() + "\n";
     for(Triple triple : this.triples){
-      debug += triple.subject.varName + "   " + triple.object.varName + " .  \n ";
+      debug += tab + triple.subject.varName + "   " + triple.object.varName + " .  \n ";
     }
+    n++;
     for(GraphPath path : this.subPaths){
-        debug += "Subpath { "  + path.debug() + " }  \n";  
+        debug += tab + "Subpath { \n"  + path.debug(n) + "\n" + tab + "  }  \n";  
     }
     return debug;
   }
