@@ -72,7 +72,6 @@ InstanceRow.prototype = {
 		$.each(this.descriptor, (function(i, cell) {
 			cells.push(new ElementMap[cell.type](this.data, cell).container)
 		}).bind(this))
-
 		this.selectButton = new Button("add", (this.select).bind(this));
 		this.removeButton = new Button("del", (this.select).bind(this));
 		this.added ? this.selectButton.hide() : this.removeButton.hide()

@@ -10,16 +10,30 @@ var util = {
 
 	flip : function(bool){
 		bool = bool ? false : true
+	},
+	
+	getButtonId : function(){
+		
+		return "button" +  (++buttonID)
+	},
+	
+	setEvent : function(event){
+		
+		$(document).on("click", "#button" +  buttonID, event)
 	}
 }
-
 
 var strUtil = {
 		
 	splitLast : function(str, char){
 		arr = str.split(char)
 		return arr[arr.length -1]
-	}	
+	},
+
+	cutFromBeggining : function(str, n){
+		
+		return str.substring(n, str.length)
+	}
 }
 
 var arrayutil = {

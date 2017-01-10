@@ -46,8 +46,6 @@ var DataLib = {
 		return this.or(this.getType(variable), values)
 	},
 	
-	
-	
 	removeObjectFromArrayByKey : function(array, key, value){
 
 		$.each(array, function(index, object){
@@ -56,6 +54,11 @@ var DataLib = {
 				return false
 			}
 		})
+	},
+	
+	removeObjectFromArray : function(array, key, obj){
+
+		this.removeObjectFromArrayByKey(array, key, obj[key])
 	},
 	
 	debugObject : function(object){
