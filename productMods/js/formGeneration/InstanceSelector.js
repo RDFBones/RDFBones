@@ -1,95 +1,78 @@
 
-var InstanceSelector = function(form, descriptor, selected, selectable){
+var InstanceSelector = function(formElement){
 	
-	this.descriptor = descriptor.table
-	this.dataKey = descriptor.dataKey
-	this.selected = selected
-	this.selectable = selectable
-	this.form = form
-	PopUpController.init("Loading data ");
-	this.container = html.div()
-	this.instanceRows = []
-	this.dataObject = form.existingData
-	this.init()
+	this.formElement = formElement
+	this.descriptor = formElement.descriptor.table
+	this.dataKey = formElement.descriptor.dataKey
+	this.dataArray = formElement.existingData
+	this.selectedModule = new Module("Selected Instances")
+	this.toSelectModule = new Module("Instances to select")
+	this.doneButton = new TextButton("Done", (this.done).bind(this), "margin10")
+	if(this.dataArray.length > 0){
+		this.showExisting()
+	} else {
+		PopUpController.init("Loading data ")
+		this.init()
+	}
 }
 
 InstanceSelector.prototype = {
 		
-	init : function(){
-		
-		arrayutil.subtract(this.selectable, this.selected)
-		this.array = this.selected.concat(this.selectable);
-		this.orderCells(this.descriptor.cells)
-		console.log(this.descriptor.cells)
-		$.ajax(AJAX.formGraphData(this.array, this.dataKey))
-			.done((function(msg){
-				AJAX.errorhandling(msg)
-				this.show(msg.tableData)
-			}).bind(this))
-	},
+	loadExisting : function(){
 	
-	show : function(data){
-		
-		this.prepare(data)
-		this.selectedTable = new DataTable(this, "Selected instances", this.descriptor,
-				this.selectedData, true)
-		
-		this.selectableTable = new DataTable(this, "Instances to select", this.descriptor,
-				this.selectableData, false)
-		this.container.append(this.selectedTable.container)
-		if(this.selected.length == 0){
-			this.container.append(this.selectableTable.container)
-		}
+		tableDescriptor = this.getObject(this.descriptor)
+		selectedTable = SelectedTable(this, this.dataArray, tableDescriptor)
+		this.toSelectModule.container.hide()
+		this.selectedModule.add(selectedTable.container)
+		this.initUI()
+	},
 
-		this.doneButton = new TextButton("Done", (this.done).bind(this), "margin10");
-		this.container.append(this.doneButton.container)
-		PopUpController.set(this.container)
+	getTableDescriptor : function(descriptor){
+		
+		if(descriptor.type === "navigate"){
+			return this.getTableDescriptor(descriptor.subForm)
+		} else {
+			return descriptor
+		}
 	},
 	
 	display : function(){
-		console.log("Display")
+		PopUpController.set(this.container)
+	},
+		
+	init : function(){
+		
+		AJAX.call("formGraphData", (function(msg){
+			array = msg.tableData 
+			this.instanceBrowser = new InstanceBrowser(this, array, this.descriptor)
+			this.initUI()
+		}).bind(this),  DataController.getGraphDataParams(this))
+	},
+	
+	initUI : function(){
+		UI.append(this, [this.selectedModule, this.toSelectModule, this.doneButton])
 		PopUpController.set(this.container)
 	},
 	
+	select : function(dataItem){
+		
+		this.selectedModule.add(dataItem.container)
+		this.dataArray.push(dataItem.data)
+	},
+	
+	removeData : function(key, dataObject){
+		
+		console.log(key)
+		console.log(dataObject)
+		console.log(this.dataArray)
+		DataLib.removeObjectFromArray(this.dataArray, key,  dataObject)
+	},
+	
+	deselect : function(){
+		
+	},
+	
 	done : function(){
-		
-		console.log(this.instanceRows)
-		$.each(this.instanceRows, (function(i, instanceRow){
-			if(instanceRow.added){
-				this.form.existingData.push(instanceRow.data)
-			}
-		}).bind(this))
 		PopUpController.done()
-	},
-	
-	select : function(instanceRow){
-		
-		if(instanceRow.added){
-			this.selectedTable.add(instanceRow)
-			
-		} else {
-			this.selectableTable.add(instanceRow)
-		}
-	},
-	
-	prepare : function(data){
-	
-		this.selectedData = []
-		this.selectableData = []
-		$.each(data, (function(i, value){
-			if(this.selected.indexOf(value[this.dataKey]) > -1){
-				this.selectedData.push(value)
-			} else {
-				this.selectableData.push(value)
-			}
-		}).bind(this))
-	},
-	
-	orderCells : function(cells){
-		ordered = []
-		$.each(cells, function(i, cell){
-			ordered[cell.num - 1] = cell	
-		})
-		cells = ordered
 	}
 }
