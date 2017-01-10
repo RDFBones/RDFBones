@@ -1,9 +1,10 @@
 
 
 
-var TextField = function(value){
+var TextField = function(value, style){
 	
-	this.container = html.div().text(value)
+	this.style = util.setUndefined(style, "")
+	this.container = html.div(this.style).text(value)
 }
 
 TextField.prototype = {
