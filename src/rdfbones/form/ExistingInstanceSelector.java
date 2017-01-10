@@ -4,6 +4,8 @@ import org.json.JSONObject;
 
 import rdfbones.graphData.FormGraph;
 import rdfbones.lib.JSON;
+import rdfbones.table.DefaultTable;
+import rdfbones.table.Table;
 
 public class ExistingInstanceSelector extends FormElement {
 
@@ -22,8 +24,13 @@ public class ExistingInstanceSelector extends FormElement {
     JSON.put(object, "dataKey", this.dataKey);
     if(formConfig.formGraphs.containsKey(this.dataKey)){
     	FormGraph formGraph = formConfig.formGraphs.get(this.dataKey);
-    	JSON.put(object, "table", formGraph.table.getDescriptor());
+    	if(formGraph.table != null){
+    		JSON.put(object, "table", formGraph.getDescriptor());	
+    		return object;
+    	} 
     }
+  	Table table = new DefaultTable(this.dataKey);
+  	JSON.put(object, "table", table.getDescriptor());	
     return object;
   }
 }
