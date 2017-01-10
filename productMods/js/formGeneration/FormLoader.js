@@ -51,10 +51,13 @@ var Form = function(parentForm, data, mainForm, title){
 	this.title = parentForm.title
 	this.existingCounter = 0
 	// The subform does not modify the dataObject. It just saves it
-	DataController.loadSubformData(this)
 }
 
 Form.prototype = {
+
+	load : function(){
+			DataController.loadSubformData(this)
+	},
 		
 	//This is called by the DataController
 	init : function(formOptions) {
@@ -95,9 +98,8 @@ var MainForm = function(){
 	
 	PopUpController.addWaitGif($("#form"))
 	this.edit = false
-	$.ajax(AJAX.formDescriptor())
-	.done((function(msg) {
-		AJAX.errorhandling(msg)
+	
+	AJAX.call("formDescriptor", (function(msg){
 		formDescriptor = msg.formDescriptor
 		dataDependencies = msg.dataDependencies
 		if (objectUri != null) {
@@ -109,7 +111,7 @@ var MainForm = function(){
 			formData.existingData.rangeUri = rangeUri;
 			this.init()
 		}
-	}).bind(this)) 
+	}).bind(this))
 }
 
 MainForm.prototype =  {
@@ -134,6 +136,7 @@ MainForm.prototype =  {
 		//UI
 		this.subContainer = html.div("subContainer")
 		this.subForm = new Form(this, formData.existingData, true)
+		this.subForm.load()
 	},	
 	
 	submit : function() {
@@ -146,46 +149,40 @@ MainForm.prototype =  {
 		toSend.editKey = editKey
 		//this.dataObject.subjectUri = subjectUri
 		toSend.dataToStore = this.dataObject
-		console.log()
-		DataLib.debugObject(toSend.dataToStore)
-		$.ajax({
-			type : 'POST',
-			context : this,
-			dataType : 'json',
-			url : baseUrl + "dataGenerator",
-			data : "requestData=" + JSON.stringify(toSend)
-		}).done((function(msg) {
-			if(msg.failed !== undefined){
-				PopUpController.defaultDoneMsg("Triple creation failed!");
-				console.log(msg)
-				var ajaxmsg = msg
-			} else {
-				PopUpController.doneMsg("Triples are successfully saved", 2000, null,
-				function(){
-				window.location = baseUrl + "display/" +
-				 		subjectUri.split("/")[subjectUri.split("/").length-1]
-				})
-			}
-		}).bind(this)) 
+		console.log(toSend)
+		if(!debug){
+			$.ajax({
+				type : 'POST',
+				context : this,
+				dataType : 'json',
+				url : baseUrl + "dataGenerator",
+				data : "requestData=" + JSON.stringify(toSend)
+			}).done((function(msg) {
+				if(msg.failed !== undefined){
+					PopUpController.defaultDoneMsg("Triple creation failed!");
+					console.log(msg)
+					var ajaxmsg = msg
+				} else {
+					PopUpController.doneMsg("Triples are successfully saved", 2000, null,
+					function(){
+					window.location = baseUrl + "display/" +
+					 		subjectUri.split("/")[subjectUri.split("/").length-1]
+					})
+				}
+			}).bind(this)) 			
+		} else {
+			PopUpController.done()
+		}
 	},
 
 	loadExistingData : function() {
-		$.ajax({
-			type : 'POST',
-			context : this,
-			dataType : 'json',
-			url : baseUrl + "existingFormDataLoader",
-			data : {
-				subjectUri : subjectUri,
-				objectUri : objectUri,
-				editKey : editKey
-			}
-		}).done((function(msg) {
-			formData.existingData = msg[0]
-			formData.existingData.subjectUri = subjectUri;
-			formData.existingData.rangeUri = rangeUri;
+		
+		AJAX.call("existingFormGraphData", (function(msg){
+			formData.existingData = msg
+			formData.existingData.subjectUri = subjectUri
+			formData.existingData.rangeUri = rangeUri
 			this.init()
-		}).bind(this))
+		}).bind(this), [subjectUri, objectUri])
 	},
 
 	cancel : function(){
