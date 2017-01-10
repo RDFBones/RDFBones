@@ -3,7 +3,11 @@ var FormElement = function(form, descriptor, formOptions, predicate) {
 	this.parentForm = form
 	this.descriptor = descriptor
 	this.dataKey = descriptor.dataKey
-	this.options = DataController.prepareOptions(formOptions[this.dataKey])
+	if(formOptions !== undefined && formOptions[this.dataKey] !== undefined){
+		this.options = DataController.prepareOptions(formOptions[this.dataKey])
+	} else {
+		this.options = new Object()
+	}
 	this.predicate = predicate
 	this.dataObject = form.dataObject
 	this.initUI()
@@ -92,7 +96,9 @@ Adder.prototype = $.extend(Object.create(FormElement.prototype), {
 					object[this.dataKey])
 			if (this.descriptor.formElements !== undefined) {
 				this.cnt++
-				this.subForms.push(new Form(this, object))
+				var form = new Form(this, object)
+				this.subForms.push(form)
+				form.load()
 			} else {
 				this.subContainer.append(html.div("subElement").text(
 						object[this.dataKey + "Label"]))
@@ -153,7 +159,9 @@ Adder.prototype = $.extend(Object.create(FormElement.prototype), {
 		if (this.descriptor.formElements !== undefined) {
 			this.cnt++
 			PopUpController.addSubWaitGif(this.subContainer)
-			this.subForms.push(new Form(this, object))
+			var form = new Form(this, object)
+			this.subForms.push(form)
+			form.load()
 		} else {
 			this.subContainer.append(html.div("subElement").text(
 					object[this.dataKey + "Label"]))
@@ -231,24 +239,11 @@ ExistingInstanceSelector.prototype = $.extend(Object.create(FormElement.prototyp
 			 this.instanceSelector.display()
 		} else {
 			if (this.descriptor.table != undefined) {
-				this.instanceSelector = new InstanceSelector(this, this.descriptor, this.getArray(),
-						Object.keys(this.options))
+				this.instanceSelector = new InstanceSelector(this)
 			} else {
 				alert("Table is not defined")
 			}	
 		}
-	},
-	
-	getArray : function(){
-		
-		if(this.existingData.length == 0){
-			return []
-		} else {
-			var arr = []
-			$.each(this.existingData, (function(i, value){
-				arr.push(value[this.dataKey])
-			}).bind(this))
-			return arr
-		}
 	}
+	
 })
