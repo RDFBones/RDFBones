@@ -70,6 +70,7 @@
 
 .generalButton {
 	margin-left: 10px;
+	padding : 2px;
 	display: inline-block;
 	border: 1px solid black;
 	border-radius: 3px;
@@ -92,6 +93,7 @@
 	opacity: 0.4;
 }
 
+
 .redBorder {
 	border: 1px solid red;
 }
@@ -100,7 +102,7 @@
 	border: 1px solid black;
 }
 
-.enabledButton:hover {
+.hover:hover {
 	cursor: pointer;
 }
 

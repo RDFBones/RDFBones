@@ -14,7 +14,7 @@
 	text-align: center;
 }
 
-.rowContainer { //
+.rowContainer { 
 	display: table;
 	margin-top: 5px;
 	border-bottom: 1px solid black;

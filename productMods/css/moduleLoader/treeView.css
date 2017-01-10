@@ -2,7 +2,7 @@
 * Show existing bones
 ****/
 .title {
-	font-style: italics;
+	font-style: italic;
 	padding: 5px;
 	border-bottom: 1px solid black;
 	display: table;

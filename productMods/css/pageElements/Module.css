@@ -1,0 +1,20 @@
+
+.moduleContainer {
+	width : 650px;
+}
+
+.moduleTitleStyle {
+	font-style : italic;
+	padding : 3px;
+	display: table;
+    margin: 3px auto;
+}
+
+.moduleTable {
+	min-height : 12px;
+	border : 1px solid;
+	border-radius : 3px:
+	margin : 10px;
+	padding : 5px;
+	background-color : #e6e6e6;
+}

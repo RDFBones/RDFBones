@@ -1,0 +1,12 @@
+
+
+.selectorTableContainer {
+	
+/* 	border : 1px solid; */
+	background-color : #e6e6e6;
+	border-radius : 2px;
+	min-height : 50px;
+	min-width : 200px;
+	margin : 10px;
+	padding : 5px;
+}
