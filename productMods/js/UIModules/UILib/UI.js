@@ -13,7 +13,29 @@ var UI = {
 			containerBuffer[order[i] + 1] = container
 		})
 	},
+	
+	append : function(main, array){
 		
+		arr = []
+		$.each(array, function(index, value){
+			arr.push(value.container)
+		})
+		if(main.container === undefined)
+			main.container = html.div()
+		main.container.append(arr)
+	},
+	
+	appendGen : function(main, array){
+		
+		arr = []
+		$,each(array, function(index, value){
+			arr.push(value.container)
+		})
+		main.container.append(arr)
+	},
+	
+	
+	
 	/***************************************************************************
 	 * Horizontal general img
 	 **************************************************************************/
@@ -53,8 +75,8 @@ var UI = {
 				ImgUI.libImgCont(type, "inline"))
 	},
 
-	verticalAlignedDiv : function(text, _class) {
-		return html.div(_class)
+	verticalMiddleCont : function() {
+		return html.div("verticalMiddle")
 	},
 
 	/***************************************************************************
