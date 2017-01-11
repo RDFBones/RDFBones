@@ -239,24 +239,14 @@ public class Graph {
 
   void setInstanceMap(JSONObject obj, Map<String, String> instanceMap) {
 
-  	for(String instance : this.instances){
-  		if(obj.has(instance)){
-  			//Existing instance coming from the form
-        instanceMap.put(instance, JSON.string(obj, instance));
-        //We do not need type triple
-  		} else {
-  			//New instance
-  			instanceMap.put(instance, this.mainGraph.getWebapp().getUnusedURI());
-  			GraphLib.setTypeTriple(this, instance);
-  		}
-  	}
+  	
     // New Instances
-    /*
-  	for (String newInstance : this.newInstances) {
-      if (!this.inputNode.equals(newInstance)) {
+    for (String newInstance : this.newInstances) {
+      if (!this.varName.equals(newInstance)) {
         instanceMap.put(newInstance, this.mainGraph.getWebapp().getUnusedURI());
       }
-    } */
+    } 
+    
     for(String mainInputNode : this.mainInputNodes){
       instanceMap.put(mainInputNode, this.mainGraph.mainInputValues.get(mainInputNode));
     }
@@ -264,11 +254,11 @@ public class Graph {
     for (String inputClass : this.inputClasses) {
       instanceMap.put(inputClass, JSON.string(obj, inputClass));
     }
-    /* 
+    
     for (String inputInstance : this.inputInstances) {
       if(!this.mainInputNodes.contains(inputInstance))
         instanceMap.put(inputInstance, JSON.string(obj, inputInstance));
-    } */
+    } 
     for (String inputLiteral : this.inputLiterals) {
       instanceMap.put(inputLiteral, JSON.string(obj, inputLiteral));
     }
