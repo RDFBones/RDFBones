@@ -4,130 +4,148 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
+
 import edu.cornell.mannlib.vitro.webapp.dao.jena.N3Utils;
+import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
 import rdfbones.graphData.Graph;
 import rdfbones.graphData.QueryStructure;
+import rdfbones.rdfdataset.LiteralTriple;
 import rdfbones.rdfdataset.Triple;
 
 public class SPARQLDataGetter {
 
-  String queryTriples;
-  String selectVars;
-  String query;
-  List<String> urisToSelect;
-  List<String> literalsToSelect;
-  String subject;
-  String object;
-  public List<String> inputValues = new ArrayList<String>();
-  public List<String> inputKeys;
-  public Graph mainGraph;
-  public boolean typeRetriever = false;
-  
-  public SPARQLDataGetter(Graph mainGraph, List<Triple> queryTriples, List<String> uris,
-      List<String> literals) {
+	String queryTriples;
+	String selectVars;
+	String query;
+	List<String> urisToSelect;
+	List<String> literalsToSelect;
+	String subject;
+	String object;
+	public List<String> inputValues = new ArrayList<String>();
+	public List<String> inputKeys;
+	public List<Triple> queryTripleList;
+	public Graph mainGraph;
+	public boolean typeRetriever = false;
 
-    this.mainGraph = mainGraph;
-    init(queryTriples, uris, literals);
-  }
+	public SPARQLDataGetter(Graph mainGraph, List<Triple> queryTriples,
+			List<String> uris, List<String> literals, List<String> inputKeys) {
 
-  public SPARQLDataGetter(Graph mainGraph, List<Triple> queryTriples, List<String> uris,
-      List<String> literals, String inputKey) {
+		this.mainGraph = mainGraph;
+		this.inputKeys = inputKeys;
+		this.inputValues = inputKeys;
+		setUrisLiterals(uris, literals);
+		init(queryTriples);
+	}
 
-    this.mainGraph = mainGraph;
-    this.inputKeys = ArrayLib.getList(inputKey);
-    this.inputValues = ArrayLib.getList(inputKey);
-    init(queryTriples, uris, literals);
-  }
+	public SPARQLDataGetter(Graph mainGraph, List<Triple> queryTriples,
+			List<String> uris, List<String> literals) {
 
-  public SPARQLDataGetter(Graph mainGraph, List<Triple> queryTriples, List<String> uris,
-    List<String> literals, List<String> inputKeys, boolean typeRetriever) {
+		this(mainGraph, queryTriples, uris, literals, new ArrayList<String>());
+	}
 
-  this.mainGraph = mainGraph;
-  this.inputKeys = inputKeys;
-  this.inputValues = inputKeys;
-  this.typeRetriever = typeRetriever;
-  init(queryTriples, uris, literals);
-}
-  
-  public SPARQLDataGetter(Graph mainGraph){
-    this.mainGraph = mainGraph;
-  }
-  
-  public SPARQLDataGetter(Graph mainGraph, List<Triple> queryTriples, List<String> uris,
-      List<String> literals, List<String> inputKeys) {
+	public SPARQLDataGetter(Graph mainGraph, List<Triple> queryTriples,
+			List<String> uris, List<String> literals, String inputKey) {
 
-    this.mainGraph = mainGraph;
-    this.inputKeys = inputKeys;
-    this.inputValues = inputKeys;
-    init(queryTriples, uris, literals);
-  }
+		this(mainGraph, queryTriples, uris, literals, ArrayLib.getList(inputKey));
+	}
+	
+	public SPARQLDataGetter(Graph mainGraph) {
+		this.mainGraph = mainGraph;
+	}
+	
+	public SPARQLDataGetter(Graph mainGraph, List<Triple> queryTriples,
+			List<String> inputKeys) {
 
-  void preInit( List<Triple> queryTriples, List<String> uris,
-      List<String> literals, List<String> inputKeys){
-    
-    this.inputKeys = inputKeys;
-    this.inputValues = inputKeys;
-    init(queryTriples, uris, literals);
-  }
-  
-  void init(List<Triple> queryTriples, List<String> uris, List<String> literals) {
+		this(mainGraph, queryTriples, inputKeys, inputKeys);
+	}
 
-    if (literals == null) {
-      literals = new ArrayList<String>();
-    }
-    GraphLib.incrementRestrictionTriples(queryTriples);
-    this.selectVars = SPARQLUtils.assembleSelectVars(uris, literals);
-    if(!GraphLib.containsGreedy(queryTriples)){
-      this.queryTriples = SPARQLUtils.assembleQueryTriples(queryTriples);
-    } else {
-      QueryStructure qs = new QueryStructure(queryTriples, this.inputKeys.get(0));
-      this.queryTriples = qs.getQuery();
-    }
-    this.urisToSelect = uris;
-    this.literalsToSelect = literals;
-  }
+	void setUrisLiterals(List<String> uris, List<String> literals) {
 
-  public List<Map<String, String>> getData() {
+		this.urisToSelect = uris;
+		if (literals == null) {
+			literals = new ArrayList<String>();
+		}
+		this.literalsToSelect = literals;
+	}
 
-    String query = this.getQuery();
-    this.mainGraph.getWebapp().log("SPARQLDataGetter");
-    this.mainGraph.getWebapp().log(query + "\n\n");
-    return mainGraph.getWebapp().sparqlResult(query, this.urisToSelect,
-        this.literalsToSelect);
-  }
-  
-  public List<Map<String, String>> getData(String value) {
+	void init(List<Triple> queryTriples) {
 
-    this.inputValues = ArrayLib.getList(value);
-    return this.getData();
-  }
+		calcUrisLiterals(queryTriples);
+		GraphLib.incrementRestrictionTriples(queryTriples);
+		this.selectVars = SPARQLUtils.assembleSelectVars(this.urisToSelect,
+				this.literalsToSelect);
+		if (!GraphLib.containsGreedy(queryTriples)) {
+			this.queryTriples = SPARQLUtils.assembleQueryTriples(queryTriples);
+		} else {
+			QueryStructure qs = new QueryStructure(queryTriples,
+					this.inputKeys.get(0));
+			this.queryTriples = qs.getQuery();
+		}
+	}
 
-  public List<Map<String, String>> getData(List<String> inputValues) {
+	public List<Map<String, String>> getData() {
 
-    this.inputValues = inputValues;
-    return this.getData();
-  }
+		String query = this.getQuery();
+		this.mainGraph.getWebapp().log("SPARQLDataGetter");
+		this.mainGraph.getWebapp().log(query + "\n\n");
+		return mainGraph.getWebapp().sparqlResult(query, this.urisToSelect,
+				this.literalsToSelect);
+	}
 
-  public String getQueryTriples() {
+	public List<Map<String, String>> getData(String value) {
 
-    String queryTriples = this.queryTriples;
-    int i = 0;
-    for (String inputKey : this.inputKeys) {
-      queryTriples +=
-          "\tFILTER ( ?" + inputKey + " = <" + this.inputValues.get(i) + "> ) . \n";
-      i++;
-    }
-    return queryTriples;
-  }
+		this.inputValues = ArrayLib.getList(value);
+		return this.getData();
+	}
 
-  public String getQuery() {
-    String query = new String("");
-    query += N3Utils.getQueryPrefixes();
-    query += "\nSELECT DISTINCT ";
-    query += this.selectVars;
-    query += "\nWHERE { \n ";
-    query += this.getQueryTriples();
-    query += "\n } ";
-    return query;
-  }
+	public JSONArray getJSON(List<String> inputValues) {
+		
+			return QueryUtils.getJSON(getData(inputValues));
+	}
+
+	public List<Map<String, String>> getData(List<String> inputValues) {
+
+		this.inputValues = inputValues;
+		return this.getData();
+	}
+
+	public String getQueryTriples() {
+
+		String queryTriples = this.queryTriples;
+		int i = 0;
+		for (String inputKey : this.inputKeys) {
+			queryTriples += "\tFILTER ( ?" + inputKey + " = <"
+					+ this.inputValues.get(i) + "> ) . \n";
+			i++;
+		}
+		return queryTriples;
+	}
+
+	public String getQuery() {
+		String query = new String("");
+		query += N3Utils.getQueryPrefixes();
+		query += "\nSELECT DISTINCT ";
+		query += this.selectVars;
+		query += "\nWHERE { \n ";
+		query += this.getQueryTriples();
+		query += "\n } ";
+		return query;
+	}
+
+	private void calcUrisLiterals(List<Triple> queryTriples) {
+
+		if (this.urisToSelect == null) {
+			this.urisToSelect = new ArrayList<String>();
+			this.literalsToSelect = new ArrayList<String>();
+			for (Triple triple : queryTriples) {
+				if(triple instanceof LiteralTriple){
+					this.literalsToSelect.add(triple.object.varName);
+				} else {
+					ArrayLib.addDistinct(this.urisToSelect, triple.object.varName);
+				}
+				ArrayLib.addDistinct(this.urisToSelect, triple.subject.varName);
+			}
+		}
+	}
 }
