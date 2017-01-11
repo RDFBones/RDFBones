@@ -390,17 +390,17 @@ public class GraphLib {
 		graph.schemeTriples = restTriples;
 	}
 
-	public static List<String> typeInstances(List<Triple> restrictionTriples){
-		
+	public static List<String> typeInstances(List<Triple> restrictionTriples) {
+
 		List<String> instances = new ArrayList<String>();
-		for(Triple triple : restrictionTriples){
-			if(triple instanceof HasValueRestrictionTriple){
+		for (Triple triple : restrictionTriples) {
+			if (triple instanceof HasValueRestrictionTriple) {
 				ArrayLib.addDistinct(instances, triple.object.varName);
 			}
 		}
 		return instances;
 	}
-	
+
 	public static void setDataInputVars(Graph graph) {
 
 		// Variables to set
@@ -465,18 +465,33 @@ public class GraphLib {
 				ArrayLib.addDistinct(graph.classesToSelect, triple.object.varName);
 			} else {
 
+        if (triple.predicate.equals("rdf:type")) {
+          if (!(triple.subject instanceof InputNode)) {
+            graph.triplesToStore.add(triple);
+          }
+          if (!(triple.object instanceof InputNode)) {
+            ArrayLib.addDistinct(graph.classesToSelect, triple.object.varName);
+          }
+        }
+          /*
+           * if (triple.subject instanceof InputNode) {
+           * graph.typeQueryTriples.add(triple); }
+           */
+      }
+				
+        /*
 				if (triple.predicate.equals("rdf:type")) {
 					graph.typeTriples.add(triple);
 					if (!(triple.object instanceof InputNode)) {
 						ArrayLib.addDistinct(graph.classesToSelect, triple.object.varName);
-					}
+					}*/
 					/*
 					 * if (triple.subject instanceof InputNode) {
 					 * graph.typeQueryTriples.add(triple); }
 					 */
-				}
+				
 			}
-		}
+		
 		graph.instances.addAll(graph.newInstances);
 		graph.instances.addAll(graph.inputInstances);
 	}
@@ -678,11 +693,10 @@ public class GraphLib {
 		return new Triple(varName, "rdf:type", classVarName);
 	}
 
-	
-	public static void setTypeTriple(Graph graph, String variableName){
-		
-		for(Triple triple : graph.typeTriples){
-			if(triple.subject.varName.equals(variableName)){
+	public static void setTypeTriple(Graph graph, String variableName) {
+
+		for (Triple triple : graph.typeTriples) {
+			if (triple.subject.varName.equals(variableName)) {
 				graph.triplesToStore.add(triple);
 				break;
 			}
