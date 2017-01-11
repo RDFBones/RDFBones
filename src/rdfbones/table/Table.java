@@ -13,6 +13,18 @@ public class Table {
 
 	public List<TableCell> cells = new ArrayList<TableCell>();
 	public FormGraph graph;
+	String varName;
+	String title;
+		
+	public Table(String title){
+		this.title = title;
+	}
+	
+	public Table(String varName, String title){
+
+		this.varName = varName;
+		this.title = title;
+	}
 	
 	public JSONObject getDescriptor(){
 	
@@ -22,6 +34,7 @@ public class Table {
     for(TableCell cell : this.cells){
     	cells.put(cell.getDescriptor());
     }
+    JSON.put(object, "title", this.title);
     JSON.put(object, "cells", cells);
     return object;
 	}
