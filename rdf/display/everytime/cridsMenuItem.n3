@@ -1,0 +1,33 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix display: <http://vitro.mannlib.cornell.edu/ontologies/display/1.1#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix action: <java:edu.cornell.mannlib.vitro.webapp.auth.permissions.SimplePermission#> .
+@prefix vivoweb: <http://vivoweb.org/ontology#> .
+@prefix vitro:   <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+display:CRIDS
+    a display:Page ;    
+    a display:ClassGroupPage;
+    display:forClassGroup vivoweb:vitroClassGroupCRIDs ;
+    display:title "CRIDs" ;
+    display:urlMapping "/crids" ;
+    display:hasDataGetter display:cridsDataGetter .
+
+display:CRIDsMenuItem
+    a display:NavigationElement ;
+    display:menuPosition "7";
+    display:linkText "CRIDs";
+    display:toPage display:CRIDS .    
+
+display:DefaultMenu 
+	display:hasElement display:CRIDsMenuItem .
+
+display:cridsDataGetter
+      a <java:edu.cornell.mannlib.vitro.webapp.utils.dataGetter.ClassGroupPageData>;
+      display:forClassGroup
+              vivoweb:vitroClassGroupCRIDs .
+
+             
+

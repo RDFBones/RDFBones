@@ -1,0 +1,46 @@
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix : <http://vitro.mannlib.cornell.edu/ns/vitro/ApplicationConfiguration#> .
+@prefix display: <http://vitro.mannlib.cornell.edu/ontologies/display/1.1#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix datagetter: <java:edu/cornell/mannlib/vitro/webapp/utils/datagetter/> .
+@prefix vitro: <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#> .
+@prefix role:  <http://vitro.mannlib.cornell.edu/ns/vitro/role#> .
+@prefix local: <http://vitro.mannlib.cornell.edu/ns/vitro/siteConfig/> .
+@prefix vivo: <http://vivoweb.org/ontology/core#> . 
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+
+local:skeletalInventoryContext a :ConfigContext ;
+    :hasConfiguration local:skeletalInventoryConfig ;
+    :configContextFor obo:IAO_0000136 ;
+    :qualifiedByDomain obo:IAO_0000578 ;
+    :qualifiedBy <http://w3id.org/rdfbones/core#SkeletalInventory> .
+
+local:skeletalInventoryConfig a :ObjectPropertyDisplayConfig ;
+    rdfs:label "skeletal inventory"@en-US ;
+    :displayName "skeletal inventory" ;
+    :listViewConfigFile "listViewConfig-fauxPropertyDefault.xml"^^xsd:string ;
+    vitro:displayRankAnnot "10"^^xsd:int ;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview> .
+
+local:cridRegistryContext a :ConfigContext ;
+    :hasConfiguration local:cridRegistryConfig ;
+    :configContextFor obo:IAO_0000219 ;
+    :qualifiedByDomain obo:IAO_0000578 ;
+    :qualifiedBy obo:IAO_0000579 .
+
+local:cridRegistryConfig a :ObjectPropertyDisplayConfig ;
+    rdfs:label "crid registry"@en-US ;
+    :displayName "crid registry" ;
+    :listViewConfigFile "listViewConfig-fauxPropertyDefault.xml"^^xsd:string ;
+    vitro:displayRankAnnot "20"^^xsd:int ;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview> .

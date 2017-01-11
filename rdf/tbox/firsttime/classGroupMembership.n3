@@ -1,4 +1,7 @@
 @prefix vitro:   <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#> .
+@prefix vivo: <http://vivoweb.org/ontology#> . 
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+
 
 <http://purl.org/ontology/bibo/Document>
 	vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupdocuments> .
@@ -15,6 +18,10 @@
 <http://purl.org/ontology/bibo/Slideshow>
  	   vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupdocuments> .
  
+ #
+ # SkeletalInventory
+ #
+ 
 <http://w3id.org/rdfbones/core#SkeletalInventory>
 	vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupSkeletalInventory> .
 
@@ -26,3 +33,14 @@
 
 <http://purl.obolibrary.org/obo/OBI_0000066>
 	vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupInvestigations> .
+	
+	
+#
+# CRIDs
+#
+
+#CRID
+obo:IAO_0000578	vitro:inClassGroup 	vivo:vitroClassGroupCRIDs .
+
+#CRID Registry
+obo:IAO_0000579	vitro:inClassGroup 	vivo:vitroClassGroupCRIDs .
