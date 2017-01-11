@@ -1,5 +1,7 @@
 var DataController = {
 
+		
+	errorCount : 0,	
 	id : 0,
 	getId : function() {
 
@@ -28,20 +30,34 @@ var DataController = {
 			dependentVars : dependentVars,
 		}
 		if (Object.keys(dependentVars).length > 0) {
-			$.ajax({
-				type : 'POST',
-				context : this,
-				dataType : 'json',
-				url : baseUrl + "formDataLoader",
-				data : "requestData=" + JSON.stringify(toSend)
-			}).done((function(msg) {
-				form.init(this.prepare(msg))
-			}).bind(this))
+			this.callAjax(form, toSend, true)
 		} else {
 			form.init()
 		}
 	},
 
+	callAjax : function(form, toSend, firstTry){
+		
+		$.ajax({
+			type : 'POST',
+			context : this,
+			dataType : 'json',
+			url : baseUrl + "formDataLoader",
+			data : "requestData=" + JSON.stringify(toSend),
+			error : (function(){
+				this.errorCount++;
+				if(firstTry){
+					console.log("FirstTry")
+					this.callAjax(form, toSend, false)
+				} else {
+					alert("Something went wrong. Please reload the page and try again!")
+				}
+			}).bind(this)
+		}).done((function(msg) {
+			form.init(this.prepare(msg))
+		}).bind(this))
+	},
+	
 	getGraphDataParams : function(instanceSelector) {
 
 		var dataKey = instanceSelector.dataKey
