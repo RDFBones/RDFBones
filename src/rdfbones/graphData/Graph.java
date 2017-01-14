@@ -16,6 +16,7 @@ import rdfbones.lib.DebugLib;
 import rdfbones.lib.GraphLib;
 import rdfbones.lib.JSON;
 import rdfbones.lib.MainGraphSPARQLDataGetter;
+import rdfbones.lib.N3Lib;
 import rdfbones.lib.QueryLib;
 import rdfbones.lib.SPARQLDataGetter;
 import rdfbones.lib.SPARQLUtils;
@@ -62,6 +63,7 @@ public class Graph {
   public List<String> literalsToSelect;
 
   public Map<RDFNode, Graph> initialGraphMap;
+  public Map<String, Graph> graphCache = new HashMap<String, Graph>();
   public Map<String, Graph> graphMap = new HashMap<String, Graph>();
   public Map<String, Graph> subGraphs = new HashMap<String, Graph>();
   public Map<String, Graph> optionalGraphs = new HashMap<String, Graph>();
@@ -121,6 +123,7 @@ public class Graph {
         subGraph.varName = GraphLib.getObject1(triple, key.varName);
         subGraph.inputPredicate = triple.predicate;
         subGraph.mainGraph = graph.mainGraph;
+        subGraph.mainGraph.graphCache.put(subGraph.varName, subGraph);
         subGraph.initGraphStructure();
         if (subGraph.triple != null)
           subGraph.dataTriples.add(triple);
@@ -268,10 +271,10 @@ public class Graph {
 
     // Creating string to create
     this.graphDataMap = variableMap;
-    log("VariableMap");
+    log("\n VariableMap");
     DebugLib.mapLog(variableMap, this);
     Map<String, String> labelMap = GraphLib.getLabels(variableMap);
-    log("LabelMap");
+    log("\n LabelMap");
     DebugLib.mapLog(labelMap, this);
     List<Triple> triplesToStore = GraphLib.addLabelTriples(this.triplesToStore);
     String triplesString = SPARQLUtils.assembleTriples(triplesToStore);
@@ -382,4 +385,20 @@ public class Graph {
     System.out.println(JSON.debug(response));
     return response;
   }
+  
+  public String deleteData(JSONObject object){
+  	
+  	//System.out.println("Debug subgraph");
+  	//this.debug();
+  	String dataToDelete = N3Lib.getTriples(this.triplesToStore, object);
+		for(String key : this.subGraphs.keySet()){
+			Graph subGraph = this.subGraphs.get(key);
+			JSONArray array = JSON.array(object, QueryLib.getPredicateKey(subGraph.inputPredicate));
+			for(int i = 0; i < array.length(); i++){
+				dataToDelete += subGraph.deleteData(JSON.object(array, i));
+			}
+		}
+  	return dataToDelete;
+  }
 }
+
