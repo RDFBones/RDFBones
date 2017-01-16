@@ -116,15 +116,6 @@ public class GraphLib {
 		return all;
 	}
 
-	public static List<String> getNodes(List<Triple> dataTriples,
-			List<Triple> restrictionTriples) {
-
-		List<String> nodes = new ArrayList<String>();
-		nodes.addAll(getNodes(dataTriples));
-		nodes.addAll(getNodes(restrictionTriples));
-		return nodes;
-	}
-
 	public static List<String> getNodes(List<Triple> triples) {
 
 		List<String> nodes = new ArrayList<String>();
