@@ -18,8 +18,8 @@ var DataController = {
 		$.each(form.descriptor.formElements, function(key, formElement) {
 			if (formElement.type != "existingInstanceSelector") {
 				// Check if dependent or independent the data is
-				dataKey = DataController.getDataKey(key, formElement)
-				if (dataDependencies[dataKey] !== undefined) {
+				var dataKey = formElement.dataKey
+				if (Global.dataDependencies[dataKey] !== undefined) {
 					dependentVars[dataKey] = DataController.getInputObject(
 							form, dataKey)
 				}
@@ -62,7 +62,7 @@ var DataController = {
 
 		var dataKey = instanceSelector.dataKey
 		var dependentVars = new Object()
-		if (dataDependencies[dataKey] !== undefined) {
+		if (Global.dataDependencies[dataKey] !== undefined) {
 			dependentVars = DataController.getInputObject(
 					instanceSelector.formElement.parentForm, dataKey)
 		}
@@ -71,11 +71,11 @@ var DataController = {
 
 	loadSubFormDataAll : function(form, inputList) {
 		
-		var dependentVars = new Object()
+		var dependentVars =new Object()
 		$.each(form.descriptor.formElements, function(key, formElement) {
 			// Check if dependent or independent the data is
 			if (key != form.dataKey) {
-				dataKey = DataController.getDataKey(key, formElement)
+				dataKey = formElement.dataKey
 				dependentVars[dataKey] = DataController.getInputObject(
 						form.parentForm, dataKey)
 			} else {
@@ -108,33 +108,31 @@ var DataController = {
 	getInputObject : function(form, dataKey) {
 
 		var msgObject = new Object()
-		$
-				.each(
-						dataDependencies[dataKey],
-						function(i, variable) {
-							if (form.dataObject[variable] !== undefined) {
-								msgObject[variable] = form.dataObject[variable]
+		$.each(Global.dataDependencies[dataKey], function(i, variable) {
+			
+			if (form.dataObject[variable] !== undefined) {
+				msgObject[variable] = form.dataObject[variable]
+			} else {
+				parentContainer = form.parentForm
+				while (true) {
+					if (parentContainer !== undefined && parentContainer != null) {
+						if (parentContainer.dataObject !== undefined) {
+							if (parentContainer.dataObject[variable] !== undefined) {
+								msgObject[variable] = parentContainer.dataObject[variable]
+								break
 							} else {
-								parentContainer = form.parentForm
-								while (true) {
-									if (parentContainer !== undefined) {
-										if (parentContainer.dataObject !== undefined) {
-											if (parentContainer.dataObject[variable] !== undefined) {
-												msgObject[variable] = parentContainer.dataObject[variable]
-												break
-											} else {
-												parentContainer = parentContainer.parentForm
-											}
-										} else {
-											parentContainer = parentContainer.parentForm
-										}
-									} else {
-										console.log("Variable is not found")
-										break
-									}
-								}
+								parentContainer = parentContainer.parentForm
 							}
-						})
+						} else {
+							parentContainer = parentContainer.parentForm
+						}
+					} else {
+						console.log("Variable " + variable + " is not found ")
+						break
+					}
+				}
+			}
+		})
 		return msgObject
 	},
 
@@ -157,18 +155,6 @@ var DataController = {
 		return obj
 	},
 
-	/*
-	 * This function only retrieves the data from the JavaScript does not call
-	 * any JSON
-	 */
-	getDataKey : function(key, form) {
-		if (form.dataKey !== undefined) {
-			return form.dataKey
-		} else {
-			return key
-		}
-	},
-
 	prepareOptions : function(options) {
 
 		if (DataLib.getType(options) == "array") {
@@ -176,9 +162,8 @@ var DataController = {
 			var object = new Object
 			$.each(options, function(key, value) {
 				object[value.uri] = new Object()
-				object[value.uri]
 				if (value.label === undefined) {
-					object[value.uri].label = value.uri.split["#"][1]
+					object[value.uri].label = (value.uri).split("#")[1]
 				} else {
 					object[value.uri].label = value.label
 				}
