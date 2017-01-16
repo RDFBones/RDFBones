@@ -35,7 +35,6 @@ public class FormGraph extends Graph {
 	SPARQLDataGetter formDataRetriever = null;
 	public QueryInfo queryInfo;
 
-
 	public FormGraph() {
 		
 	}
