@@ -84,6 +84,16 @@ public class Form {
 		return formElements;
 	}
 
+	public void setFormMap(Map<String, FormElement> map){
+		
+		for(FormElement element : this.formElements){
+			map.put(element.dataKey, element);
+			if(element instanceof SubformAdder){
+				((SubformAdder) element).subForm.setFormMap(map);
+			}
+		}
+	}
+	
 	public void debug() {
 		this.graph.mainGraph.getWebapp().log(JSON.debug(getSubFormJSON(), 0));
 	}
