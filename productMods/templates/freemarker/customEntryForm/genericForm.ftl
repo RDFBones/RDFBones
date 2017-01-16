@@ -12,6 +12,7 @@
 </div>
 <div id = "popUpContainer">
 </div>
+
 <script>
  
 	var imgSrc = "${urls.base}/images/general/"
@@ -19,7 +20,7 @@
 	var editKey = "${editConfiguration.editKey}"
 	var subjectUri = "${editConfiguration.subjectUri}"
 	var dataSaveUri = baseUrl + "dataGenerator"
-	var formData = new Object()
+	var Global = new Object()
 	var	buttonID = 0
 	var debug = false
 	<#if editConfiguration.objectUri?has_content>
@@ -33,8 +34,7 @@
     var	rangeUri = null
     </#if>
 	$(document).ready(function(){
-		new MainForm(); 
+		new FormLoader()
 	})
-	
 	
 </script>
