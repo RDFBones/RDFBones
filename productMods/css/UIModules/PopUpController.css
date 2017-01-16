@@ -61,3 +61,28 @@
 	margin : 10px;
 	width : 70px;
 }
+
+.loaderMsgContainer {
+	display : table;
+}
+
+.loaderMsgSubForm{
+	margin: 0 auto;
+	display : table;
+	background-color: #382f2f;
+	color : white;
+	border-radius: 6px;
+	font-size: x-small;
+	padding: 2px 3px;
+	letter-spacing: 1px;
+}
+
+.loaderMsg{
+	margin: 0 auto;
+	display : table;
+	background-color: #382f2f;
+	color : white;
+	border-radius: 6px;
+	padding: 2px 3px;
+	letter-spacing: 1px;
+}
