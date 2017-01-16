@@ -118,16 +118,22 @@ var PopUpController = {
 		$('body').removeClass('stop-scrolling')
 	},
 	
-	
 	addWaitGif : function(div){
-		this.startDate = new Date()
-		this.waitGif = ImgUI.waitGif()
+		
+		this.waitGif = html.div("loaderMsgContainer")
+		msgDiv = html.div("loaderMsg").text("Loading form")	
+		img = ImgUI.waitGif()
+		this.waitGif.append([img, msgDiv])
+		
 		div.append(this.waitGif)
 	},
 	
 	addSubWaitGif : function(div){
-		this.startDate = new Date()
-		this.waitGif = ImgUI.subWaitGif()
+
+		this.waitGif = html.div("loaderMsgContainer")
+		msgDiv = html.div("loaderMsgSubForm").text("Loading subform")	
+		img = ImgUI.subWaitGif()
+		this.waitGif.append([img, msgDiv])
 		div.append(this.waitGif)
 	},
 	
@@ -136,7 +142,11 @@ var PopUpController = {
 		//diff = 200 - ((new Date()) - this.startDate)
 		//diff = (diff > 0) ? diff : 0
 		//setTimeout((function(){
-			input.hide()
+			if(util.isArray(input)) {
+				UI.hideArray(input)
+			} else {
+				input.hide()
+			}	
 			this.waitGif.remove()
 			div.append(input)
 			input.fadeIn(1000)
