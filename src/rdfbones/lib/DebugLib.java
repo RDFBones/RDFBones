@@ -16,12 +16,15 @@ public class DebugLib {
     DebugLib.logTripleList("dataTriples", tab, graph, graph.dataTriples);
     DebugLib.logTripleList("schemeTriples", tab, graph, graph.schemeTriples);
     DebugLib.logTripleList("triplesToStore", tab, graph, graph.triplesToStore);
+    DebugLib.logList("nodes", tab, graph, graph.nodes);
     DebugLib.logList("newInstances", tab, graph, graph.newInstances);
     DebugLib.logList("inputInstances", tab, graph, graph.inputInstances);
     DebugLib.logList("constantLiterals", tab, graph, graph.constantLiterals);
     DebugLib.logList("inputLiterals", tab, graph, graph.inputLiterals);
     DebugLib.logList("inputClasses", tab, graph, graph.inputClasses);
     DebugLib.logList("typeNodes", tab, graph, graph.typeNodes);
+    DebugLib.logList("formNodes", tab, graph, graph.formNodes);
+    DebugLib.logList("nodesAsInput", tab, graph, graph.nodesAsInput);
     DebugLib.logList("classesToSelect", tab, graph, graph.classesToSelect);
     DebugLib.logList("mainInputNodes", tab, graph, graph.mainInputNodes);
     DebugLib.logMap("mainInputValues", tab, graph, graph.mainInputValues);
@@ -49,7 +52,7 @@ public class DebugLib {
       graph.log(tab + msg + ":\t" + StringUtil.debugList(logList));
     } 
   }
-
+  
   public static void logMap(String msg, String tab, Graph graph, Map<String, String> map) {
     
     if(map != null){
@@ -107,6 +110,15 @@ public class DebugLib {
     }
   }
 
+  static public String debugMap(Map<String, Graph> map) {
+
+  	String msg = new String("");
+  	for (String key : map.keySet()) {
+      msg += key + "   " + map.get(key).toString() + "\n";
+    }
+  	return msg;
+  }
+  
   static public void debugMap(Map<String, Graph> map, Graph graph) {
 
     for (String key : map.keySet()) {
@@ -116,7 +128,7 @@ public class DebugLib {
   
   public static void mapLog(Map<String, String> map, Graph graph){
     for (String key : map.keySet()) {
-      graph.log(key + "   " + map.get(key) + "\n");
+      graph.log(key + "   " + map.get(key));
     }
   }
   

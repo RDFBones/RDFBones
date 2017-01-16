@@ -104,9 +104,9 @@ public class GraphLib {
 		List<Triple> all = new ArrayList<Triple>();
 		for (Triple triple : triples) {
 			if (triple.predicate.equals("rdf:type")
-					&& triple.object.varName.contains("Type")) {
-				String labelVarName = StringUtil.cutFromEnd(triple.object.varName,
-						"Type") + "Label";
+						&& triple.object.varName.contains("Type")) {
+				System.out.println("TYPEEEEE : " + triple.subject.varName);
+				String labelVarName = triple.subject.varName + "Label";
 				Triple labelTriple = new Triple(triple.subject, "rdfs:label",
 						labelVarName);
 				all.add(labelTriple);

@@ -141,6 +141,22 @@ public class JSON {
     return new JSONArray();
   }
   
+  public static JSONObject copyObject(JSONObject object){
+  	
+  	JSONObject ret = JSON.obj();
+  	Iterator<?> keys = object.keys();
+  	while(keys.hasNext()){
+  		JSON.copyValue(ret, object, (String) keys.next());
+  	}
+  	return ret;
+  }
+  
+  public static void copyValue(JSONObject to, JSONObject from, String key){
+  	
+  	JSON.put(to, key, JSON.string(from, key));
+  }
+  
+  
   public static void put(JSONObject obj, String key, Object value){
     
     try {

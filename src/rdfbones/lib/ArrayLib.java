@@ -2,7 +2,10 @@ package rdfbones.lib;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import rdfbones.graphData.VariableDependency;
 import rdfbones.rdfdataset.Triple;
 
 public class ArrayLib {
@@ -128,5 +131,54 @@ public class ArrayLib {
 			cnt++;
 		}
 		list.remove(i);
+	}
+	
+	public static boolean isIntersect(List<String> arr1, List<String> arr2){
+		
+		boolean ret = false;
+		if(arr2.size() > arr1.size()){
+			for(String str : arr2){
+				if(arr1.contains(str)){
+					ret = true;
+					return false;
+				}
+			}
+		} else {
+			for(String str : arr1){
+				if(arr2.contains(str)){
+					ret = true;
+					return false;
+				}
+			}
+		}
+		return ret;
+	}
+	
+	public static List<String> intersect(List<String> arr1, List<String> arr2){
+		
+		List<String> ret = new ArrayList<String>();
+		if(arr2.size() > arr1.size()){
+			for(String str : arr2){
+				if(arr1.contains(str)){
+					ret.add(str);
+				}
+			}
+		} else {
+			for(String str : arr1){
+				if(arr2.contains(str)){
+					ret.add(str);
+				}
+			}
+		}
+		return ret;
+	}
+	
+	static public List<String> getKeySet(Map<String, VariableDependency> varDeps){
+		
+		List<String> ret = new ArrayList<String>();
+		for(String key : varDeps.keySet()){
+			ret.add(key);
+		}
+		return ret;
 	}
 }
