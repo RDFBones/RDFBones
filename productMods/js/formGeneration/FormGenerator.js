@@ -17,14 +17,13 @@ FormGenerator.prototype = {
 				this.elements.push(new Selector(value, this))
 			}
 		}).bind(this))
+		
 		//SubmitButton
 		containers = []
-		
 		$.each(this.elements, function(i, element){
 			containers.push(
 					html.div("margin3").append(element.container))
 		})
-		
 		this.submitButton = new TextButton("Submit", (this.submit).bind(this)).disable()
 		containers.push(this.submitButton.container)
 		
@@ -40,7 +39,6 @@ FormGenerator.prototype = {
 				return false
 			}
 		})
-		
 		if(flag){
 			this.submitButton.enable()
 		} else {
@@ -55,7 +53,6 @@ FormGenerator.prototype = {
 		$.each(this.elements, function(i, element){
 			dataToStore[element.varName] = element.dataObject
 		})
-		
 		
 		ext = this.generateSubmissionMap()
 		$.extend(dataToStore, ext)

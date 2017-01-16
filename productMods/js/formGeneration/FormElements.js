@@ -71,50 +71,31 @@ Adder.prototype = $.extend(Object.create(FormElement.prototype), {
 
 	initData : function() {
 
-		this.addedValues = []
 		this.subForms = []
-		this.cnt = 0
-		this.addingAll = false
-
 		if (this.dataObject[this.predicate] !== undefined) {
-			this.existingData = this.dataObject[this.predicate]
-			if (this.existingData.length > 0) {
-				this.parentForm.existingCounter++
-			}
-			this.existingLoad = true
+			this.dataArray = this.dataObject[this.predicate]
 			this.showExistingData()
 		} else {
-			this.existingLoad = false
-			this.existingData = []
-			this.dataObject[this.predicate] = this.existingData
+			this.dataArray = []
+			this.dataObject[this.predicate] = this.dataArray
 		}
 	},
 
 	showExistingData : function() {
-		$.each(this.existingData, (function(i, object) {
-			this.title = DataController.getLabel(this.options,
-					object[this.dataKey])
-			if (this.descriptor.formElements !== undefined) {
-				this.cnt++
-				var form = new Form(this, object)
-				this.subForms.push(form)
-				form.load()
-			} else {
-				this.subContainer.append(html.div("subElement").text(
-						object[this.dataKey + "Label"]))
-			}
+		
+		$.each(this.dataArray, (function(i, object) {
+			var option = this.options[object[this.dataKey]]
+			object[this.dataKey + "Label"] = option.label
+			this.subForms.push(new ExistingForm(this, this.descriptor, object))
 		}).bind(this))
-		if (this.existingData.length > 0
-				&& this.descriptor.formElements === undefined) {
-			this.parentForm.ready()
-		}
+		UI.appendToDiv(this.subContainer, this.subForms)
 	},
 
 	add : function() {
 
 		if (this.addAllFlag) {
 			PopUpController.note("All types have been already added!")
-		} else if (this.existingData.getObjectByKey(this.dataKey, this.selector
+		} else if (this.dataArray.getObjectByKey(this.dataKey, this.selector
 				.val()) != null) {
 			var text = this.selector.find(
 					"option[value='" + this.selector.val() + "']").text()
@@ -122,14 +103,17 @@ Adder.prototype = $.extend(Object.create(FormElement.prototype), {
 		} else {
 			var object = new Object()
 			object[this.dataKey] = this.selector.val()
-			object[this.dataKey + "Label"] = this.selector.find(
-					"option[value='" + this.selector.val() + "']").text()
-			this.title = object[this.dataKey + "Label"]
-			this.existingData.push(object)
-			this.addSubForm(object)
+			object[this.dataKey + "Label"] = this.options[this.selector.val()].label
+			this.dataArray.push(object)
+			PopUpController.addSubWaitGif(this.subContainer)
+			this.subForms.push(new SubForm(this, this.descriptor, object))
 		}
 	},
-
+	
+	ready : function(container){
+		this.subContainer.append(container)
+	},
+	
 	addAll : function() {
 
 		PopUpController.addSubWaitGif(this.subContainer)
@@ -138,60 +122,35 @@ Adder.prototype = $.extend(Object.create(FormElement.prototype), {
 
 	initAll : function(data) {
 
+		this.cnt = 0
+		this.addedForms = []
 		$.each(data, (function(key, value) {
 			// The key is the uri
-			label = this.options[key].label;
+			this.cnt++
 			var object = new Object()
 			object[this.dataKey] = key
 			object[this.dataKey + "Label"] = this.options[key].label
-			this.existingData.push(object)
-			this.title = this.options[key].label
-			console.log("AllValue")
-			console.log(value)
-			this.subForms.push(new SubForm(this, object, value))
+			this.dataArray.push(object)
+			this.subForms.push(new SubFormAll(this, this.descriptor, object))
 		}).bind(this))
-		this.addSubForms()
+	},
+
+	readyAll : function(form){
+		
+		this.addedForms.push(form.container)
+		if(--this.cnt == 0){
+			this.subContainer.append(this.addedForms)
+			PopUpController.remove()
+			this.addedForms = []
+		}
+	},
+	
+	ready : function() {
+
+		this.subContainer.append(this.subForms[this.subForms.length - 1].container)
 		PopUpController.remove()
 	},
 
-	addSubForm : function(object) {
-
-		if (this.descriptor.formElements !== undefined) {
-			this.cnt++
-			PopUpController.addSubWaitGif(this.subContainer)
-			var form = new Form(this, object)
-			this.subForms.push(form)
-			form.load()
-		} else {
-			this.subContainer.append(html.div("subElement").text(
-					object[this.dataKey + "Label"]))
-		}
-	},
-
-	ready : function() {
-
-		this.cnt--
-		if (this.cnt == 0) {
-			if (this.existingLoad) {
-				this.addSubForms()
-				this.parentForm.ready()
-				this.existingLoad = false
-			} else if (this.addAllFlag) {
-				this.addSubForms()
-				PopUpController.remove()
-			} else {
-				PopUpController.removeWaitGif(this.subContainer,
-						this.subForms[this.subForms.length - 1].container)
-			}
-		}
-	},
-
-	addSubForms : function() {
-
-		$.each(this.subForms, (function(i, subForm) {
-			this.subContainer.append(subForm.container)
-		}).bind(this))
-	}
 })
 
 var StringInput = function(descriptor) {
