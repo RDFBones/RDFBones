@@ -25,6 +25,26 @@ var UI = {
 		main.container.append(arr)
 	},
 	
+	appendToDiv : function(div, array){
+		
+		arr = []
+		$.each(array, function(index, value){
+			arr.push(value.container)
+		})
+		div.append(arr)
+	},
+	
+	appendDivs : function(main, array){
+		
+		arr = []
+		$.each(array, function(index, value){
+			arr.push(value)
+		})
+		if(main.container === undefined)
+			main.container = html.div()
+		main.container.append(arr)
+	},
+	
 	appendGen : function(main, array){
 		
 		arr = []
@@ -34,7 +54,12 @@ var UI = {
 		main.container.append(arr)
 	},
 	
-	
+	hideArray : function(array){
+		
+		$.each(array, function(index, value){
+			value.hide()
+		})
+	},
 	
 	/***************************************************************************
 	 * Horizontal general img

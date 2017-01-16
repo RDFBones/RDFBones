@@ -8,6 +8,34 @@ var util = {
 		}
 	},
 
+	getUndefinedObject : function(object, key){
+		if(object[key] !== undefined){
+			return object[key]
+		} else {
+			return ""
+		}
+	},
+
+	isArray : function(someVar){
+		if( Object.prototype.toString.call( someVar ) === '[object Array]' ) {
+		    return true
+		}
+		return false
+	},	
+		
+	getType : function(someVar){
+		if ((typeof someVar) == "object") {
+			if(this.isArray(someVar)){
+				return "array"
+			} else {
+				return "object"
+			}
+		} else {
+			return "data" 
+		}
+	},
+	
+	
 	flip : function(bool){
 		bool = bool ? false : true
 	},
