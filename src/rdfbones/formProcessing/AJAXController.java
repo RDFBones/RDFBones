@@ -20,7 +20,7 @@ public class AJAXController {
 	static String INPUTPARAMETERS = "inputParameters";
 	static String SUBJECTURI = "subjectUri";
 	static String OBJECTURI = "objectUri";
-	
+
 	// Output
 	static String TABLEDATA = "tableData";
 	public JSONObject response = new JSONObject();
@@ -46,10 +46,11 @@ public class AJAXController {
 			case "formGraphData":
 				if (check(KEY)) {
 					if (formConfig.formGraphs.containsKey(get(KEY))) {
-						//FormGraph formGraph = formConfig.formGraphs.get(get(KEY));
+						// FormGraph formGraph = formConfig.formGraphs.get(get(KEY));
 						JSONObject inputParameters = getJSONObject(INPUTPARAMETERS);
 						System.out.println(inputParameters.toString());
-						VariableDependency varDep = graph.variableDependencies.get(get(KEY));
+						VariableDependency varDep = graph.variableDependencies
+								.get(get(KEY));
 						System.out.println(graph.variableDependencies.keySet());
 						JSONArray response = varDep.getData(inputParameters);
 						response(TABLEDATA, response);
@@ -58,12 +59,10 @@ public class AJAXController {
 					}
 				}
 				break;
-			case "existingFormGraphData" :
-				
-				graph.getExistingData(get(SUBJECTURI), get(OBJECTURI));
-				response(JSON.getJSON(graph.existingData, 0));
+			case "existingFormGraphData":
+				response(graph.getExistingData(get(SUBJECTURI), get(OBJECTURI)));
 				break;
-		
+
 			case "dependentData":
 				break;
 
@@ -89,7 +88,7 @@ public class AJAXController {
 	public void response(JSONObject value) {
 		this.response = value;
 	}
-	
+
 	public void response(String key, Object value) {
 		JSON.put(this.response, key, value);
 	}
