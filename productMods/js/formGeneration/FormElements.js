@@ -25,7 +25,7 @@ Selector.prototype = $.extend(Object.create(FormElement.prototype), {
 
 	initUI : function() {
 		this.selector = new DataSetterSelectorFieldMap(this.options,
-				this.changeData)
+				(this.changeData).bind(this))
 		if (this.descriptor.arrangement !== undefined) {
 			this.container = html.div("margin10H inline");
 		} else {
