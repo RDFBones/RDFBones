@@ -78,8 +78,8 @@ FormLoader.prototype = {
 
 	deleteFormData : function(){
 		
-		PopUpController("Delete is in progress")
-		AJAX.deleteData("deleteAll", (function(msg){
+		PopUpController.init("Delete is in progress")
+		AJAX.call("deleteAll", (function(msg){
 			PopUpController.doneMsg("Delete was successful",
 					2000, null, util.redirect)
 		}).bind(this),[Global.formData])

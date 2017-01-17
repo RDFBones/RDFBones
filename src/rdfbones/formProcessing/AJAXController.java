@@ -102,6 +102,17 @@ public class AJAXController {
 				}
 				break;
 
+			case "deleteAll":
+				String graphTriples = graph
+						.deleteData(getJSONObject("graphData"));
+				System.out.println(get("editKey"));
+				if(formConfig.webapp.removeTriples(graphTriples, get("editKey"))){
+					JSON.put(response, "failed", false);
+				} else {
+					JSON.put(response, "failed", true);
+				}
+				break;	
+				
 			default:
 				AJAXError.unknownTask(response, get(TASK));
 				break;
