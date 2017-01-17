@@ -53,9 +53,9 @@ var util = {
 		bool = bool ? false : true
 	},
 	
-	getButtonId : function(){
+	getNewButtonId : function(){
 		
-		return "button" +  (++buttonID)
+		return "button" +  (++Global.buttonID)
 	},
 	
 	setEvent : function(event){
