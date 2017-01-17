@@ -116,6 +116,25 @@ public class GraphLib {
 		return all;
 	}
 
+	public static void setNodes(Graph graph) {
+
+		graph.nodes = getNodes(graph.dataTriples);
+		for (Triple triple : graph.dataTriples) {
+			setNodeMap(graph.mainGraph, triple, triple.subject.varName);
+			setNodeMap(graph.mainGraph, triple, triple.object.varName);
+		}
+	}
+	
+	public static void setNodeMap(Graph graph, Triple triple, String varName){
+		if(graph.nodeMap.containsKey(varName)){
+			graph.nodeMap.get(varName).add(triple);
+		} else {
+			List<Triple> triples = new ArrayList<Triple>();
+			triples.add(triple);
+			graph.nodeMap.put(varName, triples);
+		}
+	}
+	
 	public static List<String> getNodes(List<Triple> triples) {
 
 		List<String> nodes = new ArrayList<String>();
@@ -368,7 +387,7 @@ public class GraphLib {
 			List<Triple> restrictionTriples) {
 
 		List<Triple> restTriples = new ArrayList<Triple>();
-		graph.nodes = GraphLib.getNodes(graph.dataTriples);
+		GraphLib.setNodes(graph);
 		restTriples.addAll(GraphLib.getAndRemoveTypeTriples(restrictionTriples,
 				graph.nodes));
 		graph.typeNodes = GraphLib.getObjectNodes(restTriples);

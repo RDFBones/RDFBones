@@ -65,9 +65,11 @@ public class Graph {
 
 	public Map<RDFNode, Graph> initialGraphMap;
 	public Map<String, Graph> graphCache = new HashMap<String, Graph>();
-	public Map<String, Graph> graphMap = new HashMap<String, Graph>();
+	public Map<String, Graph> graphMap;
+	public Map<String, List<Triple>> nodeMap;
 	public Map<String, Graph> subGraphs = new HashMap<String, Graph>();
 	public Map<String, Graph> optionalGraphs = new HashMap<String, Graph>();
+	public Map<String, Graph> nodeGraphMap;
 
 	public Map<String, VariableDependency> variableDependencies = new HashMap<String, VariableDependency>();
 	public JSONArray existingData = new JSONArray();
@@ -83,12 +85,14 @@ public class Graph {
 			WebappConnector webapp) {
 
 		this.varName = new String("subjectUri");
+		this.graphMap = new HashMap<String, Graph>();
+		this.nodeMap = new HashMap<String, List<Triple>>();
+
 		this.mainGraph = this;
 		this.webapp = webapp;
 		this.initialize(triples);
 		this.initGraphStructure();
 		this.setGraphDescriptor(schemeTriples);
-		this.setMainInputMap();
 	}
 
 	public Graph(Triple triple, String inputNode, List<Triple> triples) {
@@ -170,12 +174,15 @@ public class Graph {
 		}
 	}
 
-	public void setMainInputMap() {
+	public void setMaps() {
 
 		this.mainInputValues = new HashMap<String, String>();
 		for (String mainInput : this.mainInputNodes) {
 			this.mainInputValues.put(mainInput,
 					this.webapp.getInputParameter(mainInput));
+		}
+		for(String node : this.nodes){
+			this.mainGraph.nodeGraphMap.put(node, this);
 		}
 	}
 
