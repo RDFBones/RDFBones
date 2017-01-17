@@ -31,6 +31,14 @@ var DataLib = {
 		}
 	},
 	
+	isData : function(param){
+		if(this.getType(param) == "data"){
+			return true
+		} else {
+			return false
+		}
+	},
+	
 	or : function(variable, values){
 		var ret = false
 		$.each(values, function(index, value){
