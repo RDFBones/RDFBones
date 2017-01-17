@@ -154,7 +154,6 @@ public class Graph {
 			this.dataRetriever = new MainGraphSPARQLDataGetter(mainGraph,
 					this.dataRetreivalQuery, this.urisToSelect, this.literalsToSelect);
 		} else {
-			System.out.println("DataRetrieverQuery - varName : " + this.varName);
 			this.dataRetriever = new SPARQLDataGetter(mainGraph,
 					this.dataRetreivalQuery, this.urisToSelect, this.literalsToSelect,
 					this.varName);
@@ -165,7 +164,6 @@ public class Graph {
 					.optionalClassLabelTripels(this.classesToSelect));
 			List<String> literalsToSelect = GraphLib
 					.classLabels(this.classesToSelect);
-			DebugLib.debugList(literalsToSelect, this);
 			this.typeRetriever = new SPARQLDataGetter(mainGraph,
 					this.typeQueryTriples, this.classesToSelect, literalsToSelect,
 					this.inputClasses);
