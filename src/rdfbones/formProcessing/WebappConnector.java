@@ -13,4 +13,8 @@ public interface WebappConnector {
     List<String> literals);
 
   public void log(String msg);
+  
+  public boolean addTriples(String triples, String editKey);
+  
+  public boolean removeTriples(String triples, String editKey);	
 }

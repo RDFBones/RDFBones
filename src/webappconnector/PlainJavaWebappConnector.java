@@ -47,4 +47,11 @@ public class PlainJavaWebappConnector implements WebappConnector{
     
   }
   
+  public boolean addTriples(String triples, String editKey){
+    return false;    
+  }
+ 
+  public boolean removeTriples(String triples, String editKey){
+    return true;
+  }
 }
