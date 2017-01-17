@@ -1,3 +1,17 @@
+var dataUtil = {
+		
+	getStrings : function(object){
+		
+		var ret = new Object()
+		$.each(object, function(key, value){
+			if(DataLib.isData(value)){
+				ret[key] = value
+			}
+		})
+		return ret
+	}
+}
+
 var util = {
 		
 	setUndefined : function(variable, value){
