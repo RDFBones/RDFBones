@@ -5,11 +5,14 @@ import java.util.Iterator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import edu.cornell.mannlib.vitro.webapp.dao.jena.N3Utils;
 import rdfbones.form.FormConfiguration;
 import rdfbones.graphData.FormGraph;
 import rdfbones.graphData.Graph;
 import rdfbones.graphData.VariableDependency;
 import rdfbones.lib.JSON;
+import rdfbones.lib.N3;
+import rdfbones.rdfdataset.Triple;
 
 public class AJAXController {
 
@@ -37,6 +40,14 @@ public class AJAXController {
 		if (check(TASK)) {
 			switch (get(TASK)) {
 
+			case "formSubmission":
+				String triplesToCreate = graph
+						.saveInitialData(getJSONObject("dataToStore"));
+				JSON.put(response, "triplesToCreate", triplesToCreate);
+				if (!formConfig.webapp.addTriples(triplesToCreate, get("editKey"))) {
+					JSON.put(response, "failed", true);
+				}
+				break;
 			case "formDescriptor":
 				JSON.put(this.response, "formDescriptor",
 						formConfig.form.getFormDescriptor());
@@ -64,6 +75,17 @@ public class AJAXController {
 				break;
 
 			case "dependentData":
+				break;
+
+			case "editData":
+				JSONObject object = getJSONObject("graphData");
+				String variable = get("variableToEdit");
+				String newValue = get("newValue");
+				String remove = N3.getTriples(graph.nodeMap.get(variable), object);
+				JSON.put(object, variable, newValue);
+				String add = N3.getTriples(graph.nodeMap.get(variable), object);
+				formConfig.webapp.removeTriples(remove, get("editKey"));
+				formConfig.webapp.addTriples(add, get("editKey"));
 				break;
 
 			default:
