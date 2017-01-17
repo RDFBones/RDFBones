@@ -266,6 +266,8 @@ var AJAXParams = {
 	existingFormGraphData : [ "subjectUri", "objectUri"],
 	formSubmission : [ "dataToStore"],
 	editData : ["variableToEdit", "graphData", "newValue"],
+	deleteFormData : ["formKey", "graphData"],
+	deleteAll : ["graphData"],
 	getObject : function(key, array) {
 
 		if (this[key] !== undefined && DataLib.isArray(this[key])) {

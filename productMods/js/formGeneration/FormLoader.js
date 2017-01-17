@@ -42,6 +42,8 @@ FormLoader.prototype = {
 		if (this.edit) {
 			this.doneButton = new TextButton("Done", (this.cancel).bind(this))
 			UI.appendToDiv(this.buttonContainer, [ this.doneButton ])
+			this.doneButton = new TextButton("Delete", (this.deleteFormData).bind(this))
+			UI.appendToDiv(this.buttonContainer, [ this.doneButton ])
 		} else {
 			this.submitButton = new TextButton("Submit", (this.submit)
 					.bind(this))
@@ -74,6 +76,15 @@ FormLoader.prototype = {
 		}
 	},
 
+	deleteFormData : function(){
+		
+		PopUpController("Delete is in progress")
+		AJAX.deleteData("deleteAll", (function(msg){
+			PopUpController.doneMsg("Delete was successful",
+					2000, null, util.redirect)
+		}).bind(this),[Global.formData])
+	},
+	
 	cancel : function() {
 		util.redirect()
 	}

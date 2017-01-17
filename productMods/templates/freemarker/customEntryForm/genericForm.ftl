@@ -21,7 +21,7 @@
 	var subjectUri = "${editConfiguration.subjectUri}"
 	var dataSaveUri = baseUrl + "dataGenerator"
 	var Global = new Object()
-	var	buttonID = 0
+	Global.buttonID = 0
 	var debug = false
 	<#if editConfiguration.objectUri?has_content>
     var	objectUri = '${editConfiguration.objectUri}'

@@ -122,7 +122,7 @@ var ExistingForm = function(parentForm, descriptor, data){
 	this.init(data.formData)
 }
 
-ExistingForm.prototype = $.extend(Object.create(Form.prototype),{
+ExistingForm.prototype = $.extend(Object.create(SubForm.prototype),{
 	
 	ready : function(){
 		//Do nothing
@@ -130,12 +130,13 @@ ExistingForm.prototype = $.extend(Object.create(Form.prototype),{
 
 	deleteData : function(){
 		
-		PopUpController("Delete is in progress")
-		AJAX.deleteData("deleteFormData", (function(){
+		PopUpController.init("Delete is in progress")
+		AJAX.call("deleteFormData", (function(msg){
+			if(msg.failed)
+				alert("Deletion failed")
 			this.container.remove()
 			PopUpController.done()
 		}).bind(this),[this.descriptor.dataKey, this.dataObject])
 	},
 
-	
 })
