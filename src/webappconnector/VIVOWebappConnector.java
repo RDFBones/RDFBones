@@ -21,6 +21,7 @@ import rdfbones.formProcessing.WebappConnector;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.dao.InsertException;
 import edu.cornell.mannlib.vitro.webapp.dao.NewURIMakerVitro;
+import edu.cornell.mannlib.vitro.webapp.dao.jena.N3Utils;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.NewURIMaker;
@@ -102,6 +103,8 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.NewURIMaker;
       lock = writeModel.getLock();
       lock.enterCriticalSection(Lock.WRITE);
       writeModel.add(toAdd);
+      log.info("Succesfully read N3 triples");
+
     } catch (Throwable t) {
       log.error("error adding edit change n3required model to in memory model \n"
           + t.getMessage());
@@ -143,10 +146,11 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.NewURIMaker;
     Model model = null;
     try {
       model = ModelFactory.createDefaultModel();
-      StringReader reader = new StringReader(triples);
+      StringReader reader = new StringReader(N3Utils.getPrefixes() + triples);
       model.read(reader, "", "N3");
     } catch (Throwable t) {
       // Catch
+      model = null;
     }
     return model;
   }
