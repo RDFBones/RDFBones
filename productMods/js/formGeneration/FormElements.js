@@ -46,8 +46,8 @@ Selector.prototype = $.extend(Object.create(FormElement.prototype), {
 	},
 
 	changeData : function(selectedValue) {
-		PopUpController.init("Please wait ...")
 		if(this.edit){
+			PopUpController.init("Please wait ...")
 			AJAX.call("editData", function(){
 				PopUpController.done()
 			}, [this.dataKey, dataUtil.getStrings(this.dataObject), selectedValue])
@@ -160,6 +160,9 @@ Adder.prototype = $.extend(Object.create(FormElement.prototype), {
 		PopUpController.remove()
 	},
 
+	removeDataObject : function(key, value){
+		DataLib.removeObjectFromArray(this.dataArray, key, value)
+	}
 })
 
 var StringInput = function(descriptor) {

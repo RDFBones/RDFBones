@@ -39,24 +39,17 @@ Form.prototype = {
 		this.titleCont = html.div(this.titleStyle).text(this.title)
 		this.formContainer = html.div("inline")
 		UI.appendToDiv(this.formContainer, this.formElements)
-		this.container.append([this.titleCont, this.formContainer])
+		this.setButtons()
+		this.container.append([this.titleCont, this.formContainer, this.buttonCont])
 		this.ready()
+	},
+	
+	setButtons : function(){
+		this.buttonCont = html.div("inline")
 	},
 	
 	ready : function(){
 		this.parentForm.ready(this.container)
-	},
-	
-	setButtons : function(){
-		
-		this.buttonContainer = html.div("inline")
-		this.deleteButton = new Button("del", (this.deleteData).bind(this))
-		this.buttonContainer.append(this.deleteButton.container)
-		this.container.append(this.buttonContainer)
-	},
-	
-	deleteData : function(){
-		console.log("DeleteData")
 	},
 }
 
@@ -67,21 +60,31 @@ var SubForm = function(parentForm, descriptor, data){
 	this.loadSubformData()
 }
 
-SubForm.prototype = Object.create(Form.prototype)
-		
+SubForm.prototype = $.extend(Object.create(Form.prototype), {
+	
+	setButtons : function(){
+		this.buttonCont = html.div("inline")
+		this.deleteButton = new Button("del", (this.deleteData).bind(this))
+		this.buttonCont.append(this.deleteButton.container)
+	},
+	
+	deleteData : function(){
+		this.container.remove()
+		this.parentForm.removeDataObject(this.descriptor.dataKey, this.dataObject)
+	}
+})
 
 var SubFormAll = function(parentForm, descriptor, data){
 	
 	SubForm.call(this, parentForm, descriptor, data)
 }
 
-SubFormAll.prototype = $.extend(Object.create(Form.prototype), {
+SubFormAll.prototype = $.extend(Object.create(SubForm.prototype), {
 	
 	ready : function(){
 		this.parentForm.readyAll(this)
 	}
 })
-
 
 var MainForm = function(formLoader){
 	
@@ -90,7 +93,6 @@ var MainForm = function(formLoader){
 	this.title = Global.formDescriptor.title
 	this.titleStyle = "mainFormTitle"
 	this.loadSubformData()
-
 }
 
 MainForm.prototype = $.extend(Object.create(Form.prototype), {
@@ -124,5 +126,16 @@ ExistingForm.prototype = $.extend(Object.create(Form.prototype),{
 	
 	ready : function(){
 		//Do nothing
-	}
+	},
+
+	deleteData : function(){
+		
+		PopUpController("Delete is in progress")
+		AJAX.deleteData("deleteFormData", (function(){
+			this.container.remove()
+			PopUpController.done()
+		}).bind(this),[this.descriptor.dataKey, this.dataObject])
+	},
+
+	
 })
