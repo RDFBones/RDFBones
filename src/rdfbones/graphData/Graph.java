@@ -16,7 +16,7 @@ import rdfbones.lib.DebugLib;
 import rdfbones.lib.GraphLib;
 import rdfbones.lib.JSON;
 import rdfbones.lib.MainGraphSPARQLDataGetter;
-import rdfbones.lib.N3Lib;
+import rdfbones.lib.N3;
 import rdfbones.lib.QueryLib;
 import rdfbones.lib.SPARQLDataGetter;
 import rdfbones.lib.SPARQLUtils;
@@ -87,12 +87,13 @@ public class Graph {
 		this.varName = new String("subjectUri");
 		this.graphMap = new HashMap<String, Graph>();
 		this.nodeMap = new HashMap<String, List<Triple>>();
-
+		this.nodeGraphMap = new HashMap<String, Graph>();
 		this.mainGraph = this;
 		this.webapp = webapp;
 		this.initialize(triples);
 		this.initGraphStructure();
 		this.setGraphDescriptor(schemeTriples);
+		this.setMaps();
 	}
 
 	public Graph(Triple triple, String inputNode, List<Triple> triples) {
@@ -243,8 +244,8 @@ public class Graph {
 					JSON.copyValue(inputData, object, input);
 				} else if (parentData.has(input)) {
 					JSON.copyValue(inputData, parentData, input);
-				} else if(this.mainInputValues.containsKey(input)){
-					String value = this.mainInputValues.get(input);
+				} else if(this.mainGraph.mainInputValues.containsKey(input)){
+					String value = this.mainGraph.mainInputValues.get(input);
 					JSON.put(inputData, input, value);
 				}
 			}
@@ -447,7 +448,7 @@ public class Graph {
 
 		// System.out.println("Debug subgraph");
 		// this.debug();
-		String dataToDelete = N3Lib.getTriples(this.triplesToStore, object);
+		String dataToDelete = N3.getTriples(this.triplesToStore, object);
 		for (String key : this.subGraphs.keySet()) {
 			Graph subGraph = this.subGraphs.get(key);
 			JSONArray array = JSON.array(object,
