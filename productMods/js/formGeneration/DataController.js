@@ -265,7 +265,7 @@ var AJAXParams = {
 
 	formGraphData : [ "inputParameters", "key" ],
 	existingFormGraphData : [ "subjectUri", "objectUri"],
-
+	formSubmission : [ "dataToStore"],
 	getObject : function(key, array) {
 
 		if (this[key] !== undefined && DataLib.isArray(this[key])) {
