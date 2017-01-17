@@ -4,10 +4,10 @@ var Button = function(type, returnFunction){
 
 	this.returnFunction = returnFunction
 	this.enabled = true
+	var buttonId = util.getNewButtonId()
 	this.container = ImgUI.libImg(type, "addFieldImg enabledImg")
-	this.container.attr("id", "button" + buttonID)
-	$(document).on("click", "#button" +  buttonID, (this.clickEvent).bind(this))
-	buttonID++
+	this.container.attr("id", buttonId)
+	$(document).on("click", "#" + buttonId, (this.clickEvent).bind(this))
 }
 
 Button.prototype = {

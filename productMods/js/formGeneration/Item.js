@@ -4,8 +4,9 @@ var NavigationItem = function(table, data, cells){
 	this.table = table
 	this.data = data
 	this.cells = cells	
-	this.container = html.div("itemContainer").attr("id", util.getButtonId())
-	util.setEvent((this.select).bind(this))
+	var buttonId = util.getNewButtonId()
+	this.container = html.div("itemContainer").attr("id", buttonId)
+	$(document).on("click", "#" + buttonId, (this.select).bind(this))
 	this.init()
 }
 

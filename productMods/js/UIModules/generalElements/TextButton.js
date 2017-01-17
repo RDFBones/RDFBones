@@ -4,8 +4,9 @@ var TextButton = function(text, returnFunction, style, parameter){
 	
 	this.enabled = true
 	this.returnFunction = returnFunction
-	this.container = UI.getTextButton(text, "button" +  (++buttonID)).addClass(this.getStyle() + " " + style)
-	$(document).on("click", "#button" +  buttonID, (this.clickEvent).bind(this))
+	var buttonId = util.getNewButtonId()
+	this.container = UI.getTextButton(text, buttonId).addClass(this.getStyle() + " " + style)
+	$(document).on("click", "#" + buttonId, (this.clickEvent).bind(this))
 	this.parameter = util.setUndefined(parameter, null)
 }
 
