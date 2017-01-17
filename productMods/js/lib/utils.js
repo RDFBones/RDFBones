@@ -35,7 +35,6 @@ var util = {
 		}
 	},
 	
-	
 	flip : function(bool){
 		bool = bool ? false : true
 	},
@@ -48,7 +47,15 @@ var util = {
 	setEvent : function(event){
 		
 		$(document).on("click", "#button" +  buttonID, event)
+	},
+	
+	redirect : function(){
+		window.location = baseUrl
+		+ "display/"
+		+ subjectUri.split("/")[subjectUri
+				.split("/").length - 1]
 	}
+	
 }
 
 var strUtil = {

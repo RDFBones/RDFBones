@@ -1,4 +1,4 @@
-var FormLoader = function(){
+var FormLoader = function() {
 
 	PopUpController.addWaitGif($("#form"))
 	this.edit = false
@@ -14,12 +14,12 @@ var FormLoader = function(){
 			Global.formData.rangeUri = rangeUri
 			this.initUI()
 			Global.mainForm = new MainForm(this)
-	}
+		}
 	}).bind(this))
 }
 
 FormLoader.prototype = {
-		
+
 	loadExistingData : function() {
 
 		AJAX.call("existingFormGraphData", (function(msg) {
@@ -29,67 +29,54 @@ FormLoader.prototype = {
 		}).bind(this), [ subjectUri, objectUri ])
 	},
 
-	ready : function(container){
-		
-		this.container.append([container, this.buttonContainer])
+	ready : function(container) {
+
+		this.container.append([ container, this.buttonContainer ])
 		PopUpController.removeWaitGif($("#form"), this.container)
 	},
-	
+
 	initUI : function() {
-		
+
 		this.container = html.div()
 		this.buttonContainer = html.div()
-		if(this.edit){
+		if (this.edit) {
 			this.doneButton = new TextButton("Done", (this.cancel).bind(this))
-			UI.appendToDiv(this.buttonContainer, [this.doneButton])
+			UI.appendToDiv(this.buttonContainer, [ this.doneButton ])
 		} else {
-			this.submitButton = new TextButton("Submit", (this.submit).bind(this))
-			this.cancelButton = new TextButton("Cancel", (this.cancel).bind(this))
-			UI.appendToDiv(this.buttonContainer, [this.submitButton, this.cancelButton])
+			this.submitButton = new TextButton("Submit", (this.submit)
+					.bind(this))
+			this.cancelButton = new TextButton("Cancel", (this.cancel)
+					.bind(this))
+			UI.appendToDiv(this.buttonContainer, [ this.submitButton,
+					this.cancelButton ])
 		}
 	},
 
 	submit : function() {
 
 		PopUpController.init("RDF data generation is in progress")
-		var request = {
-			editKey : editKey,
-			dataToStore : Global.formData
-		}
-		console.log(request)
 		if (!debug) {
-		$.ajax({
-			type : 'POST',
-			context : this,
-			dataType : 'json',
-			url : baseUrl + "dataGenerator",
-			data : "requestData=" + JSON.stringify(request)
-		}).done((function(msg) {
-			
-			if (msg.failed !== undefined) {
-				PopUpController.defaultDoneMsg("Triple creation failed!");
-				console.log(msg)
-				var ajaxmsg = msg
-			} else {
-				PopUpController.doneMsg("Triples are successfully saved", 2000, null,
-				function() {
-					window.location = baseUrl
-							+ "display/"
-							+ subjectUri.split("/")[subjectUri.split("/").length - 1]
-				})
-			}
-			}).bind(this))
-	} else {
+			AJAX.call("formSubmission", (this.responseHandler).bind(this),
+					[ Global.formData ])
+		} else {
 			PopUpController.done()
 		}
 	},
 
-	cancel : function() {
-		window.location = baseUrl + "display/"
-				+ subjectUri.split("/")[subjectUri.split("/").length - 1]
+	responseHandler : function(msg) {
+		if (msg.failed !== undefined) {
+			PopUpController.defaultDoneMsg("Triple creation failed!");
+			console.log(msg)
+			var ajaxmsg = msg
+		} else {
+			PopUpController.doneMsg("Triples are successfully saved", 2000,
+					null, util.redirect)
+		}
 	},
-	
-	
+
+	cancel : function() {
+		util.redirect()
+	}
 }
 
 var ElementMap = {
