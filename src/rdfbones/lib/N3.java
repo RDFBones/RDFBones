@@ -7,7 +7,7 @@ import org.json.JSONObject;
 import rdfbones.rdfdataset.LiteralTriple;
 import rdfbones.rdfdataset.Triple;
 
-public class N3Lib {
+public class N3 {
 
 	public static String getTriples(List<Triple> triples, JSONObject jsonObject){
 	
