@@ -158,7 +158,6 @@ var DataController = {
 	prepareOptions : function(options) {
 
 		if (DataLib.getType(options) == "array") {
-			console.log("array")
 			var object = new Object
 			$.each(options, function(key, value) {
 				object[value.uri] = new Object()
@@ -266,6 +265,7 @@ var AJAXParams = {
 	formGraphData : [ "inputParameters", "key" ],
 	existingFormGraphData : [ "subjectUri", "objectUri"],
 	formSubmission : [ "dataToStore"],
+	editData : ["variableToEdit", "graphData", "newValue"],
 	getObject : function(key, array) {
 
 		if (this[key] !== undefined && DataLib.isArray(this[key])) {

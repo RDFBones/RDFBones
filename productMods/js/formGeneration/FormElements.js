@@ -38,14 +38,23 @@ Selector.prototype = $.extend(Object.create(FormElement.prototype), {
 	initData : function() {
 		if (this.dataObject[this.dataKey] !== undefined) {
 			this.selector.set(this.dataObject[this.dataKey])
+			this.edit = true
 		} else {
+			this.edit = false
 			this.dataObject[this.dataKey] = Object.keys(this.options)[0]
 		}
 	},
 
 	changeData : function(selectedValue) {
+		PopUpController.init("Please wait ...")
+		if(this.edit){
+			AJAX.call("editData", function(){
+				PopUpController.done()
+			}, [this.dataKey, dataUtil.getStrings(this.dataObject), selectedValue])
+		}
 		this.dataObject[this.dataKey] = selectedValue
 	},
+	
 })
 
 var Adder = function(form, descriptor, formOptions, predicate) {
