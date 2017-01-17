@@ -88,6 +88,20 @@ public class AJAXController {
 				formConfig.webapp.addTriples(add, get("editKey"));
 				break;
 
+			case "deleteFormData":
+
+				System.out.println(get("formKey"));
+				Graph delGraph = graph.graphMap.get(get("formKey"));
+				String triplesToDelete = delGraph
+						.deleteData(getJSONObject("graphData"));
+				System.out.println(get("editKey"));
+				if(formConfig.webapp.removeTriples(triplesToDelete, get("editKey"))){
+					JSON.put(response, "failed", false);
+				} else {
+					JSON.put(response, "failed", true);
+				}
+				break;
+
 			default:
 				AJAXError.unknownTask(response, get(TASK));
 				break;
