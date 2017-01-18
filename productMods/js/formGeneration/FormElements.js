@@ -210,7 +210,11 @@ ExistingInstanceSelector.prototype = $.extend(Object.create(FormElement.prototyp
 			 this.instanceSelector.display()
 		} else {
 			if (this.descriptor.table != undefined) {
-				this.instanceSelector = new InstanceSelector(this)
+				if(objectUri !== undefined){
+					this.instanceSelector = new EditInstanceSelector(this)
+				} else {
+					this.instanceSelector = new InstanceSelector(this)
+				}
 			} else {
 				alert("Table is not defined")
 			}	
