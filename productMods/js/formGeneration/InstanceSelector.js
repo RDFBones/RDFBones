@@ -1,78 +1,106 @@
 
-var InstanceSelector = function(formElement){
+class InstanceSelector{
 	
-	this.formElement = formElement
-	this.descriptor = formElement.descriptor.table
-	this.dataKey = formElement.descriptor.dataKey
-	this.dataArray = formElement.existingData
-	this.selectedModule = new Module("Selected Instances")
-	this.toSelectModule = new Module("Instances to select")
-	this.doneButton = new TextButton("Done", (this.done).bind(this), "margin10")
-	if(this.dataArray.length > 0){
-		this.showExisting()
-	} else {
+	constructor(formElement){
+		this.formElement = formElement
+		this.descriptor = formElement.descriptor.table
+		this.dataKey = formElement.descriptor.dataKey
+		this.dataArray = formElement.existingData
+		this.selectedModule = new Module("Selected Instances")
+		this.toSelectModule = new Module("Instances to select")
+		this.doneButton = new TextButton("Done", (this.done).bind(this), "margin10")
 		PopUpController.init("Loading data ")
 		this.init()
 	}
-}
 
-InstanceSelector.prototype = {
+	init (){
 		
-	loadExisting : function(){
+		AJAX.call("formGraphData", (function(msg){
+			this.instanceBrowser = new InstanceBrowser(this, msg.tableData)
+			this.initUI()
+		}).bind(this),  DataController.getGraphDataParams(this))
+	}
+		
+	loadExisting (){
 	
-		tableDescriptor = this.getObject(this.descriptor)
+		tableDescriptor = this.getTableDescriptor()
 		selectedTable = SelectedTable(this, this.dataArray, tableDescriptor)
 		this.toSelectModule.container.hide()
 		this.selectedModule.add(selectedTable.container)
 		this.initUI()
-	},
+	}
 
-	getTableDescriptor : function(descriptor){
+	getTableDescriptor (){
 		
-		if(descriptor.type === "navigate"){
-			return this.getTableDescriptor(descriptor.subForm)
-		} else {
-			return descriptor
+		var desc = this.descriptor
+		while(true){
+			if(desc.type == "selector" || desc.subForm === undefined){
+				break
+			} else {
+				desc = desc.subForm	
+			}
 		}
-	},
+		return desc
+	}
 	
-	display : function(){
+	display (){
 		PopUpController.set(this.container)
-	},
+	}
 		
-	init : function(){
+	showExisting (){
 		
-		AJAX.call("formGraphData", (function(msg){
-			array = msg.tableData 
-			this.instanceBrowser = new InstanceBrowser(this, array, this.descriptor)
-			this.initUI()
-		}).bind(this),  DataController.getGraphDataParams(this))
-	},
+		//this.instanceBrowser = new InstanceBrowser(this, array, this.descriptor)
+		//this.initUI()
+		// Getting the descriptor	
+		this.getTableDescriptor()
+	}
 	
-	initUI : function(){
+	initUI (){
 		UI.append(this, [this.selectedModule, this.toSelectModule, this.doneButton])
 		PopUpController.set(this.container)
-	},
+	}
 	
-	select : function(dataItem){
+	select (dataItem){
 		
 		this.selectedModule.add(dataItem.container)
 		this.dataArray.push(dataItem.data)
-	},
+	}
 	
-	removeData : function(key, dataObject){
+	remove(key, dataObject){
 		
 		console.log(key)
 		console.log(dataObject)
 		console.log(this.dataArray)
 		DataLib.removeObjectFromArray(this.dataArray, key,  dataObject)
-	},
+	}
 	
-	deselect : function(){
-		
-	},
+	deselect (){
 	
-	done : function(){
+	}
+	
+	done (){
 		PopUpController.done()
 	}
 }
+
+class EditInstanceSelector extends InstanceSelector {
+	
+	init (){
+		this.dataItemCache = new Object()
+		this.addedKeys = []
+		$.each(this.dataArray, function(key, value){
+			this.addedKeys.push(value[this.dataKey])
+		})
+		super.init()
+	}	
+	
+	remove (dataObject){
+
+		var uri = dataObject[this.dataKey]
+		this.addedKeys.removeElement(uri)
+		if(this.dataItemCache[uri] !== undefined){
+			this.dataItemCache[uri].addToTable()
+		}
+	}
+}
+
