@@ -1,29 +1,25 @@
-var FormElement = function(form, descriptor, formOptions, predicate) {
 
-	this.parentForm = form
-	this.descriptor = descriptor
-	this.dataKey = descriptor.dataKey
-	if(formOptions !== undefined && formOptions[this.dataKey] !== undefined){
-		this.options = DataController.prepareOptions(formOptions[this.dataKey])
-	} else {
-		this.options = new Object()
+class FormElement {
+	
+	constructor(form, descriptor, formOptions, predicate) {
+		this.parentForm = form
+		this.descriptor = descriptor
+		this.dataKey = descriptor.dataKey
+		if(formOptions !== undefined && formOptions[this.dataKey] !== undefined){
+			this.options = DataController.prepareOptions(formOptions[this.dataKey])
+		} else {
+			this.options = new Object()
+		}
+		this.predicate = predicate
+		this.dataObject = form.dataObject
+		this.initUI()
+		this.initData()
 	}
-	this.predicate = predicate
-	this.dataObject = form.dataObject
-	this.initUI()
-	this.initData()
 }
 
-FormElement.prototype = {}
-
-var Selector = function(form, descriptor, formOptions, predicate) {
-
-	FormElement.call(this, form, descriptor, formOptions, predicate)
-}
-
-Selector.prototype = $.extend(Object.create(FormElement.prototype), {
-
-	initUI : function() {
+class Selector extends FormElement{
+	
+	initUI () {
 		this.selector = new DataSetterSelectorFieldMap(this.options,
 				(this.changeData).bind(this))
 		if (this.descriptor.arrangement !== undefined) {
@@ -33,9 +29,9 @@ Selector.prototype = $.extend(Object.create(FormElement.prototype), {
 		}
 		this.title = html.div("inline").text(this.descriptor.name)
 		this.container.append(this.title).append(this.selector.container)
-	},
+	}
 
-	initData : function() {
+	initData () {
 		if (this.dataObject[this.dataKey] !== undefined) {
 			this.selector.set(this.dataObject[this.dataKey])
 			this.edit = true
@@ -43,28 +39,22 @@ Selector.prototype = $.extend(Object.create(FormElement.prototype), {
 			this.edit = false
 			this.dataObject[this.dataKey] = Object.keys(this.options)[0]
 		}
-	},
+	}
 
-	changeData : function(selectedValue) {
+	changeData (selectedValue) {
 		if(this.edit){
 			PopUpController.init("Please wait ...")
 			AJAX.call("editData", function(){
 				PopUpController.done()
-			}, [this.dataKey, dataUtil.getStrings(this.dataObject), selectedValue])
+			} [this.dataKey, dataUtil.getStrings(this.dataObject), selectedValue])
 		}
 		this.dataObject[this.dataKey] = selectedValue
-	},
-	
-})
-
-var Adder = function(form, descriptor, formOptions, predicate) {
-
-	FormElement.call(this, form, descriptor, formOptions, predicate)
+	}	
 }
 
-Adder.prototype = $.extend(Object.create(FormElement.prototype), {
-
-	initUI : function() {
+class Adder extends FormElement{
+	
+	initUI () {
 		this.container = html.div("adderContainer")
 		this.title = html.div("inline").text(this.descriptor.title)
 		this.selector = UI.classSelectorMap(this.options)
@@ -76,9 +66,9 @@ Adder.prototype = $.extend(Object.create(FormElement.prototype), {
 		if (Object.keys(this.options).length > 1)
 			this.container.append(this.addAllButton.container)
 		this.container.append(this.subContainer)
-	},
+	}
 
-	initData : function() {
+	initData () {
 
 		this.subForms = []
 		if (this.dataObject[this.predicate] !== undefined) {
@@ -88,9 +78,9 @@ Adder.prototype = $.extend(Object.create(FormElement.prototype), {
 			this.dataArray = []
 			this.dataObject[this.predicate] = this.dataArray
 		}
-	},
+	}
 
-	showExistingData : function() {
+	showExistingData () {
 		
 		$.each(this.dataArray, (function(i, object) {
 			var option = this.options[object[this.dataKey]]
@@ -98,9 +88,9 @@ Adder.prototype = $.extend(Object.create(FormElement.prototype), {
 			this.subForms.push(new ExistingForm(this, this.descriptor, object))
 		}).bind(this))
 		UI.appendToDiv(this.subContainer, this.subForms)
-	},
+	}
 
-	add : function() {
+	add () {
 
 		if (this.addAllFlag) {
 			PopUpController.note("All types have been already added!")
@@ -117,19 +107,19 @@ Adder.prototype = $.extend(Object.create(FormElement.prototype), {
 			PopUpController.addSubWaitGif(this.subContainer)
 			this.subForms.push(new SubForm(this, this.descriptor, object))
 		}
-	},
+	}
 	
-	ready : function(container){
+	ready (container){
 		this.subContainer.append(container)
-	},
+	}
 	
-	addAll : function() {
+	addAll () {
 
 		PopUpController.addSubWaitGif(this.subContainer)
 		DataController.loadSubFormDataAll(this, Object.keys(this.options))
-	},
+	}
 
-	initAll : function(data) {
+	initAll (data) {
 
 		this.cnt = 0
 		this.addedForms = []
@@ -142,9 +132,9 @@ Adder.prototype = $.extend(Object.create(FormElement.prototype), {
 			this.dataArray.push(object)
 			this.subForms.push(new SubFormAll(this, this.descriptor, object))
 		}).bind(this))
-	},
+	}
 
-	readyAll : function(form){
+	readyAll (form){
 		
 		this.addedForms.push(form.container)
 		if(--this.cnt == 0){
@@ -152,49 +142,44 @@ Adder.prototype = $.extend(Object.create(FormElement.prototype), {
 			PopUpController.remove()
 			this.addedForms = []
 		}
-	},
+	}
 	
-	ready : function() {
+	ready () {
 
 		this.subContainer.append(this.subForms[this.subForms.length - 1].container)
 		PopUpController.remove()
-	},
+	}
 
-	removeDataObject : function(key, value){
+	removeDataObject (key, value){
 		DataLib.removeObjectFromArray(this.dataArray, key, value)
 	}
-})
+}
 
-var StringInput = function(descriptor) {
+class StringInput {
+	
+	constructor(descriptor) {
 
-	if (descriptor.arrangement !== undefined) {
-		this.container = html.div("inlineContainer inline");
-	} else {
-		this.container = html.div("inlineContainer");
+		if (descriptor.arrangement !== undefined) {
+			this.container = html.div("inlineContainer inline");
+		} else {
+			this.container = html.div("inlineContainer");
+		}
+		this.title = html.div("margin10").text(descriptor.name)
+		this.textBoxDiv = html.div().append(html.textBox())
+		// this.textBox = html.textBox()
+		this.container.append(this.title).append(this.textBoxDiv)
 	}
-	this.title = html.div("margin10").text(descriptor.name)
-	this.textBoxDiv = html.div().append(html.textBox())
-	// this.textBox = html.textBox()
-	this.container.append(this.title).append(this.textBoxDiv)
 }
 
-StringInput.prototype = {}
-
-var ExistingInstanceSelector = function(form, descriptor, formOptions,
-		predicate) {
-
-	FormElement.call(this, form, descriptor, formOptions, predicate)
-}
-
-ExistingInstanceSelector.prototype = $.extend(Object.create(FormElement.prototype), {
-
-	initUI : function() {
+class ExistingInstanceSelector extends FormElement {
+	
+	initUI () {
 
 		this.title = this.descriptor.title
 		this.container = new TextButton(this.title, (this.loadTableData).bind(this), "inline").container
-	},
+	}
 
-	initData : function() {
+	initData () {
 
 		if(this.dataObject[this.predicate] !== undefined){
 			this.existingData = this.dataObject[this.predicate]
@@ -202,9 +187,9 @@ ExistingInstanceSelector.prototype = $.extend(Object.create(FormElement.prototyp
 			this.existingData = []
 			this.dataObject[this.predicate] = this.existingData
 		}
-	},
+	}
 
-	loadTableData : function() {
+	loadTableData () {
 
 		if(this.instanceSelector != undefined){
 			 this.instanceSelector.display()
@@ -219,6 +204,5 @@ ExistingInstanceSelector.prototype = $.extend(Object.create(FormElement.prototyp
 				alert("Table is not defined")
 			}	
 		}
-	}
-	
-})
+	}	
+}
