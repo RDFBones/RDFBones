@@ -88,6 +88,20 @@ public class AJAXController {
 				formConfig.webapp.addTriples(add, get("editKey"));
 				break;
 
+			case "addTriple":
+				JSONObject object1 = getJSONObject("graphData");
+				String variable1 = get("variableToEdit");
+				String add1 = N3.getTriples(graph.nodeMap.get(variable1), object1);
+				formConfig.webapp.addTriples(add1, get("editKey"));
+				break;
+	
+			case "removeTriple" : 
+				JSONObject object2 = getJSONObject("graphData");
+				String variable2 = get("variableToEdit");
+				String remove2 = N3.getTriples(graph.nodeMap.get(variable2), object2);
+				formConfig.webapp.removeTriples(remove2, get("editKey"));
+				break;
+				
 			case "deleteFormData":
 
 				System.out.println(get("formKey"));
@@ -95,6 +109,7 @@ public class AJAXController {
 				String triplesToDelete = delGraph
 						.deleteData(getJSONObject("graphData"));
 				System.out.println(get("editKey"));
+				JSON.put(response, "triplesDeleted", triplesToDelete);
 				if(formConfig.webapp.removeTriples(triplesToDelete, get("editKey"))){
 					JSON.put(response, "failed", false);
 				} else {
@@ -106,6 +121,7 @@ public class AJAXController {
 				String graphTriples = graph
 						.deleteData(getJSONObject("graphData"));
 				System.out.println(get("editKey"));
+				JSON.put(response, "triplesDeleted", graphTriples);
 				if(formConfig.webapp.removeTriples(graphTriples, get("editKey"))){
 					JSON.put(response, "failed", false);
 				} else {
