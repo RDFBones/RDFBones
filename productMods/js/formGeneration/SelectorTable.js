@@ -1,90 +1,115 @@
-
-
-var SelectorTable = function(instanceBrowser, array, descriptor){
+class SelectorTable {
 	
-	this.array = array
-	this.instanceBrowser = instanceBrowser
-	this.instanceSelector = instanceBrowser.instanceSelector
-	this.dataKey = instanceBrowser.instanceSelector.descriptor.dataKey
-	this.descriptor = descriptor
-	if(this.instanceSelector instanceof EditInstanceSelector){
-		this.check = true
+	constructor(instanceBrowser, array, descriptor){
+		this.array = array
+		this.instanceBrowser = instanceBrowser
+		this.instanceSelector = instanceBrowser.instanceSelector
+		this.dataKey = instanceBrowser.instanceSelector.descriptor.dataKey
+		this.descriptor = descriptor
+		if(this.instanceSelector instanceof EditInstanceSelector){
+			this.check = true
+		}
+		this.initElements()
+	}
+
+	initElements (){
+		
+		this.container = html.div("selectorTableContainer")
+		arr = []
+		if(this.descriptor.type == "navigator"){
+			this.addNavigationItems(arr)
+		} else {
+			if(this.check == true){
+				this.addDataItemsCheck(arr)
+			} else {
+				this.addDataItems(arr)
+			}
+		}
+		this.container.append(arr)
 	}
 	
-	this.container = html.div("selectorTableContainer")
-	this.initElements()
-}
-
-SelectorTable.prototype = {
-		
-	initElements : function(){
-		
-		if(this.descriptor.type == "navigator"){
-			arr = []
-			$.each(this.array, (function(index, value){
-				arr.push(new NavigationItem(this, value, this.descriptor.table.cells).container)
-			}).bind(this))
-			this.container.append(arr)
-		} else {
-			arr = []
-			if(this.check == true){
-				$.each(this.array, (function(index, value){
-					var dataItem = new DataItem(this, value, this.descriptor.table.cells)
-					if(this.instanceSelector.addedKeys.indexof(value[this.dataKey]) == -1){
-						arr.push(dataItem.container)	
-					}
-				}).bind(this))
-			} else {
-				$.each(this.array, (function(index, value){
-					arr.push(new DataItem(this, value, this.descriptor.table.cells).container)	
-				}).bind(this))
+	addNavigationItems(arr){
+		arr = []
+		$.each(this.array, (function(index, value){
+			arr.push(new NavigationItem(this, value, this.descriptor.table.cells).container)
+		}).bind(this))
+		this.container.append(arr)
+	}
+	
+	addDataItemsCheck(arr){
+		$.each(this.array, (function(index, value){
+			var dataItem = new DataItem(this, value, this.descriptor.table.cells)
+			if(this.instanceSelector.notSelected(value)){
+				arr.push(dataItem.container)	
 			}
-			this.container.append(arr)
-		}
-	},
+		}).bind(this))
+	}
+	
+	addDataItems(){
+		$.each(this.array, (function(index, value){
+			arr.push(new DataItem(this, value, this.descriptor.table.cells).container)	
+		}).bind(this))
+	}
 	
 	//This is called by the NavigationItem
-	navigate : function(dataObject){
+	navigate (dataObject){
 		this.instanceBrowser.navigate(dataObject, this.descriptor)
-	},
+	}
 	
 	//This is called by the DataItem 
-	select : function(dataItem){
-		this.instanceBrowser.select(dataItem)
-	},
+	select (dataItem){
+		this.instanceSelector.select(dataItem)
+	}
 	
-	remove : function(dataItem){
-		this.instanceBrowser.instanceSelector.removeData(this.descriptor.dataKey, dataItem.data)
+	remove (dataItem){
+		this.instanceSelector.remove(dataItem)
 		this.container.append(dataItem.container)
 	}
 }
 
-var EditSelectorTable = function(instanceBrowser, array, descriptor){
-	
-	SelectorTable.call(this, instanceBrowser, array, descriptor)
-	this.instanceSelector = instanceBrowser.instanceSelector;
-}
+class EditSelectorTable extends SelectorTable { 
 
-EditSelectorTable.prototype = $.extend(Object.create(SelectorTable.prototype), {
-	
-	getContainer : function(){
+	getContainer (){
 		
-	},
+	}
 	
-	remove : function(dataItem){
-		
-		this.instanceSelector.removeExisting 
-	},
-	
-	initElements : function(){
+	remove (dataItem){
+		this.instanceSelector.remove(dataItem)
+	} 
+
+	initElements (){
 		
 		arr = []
 		$.each(this.array, (function(index, value){
 			arr.push(new this.itemToAdd(this, value, this.descriptor.table.cells).container)
 		}).bind(this))
 		this.container.append(arr)
-	},
-	
-})
+	}
+}
 
+class SelectedTable { 
+	
+	constructor(instanceSelector, array, descriptor){
+		
+		this.array = array
+		this.instanceSelector = instanceSelector
+		this.dataKey = descriptor.dataKey
+		this.descriptor = descriptor
+		this.initElements()
+	}
+	
+	remove(dataItem){
+		this.instanceSelector.remove(dataItem)
+	}
+	
+	initElements(){
+		this.container = html.div("selectorTableContainer")
+		arr = []
+		$.each(this.array, (function(index, value){
+			arr.push(new SelectedDataItem(this, value, this.descriptor.table.cells).container)
+		}).bind(this))
+		this.container.append(arr)
+	}
+	
+}
 
