@@ -6,6 +6,7 @@ class InstanceSelector{
 		this.descriptor = formElement.descriptor.table
 		this.dataKey = formElement.descriptor.dataKey
 		this.dataArray = formElement.existingData
+		this.formObject = dataUtil.getStrings(formElement.dataObject)
 		this.selectedModule = new Module("Selected Instances")
 		this.toSelectModule = new Module("Instances to select")
 		this.doneButton = new TextButton("Done", (this.done).bind(this), "margin10")
@@ -64,7 +65,6 @@ class EditInstanceSelector extends InstanceSelector {
 	init (){
 		this.dataItemCache = new Object()
 		this.addedKeys = []
-		this.object = this.dataArray[0]
 		$.each(this.dataArray, (function(key, value){
 			this.addedKeys.push(value[this.dataKey])
 		}).bind(this))
@@ -118,10 +118,10 @@ class EditInstanceSelector extends InstanceSelector {
 	select (dataItem){
 		
 		PopUpController.init("Please wait")
-		this.object[this.dataKey] = dataItem.data[this.dataKey]
+		this.formObject[this.dataKey] = dataItem.data[this.dataKey]
 		this.dataItem = dataItem
 		AJAX.call("addTriple", (this.selectSucces).bind(this), 
-				[this.dataKey, this.object])
+				[this.dataKey, this.formObject])
 	}
 	
 	remove (dataItem){
@@ -131,15 +131,27 @@ class EditInstanceSelector extends InstanceSelector {
 			this.dataItemCache[uri].addToTable()
 		}
 		PopUpController.init("Please wait")
-		this.object[this.dataKey] = dataItem.data[this.dataKey]
+		this.formObject[this.dataKey] = dataItem.data[this.dataKey]
 		this.dataItem = dataItem
 		AJAX.call("removeTriple", (this.display).bind(this), 
-				[this.dataKey, this.object])
+				[this.dataKey, this.formObject])
 	}
 	
 	selectSucces (dataItem){
 		super.select(this.dataItem)
 		this.display()
+	}
+	
+	notSelected(dataItem){
+		
+		var uri = dataItem.data[this.dataKey]
+		if(this.addedKeys.indexOf(uri) > -1){
+			this.dataItemCache[uri] = dataItem
+			return false
+		} else {
+			return true
+		}
+		
 	}
 	
 }
