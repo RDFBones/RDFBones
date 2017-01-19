@@ -249,6 +249,7 @@ var AJAX = {
 	},
 
 	requestData : function(object) {
+		
 		return $.extend(AJAX.base, {
 			data : "requestData=" + JSON.stringify(object)
 		})
@@ -271,6 +272,7 @@ var AJAXParams = {
 	removeTriple : ["variableToEdit", "graphData"],
 	deleteFormData : ["formKey", "graphData"],
 	deleteAll : ["graphData"],
+	addFormData : ["formKey", "parentData", "formData"],
 	getObject : function(key, array) {
 
 		if (this[key] !== undefined && DataLib.isArray(this[key])) {
