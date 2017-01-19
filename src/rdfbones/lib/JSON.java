@@ -340,4 +340,13 @@ public class JSON {
   	}
   	return map;
   }
+  
+public static JSONObject convert(Map<String, String> object){
+		
+		JSONObject json = JSON.obj();
+		for(String key : object.keySet()){
+			JSON.put(json, key, object.get(key));
+		}
+		return json;
+  }
 }
