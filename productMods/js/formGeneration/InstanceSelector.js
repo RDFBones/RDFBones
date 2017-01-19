@@ -10,37 +10,19 @@ class InstanceSelector{
 		this.toSelectModule = new Module("Instances to select")
 		this.doneButton = new TextButton("Done", (this.done).bind(this), "margin10")
 		PopUpController.init("Loading data ")
-		this.init()
+		this.loadBrowserData()
+	}
+
+	loadBrowserData(){
+		AJAX.call("formGraphData", (function(msg){
+			this.tableData = msg.tableData
+			this.init()
+		}).bind(this),  DataController.getGraphDataParams(this))
 	}
 
 	init (){
-		
-		AJAX.call("formGraphData", (function(msg){
-			this.instanceBrowser = new InstanceBrowser(this, msg.tableData)
-			this.initUI()
-		}).bind(this),  DataController.getGraphDataParams(this))
-	}
-		
-	loadExisting (){
-	
-		tableDescriptor = this.getTableDescriptor()
-		selectedTable = SelectedTable(this, this.dataArray, tableDescriptor)
-		this.toSelectModule.container.hide()
-		this.selectedModule.add(selectedTable.container)
+		this.instanceBrowser = new InstanceBrowser(this, this.tableData)
 		this.initUI()
-	}
-
-	getTableDescriptor (){
-		
-		var desc = this.descriptor
-		while(true){
-			if(desc.type == "selector" || desc.subForm === undefined){
-				break
-			} else {
-				desc = desc.subForm	
-			}
-		}
-		return desc
 	}
 	
 	display (){
@@ -49,15 +31,12 @@ class InstanceSelector{
 		
 	showExisting (){
 		
-		//this.instanceBrowser = new InstanceBrowser(this, array, this.descriptor)
-		//this.initUI()
-		// Getting the descriptor	
 		this.getTableDescriptor()
 	}
 	
 	initUI (){
 		UI.append(this, [this.selectedModule, this.toSelectModule, this.doneButton])
-		PopUpController.set(this.container)
+		this.display()
 	}
 	
 	select (dataItem){
@@ -73,14 +52,11 @@ class InstanceSelector{
 		console.log(this.dataArray)
 		DataLib.removeObjectFromArray(this.dataArray, key,  dataObject)
 	}
-	
-	deselect (){
-	
-	}
-	
+
 	done (){
 		PopUpController.done()
 	}
+
 }
 
 class EditInstanceSelector extends InstanceSelector {
@@ -88,19 +64,83 @@ class EditInstanceSelector extends InstanceSelector {
 	init (){
 		this.dataItemCache = new Object()
 		this.addedKeys = []
-		$.each(this.dataArray, function(key, value){
+		this.object = this.dataArray[0]
+		$.each(this.dataArray, (function(key, value){
 			this.addedKeys.push(value[this.dataKey])
-		})
+		}).bind(this))
+		this.loadExisting()
 		super.init()
 	}	
 	
-	remove (dataObject){
+	loadExisting (){
+		
+		this.setTableDescriptor()
+		var selectedTable = new SelectedTable(this, this.getDataArray(), 
+				this.tableDescriptor)
+		this.selectedModule.addObject(selectedTable)
+		this.initUI()
+	}
 
-		var uri = dataObject[this.dataKey]
+	setTableDescriptor (){
+		
+		this.predicates = []
+		var desc = this.descriptor
+		while(true){
+			if(desc.type == "selector" || desc.subForm === undefined){
+				break
+			} else {
+				this.predicates.push(desc.predicate)
+				desc = desc.subForm	
+			}
+		}
+		this.tableDescriptor = desc
+	}
+	
+	getDataArray(){
+		var leafData = []
+		this.setLeafData(0, this.predicates, this.tableData, leafData)
+		console.log(this.addedArray)
+		console.log(DataLib.getType(leafData))
+		return leafData.selectObjects(this.dataKey, this.addedKeys)
+	}
+	
+	setLeafData(n, predicates, dataArray, arrayToSet){
+		
+		if(n < predicates.length){
+			$.each(dataArray, (function(index, value){
+				this.setLeafData(n + 1, predicates, value[predicates[n]], arrayToSet)
+			}).bind(this))
+		} else {
+			arrayToSet.push(...dataArray)
+		}
+	}
+	
+	select (dataItem){
+		
+		PopUpController.init("Please wait")
+		this.object[this.dataKey] = dataItem.data[this.dataKey]
+		this.dataItem = dataItem
+		AJAX.call("addTriple", (this.selectSucces).bind(this), 
+				[this.dataKey, this.object])
+	}
+	
+	remove (dataItem){
+		var uri = dataItem.data[this.dataKey]
 		this.addedKeys.removeElement(uri)
 		if(this.dataItemCache[uri] !== undefined){
 			this.dataItemCache[uri].addToTable()
 		}
+		PopUpController.init("Please wait")
+		this.object[this.dataKey] = dataItem.data[this.dataKey]
+		this.dataItem = dataItem
+		AJAX.call("removeTriple", (this.display).bind(this), 
+				[this.dataKey, this.object])
 	}
+	
+	selectSucces (dataItem){
+		super.select(this.dataItem)
+		this.display()
+	}
+	
 }
 
