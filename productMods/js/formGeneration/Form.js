@@ -1,40 +1,40 @@
 
 
-var Form = function(parentForm, descriptor, data){
+class Form { 
 	
-	this.parentForm = parentForm
-	this.dataObject = data
-	this.descriptor = descriptor
-	this.title = util.getUndefinedObject(descriptor, "title")
-	this.titleStyle = this.getTitleStyle()
-}	
+	constructor(parentForm, descriptor, data){
 
-Form.prototype = {
+		this.parentForm = parentForm
+		this.dataObject = data
+		this.descriptor = descriptor
+		this.title = util.getUndefinedObject(descriptor, "title")
+		this.titleStyle = this.getTitleStyle()
+	}	
 
-	//This is called by the DataController
-	loadSubformData : function(){
-		//This calls an AJAX 
+	// This is called by the DataController
+	loadSubformData (){
+		// This calls an AJAX
 		DataController.loadSubformData(this)
-	},
+	}
 	
-	getTitleStyle : function(){
+	getTitleStyle (){
 		
 		return this.descriptor.style == "inline" ? 
 			this.titleStyle = "formTitleInline" : "formTitle"
-	},
+	}
 	
-	init : function(formOptions) {
+	init (formOptions) {
 	
 		this.formElements = new Object()
 		$.each(this.descriptor.formElements, (function(key, value){
 			this.formElements[key] = new ElementMap[value.type](this, value, formOptions, key)
 		}).bind(this))
 		this.loadUI()
-	},
+	}
 	
-	loadUI : function(){
+	loadUI (){
 		
-		//Pre UI
+		// Pre UI
 		this.container = html.div("fade")
 		this.titleCont = html.div(this.titleStyle).text(this.title)
 		this.formContainer = html.div("inline")
@@ -42,101 +42,143 @@ Form.prototype = {
 		this.setButtons()
 		this.container.append([this.titleCont, this.formContainer, this.buttonCont])
 		this.ready()
-	},
+	}
 	
-	setButtons : function(){
+	setButtons (){
 		this.buttonCont = html.div("inline")
-	},
+	}
 	
-	ready : function(){
+	ready (){
+		console.log("Ready")
 		this.parentForm.ready(this.container)
-	},
+	}
 }
 
-var SubForm = function(parentForm, descriptor, data){
-	
-	Form.call(this, parentForm, descriptor, data)
-	this.title = data[parentForm.dataKey + "Label"]
-	this.loadSubformData()
-}
+class SubForm extends Form { 
 
-SubForm.prototype = $.extend(Object.create(Form.prototype), {
+	constructor(parentForm, descriptor, data){
 	
-	setButtons : function(){
+		super(parentForm, descriptor, data)
+		this.title = data[parentForm.dataKey + "Label"]
+		this.loadSubformData()
+	}
+	
+	setButtons (){
 		this.buttonCont = html.div("inline")
 		this.deleteButton = new Button("del", (this.deleteData).bind(this))
 		this.buttonCont.append(this.deleteButton.container)
-	},
+	}
 	
-	deleteData : function(){
+	deleteData (){
 		this.container.remove()
 		this.parentForm.removeDataObject(this.descriptor.dataKey, this.dataObject)
 	}
-})
-
-var SubFormAll = function(parentForm, descriptor, data){
-	
-	SubForm.call(this, parentForm, descriptor, data)
 }
 
-SubFormAll.prototype = $.extend(Object.create(SubForm.prototype), {
+class SubFormAll  extends SubForm {
 	
-	ready : function(){
+	ready (){
 		this.parentForm.readyAll(this)
 	}
-})
-
-var MainForm = function(formLoader){
-	
-	Form.call(this, null, Global.formDescriptor, Global.formData)
-	this.formLoader = formLoader
-	this.title = Global.formDescriptor.title
-	this.titleStyle = "mainFormTitle"
-	this.loadSubformData()
 }
 
-MainForm.prototype = $.extend(Object.create(Form.prototype), {
+class MainForm extends Form { 
 	
-	ready : function(){
+	constructor(formLoader){
+		super(null, Global.formDescriptor, Global.formData)
+		this.formLoader = formLoader
+		this.title = Global.formDescriptor.title
+		this.titleStyle = "mainFormTitle"
+		this.loadSubformData()
+	}
+
+	ready (){
+		console.log("Ready")
 		this.formLoader.ready(this.container)
 	}
-})
-
-var ExistingMainForm = function(formLoader){
-	
-	MainForm.call(this, formLoader)
 }
 
-ExistingMainForm.prototype = $.extend(Object.create(MainForm.prototype), {
+class ExistingMainForm extends MainForm {
 	
-	loadSubformData : function(){
-		this.init(Global.formData.formData)
-		//this.formLoader.ready(this.container)
+	constructor(formLoader){
+		super(formLoader)
 	}
-})
-
-var ExistingForm = function(parentForm, descriptor, data){
 	
-	Form.call(this, parentForm, descriptor, data)
-	this.title = data[parentForm.dataKey + "Label"]
-	this.init(data.formData)
+	loadSubformData (){
+		this.init(Global.formData.formData)
+		// this.formLoader.ready(this.container)
+	}
 }
 
-ExistingForm.prototype = $.extend(Object.create(SubForm.prototype),{
+class ExistingForm extends Form { 
 	
-	ready : function(){
-		//Do nothing
-	},
-
-	deleteData : function(){
+	constructor(parentForm, descriptor, data){
+		super(parentForm, descriptor, data)
+		this.title = data[parentForm.dataKey + "Label"]
+		this.init(data.formData)
+	}
+	
+	setButtons (){
+		this.buttonCont = html.div("inline")
+		this.deleteButton = new Button("del", (this.deleteData).bind(this))
+		this.buttonCont.append(this.deleteButton.container)
+	}
+	
+	
+	laodSubFormData (){
+		// Do nothing
+	}
+	
+	ready (){
 		
+	} 
+	
+	deleteData (){
+	
+		this.container.remove()
 		PopUpController.init("Delete is in progress")
-		AJAX.call("deleteFormData", (function(msg){
-			if(msg.failed)
-				alert("Deletion failed")
-			this.container.remove()
-			PopUpController.done()
-		}).bind(this),[this.descriptor.dataKey, this.dataObject])
-	},
+		AJAX.call("deleteFormData", (this.deleteSuccess).bind(this),
+				[this.descriptor.dataKey, this.dataObject])
+		
+	}
+	
+	deleteSuccess (msg){
+		if(msg.failed){
+			alert("Deletion failed")
+		}	
+		//super.deleteData()
+		PopUpController.done()
+	}
+}
 
-})
+
+class EditSubForm extends SubForm {
+	
+	init (formOptions) {
+		
+		this.formElements = new Object()
+		$.each(this.descriptor.formElements, (function(key, value){
+			this.formElements[key] = new ElementMap[value.type](this, value, formOptions, key)
+		}).bind(this))
+		this.loadUI()
+	}
+	
+	loadUI (){
+		
+		// Pre UI
+		this.container = html.div("fade")
+		this.titleCont = html.div(this.titleStyle).text(this.title)
+		this.formContainer = html.div("inline")
+		UI.appendToDiv(this.formContainer, this.formElements)
+		this.setButtons()
+		this.container.append([this.titleCont, this.formContainer, this.buttonCont])
+		
+		// Here the ready is removed
+		AJAX.call("addFormData", (function(){
+			this.ready()
+		}).bind(this), [this.descriptor.dataKey, 
+			dataUtil.getStrings(this.parentForm.dataObject), 
+			dataUtil.getStrings(this.dataObject)])	
+	}
+}
+
