@@ -1,21 +1,20 @@
 
-var Module = function(titleParameter){
+class Module {
 	
-	this.container = html.div("moduleContainer")
-	this.titleCont = html.div()
-	this.title = html.div("moduleTitleStyle").text(titleParameter)
-	this.table = html.div("moduleTable")
-	
-	this.titleCont.append(this.title)
-	this.container.append(this.titleCont)
-	this.container.append(this.table)
-}
+	constructor(titleText){
 
+		this.container = html.div("moduleContainer")
+		this.title = html.div("moduleTitleStyle").text(titleText)
+		this.table = html.div("moduleTable")
+		this.container.append([this.title, this.table])
+	}
 
-Module.prototype = {
-
-	add : function(container){
+	add (container){
 		this.table.append(container)
+	}
+
+	addObject (object){
+		this.table.append(object.container)
 	}
 
 }
