@@ -107,9 +107,8 @@ public class AJAXController {
 				Graph addGraph = graph.graphMap.get(get("formKey"));
 				String varName =  addGraph.varName;
 				String value = JSON.string(getJSONObject("parentData"), varName);
-				String triplesToAdd = addGraph.saveData(getJSONObject("formData"), varName, value);
-				JSON.put(response, "triplesAdded", triplesToAdd);
-				if(formConfig.webapp.addTriples(triplesToAdd, get("editKey"))){
+				this.response = addGraph.saveDataAJAX(getJSONObject("formData"), varName, value);
+				if(formConfig.webapp.addTriples(JSON.string(response, "triplesToAdd"), get("editKey"))){
 					JSON.put(response, "failed", false);
 				} else {
 					JSON.put(response, "failed", true);

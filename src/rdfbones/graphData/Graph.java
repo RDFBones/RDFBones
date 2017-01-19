@@ -284,20 +284,39 @@ public class Graph {
 
 	public String saveInitialData(JSONObject inputObject) {
 		Map<String, String> variableMap = new HashMap<String, String>();
-		return this.setMapAndSave(inputObject, variableMap);
+		return this.getData(inputObject, variableMap);
 	}
 
 	public String saveData(JSONObject inputObject, String key, String value) {
 
 		Map<String, String> variableMap = new HashMap<String, String>();
 		variableMap.put(key, value);
-		return this.setMapAndSave(inputObject, variableMap);
+		return this.getData(inputObject, variableMap);
 	}
 
-	public String setMapAndSave(JSONObject inputObject,
+	public String getData(JSONObject inputObject, Map<String, String> variableMap){
+		
+		this.setInstanceMap(inputObject, variableMap);
+		this.setTypes(inputObject, variableMap);
+		return generateN3(inputObject, variableMap);
+	}
+	
+	public JSONObject saveDataAJAX(JSONObject inputObject, String key, String value){
+		
+		Map<String, String> variableMap = new HashMap<String, String>();
+		variableMap.put(key, value);
+		this.setInstanceMap(inputObject, variableMap);
+		this.setTypes(inputObject, variableMap);
+		JSONObject graphData = JSON.obj();
+		JSON.convert(variableMap);
+		JSON.put(graphData, "graphData", JSON.convert(variableMap));
+		JSON.put(graphData, "triplesToAdd", generateN3(inputObject, variableMap));
+		return graphData;
+	}
+	
+	public String setTypes(JSONObject inputObject,
 			Map<String, String> variableMap) {
 
-		this.setInstanceMap(inputObject, variableMap);
 		if (this.typeRetriever != null) {
 			String inputValue = JSON.string(inputObject, this.inputClasses.get(0));
 			List<Map<String, String>> data = this.typeRetriever.getData(inputValue);
