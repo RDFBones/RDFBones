@@ -39,7 +39,7 @@ class SelectorTable {
 	addDataItemsCheck(arr){
 		$.each(this.array, (function(index, value){
 			var dataItem = new DataItem(this, value, this.descriptor.table.cells)
-			if(this.instanceSelector.notSelected(value)){
+			if(this.instanceSelector.notSelected(dataItem)){
 				arr.push(dataItem.container)	
 			}
 		}).bind(this))
