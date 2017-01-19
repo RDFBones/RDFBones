@@ -139,14 +139,14 @@ class ExistingForm extends Form {
 		PopUpController.init("Delete is in progress")
 		AJAX.call("deleteFormData", (this.deleteSuccess).bind(this),
 				[this.descriptor.dataKey, this.dataObject])
-		
 	}
 	
 	deleteSuccess (msg){
 		if(msg.failed){
 			alert("Deletion failed")
 		}	
-		//super.deleteData()
+		this.container.remove()
+		this.parentForm.removeDataObject(this.descriptor.dataKey, this.dataObject)
 		PopUpController.done()
 	}
 }
@@ -174,7 +174,8 @@ class EditSubForm extends SubForm {
 		this.container.append([this.titleCont, this.formContainer, this.buttonCont])
 		
 		// Here the ready is removed
-		AJAX.call("addFormData", (function(){
+		AJAX.call("addFormData", (function(msg){
+			$.extend(this.dataObject, msg.graphData)
 			this.ready()
 		}).bind(this), [this.descriptor.dataKey, 
 			dataUtil.getStrings(this.parentForm.dataObject), 
