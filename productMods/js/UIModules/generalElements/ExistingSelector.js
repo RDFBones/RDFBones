@@ -19,13 +19,11 @@ var ExistingSelector = function(parentField, customClass, varName, set, dataRefe
 	this.container
 		.append(this.classContainer)
 		.append(this.selector.container)
-		
 	this.selectedOnce = false
 }
 
 
 ExistingSelector.prototype = {
-
 
 	prepareSet : function(set){
 		this.set = []

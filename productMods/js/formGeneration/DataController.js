@@ -29,6 +29,7 @@ var DataController = {
 			editKey : editKey,
 			dependentVars : dependentVars,
 		}
+		
 		if (Object.keys(dependentVars).length > 0) {
 			this.callAjax(form, toSend, true)
 		} else {
@@ -266,6 +267,8 @@ var AJAXParams = {
 	existingFormGraphData : [ "subjectUri", "objectUri"],
 	formSubmission : [ "dataToStore"],
 	editData : ["variableToEdit", "graphData", "newValue"],
+	addTriple : ["variableToEdit", "graphData"],
+	removeTriple : ["variableToEdit", "graphData"],
 	deleteFormData : ["formKey", "graphData"],
 	deleteAll : ["graphData"],
 	getObject : function(key, array) {

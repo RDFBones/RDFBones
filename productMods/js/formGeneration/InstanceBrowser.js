@@ -57,10 +57,6 @@ class InstanceBrowser {
 			this.titleField.set("There is no " + param[1] + " to select")
 		}
 	}
-	
-	select (dataItem){
-		this.instanceSelector.select(dataItem)
-	}
 } 
 
 class EditInstanceBrowser extends InstanceBrowser{
