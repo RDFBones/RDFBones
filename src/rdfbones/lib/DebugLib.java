@@ -13,6 +13,7 @@ public class DebugLib {
 
     String tab = new String(new char[n]).replace("\0", "\t");
     DebugLib.logString("inputNode", tab, graph, graph.varName);
+    DebugLib.logString("firstNode", tab, graph, graph.firstNode);
     DebugLib.logTripleList("dataTriples", tab, graph, graph.dataTriples);
     DebugLib.logTripleList("schemeTriples", tab, graph, graph.schemeTriples);
     DebugLib.logTripleList("triplesToStore", tab, graph, graph.triplesToStore);
@@ -76,7 +77,7 @@ public class DebugLib {
       graph.log(tab + msg + StringUtil.debugTriples(tab, logList));
     }
   }
-
+  
   public static void logDataGetter(String msg, String tab, Graph graph,
     SPARQLDataGetter dataGetter) {
     if(dataGetter != null){

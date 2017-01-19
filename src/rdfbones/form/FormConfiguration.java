@@ -17,11 +17,12 @@ public class FormConfiguration {
   public Graph dataGraph;
   public Map<String, FormGraph> formGraphs;
   public Map<String, FormElement> formElements = new HashMap<String, FormElement>();
-  WebappConnector webapp;
+  public WebappConnector webapp;
   
   public FormConfiguration(Graph graph, Form form){
     this.dataGraph = graph;
     this.form = form;
+    this.dataGraph.formConfiguration = this;
     this.form.setFormConfig(this);
     this.init();
   }
@@ -31,6 +32,7 @@ public class FormConfiguration {
     this.form = form;
     this.form.setFormConfig(this);
     this.formGraphs = formGraphs;
+    this.dataGraph.formConfiguration = this;
     //Setting all the main graphs
     for(String key : this.formGraphs.keySet()){
     	this.formGraphs.get(key).mainGraph = this.dataGraph;
@@ -38,14 +40,15 @@ public class FormConfiguration {
     this.init();
   }
   
-  public void init(){
+  public FormConfiguration() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public void init(){
     this.dataGraph.graphCache.put(this.dataGraph.varName, this.dataGraph);
     this.initDependencies();
     this.setFormCache();
     this.setFormNodes();
-    for(String key : this.formElements.keySet()){
-    	System.out.println("FormElements : " + key);
-    }
   }
   
   public void initDependencies(){
@@ -112,7 +115,6 @@ public class FormConfiguration {
   		Graph subGraph = graph.subGraphs.get(key);
   		for(String node : subGraph.nodes){
   			if(this.formElements.containsKey(node)){
-  				System.out.println("SubFormNode : " + node);
   				if(this.formElements.get(node) instanceof SubformAdder){
     				formElements.add(node);
     			}
