@@ -101,14 +101,26 @@ public class AJAXController {
 				String remove2 = N3.getTriples(graph.nodeMap.get(variable2), object2);
 				formConfig.webapp.removeTriples(remove2, get("editKey"));
 				break;
-				
+
+			case "addFormData":
+
+				Graph addGraph = graph.graphMap.get(get("formKey"));
+				String varName =  addGraph.varName;
+				String value = JSON.string(getJSONObject("parentData"), varName);
+				String triplesToAdd = addGraph.saveData(getJSONObject("formData"), varName, value);
+				JSON.put(response, "triplesAdded", triplesToAdd);
+				if(formConfig.webapp.addTriples(triplesToAdd, get("editKey"))){
+					JSON.put(response, "failed", false);
+				} else {
+					JSON.put(response, "failed", true);
+				}
+				break;
+
 			case "deleteFormData":
 
-				System.out.println(get("formKey"));
 				Graph delGraph = graph.graphMap.get(get("formKey"));
 				String triplesToDelete = delGraph
 						.deleteData(getJSONObject("graphData"));
-				System.out.println(get("editKey"));
 				JSON.put(response, "triplesDeleted", triplesToDelete);
 				if(formConfig.webapp.removeTriples(triplesToDelete, get("editKey"))){
 					JSON.put(response, "failed", false);
