@@ -227,7 +227,7 @@ public class JSON {
       Object value = JSON.obj(object, key);
       if(value instanceof String){
         json += "\n" + tab + key + " : \"" + value + "\",";
-      } else if(value instanceof Integer){
+      } else if((value instanceof Integer) || (value instanceof Boolean)){
         json += "\n" + tab + key + " : " + value.toString() + ",";
       } else if(value instanceof JSONArray){
         json += "\n" + tab + key + " : " + debugArray((JSONArray) value, n) + ",";
