@@ -23,9 +23,9 @@ class Selector extends FormElement{
 		this.selector = new DataSetterSelectorFieldMap(this.options,
 				(this.changeData).bind(this))
 		if (this.descriptor.arrangement !== undefined) {
-			this.container = html.div("margin10H inline");
+			this.container = html.div("margin10H inline")
 		} else {
-			this.container = html.div("margin10H");
+			this.container = html.div("margin10H")
 		}
 		this.title = html.div("inline").text(this.descriptor.name)
 		this.container.append(this.title).append(this.selector.container)
@@ -55,6 +55,7 @@ class Selector extends FormElement{
 class Adder extends FormElement{
 	
 	initUI () {
+		
 		this.container = html.div("adderContainer")
 		this.title = html.div("inline").text(this.descriptor.title)
 		this.selector = UI.classSelectorMap(this.options)
@@ -73,8 +74,10 @@ class Adder extends FormElement{
 		this.subForms = []
 		if (this.dataObject[this.predicate] !== undefined) {
 			this.dataArray = this.dataObject[this.predicate]
+			this.edit = true
 			this.showExistingData()
 		} else {
+			this.edit = false
 			this.dataArray = []
 			this.dataObject[this.predicate] = this.dataArray
 		}
@@ -105,12 +108,19 @@ class Adder extends FormElement{
 			object[this.dataKey + "Label"] = this.options[this.selector.val()].label
 			this.dataArray.push(object)
 			PopUpController.addSubWaitGif(this.subContainer)
-			this.subForms.push(new SubForm(this, this.descriptor, object))
+			if(this.edit){
+				//Adding new data
+				this.subForms.push(new EditSubForm(this, this.descriptor, object))	
+			} else {				
+				this.subForms.push(new SubForm(this, this.descriptor, object))	
+			}
 		}
 	}
 	
 	ready (container){
 		this.subContainer.append(container)
+		console.log("Ready FormElements")
+		PopUpController.remove()
 	}
 	
 	addAll () {
@@ -144,12 +154,14 @@ class Adder extends FormElement{
 		}
 	}
 	
+	/*
 	ready () {
 
 		this.subContainer.append(this.subForms[this.subForms.length - 1].container)
 		PopUpController.remove()
-	}
-
+	}*/
+	
+	
 	removeDataObject (key, value){
 		DataLib.removeObjectFromArray(this.dataArray, key, value)
 	}
