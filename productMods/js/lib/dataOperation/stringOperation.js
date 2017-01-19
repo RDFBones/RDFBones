@@ -14,6 +14,18 @@ Array.prototype.getObjectByKey = function(key, value){
 	return toReturn
 }
 
+
+Array.prototype.selectObjects = function(key, array){
+	
+	var toReturn = []
+	$.each(this, function(i, object){
+		if(array.indexOf(object[key]) > -1){
+			toReturn.push(object)
+		}
+	})
+	return toReturn
+}
+
 Array.prototype.removeElement = function(value){
 	
 	if(this.indexOf(value) != -1) {
