@@ -7,11 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
-import rdfbones.lib.ArrayLib;
 import rdfbones.lib.DebugLib;
 import rdfbones.lib.GraphLib;
 import rdfbones.lib.JSON;
@@ -23,6 +21,8 @@ import rdfbones.lib.SPARQLUtils;
 import rdfbones.rdfdataset.MultiTriple;
 import rdfbones.rdfdataset.RDFNode;
 import rdfbones.rdfdataset.Triple;
+import rdfbones.form.ExistingInstanceSelector;
+import rdfbones.form.FormConfiguration;
 import rdfbones.formProcessing.WebappConnector;
 
 public class Graph {
@@ -31,7 +31,8 @@ public class Graph {
 	public String varName;
 	public Triple triple = null;
 	public String inputPredicate = null;
-
+	public String firstNode = null;
+	
 	// Triples
 	public List<Triple> dataTriples = new ArrayList<Triple>();
 	public List<Triple> typeTriples = new ArrayList<Triple>();
@@ -80,7 +81,9 @@ public class Graph {
 	public SPARQLDataGetter typeRetriever;
 	WebappConnector webapp;
 	public Graph mainGraph;
-
+	public FormConfiguration formConfiguration;
+	
+	
 	public Graph(List<Triple> triples, List<Triple> schemeTriples,
 			WebappConnector webapp) {
 
@@ -128,6 +131,7 @@ public class Graph {
 			Triple triple = subGraph.triple;
 			if (triple instanceof MultiTriple) {
 				subGraph.varName = GraphLib.getObject1(triple, key.varName);
+				subGraph.firstNode = key.varName;
 				subGraph.inputPredicate = triple.predicate;
 				subGraph.mainGraph = graph.mainGraph;
 				subGraph.mainGraph.graphCache.put(subGraph.varName, subGraph);
@@ -208,10 +212,12 @@ public class Graph {
 	protected void getGraphData(JSONObject parentData) {
 
 		if (this.subGraphs.keySet().size() == 0) {
-			System.out.println("NoSubgraph");
-			for (int i = 0; i < this.existingData.length(); i++) {
-				JSONObject object = JSON.object(this.existingData, i);
-				JSON.put(object, "formData", this.getFormData(object, parentData));
+			if(notExistingSelector()){
+				System.out.println("FirstNode : " + this.firstNode);
+				for (int i = 0; i < this.existingData.length(); i++) {
+					JSONObject object = JSON.object(this.existingData, i);
+					JSON.put(object, "formData", this.getFormData(object, parentData));
+				}
 			}
 		} else {
 			for (int i = 0; i < this.existingData.length(); i++) {
@@ -227,7 +233,18 @@ public class Graph {
 			}
 		}
 	}
-
+	
+	boolean notExistingSelector(){
+		
+		if( this.mainGraph.formConfiguration.formElements.containsKey(this.firstNode)) {
+			if(this.mainGraph.formConfiguration.formElements.get(this.firstNode)
+					instanceof ExistingInstanceSelector){
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	public JSONObject getFormData(JSONObject object, JSONObject parentData) {
 
 		// This object already contains the
