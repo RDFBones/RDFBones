@@ -96,6 +96,15 @@ public class ArrayLib {
 		strArray.add(str2);
 		return strArray;
 	}
+	
+	public static List<String> getList(String... strings) {
+		List<String> strArray = new ArrayList<String>();
+		
+		for (int i = 0; i < strings.length; ++i) {
+    	strArray.add(strings[i]);
+    }
+		return strArray;
+	}
 
 	public static String[] getArray(String str1) {
 
