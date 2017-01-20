@@ -9,6 +9,13 @@ var dataUtil = {
 			}
 		})
 		return ret
+	},
+
+	setValue : function(array, key, value){
+		
+		$.each(array, function(i, element){
+			element[key] = value
+		})
 	}
 }
 

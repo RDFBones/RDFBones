@@ -176,10 +176,13 @@ class EditSubForm extends SubForm {
 		// Here the ready is removed
 		AJAX.call("addFormData", (function(msg){
 			$.extend(this.dataObject, msg.graphData)
+			dataUtil.setValue(this.formElements, "edit", "true")
 			this.ready()
 		}).bind(this), [this.descriptor.dataKey, 
 			dataUtil.getStrings(this.parentForm.dataObject), 
 			dataUtil.getStrings(this.dataObject)])	
 	}
+	
+	
 }
 
