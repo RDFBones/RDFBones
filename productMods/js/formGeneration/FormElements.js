@@ -46,7 +46,7 @@ class Selector extends FormElement{
 			PopUpController.init("Please wait ...")
 			AJAX.call("editData", function(){
 				PopUpController.done()
-			} [this.dataKey, dataUtil.getStrings(this.dataObject), selectedValue])
+			}, [this.dataKey, dataUtil.getStrings(this.dataObject), selectedValue])
 		}
 		this.dataObject[this.dataKey] = selectedValue
 	}	
@@ -107,18 +107,19 @@ class Adder extends FormElement{
 			object[this.dataKey] = this.selector.val()
 			object[this.dataKey + "Label"] = this.options[this.selector.val()].label
 			this.dataArray.push(object)
-			PopUpController.addSubWaitGif(this.subContainer)
 			if(this.edit){
 				//Adding new data
+				PopUpController.addSubWaitGifText(this.subContainer, "Adding new form")
 				this.subForms.push(new EditSubForm(this, this.descriptor, object))	
-			} else {				
+			} else {		
+				PopUpController.addSubWaitGif(this.subContainer)
 				this.subForms.push(new SubForm(this, this.descriptor, object))	
 			}
 		}
 	}
 	
 	ready (container){
-		this.subContainer.append(container)
+		this.subContainer.prepend(container)
 		console.log("Ready FormElements")
 		PopUpController.remove()
 	}
