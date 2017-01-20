@@ -1,6 +1,7 @@
 package rdfbones.formProcessing;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -10,6 +11,7 @@ import rdfbones.form.FormConfiguration;
 import rdfbones.graphData.FormGraph;
 import rdfbones.graphData.Graph;
 import rdfbones.graphData.VariableDependency;
+import rdfbones.lib.ArrayLib;
 import rdfbones.lib.JSON;
 import rdfbones.lib.N3;
 import rdfbones.rdfdataset.Triple;
@@ -104,15 +106,17 @@ public class AJAXController {
 
 			case "addFormData":
 
-				Graph addGraph = graph.graphMap.get(get("formKey"));
-				String varName =  addGraph.varName;
-				String value = JSON.string(getJSONObject("parentData"), varName);
-				this.response = addGraph.saveDataAJAX(getJSONObject("formData"), varName, value);
-				if(formConfig.webapp.addTriples(JSON.string(response, "triplesToAdd"), get("editKey"))){
-					JSON.put(response, "failed", false);
-				} else {
-					JSON.put(response, "failed", true);
-				}
+				if(check(ArrayLib.getList("formKey", "formData", "parentData"))){
+					Graph addGraph = graph.graphMap.get(get("formKey"));
+					String varName =  addGraph.varName;
+					String value = JSON.string(getJSONObject("parentData"), varName);
+					this.response = addGraph.saveDataAJAX(getJSONObject("formData"), varName, value);
+					if(formConfig.webapp.addTriples(JSON.string(response, "triplesToAdd"), get("editKey"))){
+						JSON.put(response, "failed", false);
+					} else {
+						JSON.put(response, "failed", true);
+					}
+				} 
 				break;
 
 			case "deleteFormData":
@@ -149,6 +153,22 @@ public class AJAXController {
 		}
 	}
 
+	public boolean check(List<String> parameters){
+		
+		boolean returnValue = true;
+		for(String parameter : parameters){
+			 	if(!this.requestData.has(parameter)) {
+			 		JSON.append(response, "errorMsg", "Parameter : " + parameter + " -  is not defined");
+			 		returnValue = false;
+				}
+		}
+		return returnValue;
+	}
+	
+	public void addErrorMsg(String key){
+			
+	}
+	
 	public Boolean check(String key) {
 
 		if (this.requestData.has(key)) {
