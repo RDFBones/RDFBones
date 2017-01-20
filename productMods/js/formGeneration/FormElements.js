@@ -20,15 +20,13 @@ class FormElement {
 class Selector extends FormElement{
 	
 	initUI () {
+		
+		this.container = html.div("elementContainer")
 		this.selector = new DataSetterSelectorFieldMap(this.options,
 				(this.changeData).bind(this))
-		if (this.descriptor.arrangement !== undefined) {
-			this.container = html.div("margin10H inline")
-		} else {
-			this.container = html.div("margin10H")
-		}
-		this.title = html.div("inline").text(this.descriptor.name)
-		this.container.append(this.title).append(this.selector.container)
+	
+		//this.title = html.div("inline").text(this.descriptor.name)
+		this.container.append(this.selector.container)
 	}
 
 	initData () {
@@ -187,9 +185,10 @@ class StringInput {
 class ExistingInstanceSelector extends FormElement {
 	
 	initUI () {
-
-		this.title = this.descriptor.title
-		this.container = new TextButton(this.title, (this.loadTableData).bind(this), "inline").container
+		this.container = html.div("elementContainer")
+		this.title = html.div("formTitleInline").text(this.descriptor.title)
+		this.textButton = new TextButton("Select", (this.loadTableData).bind(this), "inline") 
+		this.container.append([this.title, this.textButton.container])
 	}
 
 	initData () {

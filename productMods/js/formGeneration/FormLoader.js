@@ -38,7 +38,7 @@ FormLoader.prototype = {
 	initUI : function() {
 
 		this.container = html.div()
-		this.buttonContainer = html.div()
+		this.buttonContainer = html.div("submitButtonContainer")
 		if (this.edit) {
 			this.doneButton = new TextButton("Done", (this.cancel).bind(this))
 			UI.appendToDiv(this.buttonContainer, [ this.doneButton ])

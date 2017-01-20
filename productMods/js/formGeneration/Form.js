@@ -8,7 +8,6 @@ class Form {
 		this.dataObject = data
 		this.descriptor = descriptor
 		this.title = util.getUndefinedObject(descriptor, "title")
-		this.titleStyle = this.getTitleStyle()
 	}	
 
 	// This is called by the DataController
@@ -17,10 +16,14 @@ class Form {
 		DataController.loadSubformData(this)
 	}
 	
-	getTitleStyle (){
+	setStyle (){
 		
-		return this.descriptor.style == "inline" ? 
-			this.titleStyle = "formTitleInline" : "formTitle"
+		this.contStyle = "formContainer"
+		this.titleStyle = "formTitle"
+		if(this.descriptor.style == "inline"){
+			this.contStyle += " inlineForm"	
+			this.titleStyle = "formTitleInline"
+		}
 	}
 	
 	init (formOptions) {
@@ -30,18 +33,21 @@ class Form {
 			this.formElements[key] = new ElementMap[value.type](this, value, formOptions, key)
 		}).bind(this))
 		this.loadUI()
+		this.ready()
 	}
 	
 	loadUI (){
 		
 		// Pre UI
-		this.container = html.div("fade")
+		this.setStyle()
+		this.container = html.div(this.contStyle)
 		this.titleCont = html.div(this.titleStyle).text(this.title)
-		this.formContainer = html.div("inline")
+		this.formContainer = html.div("formContent")
 		UI.appendToDiv(this.formContainer, this.formElements)
 		this.setButtons()
-		this.container.append([this.titleCont, this.formContainer, this.buttonCont])
-		this.ready()
+		this.innerContainer = html.div("formInnerContainer")
+		this.innerContainer.append([this.formContainer, this.buttonCont])
+		this.container.append([this.titleCont, this.innerContainer])
 	}
 	
 	setButtons (){
@@ -64,7 +70,7 @@ class SubForm extends Form {
 	}
 	
 	setButtons (){
-		this.buttonCont = html.div("inline")
+		this.buttonCont = html.div("formEditButtonContainer")
 		this.deleteButton = new Button("del", (this.deleteData).bind(this))
 		this.buttonCont.append(this.deleteButton.container)
 	}
@@ -88,10 +94,14 @@ class MainForm extends Form {
 		super(null, Global.formDescriptor, Global.formData)
 		this.formLoader = formLoader
 		this.title = Global.formDescriptor.title
-		this.titleStyle = "mainFormTitle"
 		this.loadSubformData()
 	}
 
+	setStyle (){
+		super.setStyle()
+		this.titleStyle = "mainFormTitle"
+	}
+	
 	ready (){
 		console.log("Ready")
 		this.formLoader.ready(this.container)
@@ -119,7 +129,7 @@ class ExistingForm extends Form {
 	}
 	
 	setButtons (){
-		this.buttonCont = html.div("inline")
+		this.buttonCont = html.div("formEditButtonContainer")
 		this.deleteButton = new Button("del", (this.deleteData).bind(this))
 		this.buttonCont.append(this.deleteButton.container)
 	}
@@ -135,7 +145,6 @@ class ExistingForm extends Form {
 	
 	deleteData (){
 	
-		this.container.remove()
 		PopUpController.init("Delete is in progress")
 		AJAX.call("deleteFormData", (this.deleteSuccess).bind(this),
 				[this.descriptor.dataKey, this.dataObject])
@@ -166,13 +175,15 @@ class EditSubForm extends SubForm {
 	loadUI (){
 		
 		// Pre UI
+		/*
 		this.container = html.div("fade")
 		this.titleCont = html.div(this.titleStyle).text(this.title)
 		this.formContainer = html.div("inline")
 		UI.appendToDiv(this.formContainer, this.formElements)
 		this.setButtons()
 		this.container.append([this.titleCont, this.formContainer, this.buttonCont])
-		
+		*/
+		super.loadUI()
 		// Here the ready is removed
 		AJAX.call("addFormData", (function(msg){
 			$.extend(this.dataObject, msg.graphData)
