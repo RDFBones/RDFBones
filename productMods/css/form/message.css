@@ -42,10 +42,6 @@
     padding: 3px;
 }
 
-#popUpContainer{
-	overflow : hidden;
-}
-
 .popUpOuterNew {
     
     position:fixed;

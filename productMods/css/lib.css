@@ -68,32 +68,6 @@
 	cursor: pointer;
 }
 
-.generalButton {
-	margin-left: 10px;
-	padding : 2px;
-	display: inline-block;
-	border: 1px solid black;
-	border-radius: 3px;
-	background-color: #9D9696;
-}
-
-.smallButton {
-	margin-left: 10px;
-	display: inline-block;
-	border: 1px solid black;
-	border-radius: 3px;
-	padding: 1px 2px;
-}
-
-.enabledButton {
-	opacity: 1;
-}
-
-.disabledButton {
-	opacity: 0.4;
-}
-
-
 .redBorder {
 	border: 1px solid red;
 }
@@ -234,7 +208,10 @@ bold {
 }
 
 
-
+.verticalMiddleContainer {
+	display : flex;
+	align-items : center;
+}
 
 
 

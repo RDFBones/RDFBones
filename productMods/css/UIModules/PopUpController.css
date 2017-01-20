@@ -64,6 +64,7 @@
 
 .loaderMsgContainer {
 	display : table;
+	margin: 0 auto;
 }
 
 .loaderMsgSubForm{
@@ -78,11 +79,12 @@
 }
 
 .loaderMsg{
-	margin: 0 auto;
-	display : table;
-	background-color: #382f2f;
-	color : white;
-	border-radius: 6px;
-	padding: 2px 3px;
-	letter-spacing: 1px;
-}
+ 	margin: 0 auto;
+ 	display: table;
+ 	background-color: #312d2d;
+ 	font-size: smaller;
+ 	display: table;
+ 	color: white;
+ 	border-radius: 6px;
+ 	padding: 0px 5px;
+ 	letter-spacing: 1px;
