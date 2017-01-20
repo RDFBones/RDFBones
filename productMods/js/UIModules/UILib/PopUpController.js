@@ -124,17 +124,21 @@ var PopUpController = {
 		msgDiv = html.div("loaderMsg").text("Loading form")	
 		img = ImgUI.waitGif()
 		this.waitGif.append([img, msgDiv])
-		
 		div.append(this.waitGif)
 	},
 	
 	addSubWaitGif : function(div){
 
+		this.addSubWaitGifText(div, "Loading subform")	
+	},
+	
+	addSubWaitGifText : function(div, text){
+
 		this.waitGif = html.div("loaderMsgContainer")
-		msgDiv = html.div("loaderMsgSubForm").text("Loading subform")	
+		msgDiv = html.div("loaderMsgSubForm").text(text)	
 		img = ImgUI.subWaitGif()
 		this.waitGif.append([img, msgDiv])
-		div.append(this.waitGif)
+		div.prepend(this.waitGif)
 	},
 	
 	removeWaitGif : function(div, input){
