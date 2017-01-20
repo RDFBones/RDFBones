@@ -341,12 +341,23 @@ public class JSON {
   	return map;
   }
   
-public static JSONObject convert(Map<String, String> object){
+  public static JSONObject convert(Map<String, String> object){
 		
 		JSONObject json = JSON.obj();
 		for(String key : object.keySet()){
 			JSON.put(json, key, object.get(key));
 		}
 		return json;
+  }
+
+  public static void append(JSONObject object, String key, String value){
+  	
+  	String val;
+  	if(object.has(key)){
+  		val = JSON.string(object, key) + "\n" + value;
+  	} else {
+  		val = value;
+  	}
+  	JSON.put(object, key, val);
   }
 }
