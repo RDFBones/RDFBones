@@ -147,7 +147,7 @@ var UI = {
 	},
 
 	getTextButton : function(text, id) {
-		return html.div("enabledButton").text(text).attr("id", id)
+		return html.div().text(text).attr("id", id)
 	},
 
 	/***************************************************************************

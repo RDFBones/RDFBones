@@ -88,7 +88,7 @@ var PopUpController = {
 			$("#popUpContainer").append(this.container)
 			setTimeout((function(){
 				this.done()
-			}).bind(this), 2000)
+			}).bind(this), 1200)
 		}
 	},
 	

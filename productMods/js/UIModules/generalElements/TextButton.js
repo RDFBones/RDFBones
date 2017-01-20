@@ -13,7 +13,7 @@ var TextButton = function(text, returnFunction, style, parameter){
 TextButton.prototype = {
 		
 	getStyle : function(){
-		return "generalButton"
+		return "generalButton hover"
 	},
 		
 	clickEvent : function(){
@@ -24,13 +24,13 @@ TextButton.prototype = {
 
 	disable : function(){
 		this.enabled = false
-		this.container.removeClass("enabledButton hover").addClass("disabledButton")
+		this.container.removeClass("hover").addClass("disabledButton")
 		return this
 	},
 	
 	enable : function(){
 		this.enabled = true
-		this.container.removeClass("disabledButton").addClass("enabledButton hover")
+		this.container.removeClass("disabledButton").addClass("hover")
 		return this
 	},
 		
