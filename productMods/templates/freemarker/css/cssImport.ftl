@@ -7,6 +7,9 @@
 	
 	<link rel="stylesheet" type="text/css" href="${urls.base}/js/previewJS/css/lightbox.css">
 	
+	<@css url="formGeneration/Form" />
+	<@css url="formGeneration/FormElements" />
+	<@css url="formGeneration/FormLoader" />
 	<@css url="formGeneration/InstanceBrowser" />
 	<@css url="formGeneration/Item" />
 	<@css url="formGeneration/Navigator" />
@@ -26,6 +29,9 @@
 	<@css url="UIModules/pageElements/DataTable" />	
 	<@css url="UIModules/pageElements/collector" />	
 	<@css url="UIModules/pageElements/Tab" />	
+	
+	<@css url="UIModules/generalElements/Button" />	
+	
 	
 	<@css url="UIModules/BoneEditor" />	
 	<@css url="UIModules/LiteralEditor" />
