@@ -15,7 +15,7 @@ class SelectorTable {
 	initElements (){
 		
 		this.container = html.div("selectorTableContainer")
-		arr = []
+		var arr = []
 		if(this.descriptor.type == "navigator"){
 			this.addNavigationItems(arr)
 		} else {
@@ -29,14 +29,13 @@ class SelectorTable {
 	}
 	
 	addNavigationItems(arr){
-		arr = []
 		$.each(this.array, (function(index, value){
 			arr.push(new NavigationItem(this, value, this.descriptor.table.cells).container)
 		}).bind(this))
-		this.container.append(arr)
 	}
 	
 	addDataItemsCheck(arr){
+		arr.push(new TableTitle(this.descriptor.table.cells).container)
 		$.each(this.array, (function(index, value){
 			var dataItem = new DataItem(this, value, this.descriptor.table.cells)
 			if(this.instanceSelector.notSelected(dataItem)){
@@ -46,10 +45,12 @@ class SelectorTable {
 	}
 	
 	addDataItems(){
+		arr.push(new TableTitle(this.descriptor.table.cells).container)
 		$.each(this.array, (function(index, value){
 			arr.push(new DataItem(this, value, this.descriptor.table.cells).container)	
 		}).bind(this))
 	}
+	
 	
 	//This is called by the NavigationItem
 	navigate (dataObject){

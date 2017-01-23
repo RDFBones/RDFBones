@@ -27,7 +27,7 @@ NavigatorView.prototype = {
 		if(cnt > 0)
 			this.elements[cnt].setColor("white").disableHover()
 		if(cnt - 1 > 0)
-			this.elements[cnt - 1].enable().setColor("#9d9696").enableHover()	
+			this.elements[cnt - 1].enable().resetColor()
 	},
 	
 	clickEvent : function(parameter) {

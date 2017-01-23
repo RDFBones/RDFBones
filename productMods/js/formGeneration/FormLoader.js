@@ -67,7 +67,7 @@ FormLoader.prototype = {
 
 	responseHandler : function(msg) {
 		if (msg.failed !== undefined) {
-			PopUpController.defaultDoneMsg("Triple creation failed!");
+			PopUpController.defaultDoneMsg("Triple creation failed!")
 			console.log(msg)
 			var ajaxmsg = msg
 		} else {
