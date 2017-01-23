@@ -14,7 +14,7 @@
 	background-color: #d4cccc;
 }
 
-.generalButton:hover {
+.hoverClass:hover {
 	cursor : pointer;
 }
 
