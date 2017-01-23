@@ -1,11 +1,29 @@
 var UI = {
-		
+	
 	getButton : function(divClass, returnFunction){
 		
+		var buttonId = this.bindFunction(returnFunction)
+		return html.div(divClass).attr("id", buttonId)
+	},
+	
+	getButtonText : function(text, divClass, returnFunction){
+		
+		var buttonId = this.bindFunction(returnFunction)
+		return html.div(divClass).text(text).attr("id", buttonId)
+	},	
+	
+	getButtonImage : function(imgType, divClass, returnFunction){
+		
+		var buttonId = this.bindFunction(returnFunction)
+		return html.div(divClass).attr("id", buttonId)
+			.append(ImgUI.libImg(imgType))
+	},
+	
+	bindFunction : function(returnFunction){
 		var buttonId = util.getNewButtonId()
 		$(document).on("click", "#" + buttonId, returnFunction)
-		return html.div(divClass).attr("id", buttonId)
-	},	
+		return buttonId
+	},
 	
 	assemble : function(mainContainer, containers, order){
 		
