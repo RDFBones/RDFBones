@@ -6,16 +6,19 @@ class NavigationItem {
 		this.data = data
 		this.cells = cells	
 		var buttonId = util.getNewButtonId()
-		this.container = html.div("itemContainer").attr("id", buttonId)
-		$(document).on("click", "#" + buttonId, (this.select).bind(this))
+		this.container = UI.getButton("itemContainer", (this.select).bind(this))
 		this.init()
 	}
 
+	getContainerStyle (){
+		return itemContainer
+	}
+	
 	init (){
 		
 		if(this.cells.length == 1){
 			var label = this.data[this.cells[0].dataKey]
-			this.container.append(html.div("singleCell").text(label))
+			this.container.append(this.getSingleCell(label))
 		} else {
 			var cells = []
 			$.each(this.cells, (function(i, cell) {
@@ -23,6 +26,10 @@ class NavigationItem {
 			}).bind(this))
 			this.container.append(cells)
 		}
+	}
+	
+	getSingleCell(label){
+		return html.div("singleCell").text(label)
 	}
 	
 	select (){
@@ -38,6 +45,16 @@ class DataItem extends NavigationItem {
 		this.selected = false
 	}
 
+	init (){
+		
+		var cells = []
+		$.each(this.cells, (function(i, cell) {
+			cells.push(html.div("dataItem").text(this.data[cell.dataKey]))
+			cells.push(html.div(""))
+		}).bind(this))
+		this.container.append(cells)
+	}
+	
 	select (){
 		
 		if(!this.selected){
@@ -54,10 +71,22 @@ class DataItem extends NavigationItem {
 	}
 }
 
+class TableTitle {
+	
+	constructor(cells){
+		
+		this.container = html.div("tableTitleContainer")
+		arr = []
+		$.each(cells, function(i, cell){
+			arr.push(html.div("tableTitleItem").text(cell.title))
+		})
+		this.container.append(arr)
+	}
+}
+
 class SelectedDataItem extends DataItem {
 
 	constructor(table, data, cells){
-		
 		super(table, data, cells)
 	}
 	
@@ -65,7 +94,6 @@ class SelectedDataItem extends DataItem {
 		this.table.remove(this)
 		this.container.remove()
 	}
-	
 }
 
 
