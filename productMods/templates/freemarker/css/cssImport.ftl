@@ -13,7 +13,6 @@
 	<@css url="formGeneration/InstanceBrowser" />
 	<@css url="formGeneration/Item" />
 	<@css url="formGeneration/Navigator" />
-	<@css url="formGeneration/SelectorTable" />
 	
 	<@css url="moduleLoader/tableView" />
 	<@css url="moduleLoader/treeView" />	
