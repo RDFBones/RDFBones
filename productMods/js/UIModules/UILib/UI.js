@@ -1,5 +1,12 @@
 var UI = {
 		
+	getButton : function(divClass, returnFunction){
+		
+		var buttonId = util.getNewButtonId()
+		$(document).on("click", "#" + buttonId, returnFunction)
+		return html.div(divClass).attr("id", buttonId)
+	},	
+	
 	assemble : function(mainContainer, containers, order){
 		
 		var containerBuffer = []
