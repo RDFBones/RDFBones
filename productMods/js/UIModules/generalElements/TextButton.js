@@ -44,6 +44,11 @@ TextButton.prototype = {
 		return this
 	},
 	
+	resetColor : function(color){
+		this.container.removeAttr("style")
+		return this
+	},
+	
 	disableHover : function(){
 		this.container.removeClass("hover")
 		return this
