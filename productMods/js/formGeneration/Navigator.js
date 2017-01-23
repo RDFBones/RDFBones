@@ -10,19 +10,23 @@ var NavigatorView = function(returnFunction) {
 NavigatorView.prototype = {
 
 	home : function(homeParameter){
-		this.newElement("Home", homeParameter)
+		this.addNewElement(new HomeButton((this.clickEvent).bind(this),
+			 [this.cnt, homeParameter]))
 	},
 	
 	newElement : function(label, parameter) {
 
-		var button = new TextButton(label, (this.clickEvent).bind(this),
-				"inline", [this.cnt, parameter])
+		this.addNewElement(new TextButton(label, (this.clickEvent).bind(this),
+				[this.cnt, parameter]))
+	},
+
+	addNewElement : function(button){
 		this.container.append(button.container)
 		this.elements[this.cnt] = button
 		this.setAsLast(this.cnt)
 		this.cnt++;
 	},
-
+	
 	setAsLast : function(cnt) {
 		if(cnt > 0)
 			this.elements[cnt].setColor("white").disableHover()
