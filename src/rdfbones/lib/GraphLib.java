@@ -482,25 +482,10 @@ public class GraphLib {
           if (!(triple.object instanceof InputNode)) {
             ArrayLib.addDistinct(graph.classesToSelect, triple.object.varName);
           }
-        }
-          /*
-           * if (triple.subject instanceof InputNode) {
-           * graph.typeQueryTriples.add(triple); }
-           */
+        } 
       }
-				
-        /*
-				if (triple.predicate.equals("rdf:type")) {
-					graph.typeTriples.add(triple);
-					if (!(triple.object instanceof InputNode)) {
-						ArrayLib.addDistinct(graph.classesToSelect, triple.object.varName);
-					}*/
-					/*
-					 * if (triple.subject instanceof InputNode) {
-					 * graph.typeQueryTriples.add(triple); }
-					 */
-				
-			}
+		}
+		
 		
 		graph.instances.addAll(graph.newInstances);
 		graph.instances.addAll(graph.inputInstances);
