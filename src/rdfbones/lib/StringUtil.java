@@ -43,4 +43,20 @@ public class StringUtil {
   	
     return str.substring(0, str.length() - (n + 1));
   }
+  
+  public static String getClassLabel(String uri){
+  
+  	if(uri.contains("#")){
+  		return getLast(uri, "#");
+  	} else if(uri.contains("\\.")){
+  		return getLast(uri, "\\.");
+  	} else {
+  		return getLast(uri, "/");
+  	}
+  }
+  
+  public static String getLast(String word, String regex){
+  	String[] list = word.split(regex);
+		return list[list.length - 1];
+  }
 }
