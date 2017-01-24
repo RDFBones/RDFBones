@@ -167,7 +167,7 @@ public class TripleLib {
 
 	public static Table boneOrganTable() {
 
-		Table boneOrgan = new Table("Select bone organ for assay");
+		Table boneOrgan = new Table("bone organ");
 		boneOrgan.cells.add(new TableCell("Label", "label", 0));
 		boneOrgan.cells.add(new TableCell("Type", "typeLabel", 1));
 		// boneOrgan.cells.add(new ImagesCell(2));
