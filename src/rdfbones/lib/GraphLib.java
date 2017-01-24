@@ -65,20 +65,6 @@ public class GraphLib {
 		}
 	}
 
-	public static Map<String, String> getLabels(Map<String, String> map) {
-
-		Map<String, String> buf = new HashMap<String, String>();
-		for (String key : map.keySet()) {
-			if (key.contains("Type") && !key.endsWith("Label")) {
-				String varName = StringUtil.cutFromEnd(key, "Type");
-				String classLabel = map.get(key + "Label");
-				String instanceLabel = classLabel + " " + StringUtil.rand(5);
-				buf.put(varName + "Label", instanceLabel);
-			}
-		}
-		return buf;
-	}
-
 	public static List<Triple> optionalClassLabelTripels(List<String> inputClasses) {
 
 		List<Triple> triples = new ArrayList<Triple>();

@@ -366,9 +366,8 @@ public class Graph {
 		this.graphDataMap = variableMap;
 		log("\n VariableMap");
 		DebugLib.mapLog(variableMap, this);
-		Map<String, String> labelMap = GraphLib.getLabels(variableMap);
-		log("\n LabelMap");
-		DebugLib.mapLog(labelMap, this);
+		
+		
 		//List<Triple> triplesToStore = GraphLib.addLabelTriples(this.triplesToStore);
 		String triplesString = SPARQLUtils.assembleTriples(this.triplesToStore);
 		triplesString = QueryUtils.subUrisForQueryLiterals(triplesString, labelMap);
