@@ -64,7 +64,18 @@ public class GraphLib {
 			}
 		}
 	}
-
+	
+	public static Map<String, String> getLabelMap(Graph graph){
+		
+		LabelDataGetter dataGetter = new LabelDataGetter(graph.mainGraph);
+		Map<String, String> map = new HashMap<String, String>();
+		for(String labelClass : graph.labelClasses){
+			String classUri = graph.graphDataMap.get(labelClass);
+			map.put(labelClass + "Label", dataGetter.getLabel(classUri));
+		}
+		return map;
+	}
+	
 	public static List<Triple> optionalClassLabelTripels(List<String> inputClasses) {
 
 		List<Triple> triples = new ArrayList<Triple>();
