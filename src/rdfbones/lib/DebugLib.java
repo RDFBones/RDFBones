@@ -17,6 +17,7 @@ public class DebugLib {
     DebugLib.logTripleList("dataTriples", tab, graph, graph.dataTriples);
     DebugLib.logTripleList("schemeTriples", tab, graph, graph.schemeTriples);
     DebugLib.logTripleList("triplesToStore", tab, graph, graph.triplesToStore);
+    DebugLib.logTripleList("labelTriples", tab, graph, graph.labelTriples);
     DebugLib.logList("nodes", tab, graph, graph.nodes);
     DebugLib.logList("newInstances", tab, graph, graph.newInstances);
     DebugLib.logList("inputInstances", tab, graph, graph.inputInstances);
@@ -26,6 +27,7 @@ public class DebugLib {
     DebugLib.logList("typeNodes", tab, graph, graph.typeNodes);
     DebugLib.logList("formNodes", tab, graph, graph.formNodes);
     DebugLib.logList("nodesAsInput", tab, graph, graph.nodesAsInput);
+    DebugLib.logList("labelClasses", tab, graph, graph.labelClasses);
     DebugLib.logList("classesToSelect", tab, graph, graph.classesToSelect);
     DebugLib.logList("mainInputNodes", tab, graph, graph.mainInputNodes);
     DebugLib.logMap("mainInputValues", tab, graph, graph.mainInputValues);

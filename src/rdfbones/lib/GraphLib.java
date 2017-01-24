@@ -422,8 +422,11 @@ public class GraphLib {
 		graph.inputLiterals = new ArrayList<String>();
 		graph.inputClasses = new ArrayList<String>();
 		graph.mainInputNodes = new ArrayList<String>();
+		graph.labelClasses = new ArrayList<String>();
 
 		graph.typeQueryTriples = new ArrayList<Triple>();
+		graph.labelTriples = new ArrayList<Triple>();
+
 		graph.classesToSelect = new ArrayList<String>();
 
 		graph.triplesToStore.addAll(graph.dataTriples);
@@ -486,7 +489,13 @@ public class GraphLib {
       }
 		}
 		
-		
+		for(Triple triple : graph.triplesToStore){
+			if(triple.predicate.equals("rdf:type")){
+				graph.labelClasses.add(triple.object.varName);
+				graph.labelTriples.add(new LabelTriple(triple.subject.varName,
+						triple.object.varName + "Label"));
+			} 
+		}
 		graph.instances.addAll(graph.newInstances);
 		graph.instances.addAll(graph.inputInstances);
 	}

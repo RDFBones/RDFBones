@@ -18,6 +18,7 @@ import rdfbones.lib.N3;
 import rdfbones.lib.QueryLib;
 import rdfbones.lib.SPARQLDataGetter;
 import rdfbones.lib.SPARQLUtils;
+import rdfbones.rdfdataset.LabelTriple;
 import rdfbones.rdfdataset.MultiTriple;
 import rdfbones.rdfdataset.RDFNode;
 import rdfbones.rdfdataset.Triple;
@@ -37,6 +38,7 @@ public class Graph {
 	public List<Triple> dataTriples = new ArrayList<Triple>();
 	public List<Triple> typeTriples = new ArrayList<Triple>();
 	public List<Triple> schemeTriples;
+	public List<Triple> labelTriples;
 
 	public List<String> nodes;
 	public List<String> typeNodes;
@@ -50,6 +52,7 @@ public class Graph {
 	public List<String> inputLiterals;
 	public List<String> inputClasses;
 	public List<String> mainInputNodes;
+	public List<String> labelClasses;
 	public List<String> formNodes = new ArrayList<String>();
 	public List<String> nodesAsInput = new ArrayList<String>();
 	public Map<String, String> mainInputValues;
