@@ -364,12 +364,11 @@ public class Graph {
 
 		// Creating string to create
 		this.graphDataMap = variableMap;
-		log("\n VariableMap");
-		DebugLib.mapLog(variableMap, this);
-		
-		
 		//List<Triple> triplesToStore = GraphLib.addLabelTriples(this.triplesToStore);
+		Map<String, String> labelMap = GraphLib.getLabelMap(this);
+		
 		String triplesString = SPARQLUtils.assembleTriples(this.triplesToStore);
+		triplesString += SPARQLUtils.assembleTriples(this.labelTriples);
 		triplesString = QueryUtils.subUrisForQueryLiterals(triplesString, labelMap);
 		triplesString = QueryUtils.subUrisForQueryVars(triplesString, variableMap);
 		for (String subgraphKey : this.subGraphs.keySet()) {
