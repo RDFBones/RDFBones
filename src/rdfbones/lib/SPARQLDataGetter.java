@@ -28,6 +28,7 @@ public class SPARQLDataGetter {
 	public Graph mainGraph;
 	public boolean typeRetriever = false;
 
+
 	public SPARQLDataGetter(Graph mainGraph, List<Triple> queryTriples,
 			List<String> uris, List<String> literals, List<String> inputKeys) {
 
@@ -66,6 +67,10 @@ public class SPARQLDataGetter {
 		if (literals == null) {
 			literals = new ArrayList<String>();
 		}
+		if (uris == null) {
+			uris = new ArrayList<String>();
+		}
+		this.urisToSelect = uris;
 		this.literalsToSelect = literals;
 	}
 
