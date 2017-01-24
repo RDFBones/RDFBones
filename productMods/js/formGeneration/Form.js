@@ -103,7 +103,6 @@ class MainForm extends Form {
 	}
 	
 	ready (){
-		console.log("Ready")
 		this.formLoader.ready(this.container)
 	}
 }

@@ -73,7 +73,6 @@ var CheckBoxText = function(text, parent, selectFunction, deselectFunction){
 	this.container.append(this.checkBox)
 }
 
-
 CheckBoxText.prototype = {
 		
 	hide : function(){

@@ -118,7 +118,6 @@ class Adder extends FormElement{
 	
 	ready (container){
 		this.subContainer.prepend(container)
-		console.log("Ready FormElements")
 		PopUpController.remove()
 	}
 	
