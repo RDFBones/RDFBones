@@ -9,7 +9,7 @@ public class LabelTriple extends Triple{
   }
   
   public LabelTriple(String subject, String object){
-  	super(subject, "rdf:type", object);
+  	super(subject, "rdfs:label", object);
     // TODO Auto-generated constructor stub
   }
   
