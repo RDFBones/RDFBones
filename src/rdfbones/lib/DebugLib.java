@@ -3,6 +3,7 @@ package rdfbones.lib;
 import java.util.List;
 import java.util.Map;
 
+import rdfbones.formProcessing.WebappConnector;
 import rdfbones.graphData.Graph;
 import rdfbones.graphData.GraphPath;
 import rdfbones.rdfdataset.Triple;
@@ -67,6 +68,11 @@ public class DebugLib {
     List<Triple> logList) {
   	logTripleList(msg, "\t", graph, logList);
   }
+
+  public static void logTripleList(String msg, WebappConnector webapp,
+    List<Triple> logList) {
+  	logTripleList(msg, "\t", webapp, logList);
+  }
   
   public static void logTripleList(List<Triple> triples, String msg){
   	
@@ -77,6 +83,13 @@ public class DebugLib {
     List<Triple> logList) {
     if(logList != null && logList.size() > 0){
       graph.log(tab + msg + StringUtil.debugTriples(tab, logList));
+    }
+  }
+  
+  public static void logTripleList(String msg, String tab, WebappConnector webapp,
+    List<Triple> logList) {
+    if(logList != null && logList.size() > 0){
+    	webapp.log(tab + msg + StringUtil.debugTriples(tab, logList));
     }
   }
   
