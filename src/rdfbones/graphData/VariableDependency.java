@@ -69,6 +69,6 @@ public class VariableDependency {
   }
   
   public void debug(){
-  	DebugLib.logTripleList("", this.dataGetter.connector, this.path.triples);
+  	DebugLib.logTripleList("", this.dataGetter.mainGraph, this.path.triples);
   }
 }

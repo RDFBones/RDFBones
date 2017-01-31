@@ -8,7 +8,6 @@ import org.json.JSONArray;
 
 import edu.cornell.mannlib.vitro.webapp.dao.jena.N3Utils;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
-import rdfbones.formProcessing.WebappConnector;
 import rdfbones.graphData.Graph;
 import rdfbones.graphData.QueryStructure;
 import rdfbones.rdfdataset.LiteralTriple;
@@ -26,46 +25,40 @@ public class SPARQLDataGetter {
 	public List<String> inputValues = new ArrayList<String>();
 	public List<String> inputKeys;
 	public List<Triple> queryTripleList;
-	public WebappConnector connector;
+	public Graph mainGraph;
 	public boolean typeRetriever = false;
+
 
 	public SPARQLDataGetter(Graph mainGraph, List<Triple> queryTriples,
 			List<String> uris, List<String> literals, List<String> inputKeys) {
 
-		this.init(mainGraph.getWebapp(), queryTriples, uris, literals, inputKeys);
-	}
-
-	public SPARQLDataGetter(WebappConnector connector, List<Triple> queryTriples,
-			List<String> uris, List<String> literals, List<String> inputKeys) {
-
-		this.init(connector, queryTriples, uris, literals, inputKeys);
+		this.mainGraph = mainGraph;
+		this.inputKeys = inputKeys;
+		this.inputValues = inputKeys;
+		setUrisLiterals(uris, literals);
+		init(queryTriples);
 	}
 
 	public SPARQLDataGetter(Graph mainGraph, List<Triple> queryTriples,
 			List<String> uris, List<String> literals) {
 
-		this.init(mainGraph.getWebapp(), queryTriples, uris, literals, new ArrayList<String>());
+		this(mainGraph, queryTriples, uris, literals, new ArrayList<String>());
 	}
 
 	public SPARQLDataGetter(Graph mainGraph, List<Triple> queryTriples,
 			List<String> uris, List<String> literals, String inputKey) {
 
-		this.init(mainGraph.getWebapp(), queryTriples, uris, literals,
-				ArrayLib.getList(inputKey));
+		this(mainGraph, queryTriples, uris, literals, ArrayLib.getList(inputKey));
 	}
-
-	public SPARQLDataGetter(WebappConnector webappConnector) {
-		this.connector = webappConnector;
+	
+	public SPARQLDataGetter(Graph mainGraph) {
+		this.mainGraph = mainGraph;
 	}
+	
+	public SPARQLDataGetter(Graph mainGraph, List<Triple> queryTriples,
+			List<String> inputKeys) {
 
-	void init(WebappConnector connector, List<Triple> queryTriples,
-			List<String> uris, List<String> literals, List<String> inputKeys) {
-
-		this.connector = connector;
-		this.inputKeys = inputKeys;
-		this.inputValues = inputKeys;
-		setUrisLiterals(uris, literals);
-		initTriples(queryTriples);
+		this(mainGraph, queryTriples, inputKeys, inputKeys);
 	}
 
 	void setUrisLiterals(List<String> uris, List<String> literals) {
@@ -81,7 +74,7 @@ public class SPARQLDataGetter {
 		this.literalsToSelect = literals;
 	}
 
-	void initTriples(List<Triple> queryTriples) {
+	void init(List<Triple> queryTriples) {
 
 		calcUrisLiterals(queryTriples);
 		GraphLib.incrementRestrictionTriples(queryTriples);
@@ -99,9 +92,9 @@ public class SPARQLDataGetter {
 	public List<Map<String, String>> getData() {
 
 		String query = this.getQuery();
-		this.connector.log("SPARQLDataGetter");
-		this.connector.log(query + "\n\n");
-		return this.connector.sparqlResult(query, this.urisToSelect,
+		this.mainGraph.getWebapp().log("SPARQLDataGetter");
+		this.mainGraph.getWebapp().log(query + "\n\n");
+		return mainGraph.getWebapp().sparqlResult(query, this.urisToSelect,
 				this.literalsToSelect);
 	}
 
@@ -112,8 +105,8 @@ public class SPARQLDataGetter {
 	}
 
 	public JSONArray getJSON(List<String> inputValues) {
-
-		return QueryUtils.getJSON(getData(inputValues));
+		
+			return QueryUtils.getJSON(getData(inputValues));
 	}
 
 	public List<Map<String, String>> getData(List<String> inputValues) {
@@ -151,7 +144,7 @@ public class SPARQLDataGetter {
 			this.urisToSelect = new ArrayList<String>();
 			this.literalsToSelect = new ArrayList<String>();
 			for (Triple triple : queryTriples) {
-				if (triple instanceof LiteralTriple) {
+				if(triple instanceof LiteralTriple){
 					this.literalsToSelect.add(triple.object.varName);
 				} else {
 					ArrayLib.addDistinct(this.urisToSelect, triple.object.varName);
