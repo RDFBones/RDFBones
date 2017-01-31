@@ -87,6 +87,15 @@ var UI = {
 	},
 	
 	/***************************************************************************
+	 * Input fields
+	 **************************************************************************/
+	
+	floatInput : function(step){
+		
+		return html.input("number").attr("step", step)
+	},
+	
+	/***************************************************************************
 	 * Horizontal general img
 	 **************************************************************************/
 
@@ -223,6 +232,7 @@ var UI = {
 		return this.selectorField
 	},
 
+	
 	classSelectorMap : function(dataSet) {
 		this.selectorField = html.getSelectorField().addClass("inline margin5H")
 

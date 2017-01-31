@@ -40,6 +40,17 @@ var html = {
 		})
 	},
 	
+	selector : function(id, name) {
+		return selector = $("<select/>")
+	},
+	
+	option : function(value, text) {
+		return $("<option/>", {
+			value : value,
+			text : text
+		})
+	},
+	
 	setSelectorOptions1 : function(dataset, valueKey, textKey, selector) {
 		$.each(dataset, function(index, data) {
 			$("<option/>", {
@@ -90,6 +101,11 @@ var html = {
 	getInput : function(type){
 		return $("<input>").attr("type", type)
 	},
+	
+	input : function(type){
+		return $("<input>").attr("type", type)
+	},
+	
 	
 	span : function(_class){
 		return $("<span/>").addClass(_class)
