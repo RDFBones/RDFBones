@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.json.JSONArray;
+
 import rdfbones.formProcessing.WebappConnector;
 import rdfbones.lib.ArrayLib;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
@@ -44,7 +46,6 @@ public class PlainJavaWebappConnector implements WebappConnector{
   @Override
   public void log(String msg) {
     // TODO Auto-generated method stub
-    
   }
   
   public boolean addTriples(String triples, String editKey){
@@ -54,4 +55,17 @@ public class PlainJavaWebappConnector implements WebappConnector{
   public boolean removeTriples(String triples, String editKey){
     return true;
   }
+
+  @Override
+  public void addToQueries(String query) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public JSONArray getQueries() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+  
 }

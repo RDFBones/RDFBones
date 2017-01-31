@@ -3,6 +3,8 @@ package rdfbones.formProcessing;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
+
 public interface WebappConnector {
 
   public String getUnusedURI();
@@ -17,4 +19,9 @@ public interface WebappConnector {
   public boolean addTriples(String triples, String editKey);
   
   public boolean removeTriples(String triples, String editKey);	
+  
+  public void addToQueries(String query);
+
+  public JSONArray getQueries();
+
 }

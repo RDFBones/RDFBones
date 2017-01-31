@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONArray;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -18,6 +19,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.shared.Lock;
 
 import rdfbones.formProcessing.WebappConnector;
+import rdfbones.lib.JSON;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.dao.InsertException;
 import edu.cornell.mannlib.vitro.webapp.dao.NewURIMakerVitro;
@@ -34,10 +36,12 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.NewURIMaker;
   VitroRequest vreq;
   NewURIMaker newURIMaker;
   boolean logEnabled = true;
-   
+  JSONArray queries; 
+  
   public VIVOWebappConnector(VitroRequest vreq){
     this.vreq = vreq;
     newURIMaker = new NewURIMakerVitro(vreq.getWebappDaoFactory());
+    queries = JSON.arr();
   }
   
   public VIVOWebappConnector(){
@@ -153,5 +157,17 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.NewURIMaker;
       model = null;
     }
     return model;
+  }
+
+  @Override
+  public void addToQueries(String query) {
+    // TODO Auto-generated method stub
+    this.queries.put(query);
+  }
+
+  @Override
+  public JSONArray getQueries() {
+    // TODO Auto-generated method stub
+    return this.queries;
   }
  }  
