@@ -92,8 +92,7 @@ public class SPARQLDataGetter {
 	public List<Map<String, String>> getData() {
 
 		String query = this.getQuery();
-		this.mainGraph.getWebapp().log("SPARQLDataGetter");
-		this.mainGraph.getWebapp().log(query + "\n\n");
+		this.mainGraph.getWebapp().addToQueries(query);
 		return mainGraph.getWebapp().sparqlResult(query, this.urisToSelect,
 				this.literalsToSelect);
 	}
