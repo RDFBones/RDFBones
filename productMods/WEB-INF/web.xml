@@ -1120,9 +1120,18 @@
     <url-pattern>/ajaxservlet</url-pattern>
   </servlet-mapping>  
   
+  <servlet>
+    <servlet-name>DataTransformationServlet</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.DataTransformationAJAXController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DataTransformationServlet</servlet-name>
+    <url-pattern>/dataTransformationAJAX</url-pattern>
+  </servlet-mapping>  
+  
    <!--
    END - just to know where to place the additional servlets
-    -->
+   -->
    
    <servlet>
     <servlet-name>DataAutocompleteController</servlet-name>
