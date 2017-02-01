@@ -57,6 +57,7 @@ class Main {
 		this.elementContainer.append(this.items)
 		this.container.append([this.selectorCont, this.elementContainer])
 		this.refreshSelector()
+		this.container.append(new TextButton("Done", util.redirect, null, "margin15V").container)
 		$("#form").append(this.container)
 	}
 	
@@ -86,7 +87,6 @@ class Main {
 		}
 	}
 }
-
 
 
 
