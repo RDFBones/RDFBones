@@ -50,10 +50,10 @@ class Main {
 	initUI(){
 		
 		this.container = html.div()
-		this.selectorCont = html.div()
+		this.selectorCont = html.div("title")
 		this.addButton = new TextButton("Add sex score", (this.addElement).bind(this))
 		this.selectorCont.append([this.selector, this.addButton.container])
-		this.elementContainer = html.div("dT_elementContainer")
+		this.elementContainer = html.div("margin10")
 		this.elementContainer.append(this.items)
 		this.container.append([this.selectorCont, this.elementContainer])
 		this.refreshSelector()
