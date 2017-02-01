@@ -113,13 +113,14 @@ public class DataTransformationAJAXController extends VitroAjaxController {
 
     case "delete":
 
+      subjectUri = vreq.getParameter("subjectUri");
       sexScore = vreq.getParameter("sexScore");
       dataTransformation = vreq.getParameter("dataTransformation");
       degreeOfSexualisation = vreq.getParameter("degreeOfSexualisation");
       degree = vreq.getParameter("degree");
       connector.removeTriples(getTripleString(), editKey);
       break;
-      
+
     case "edit":
 
       String oldDegree = vreq.getParameter("oldDegree");
@@ -145,7 +146,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
       SPARQLDataGetter dataTransDataGetter = new SPARQLDataGetter(
           connectorGraph, dataTransformationTriples(),
           ArrayLib.getList("sexScore", "dataTransformation", "degreeOfSexualisation"),
-          ArrayLib.getList("degree", "categoricalLabelLabel"), ArrayLib.getList("subjectUri"));
+          ArrayLib.getList("sexScoreLabel", "degree", "categoricalLabelLabel"), ArrayLib.getList("subjectUri"));
 
       JSON.put(resp,"dataTransformations", dataTransDataGetter.getJSON(ArrayLib.getList(subjectUri)));
       break;
@@ -190,6 +191,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
     triples.add(new Triple("subjectUri", "obo:BFO_0000051", "dataTransformation"));
     triples.add(new Triple("dataTransformation", "obo:OBI_0000293", "sexScore"));
     triples.add(new Triple("sexScore", "obo:IAO_0000299", "categoricalLabel"));
+    triples.add(new LiteralTriple("sexScore", "rdfs:label", "sexScoreLabel"));
     triples.add(new LiteralTriple("categoricalLabel", "rdfs:label", "categoricalLabelLabel"));
     triples.add(new Triple("dataTransformation", "obo:OBI_0000299",
         "degreeOfSexualisation"));
