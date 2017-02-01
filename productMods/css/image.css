@@ -81,3 +81,7 @@
 .enabledImg:hover {
 	cursor: pointer
 }
+
+.disabledImg {
+	opacity : 0.3
+}

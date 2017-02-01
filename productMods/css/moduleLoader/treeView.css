@@ -9,6 +9,13 @@
 	margin: 10px;
 }
 
+.titleNotUnderlined {
+   font-style: italic;
+	padding: 5px;
+	display: table;
+	margin: 10px;
+	
+}
 .inlineTitle {
 	padding: 3px;
 	display: inline-block;

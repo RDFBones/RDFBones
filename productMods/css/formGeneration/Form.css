@@ -41,6 +41,7 @@
 
 select {
 	margin : auto 3px;
+	display: inline-block;
 }
 
 #form {
