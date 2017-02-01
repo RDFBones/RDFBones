@@ -15,27 +15,30 @@ class DataTransformationItem {
 	
 	initUI(){
 		
-		this.container = html.div()
+		this.container = html.div("dT_elementContainer")
+		this.title = html.div("titleNotUnderlined").text(this.dataObject.sexScoreLabel)
 		
-		//Categorical Label
+		// Categorical Label
 		this.catLabelDiv = html.div("inline")
 		this.catLabTitle = html.div("title").text("Categorical Label")
 		this.selector = UI.classSelector(this.options)
 		this.catLabelDiv.append([this.catLabTitle, this.selector])
 
-		//Sex Score
+		// Sex Score
 		this.sexScoreDiv = html.div("inline")
-		this.sexScoreLabel = html.div("inline").text("Sex score")
-		this.sexScoreField = UI.floatInput(0.1).change((this.change).bind(this))
-		this.sexScoreDiv.append([this.sexScoreLabel, this.sexScoreField])
+		this.sexScoreLabel = html.div("title").text("Degree of sexualisation")
 		
-		//Buttons 
-		this.buttonContainer = html.div("inline")
-		this.saveButton = new Button("done", (this.saveHandler).bind(this))
+		this.fieldContainer = html.div("dT_elementContainer")	
+		this.sexScoreField = UI.floatInput(0.1).change((this.change).bind(this)).addClass("margin15H")
+		this.saveButton = new Button("done", (this.saveHandler).bind(this)).disable()
+		
+		this.fieldContainer.append([this.sexScoreField, this.saveButton.container])
+		this.sexScoreDiv.append([this.sexScoreLabel, this.fieldContainer])
+
+		// Buttons
 		this.deleteButton = new Button("del", (this.del).bind(this))
-		this.saveButton.disable()
-		UI.appendToDiv(this.buttonContainer, [this.saveButton, this.deleteButton])
-		this.container.append([this.catLabelDiv, this.sexScoreDiv, this.buttonContainer])
+		this.container.append([this.title, this.catLabelDiv, this.sexScoreDiv, 
+			this.deleteButton.container])
 	}
 	
 	saveHandler (){
@@ -67,7 +70,7 @@ class DataTransformationItem {
 			this.saved = this.unsaved
 			this.unsaved = null
 			this.saveButton.disable()
-			PopUpController.done()
+			PopUpController.doneMsg("Data has been saved")
 		}).bind(this))
 	}
 	
@@ -89,7 +92,7 @@ class DataTransformationItem {
 		}).done((function(msg) {
 			this.savedValue = this.unsaved
 			this.unsaved = null
-			PopUpController.done()
+			PopUpController.doneMsg("Data has been updated")
 		}).bind(this))
 	}
 	
@@ -103,8 +106,25 @@ class DataTransformationItem {
 	del (){
 		
 		if(this.saved){
-			//AJAX
-			
+			PopUpController.init("Please wait")
+			$.ajax({
+				type : 'POST',
+				context : this,
+				dataType : 'json',
+				url : baseUrl + "dataTransformationAJAX",
+				data : {
+					task : "delete",
+					subjectUri : subjectUri,
+					dataTransformation : this.dataObject.dataTransformation,
+					degreeOfSexualisation : this.dataObject.degreeOfSexualisation,
+					degree : this.savedValue,
+					editKey : editKey,
+				}
+			}).done((function(msg) {
+				this.container.remove()
+				this.mainForm.remove(this.dataObject)
+				PopUpController.doneMsg("Data has been deleted")
+			}).bind(this))
 		} else {
 			this.container.remove()
 			this.parentForm.remove(this.dataObject)
