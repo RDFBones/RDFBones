@@ -71,7 +71,7 @@ class Main {
 	}
 	
 	remove (data){
-		this.optionMap[data.sexScore].show()
+		this.selector.append(this.optionMap[data.sexScore])
 		this.cnt++
 		this.refreshSelector()
 	}
