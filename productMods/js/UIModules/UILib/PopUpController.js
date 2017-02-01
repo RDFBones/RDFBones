@@ -50,12 +50,12 @@ var PopUpController = {
 		}
 	},
 	
-	defaultDoneMsg : function(msg){
+	doneMsg : function(msg){
 		
-		this.doneMsg(msg, 1500, function(){}, function(){})
+		this.customDoneMsg(msg, 800, function(){}, function(){})
 	},
 	
-	doneMsg : function(msg, time, returnFunction, directReturnFunction){
+	customDoneMsg : function(msg, time, returnFunction, directReturnFunction){
 		
 		if(time === undefined){
 			time = 1000
@@ -73,7 +73,6 @@ var PopUpController = {
 		}).bind(this), time)
 		directReturnFunction();
 	},
-	
 	
 	note : function(msg){
 		

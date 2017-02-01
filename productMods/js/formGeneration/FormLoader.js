@@ -71,7 +71,7 @@ FormLoader.prototype = {
 			console.log(msg)
 			var ajaxmsg = msg
 		} else {
-			PopUpController.doneMsg("Triples are successfully saved", 2000,
+			PopUpController.customDoneMsg("Triples are successfully saved", 2000,
 					null, util.redirect)
 		}
 	},
@@ -80,7 +80,7 @@ FormLoader.prototype = {
 		
 		PopUpController.init("Delete is in progress")
 		AJAX.call("deleteAll", (function(msg){
-			PopUpController.doneMsg("Delete was successful",
+			PopUpController.customDoneMsg("Delete was successful",
 					2000, null, util.redirect)
 		}).bind(this),[Global.formData])
 	},
