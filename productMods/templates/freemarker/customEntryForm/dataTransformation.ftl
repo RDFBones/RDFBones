@@ -8,10 +8,12 @@
 <@imp.js url="dataTransformation/main" />
 <@imp.css url="dataTransformation/dataTransformation" />
 
-<div class = "mainFormtitle">
+<div class = "mainFormTitle margin10">
 	Data transformation
 </div>
-<div id = "form">
+<div id="form"  class="margin10H">
+</div>
+<div id = "popUpContainer">
 </div>
 
 <script>
