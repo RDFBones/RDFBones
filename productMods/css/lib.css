@@ -112,6 +112,15 @@
 	margin: 5px;
 }
 
+.margin10 {
+	margin: 10px;
+}
+
+.margin15 {
+	margin: 15px;
+}
+
+
 .margin5H {
 	margin: 0 5px;
 }
@@ -124,8 +133,16 @@
 	margin: 0 15px;
 }
 
-.margin10 {
-	margin : 10px;
+.margin5V {
+	margin: 5px  0;
+}
+
+.margin10V {
+	margin: 10px 0;
+}
+
+.margin15V {
+	margin: 15px 0;
 }
 
 /****************************************************
