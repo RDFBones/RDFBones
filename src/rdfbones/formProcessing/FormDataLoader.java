@@ -43,7 +43,6 @@ public class FormDataLoader extends VitroAjaxController {
     FormConfiguration formConfig = editConfig.getFormConfig();
     Graph graph = formConfig.dataGraph;
     graph.setWebapp(new VIVOWebappConnector(vreq));
-    log.info("FormDataLoader");
     JSONObject responseJSON = graph.getDependentData(requestData);
     response.getWriter().write(responseJSON.toString());
   }

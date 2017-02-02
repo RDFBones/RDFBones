@@ -90,7 +90,6 @@ public class EditRequestDispatchController extends FreemarkerHttpServlet {
         	 return processSkipEditForm(vreq);
          }                  
      
-         log.info("PredicateUri : " + getPredicateUri(vreq));
          String template = new String("");
          
          Map<String,Object> templateData = new HashMap<String,Object>();
@@ -103,11 +102,9 @@ public class EditRequestDispatchController extends FreemarkerHttpServlet {
              Map<String,Object> templateData1 = new HashMap<String,Object>();
              OntModel queryModel = ModelAccess.on(vreq).getOntModel();
              SparqlDisplayOntology sparql = new SparqlDisplayOntology(customEntryFormUri, vreq, queryModel);
-             log.info("sparqlObject \n" + sparql.toString());
              templateData.put("sparql", sparql);
              template = "mainCustomEntryForm.ftl";
            }
-       
          }
          //Get the edit generator name
          String editConfGeneratorName = processEditConfGeneratorName(vreq);
@@ -116,9 +113,6 @@ public class EditRequestDispatchController extends FreemarkerHttpServlet {
  
          // make new or get an existing edit configuration          
          EditConfigurationVTwo editConfig = setupEditConfiguration(editConfGeneratorName, vreq);
-         log.info("literalsin form 2 : " + editConfig.getLiteralsInScope());
-         log.debug("editConfiguration:\n" + editConfig );
-         
          //if the EditConfig indicates a URL to skip to, then redirect to that URL
          if( editConfig.getSkipToUrl() != null ){
              return new DirectRedirectResponseValues(editConfig.getSkipToUrl());
