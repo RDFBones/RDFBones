@@ -138,9 +138,19 @@ public class TripleLib {
 
 		Map<String, FormGraph> formGraphs = new HashMap<String, FormGraph>();
 		FormGraph formGraph = new FormGraph(boneOrganTriples(), "boneSegment",
-				sdeNavigator(), boneOrganTable());
+				sdeNavigatorSimplified(), boneOrganTable());
 		formGraphs.put("boneSegment", formGraph);
 		return formGraphs;
+	}
+
+	public static Navigator sdeNavigatorSimplified() {
+
+		MultiTriple skiMultiTriple = new MultiTriple("skeletalInventory",
+				"obo:BFO_0000051", "measurementDatum");
+		Navigator skiNavigator = new Navigator("skeletalInventory", skiMultiTriple);
+		skiNavigator.settings("rdfbones:SkeletalInventory",
+				"skeletal inventory");
+		return skiNavigator;
 	}
 
 	public static Navigator sdeNavigator() {
@@ -170,7 +180,7 @@ public class TripleLib {
 		Table boneOrgan = new Table("bone organ");
 		boneOrgan.cells.add(new TableCell("Label", "label", 0));
 		boneOrgan.cells.add(new TableCell("Type", "typeLabel", 1));
-		// boneOrgan.cells.add(new ImagesCell(2));
+		//boneOrgan.cells.add(new ImagesCell(2));
 		return boneOrgan;
 	}
 
