@@ -140,18 +140,25 @@ public class ImageUploadFormGenerator extends BaseEditConfigurationGenerator imp
     	
     	String triple1 = " @prefix vitro-public: <http://vitro.mannlib.cornell.edu/ns/vitro/public#> .";
     	String triple2 = " @prefix bibo:    <http://purl.org/ontology/bibo/> . ";
+    	String triple21 = "@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> . ";
+    	String triple22 = "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .";
     	String triple3 = " ?person ?depictedIn ?image . ";
     	String triple4 = " ?image  a bibo:Image . "  ;
-    	String triple5 = " ?image <http://vivo.mydomain.edu/individual/hasFile> ?fileIndividual . ";
+    	String triple41 = "?image rdfs:label \"ImageLabel\"^^xsd:string . " ;
+      String triple5 = " ?image <http://vivo.mydomain.edu/individual/hasFile> ?fileIndividual . ";
     	String triple6 = " ?fileIndividual a vitro-public:File . ";
+      String triple61 ="?fileIndividual rdfs:label \"FileLabel\"^^xsd:string . " ;
     	String triple7 = " ?fileIndividual vitro-public:downloadLocation ?byteStreamIndividual .";
     	String triple8 = " ?fileIndividual vitro-public:filename ?fileName .";
     	String triple9 = " ?fileIndividual vitro-public:mimeType ?mimeType .";
     	String triple10 = " ?byteStreamIndividual a vitro-public:FileByteStream ."; 
     	String triple11 = " ?byteStreamIndividual vitro-public:directDownloadUrl ?downloadUrl .";
     	
-    	String a = triple1 + triple2 + triple3 + triple4 + triple5 + triple6 + triple7 + triple8 + triple9 + triple10 + triple11;
-    	conf.setN3Required(a);
+    	String allTriples = triple1 + triple2 + triple21 + triple22 +
+    	      triple3 + triple4 + triple41 + triple5 + triple6 + triple61
+    	      + triple7 + triple8 + triple9 + triple10 + triple11;
+    	
+    	conf.setN3Required(allTriples);
     	
       String optional = "?fileIndividual <http://vivo.mydomain.edu/individual/fileDescription> ?fileDescription .";
       conf.setN3Optional(optional);
