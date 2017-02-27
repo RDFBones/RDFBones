@@ -57,8 +57,9 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.NewURIMaker;
    }
    
    public List<Map<String, String>> sparqlResult(String queryStr, List<String> uris, List<String> literals){
-     
-      return QueryUtils.getResult(queryStr, uris, literals, this.vreq);
+   
+     this.queries.put(queryStr);
+     return QueryUtils.getResult(queryStr, uris, literals, this.vreq);
    }
    
    public void log(String msg){
