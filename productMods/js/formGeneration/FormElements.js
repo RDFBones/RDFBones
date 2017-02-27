@@ -17,6 +17,27 @@ class FormElement {
 	}
 }
 
+class LiteralField extends FormElement {
+	
+	initUI(){
+		
+		this.container = html.div()
+		this.titleField = html.div("inline").text(this.descriptor.title);
+		this.inputField = html.textBox("inline margin10H").on('input', (function() {
+		   this.dataObject[this.dataKey] = this.inputField.val()
+		   this.dataObject.label = this.inputField.val()
+
+		}).bind(this))
+		this.container.append(this.titleField, this.inputField)
+	}
+
+	initData(){
+		if (this.dataObject[this.dataKey] !== undefined) {
+			this.inputField.val(this.dataObject[this.dataKey])
+		}
+	}
+}
+
 class Selector extends FormElement{
 	
 	initUI () {
