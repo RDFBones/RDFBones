@@ -11,13 +11,14 @@ public class LabelDataGetter extends SPARQLDataGetter{
   String key;
   public LabelDataGetter(Graph mainGraph) {
 
-  	super(mainGraph);
+  	super();
+  	this.mainGraph = mainGraph;
   	Triple triple = new LabelTriple("node");
   	this.inputKeys = ArrayLib.getList("node");
   	this.inputValues = this.inputKeys;
   	List<Triple> queryTriples = ArrayLib.getTripleList(triple);
   	this.setUrisLiterals(null, ArrayLib.getList("nodeLabel"));
-  	this.init(queryTriples);
+  	this.initTriples(queryTriples);
   }
   
   public String getLabel(String nodeUri){
