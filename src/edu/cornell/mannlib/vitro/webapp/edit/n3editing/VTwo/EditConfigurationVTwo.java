@@ -24,6 +24,7 @@ import org.joda.time.DateTime;
 
 import rdfbones.form.Form;
 import rdfbones.form.FormConfiguration;
+import rdfbones.formProcessing.WebappConnector;
 import rdfbones.graphData.Graph;
 
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
@@ -200,7 +201,11 @@ public class EditConfigurationVTwo {
     public FormConfiguration getFormConfig() {
       return formConfig;
     }
-
+    
+    public FormConfiguration getFormConfig(WebappConnector webapp) {
+      return formConfig;
+    }
+    
     public void setFormConfig(FormConfiguration formConfig) {
       this.formConfig = formConfig;
     }
