@@ -53,11 +53,12 @@ ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/js/previewJS/css/li
 
 	<h3> Please upload an image </h3>
 	<form id="form"	action="${submitUrl}" enctype="multipart/form-data" method="post" >
+		Label <input type="text" name = "label" value  required /> <br>
 		<input id="datafile" type="file" name="datafile" size="30" />    
 		<input type="hidden" name = "editKey" value="${editKey}"/>
 		<input type="hidden" name = "dataUpload" value />
 		<div>
-			<input type="submit" value="submit" class="submit">
+			<input type="submit" value="Submit" class="submit">
 			<span class="or"> ${i18n.or} <a class="cancel"  href="${cancelUrl}" title="${i18n.cancel_title}">${i18n.cancel_link}</a></span>
 		</div>	
 	</form>

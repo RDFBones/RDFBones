@@ -77,8 +77,7 @@ public class ImageUploadFormGenerator extends BaseEditConfigurationGenerator imp
 		defaultsForXSDtypes.put("http://www.w3.org/2001/XMLSchema#dateTime","#Unparseable datetime defaults to now");
 	  }
 	  
-	  
-    @Override
+	  @Override
     public EditConfigurationVTwo getEditConfiguration(VitroRequest vreq,
             HttpSession session) throws Exception {
 
@@ -108,7 +107,6 @@ public class ImageUploadFormGenerator extends BaseEditConfigurationGenerator imp
     	literals.add("desc");
     	conf.setLiteralsOnForm(literals);
     	
-    	
     	subjectUri = EditConfigurationUtils.getSubjectUri(vreq);
     	predicateUri = EditConfigurationUtils.getPredicateUri(vreq);
     	conf.setSubjectUri(subjectUri);
@@ -123,16 +121,16 @@ public class ImageUploadFormGenerator extends BaseEditConfigurationGenerator imp
     	/*
     	 * This is for the file!
     	 */
-      conf.setLiteralsOnForm("dataFile", "fileDescription"); //"downloadUrl", "mimeType", "fileName");
+      conf.setLiteralsOnForm("dataFile", "fileDescription", "label"); //"downloadUrl", "mimeType", "fileName");
     	conf.setUrisOnForm("byteStreamIndividual");
     	
     	List<String> validators = new ArrayList<String>();
     	field1.setValidators(validators);    	    	    
-    	//field2.setValidators(validators);    	    	    
     	
     	Map<String, FieldVTwo> fields = new HashMap<String, FieldVTwo>();    	
     	fields.put(field1.getName(), field1);	
       fields.put("fileDescription", new FieldVTwo().setName("fileDescription").setRangeDatatypeUri(XSD.xstring.toString()));
+      fields.put("label", new FieldVTwo().setName("label").setRangeDatatypeUri(XSD.xstring.toString()));
 
     	conf.setFields(fields);
     	
@@ -144,7 +142,7 @@ public class ImageUploadFormGenerator extends BaseEditConfigurationGenerator imp
     	String triple22 = "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .";
     	String triple3 = " ?person ?depictedIn ?image . ";
     	String triple4 = " ?image  a bibo:Image . "  ;
-    	String triple41 = "?image rdfs:label \"ImageLabel\"^^xsd:string . " ;
+    	String triple41 = "?image rdfs:label ?label . " ;
       String triple5 = " ?image <http://vivo.mydomain.edu/individual/hasFile> ?fileIndividual . ";
     	String triple6 = " ?fileIndividual a vitro-public:File . ";
       String triple61 ="?fileIndividual rdfs:label \"FileLabel\"^^xsd:string . " ;
@@ -172,6 +170,7 @@ public class ImageUploadFormGenerator extends BaseEditConfigurationGenerator imp
           + "?image <http://vivo.mydomain.edu/individual/hasFile> ?fileIndividual . "
           + "}");
     	
+
     	uriQueries.put("byteStreamIndividual",""
     			+ "PREFIX vitro-public: <http://vitro.mannlib.cornell.edu/ns/vitro/public#> "
     			+ "SELECT ?byteStreamIndividual "
@@ -191,7 +190,13 @@ public class ImageUploadFormGenerator extends BaseEditConfigurationGenerator imp
     			+ "?fileIndividual  <http://vivo.mydomain.edu/individual/fileDescription> ?fileDescription ."
     			+ "}");
     			
-    
+      literalQueries.put("label", ""
+          + "PREFIX rdfs:     <http://www.w3.org/2000/01/rdf-schema#> . "
+          + "SELECT ?label "
+          + "WHERE {"
+          + "   ?image rdfs:label ?label . "
+          + "}");
+      
     	literalQueries.put("fileName",""
     			+ "PREFIX vitro-public: <http://vitro.mannlib.cornell.edu/ns/vitro/public#> "
     			+ "SELECT ?fileName "
