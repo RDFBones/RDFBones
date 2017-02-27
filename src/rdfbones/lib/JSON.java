@@ -312,6 +312,11 @@ public class JSON {
   public static void putObject(JSONArray array, JSONObject object){
 		array.put(object);
   }
+  
+  public static void putString(JSONArray array, String str){
+		array.put(str);
+  }
+  
   /*
   public static void put(JSONArray array, JSONObject object){
 	  try {
