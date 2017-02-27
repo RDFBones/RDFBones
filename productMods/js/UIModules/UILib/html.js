@@ -81,8 +81,8 @@ var html = {
 		return $("<input>").attr("type", "checkbox")
 	},
 	
-	textBox : function(){
-		return $("<input>").attr("type", "text")
+	textBox : function(class_){
+		return $("<input>").attr("type", "text").addClass(class_)
 	},
 	
 	textBox : function(_class){
