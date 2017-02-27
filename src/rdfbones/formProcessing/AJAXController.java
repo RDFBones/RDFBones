@@ -46,7 +46,7 @@ public class AJAXController {
 				String triplesToCreate = graph
 						.saveInitialData(getJSONObject("dataToStore"));
 				JSON.put(response, "triplesToCreate", triplesToCreate);
-				if (!formConfig.webapp.addTriples(triplesToCreate, get("editKey"))) {
+				if (!graph.getWebapp().addTriples(triplesToCreate, get("editKey"))) {
 					JSON.put(response, "failed", true);
 				}
 				break;
@@ -151,6 +151,8 @@ public class AJAXController {
 		} else {
 			AJAXError.noTask(response);
 		}
+	
+		JSON.put(response, "queries", graph.getWebapp().getQueries());
 	}
 
 	public boolean check(List<String> parameters){
