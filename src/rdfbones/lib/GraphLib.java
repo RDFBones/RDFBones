@@ -64,18 +64,22 @@ public class GraphLib {
 			}
 		}
 	}
-	
-	public static Map<String, String> getLabelMap(Graph graph){
-		
+
+	public static Map<String, String> getLabelMap(Graph graph) {
+
 		LabelDataGetter dataGetter = new LabelDataGetter(graph.mainGraph);
 		Map<String, String> map = new HashMap<String, String>();
-		for(String labelClass : graph.labelClasses){
+		for (String labelClass : graph.labelClasses) {
 			String classUri = graph.graphDataMap.get(labelClass);
-			map.put(labelClass + "Label", dataGetter.getLabel(classUri));
+			String value = dataGetter.getLabel(classUri);
+			if (graph.mainGraph.inputLabel) {
+				value = graph.mainGraph.inputLabelValue + "." + value;
+			}
+			map.put(labelClass + "Label", value);
 		}
 		return map;
 	}
-	
+
 	public static List<Triple> optionalClassLabelTripels(List<String> inputClasses) {
 
 		List<Triple> triples = new ArrayList<Triple>();
@@ -99,14 +103,23 @@ public class GraphLib {
 	public static List<Triple> addLabelTriples(List<Triple> triples) {
 
 		List<Triple> all = new ArrayList<Triple>();
+		List<String> labelsOnForm = new ArrayList<String>();
+		for (Triple triple : triples) {
+			if (triple.predicate.equals("rdfs:label")) {
+				labelsOnForm.add(triple.subject.varName);
+			}
+		}
 		for (Triple triple : triples) {
 			if (triple.predicate.equals("rdf:type")
-						&& triple.object.varName.contains("Type")) {
-				System.out.println("TYPEEEEE : " + triple.subject.varName);
+					&& triple.object.varName.contains("Type")
+					&& !labelsOnForm.contains(triple.subject.varName)) {
 				String labelVarName = triple.subject.varName + "Label";
 				Triple labelTriple = new Triple(triple.subject, "rdfs:label",
 						labelVarName);
 				all.add(labelTriple);
+			}
+			if (triple.predicate.equals("rdfs:label")) {
+
 			}
 		}
 		all.addAll(triples);
@@ -121,9 +134,9 @@ public class GraphLib {
 			setNodeMap(graph.mainGraph, triple, triple.object.varName);
 		}
 	}
-	
-	public static void setNodeMap(Graph graph, Triple triple, String varName){
-		if(graph.nodeMap.containsKey(varName)){
+
+	public static void setNodeMap(Graph graph, Triple triple, String varName) {
+		if (graph.nodeMap.containsKey(varName)) {
 			graph.nodeMap.get(varName).add(triple);
 		} else {
 			List<Triple> triples = new ArrayList<Triple>();
@@ -131,7 +144,7 @@ public class GraphLib {
 			graph.nodeMap.put(varName, triples);
 		}
 	}
-	
+
 	public static List<String> getNodes(List<Triple> triples) {
 
 		List<String> nodes = new ArrayList<String>();
@@ -359,7 +372,8 @@ public class GraphLib {
 				ArrayLib.addDistinct(newInstances, triple.subject.varName);
 			}
 			if (!(triple.object instanceof ExistingInstance)
-					&& !(triple.object instanceof InputNode)) {
+					&& !(triple.object instanceof InputNode)
+					&& !(triple.object instanceof LiteralVariable)) {
 				ArrayLib.addDistinct(newInstances, triple.object.varName);
 			}
 		}
@@ -475,23 +489,23 @@ public class GraphLib {
 				ArrayLib.addDistinct(graph.classesToSelect, triple.object.varName);
 			} else {
 
-        if (triple.predicate.equals("rdf:type")) {
-          if (!(triple.subject instanceof InputNode)) {
-            graph.triplesToStore.add(triple);
-          }
-          if (!(triple.object instanceof InputNode)) {
-            ArrayLib.addDistinct(graph.classesToSelect, triple.object.varName);
-          }
-        } 
-      }
+				if (triple.predicate.equals("rdf:type")) {
+					if (!(triple.subject instanceof InputNode)) {
+						graph.triplesToStore.add(triple);
+					}
+					if (!(triple.object instanceof InputNode)) {
+						ArrayLib.addDistinct(graph.classesToSelect, triple.object.varName);
+					}
+				}
+			}
 		}
-		
-		for(Triple triple : graph.triplesToStore){
-			if(triple.predicate.equals("rdf:type")){
+
+		for (Triple triple : graph.triplesToStore) {
+			if (triple.predicate.equals("rdf:type")) {
 				graph.labelClasses.add(triple.object.varName);
 				graph.labelTriples.add(new LabelTriple(triple.subject.varName,
 						triple.object.varName + "Label"));
-			} 
+			}
 		}
 		graph.instances.addAll(graph.newInstances);
 		graph.instances.addAll(graph.inputInstances);
@@ -509,6 +523,8 @@ public class GraphLib {
 			graph.urisToSelect.add(var);
 			graph.urisToSelect.add(var + "Type");
 			graph.dataRetreivalQuery.add(QueryLib.getMSTTriple(var));
+			graph.literalsToSelect.add(var + "Label");
+			graph.dataRetreivalQuery.add(QueryLib.getOptionalLabelTriple(var));
 		}
 
 		for (String var : graph.inputInstances) {
