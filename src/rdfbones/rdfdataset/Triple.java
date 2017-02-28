@@ -33,6 +33,8 @@ public class Triple {
   private void setObject(Object object) {
     if (object instanceof RDFNode) {
       this.object = (RDFNode) object;
+    } else if (object instanceof LiteralVariable) {
+      this.object = (LiteralVariable) object;
     } else {
       this.object = new RDFNode((String) object);
     }
