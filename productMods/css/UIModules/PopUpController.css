@@ -5,6 +5,10 @@
 	background : black;
 }
 
+.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+}
 
 .popUpOuter {
 	position: absolute;
@@ -23,14 +27,16 @@
     padding: 3px;
 }
 
+#popUpContainer{
+	overflow : hidden;
+}
 
 .popUpOuterNew {
     
-    opacity:0.8;
-    background-color:#ccc;
     position:fixed;
     width:100%;
     height:100%;
+    
     top:0px;
     left:0px;
     z-index:1000;
@@ -55,3 +61,30 @@
 	margin : 10px;
 	width : 70px;
 }
+
+.loaderMsgContainer {
+	display : table;
+	margin: 0 auto;
+}
+
+.loaderMsgSubForm{
+	margin: 0 auto;
+	display : table;
+	background-color: #382f2f;
+	color : white;
+	border-radius: 6px;
+	font-size: x-small;
+	padding: 2px 3px;
+	letter-spacing: 1px;
+}
+
+.loaderMsg{
+ 	margin: 0 auto;
+ 	display: table;
+ 	background-color: #312d2d;
+ 	font-size: smaller;
+ 	display: table;
+ 	color: white;
+ 	border-radius: 6px;
+ 	padding: 0px 5px;
+ 	letter-spacing: 1px;

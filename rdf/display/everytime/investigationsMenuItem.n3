@@ -1,0 +1,30 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix display: <http://vitro.mannlib.cornell.edu/ontologies/display/1.1#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix action: <java:edu.cornell.mannlib.vitro.webapp.auth.permissions.SimplePermission#> .
+@prefix vivoweb: <http://vivoweb.org/ontology#> .
+@prefix vitro:   <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+display:Investigations
+    a display:Page ;    
+    a display:ClassGroupPage;
+    display:forClassGroup vivoweb:vitroClassGroupInvestigations;
+    display:title "Investigations" ;
+    display:urlMapping "/investigations" ;
+    display:hasDataGetter display:investigationDataGetter .
+
+display:InvestigationsMenuItem
+    a display:NavigationElement ;
+    display:menuPosition "6";
+    display:linkText "Investigations";
+    display:toPage display:Investigations .    
+
+display:DefaultMenu 
+	display:hasElement display:InvestigationsMenuItem .
+
+display:investigationDataGetter
+      a <java:edu.cornell.mannlib.vitro.webapp.utils.dataGetter.ClassGroupPageData>;
+      display:forClassGroup
+              vivoweb:vitroClassGroupInvestigations .

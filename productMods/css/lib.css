@@ -68,30 +68,6 @@
 	cursor: pointer;
 }
 
-.generalButton {
-	margin-left: 10px;
-	display: inline-block;
-	border: 1px solid black;
-	border-radius: 3px;
-	background-color: #9D9696;
-}
-
-.smallButton {
-	margin-left: 10px;
-	display: inline-block;
-	border: 1px solid black;
-	border-radius: 3px;
-	padding: 1px 2px;
-}
-
-.enabledButton {
-	opacity: 1;
-}
-
-.disabledButton {
-	opacity: 0.4;
-}
-
 .redBorder {
 	border: 1px solid red;
 }
@@ -100,7 +76,7 @@
 	border: 1px solid black;
 }
 
-.enabledButton:hover {
+.hover:hover {
 	cursor: pointer;
 }
 
@@ -136,6 +112,15 @@
 	margin: 5px;
 }
 
+.margin10 {
+	margin: 10px;
+}
+
+.margin15 {
+	margin: 15px;
+}
+
+
 .margin5H {
 	margin: 0 5px;
 }
@@ -148,9 +133,28 @@
 	margin: 0 15px;
 }
 
+.margin5V {
+	margin: 5px  0;
+}
 
-.margin10 {
-	margin : 10px;
+.margin10V {
+	margin: 10px 0;
+}
+
+.margin15V {
+	margin: 15px 0;
+}
+
+/****************************************************
+*** Fonts  
+*****************************************************/
+
+.italic {
+	font-style: italic;
+}
+
+bold {
+    font-weight: bold;
 }
 
 /****************************************************
@@ -211,3 +215,20 @@
 	border-bottom : 1px solid;	
 	height : 100%;
 }
+
+.flexInlineContainer {
+	display : flex;
+}
+
+.flexInlineContainer >  * {
+   display: inline-block;
+}
+
+
+.verticalMiddleContainer {
+	display : flex;
+	align-items : center;
+}
+
+
+

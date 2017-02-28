@@ -9,16 +9,18 @@ var ImgSrc = {
 		done32 : this.folder + "done32.png",
 		check : this.folder + "check-mark.png",
 		edit : this.folder + "edit.png",
+		home : this.folder + "home.png",
+		jump : this.folder + "jump.png",
+		list : this.folder + "list.png",
 		loading : this.folder + "loading.gif",
 		loading2 : this.folder + "loading2.gif",
 		minus : this.folder + "minus.png",
 		modify : this.folder + "modify.png",
-		waitBar : this.folder + "waitBar.gif",
-		ok1 : this.folder + "okk.png",
 		ok : this.folder + "ok.png",
+		ok1 : this.folder + "ok1.png",
+		okk : this.folder + "okk.png",
 		plus : this.folder + "plus.png",
-		jump : this.folder + "jump.png",
-		list : this.folder + "list.png",
+		waitBar : this.folder + "waitBar.gif",
 		bin : this.folder + "rubbish-bin.png",
 	}
 
@@ -90,6 +92,22 @@ var ImgUI = {
 
 	generalImgCont : function(src, _class, size) {
 		return html.div(_class).append(html.img(src, size + "Img"))
-	}
+	},
 
+	/***************************************************************************
+	 * Loading gifContainer
+	 **************************************************************************/
+
+	waitGif : function(){
+		return html.div("mainFormLoadingContainer").append(this.gif("100px"))
+	},
+	
+	subWaitGif : function(){
+		return html.div("subFormLoadingContainer").append(this.gif())
+	},
+	
+	gif : function(size){
+		size = util.setUndefined(size, "50px")
+		return html.div("horizontalMiddle").append(html.imgHeight(ImgSrc.loading, size))
+	}
 }

@@ -1,58 +1,85 @@
 
 
-var TextButton = function(text, returnFunction, style){
+class TextButton {
 	
-	this.enabled = true
-	this.returnFunction = returnFunction
-	this.container = UI.getTextButton(text).addClass(this.getStyle())
-		.click((this.clickEvent).bind(this))
-}
-
-TextButton.prototype = {
-		
-	
-	getStyle : function(){
-		return "generalButton"
-	},
-		
-	clickEvent : function(){
-		if(this.enabled){
-			this.returnFunction()
-		}
-	},
-		
-	disable : function(){
-		this.enabled = false
-		this.container.removeClass("enabledButton").addClass("disabledButton")
-		return this
-	},
-	
-	enable : function(){
+	constructor(text, returnFunction, parameter, style){
 		this.enabled = true
-		this.container.removeClass("disabledButton").addClass("enabledButton")
+		this.returnFunction = returnFunction
+		this.container = this.getContainer(text, style)
+		this.parameter = util.setUndefined(parameter, null)
+	}
+	
+	getContainer (text, style){
+		return UI.getButtonText(text, this.getStyle() + " " + style, (this.clickEvent).bind(this))
+	}
+	
+	getStyle (){
+		return "generalButton hoverClass"
+	}
+	
+	clickEvent (){
+		if(this.enabled){
+			this.returnFunction(this.parameter)
+		}
+	}
+
+	disable (){
+		this.enabled = false
+		this.container.removeClass("hoverClass").addClass("disabledButton")
 		return this
-	},
+	}
+	
+	enable (){
+		this.enabled = true
+		this.container.removeClass("disabledButton").addClass("hoverClass")
+		return this
+	}
 		
-	hide : function(){
+	hide (){
 		this.container.css("display", "none")
 		return this
-	},
+	}
 	
-	show : function(){
+	setColor (color){
+		this.container.css("background-color", color)
+		return this
+	}
+	
+	resetColor (color){
+		this.container.removeAttr("style")
+		return this
+	}
+	
+	disableHover (){
+		this.container.removeClass("hover")
+		return this
+	}
+	
+	enableHover (){
+		this.container.removeClass("hover")
+		return this
+	}
+	
+	show (){
 		this.container.css("display", "inline-block")
 		return this
 	}
 }
 
-var TextButtonSmall = function(text, returnFunction, style){
+class TextButtonSmall extends TextButton {
 	
-	TextButton.call(this, text, returnFunction, style)
+	getStyle (){
+		return "smallButton"
+	}
 }
 
-TextButtonSmall.prototype = Object.create(TextButton.prototype)
-
-
-TextButtonSmall.prototype.getStyle = function(){
-	return "smallButton"
+class HomeButton extends TextButton{
+	
+	constructor(returnFunction, parameter){
+		super(null, returnFunction, parameter)
+	}
+	
+	getContainer (){
+		return UI.getButtonImage("home", this.getStyle(), (this.clickEvent).bind(this))
+	}
 }
-

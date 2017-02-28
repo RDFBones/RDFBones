@@ -1,0 +1,11 @@
+
+
+
+.dT_elementContainer {
+	display : flex;
+	align-items : center;
+}
+
+.flex1 {
+	flex-grow : 1;
+}

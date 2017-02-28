@@ -31,6 +31,14 @@ var DataLib = {
 		}
 	},
 	
+	isData : function(param){
+		if(this.getType(param) == "data"){
+			return true
+		} else {
+			return false
+		}
+	},
+	
 	or : function(variable, values){
 		var ret = false
 		$.each(values, function(index, value){
@@ -46,8 +54,6 @@ var DataLib = {
 		return this.or(this.getType(variable), values)
 	},
 	
-	
-	
 	removeObjectFromArrayByKey : function(array, key, value){
 
 		$.each(array, function(index, object){
@@ -58,30 +64,42 @@ var DataLib = {
 		})
 	},
 	
+	removeObjectFromArray : function(array, key, obj){
+
+		this.removeObjectFromArrayByKey(array, key, obj[key])
+	},
+	
 	debugObject : function(object){
+		console.log(this.debugObj(0, object))
+	},
+	
+	debugObj : function(num, object){
 		
+		var tab = Array(num).join("\t")
+		num++
+		var n = num 
 		var str = ""
 		switch(DataLib.getType(object)){
-			
-		case "object" :
-			str += "{ \n "
-			$.each(object, function(key, value){
-				str += "\n\t" + key + " : " + DataLib.debugObject(value) + " , "
-			})
-			str += " \n }"
-			break
-		case "data" : 
-			str += "'" + object + "'"
-			break
-		case "array" :
-			str = "[ \n "
-			$.each(object, function(key, value){
-				str += DataLib.debugObject(value) + " ,  \n"
-			})
-			str += "\n ]"
-			break
+			case "object" :
+				str += "{ \n"
+				$.each(object, function(key, value){
+					str +=  tab + key + " : " + DataLib.debugObj(n, value) + " ,\n"
+				})
+				str = str.substring(0, str.length - 2)
+				str += "\n" + tab +  "}"
+				break
+			case "data" : 
+				str +=  "'" + object + "'"
+				break
+			case "array" :
+				str =  "[ "
+				$.each(object, function(key, value){
+					str +=  DataLib.debugObj(n, value) + ", "
+				})
+				str = str.substring(0, str.length - 2)
+				str += " ]"
+				break
 		}
-		
 		return str 
 	},
 	

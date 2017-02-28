@@ -2,11 +2,25 @@
 * Show existing bones
 ****/
 .title {
-	font-style: italics;
+	font-style: italic;
 	padding: 5px;
 	border-bottom: 1px solid black;
 	display: table;
 	margin: 10px;
+}
+
+.titleNotUnderlined {
+   font-style: italic;
+	padding: 5px;
+	display: table;
+	margin: 10px;
+	
+}
+.inlineTitle {
+	padding: 3px;
+	display: inline-block;
+	border-bottom: 1px solid black;
+	text-align: center;
 }
 
 .columnTitle {

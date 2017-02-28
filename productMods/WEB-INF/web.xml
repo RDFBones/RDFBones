@@ -1091,10 +1091,47 @@
     <servlet-name>DefaultPageLoad</servlet-name>
     <url-pattern>/defaultPageLoad</url-pattern>
   </servlet-mapping>  
+  
+  <servlet>
+    <servlet-name>DataGenerator</servlet-name>
+    <servlet-class>rdfbones.formProcessing.DataGenerator</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DataGenerator</servlet-name>
+    <url-pattern>/dataGenerator</url-pattern>
+  </servlet-mapping>  
+  
 
+   <servlet>
+    <servlet-name>FormDataLoader</servlet-name>
+    <servlet-class>rdfbones.formProcessing.FormDataLoader</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FormDataLoader</servlet-name>
+    <url-pattern>/formDataLoader</url-pattern>
+  </servlet-mapping>  
+  
+  <servlet>
+    <servlet-name>AJAXServlet</servlet-name>
+    <servlet-class>webappconnector.AJAXServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AJAXServlet</servlet-name>
+    <url-pattern>/ajaxservlet</url-pattern>
+  </servlet-mapping>  
+  
+  <servlet>
+    <servlet-name>DataTransformationServlet</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.DataTransformationAJAXController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DataTransformationServlet</servlet-name>
+    <url-pattern>/dataTransformationAJAX</url-pattern>
+  </servlet-mapping>  
+  
    <!--
    END - just to know where to place the additional servlets
-    -->
+   -->
    
    <servlet>
     <servlet-name>DataAutocompleteController</servlet-name>

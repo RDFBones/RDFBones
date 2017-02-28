@@ -1,5 +1,30 @@
 var UI = {
+	
+	getButton : function(divClass, returnFunction){
 		
+		var buttonId = this.bindFunction(returnFunction)
+		return html.div(divClass).attr("id", buttonId)
+	},
+	
+	getButtonText : function(text, divClass, returnFunction){
+		
+		var buttonId = this.bindFunction(returnFunction)
+		return html.div(divClass).text(text).attr("id", buttonId)
+	},	
+	
+	getButtonImage : function(imgType, divClass, returnFunction){
+		
+		var buttonId = this.bindFunction(returnFunction)
+		return html.div(divClass).attr("id", buttonId)
+			.append(ImgUI.libImg(imgType))
+	},
+	
+	bindFunction : function(returnFunction){
+		var buttonId = util.getNewButtonId()
+		$(document).on("click", "#" + buttonId, returnFunction)
+		return buttonId
+	},
+	
 	assemble : function(mainContainer, containers, order){
 		
 		var containerBuffer = []
@@ -13,17 +38,69 @@ var UI = {
 			containerBuffer[order[i] + 1] = container
 		})
 	},
+	
+	append : function(main, array){
 		
+		arr = []
+		$.each(array, function(index, value){
+			arr.push(value.container)
+		})
+		if(main.container === undefined)
+			main.container = html.div()
+		main.container.append(arr)
+	},
+	
+	appendToDiv : function(div, array){
+		
+		arr = []
+		$.each(array, function(index, value){
+			arr.push(value.container)
+		})
+		div.append(arr)
+	},
+	
+	appendDivs : function(main, array){
+		
+		arr = []
+		$.each(array, function(index, value){
+			arr.push(value)
+		})
+		if(main.container === undefined)
+			main.container = html.div()
+		main.container.append(arr)
+	},
+	
+	appendGen : function(main, array){
+		
+		arr = []
+		$,each(array, function(index, value){
+			arr.push(value.container)
+		})
+		main.container.append(arr)
+	},
+	
+	hideArray : function(array){
+		
+		$.each(array, function(index, value){
+			value.hide()
+		})
+	},
+	
+	/***************************************************************************
+	 * Input fields
+	 **************************************************************************/
+	
+	floatInput : function(step){
+		
+		return html.input("number").attr("step", step)
+	},
+	
 	/***************************************************************************
 	 * Horizontal general img
 	 **************************************************************************/
 
 	getWaitGif : function() {
 		return ImgUI.libImg("loading", "largeImg")
-	},
-
-	getHorizontalDiv : function() {
-
 	},
 
 	getHorizontalImg : function(src) {
@@ -57,8 +134,8 @@ var UI = {
 				ImgUI.libImgCont(type, "inline"))
 	},
 
-	verticalAlignedDiv : function(text, _class) {
-		return html.div(_class)
+	verticalMiddleCont : function() {
+		return html.div("verticalMiddle")
 	},
 
 	/***************************************************************************
@@ -103,8 +180,8 @@ var UI = {
 				ImgUI.libImg("add", "addFieldImg").click(clickFunction))
 	},
 
-	getTextButton : function(text) {
-		return html.div("enabledButton").text(text)
+	getTextButton : function(text, id) {
+		return html.div().text(text).attr("id", id)
 	},
 
 	/***************************************************************************
@@ -155,6 +232,19 @@ var UI = {
 		return this.selectorField
 	},
 
+	
+	classSelectorMap : function(dataSet) {
+		this.selectorField = html.getSelectorField().addClass("inline margin5H")
+
+		$.each(dataSet, (function(key, value) {
+			$("<option/>", {
+				value : key,
+				text : value.label,
+			}).appendTo(this.selectorField)
+		}).bind(this))
+		return this.selectorField
+	},
+	
 	dataSetSelector : function(dataSet, setData){
 		
 		this.setData = setData
@@ -185,5 +275,6 @@ var UI = {
 	
 	inlineCont : function(_class){
 		return html.div("inlineContainer " + _class)
-	}	
+	},
+
 }

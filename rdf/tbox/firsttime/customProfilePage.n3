@@ -1,0 +1,20 @@
+@prefix bibo:    <http://purl.org/ontology/bibo/> .
+@prefix vitro:   <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+ 
+bibo:Document				
+      vitro:customDisplayViewAnnot
+              "documentProfilePage.ftl"^^xsd:string .
+
+<http://purl.obolibrary.org/obo/FMA_83129>
+      vitro:customDisplayViewAnnot
+              "boneOrgan.ftl"^^xsd:string .
+
+<http://purl.obolibrary.org/obo/FMA_5018>
+      vitro:customDisplayViewAnnot
+              "boneOrgan.ftl"^^xsd:string .
+
+bibo:Image
+      vitro:customDisplayViewAnnot
+              "imageProfilePage.ftl"^^xsd:string .
+              

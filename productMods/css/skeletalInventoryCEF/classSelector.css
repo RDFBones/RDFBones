@@ -53,6 +53,11 @@
 	height: 28px;
 }
 
+.verticalMiddle{
+	display: flex;
+	align-items: center;
+}
+
 .verticalMiddleInline{
 	display: flex;
 	align-items: center;

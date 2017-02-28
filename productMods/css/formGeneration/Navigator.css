@@ -1,0 +1,10 @@
+
+
+.navigatorContainer {
+	width : 600px;
+	height : 35px;
+	margin : 10px;
+	border : 1px solid;
+	border-radius : 3px;
+	background-color : white;
+}

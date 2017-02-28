@@ -4,7 +4,10 @@ var Button = function(type, returnFunction){
 
 	this.returnFunction = returnFunction
 	this.enabled = true
-	this.container = ImgUI.libImg(type, "addFieldImg enabledImg").click((this.clickEvent).bind(this))
+	var buttonId = util.getNewButtonId()
+	this.container = ImgUI.libImg(type, "addFieldImg enabledImg")
+	this.container.attr("id", buttonId)
+	$(document).on("click", "#" + buttonId, (this.clickEvent).bind(this))
 }
 
 Button.prototype = {
@@ -16,7 +19,7 @@ Button.prototype = {
 	},	
 	
 	show : function(){
-		this.container.css("display", "inline-block")
+		this.container.css("display","inline-block")
 		return this
 	},
 	
@@ -69,7 +72,6 @@ var CheckBoxText = function(text, parent, selectFunction, deselectFunction){
 	}).addClass("inline")
 	this.container.append(this.checkBox)
 }
-
 
 CheckBoxText.prototype = {
 		

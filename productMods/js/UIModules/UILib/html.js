@@ -17,7 +17,6 @@ var html = {
 		return $("<div/>").addClass(classes).text(text)
 	},
 	
-
 	divId : function(id){
 		return html.div().attr("id", id)
 	},
@@ -41,6 +40,17 @@ var html = {
 		})
 	},
 	
+	selector : function(id, name) {
+		return selector = $("<select/>")
+	},
+	
+	option : function(value, text) {
+		return $("<option/>", {
+			value : value,
+			text : text
+		})
+	},
+	
 	setSelectorOptions1 : function(dataset, valueKey, textKey, selector) {
 		$.each(dataset, function(index, data) {
 			$("<option/>", {
@@ -61,6 +71,10 @@ var html = {
 	
 	img : function(src, class_) {
 		return $("<img/>").attr("src", src).addClass(class_)
+	},
+	
+	imgHeight : function(src, height) {
+		return $("<img/>").attr("src", src).attr("height", height)
 	},
 	
 	checkBox : function(){
@@ -87,6 +101,11 @@ var html = {
 	getInput : function(type){
 		return $("<input>").attr("type", type)
 	},
+	
+	input : function(type){
+		return $("<input>").attr("type", type)
+	},
+	
 	
 	span : function(_class){
 		return $("<span/>").addClass(_class)

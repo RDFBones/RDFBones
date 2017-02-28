@@ -1,0 +1,68 @@
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix : <http://vitro.mannlib.cornell.edu/ns/vitro/ApplicationConfiguration#> .
+@prefix display: <http://vitro.mannlib.cornell.edu/ontologies/display/1.1#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix datagetter: <java:edu/cornell/mannlib/vitro/webapp/utils/datagetter/> .
+@prefix vitro: <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#> .
+@prefix role:  <http://vitro.mannlib.cornell.edu/ns/vitro/role#> .
+@prefix local: <http://vitro.mannlib.cornell.edu/ns/vitro/siteConfig/> .
+@prefix vivo: <http://vivoweb.org/ontology/core#> . 
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+
+local:skullContext a :ConfigContext ;
+    :hasConfiguration local:skullConfig ;
+    :configContextFor <http://w3id.org/rdfbones/core#hasCoherentSkeletalRegion> ;
+    :qualifiedByDomain <http://w3id.org/rdfbones/core#PrimarySkeletalInventoryDryBone> ;
+    :qualifiedBy <http://purl.obolibrary.org/obo/FMA_46565> .
+
+local:skullConfig a :ObjectPropertyDisplayConfig ;
+    rdfs:label "skull"@en-US ;
+    :displayName "skull" ;
+    :listViewConfigFile "listViewConfig-fauxPropertyDefault.xml"^^xsd:string ;
+    vitro:displayRankAnnot "10"^^xsd:int ;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean ;
+    vitro:customEntryFormAnnot "rdfbones.generators.CoherentSkeletalRegionGenerator"^^xsd:string ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupSkull> .
+
+local:skullRegionContext a :ConfigContext ;
+    :hasConfiguration local:skullRegionConfig ;
+    :configContextFor <http://w3id.org/rdfbones/core#hasSkeletalRegion> ;
+    :qualifiedByDomain <http://w3id.org/rdfbones/core#PrimarySkeletalInventoryDryBone> ;
+    :qualifiedBy <http://purl.obolibrary.org/obo/FMA_46565> .
+
+local:skullRegionConfig a :ObjectPropertyDisplayConfig ;
+    rdfs:label "skeletal regions of skull"@en-US ;
+    :displayName "skeletal regions of skull" ;
+    :listViewConfigFile "listViewConfig-fauxPropertyDefault.xml"^^xsd:string ;
+    vitro:displayRankAnnot "20"^^xsd:int ;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean ;
+    vitro:customEntryFormAnnot "rdfbones.generators.SkeletalRegionGenerator"^^xsd:string ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupSkull> .
+
+local:skullSingleBoneContext a :ConfigContext ;
+    :hasConfiguration local:skullSingleBoneConfig ;
+    :configContextFor <http://w3id.org/rdfbones/core#hasBoneOrgan> ;
+    :qualifiedByDomain <http://w3id.org/rdfbones/core#PrimarySkeletalInventoryDryBone> ;
+    :qualifiedBy <http://purl.obolibrary.org/obo/FMA_46565> .
+
+local:skullSingleBoneConfig a :ObjectPropertyDisplayConfig ;
+    rdfs:label "single bones of skull"@en-US ;
+    :displayName "single bones of skull" ;
+    :listViewConfigFile "listViewConfig-fauxPropertyDefault.xml"^^xsd:string ;
+    vitro:displayRankAnnot "30"^^xsd:int ;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
+    vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean ;
+    vitro:customEntryFormAnnot "rdfbones.generators.SingleBoneGenerator"^^xsd:string ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupSkull> .
+    
+    

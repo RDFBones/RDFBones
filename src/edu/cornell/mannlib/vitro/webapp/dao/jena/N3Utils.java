@@ -25,8 +25,27 @@ public class N3Utils {
       put("vitro", "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#");
       put("owl", "http://www.w3.org/2002/07/owl#");
       put("sw", "http://softwareOntology.com/");
-
+      put("obo-fma", "http://purl.obolibrary.org/obo/fma#");
+      
     }};
+    
+    public static String getPrefixes(){
+      
+      String prefixes = new String();
+      for(String prefix : prefixDef.keySet()){
+        prefixes += "@prefix " + prefix + ": <" + prefixDef.get(prefix) + ">. \n";
+      }
+      return prefixes;
+    }
+    
+    public static String getQueryPrefixes(){
+      
+      String prefixes = new String("");
+      for(String prefix : prefixDef.keySet()){
+        prefixes += "PREFIX " + prefix + ": <" + prefixDef.get(prefix) + "> \n";
+      }
+      return prefixes;
+    }
     
     public static void setInputMap(Map<String, String> inputMap, 
       String[] inputParameters, VitroRequest vreq){

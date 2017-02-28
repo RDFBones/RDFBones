@@ -22,6 +22,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 
+import rdfbones.form.Form;
+import rdfbones.form.FormConfiguration;
+import rdfbones.graphData.Graph;
+
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -191,6 +195,16 @@ public class EditConfigurationVTwo {
     
     private boolean hasBeenPreparedForUpdate;
     
+    private FormConfiguration formConfig;
+    
+    public FormConfiguration getFormConfig() {
+      return formConfig;
+    }
+
+    public void setFormConfig(FormConfiguration formConfig) {
+      this.formConfig = formConfig;
+    }
+
     public EditConfigurationVTwo(){ 
         writeModelSelector = StandardModelSelector.selector;
         queryModelSelector = StandardModelSelector.selector;   

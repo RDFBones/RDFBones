@@ -1,0 +1,27 @@
+
+.disabledButton {
+	opacity: 0.4;
+}
+
+.generalButton {
+	margin-left: 10px;
+	line-height: 19px;
+	padding: 1px 5px;
+	font-size: initial;
+	display: inline-block;
+	border: 1px solid #2f2d2d;
+	border-radius: 4px;
+	background-color: #d4cccc;
+}
+
+.hoverClass:hover {
+	cursor : pointer;
+}
+
+.smallButton {
+	margin-left: 10px;
+	display: inline-block;
+	border: 1px solid black;
+	border-radius: 3px;
+	padding: 1px 2px;
+}
