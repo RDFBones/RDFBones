@@ -19,3 +19,8 @@
 	padding : 5px;
 	/* background-color : #e6e6e6; */
 }
+
+.selectorTableContainer {
+    max-height: 300px;
+    overflow-y: auto;
+}
