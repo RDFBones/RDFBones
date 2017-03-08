@@ -6,14 +6,6 @@ bibo:Document
       vitro:customDisplayViewAnnot
               "documentProfilePage.ftl"^^xsd:string .
 
-<http://purl.obolibrary.org/obo/FMA_83129>
-      vitro:customDisplayViewAnnot
-              "boneOrgan.ftl"^^xsd:string .
-
-<http://purl.obolibrary.org/obo/FMA_5018>
-      vitro:customDisplayViewAnnot
-              "boneOrgan.ftl"^^xsd:string .
-
 bibo:Image
       vitro:customDisplayViewAnnot
               "imageProfilePage.ftl"^^xsd:string .
