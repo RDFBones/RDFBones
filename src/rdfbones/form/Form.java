@@ -76,9 +76,13 @@ public class Form {
 		}
 		JSONObject formElements = JSON.obj();
 		for (FormElement element : this.formElements) {
-			String predicate = this.graph.graphMap.get(element.node.varName).inputPredicate;
-			String key = QueryLib.getPredicateKey(predicate);
-			JSON.put(formElements, key, element.getDescriptor(this.formConfig));
+			if(this.graph.graphMap.keySet().contains(element.node.varName)){
+				String predicate = this.graph.graphMap.get(element.node.varName).inputPredicate;
+				String key = QueryLib.getPredicateKey(predicate);
+				JSON.put(formElements, key, element.getDescriptor(this.formConfig));
+			} else {
+				JSON.put(formElements, element.dataKey, element.getDescriptor(this.formConfig));
+			}
 		}
 		JSON.put(descriptor, "formElements", formElements);
 		return formElements;

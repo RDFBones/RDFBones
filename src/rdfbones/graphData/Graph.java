@@ -33,7 +33,9 @@ public class Graph {
 	public Triple triple = null;
 	public String inputPredicate = null;
 	public String firstNode = null;
-	
+	public boolean inputLabel = false;
+	public String inputLabelValue;
+
 	// Triples
 	public List<Triple> dataTriples = new ArrayList<Triple>();
 	public List<Triple> typeTriples = new ArrayList<Triple>();
@@ -85,7 +87,6 @@ public class Graph {
 	WebappConnector webapp;
 	public Graph mainGraph;
 	public FormConfiguration formConfiguration;
-	
 	
 	public Graph(List<Triple> triples, List<Triple> schemeTriples,
 			WebappConnector webapp) {
@@ -287,6 +288,9 @@ public class Graph {
 
 	public String saveInitialData(JSONObject inputObject) {
 		Map<String, String> variableMap = new HashMap<String, String>();
+		if(this.inputLabel){
+			this.inputLabelValue = JSON.string(inputObject, "label");
+		}
 		return this.getData(inputObject, variableMap);
 	}
 

@@ -97,4 +97,5 @@ var ElementMap = {
 	stringInput : StringInput,
 	literalCell : LiteralCell,
 	imagesCell : ImagesCell,
+	literalField : LiteralField,
 }

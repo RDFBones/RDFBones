@@ -8,6 +8,7 @@ import java.util.Map;
 import rdfbones.form.ExistingInstanceSelector;
 import rdfbones.form.Form;
 import rdfbones.form.FormElement;
+import rdfbones.form.LiteralField;
 import rdfbones.form.Selector;
 import rdfbones.form.SubformAdder;
 import rdfbones.graphData.FormGraph;
@@ -53,7 +54,11 @@ public class TripleLib {
 
 		SubformAdder assayType = new SubformAdder("assayType", "Assays");
 		assayType.subForm = assySubForm;
+
+		LiteralField labelField = new LiteralField("objectUriLabel", "Label");
+
 		Form mainForm = new Form("Study Design Execution");
+		mainForm.formElements.add(labelField);
 		mainForm.formElements.add(assayType);
 
 		return mainForm;
@@ -64,6 +69,7 @@ public class TripleLib {
 		List<Triple> triple = new ArrayList<Triple>();
 		triple.add(new Triple(new MainInputNode("subjectUri"), "obo:BFO_0000051",
 				"objectUri"));
+		//triple.add(new Triple("objectUri", "rdfs:label", "assayLabel"));
 		triple.add(new MultiTriple("objectUri", "obo:BFO_0000051",
 				"specimenCollectionProcess"));
 		triple.add(new MultiTriple("specimenCollectionProcess", "obo:OBI_0000293",
