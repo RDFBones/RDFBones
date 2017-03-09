@@ -78,7 +78,7 @@ public class TripleLib {
 				"specimen"));
 		triple.add(new Triple("assay", "obo:OBI_0000293", "specimen"));
 		triple.add(new MultiTriple("assay", "obo:OBI_0000299", "measurementDatum"));
-		triple.add(new Triple("measurementDatum", "obo:IAO_0000299",
+		triple.add(new Triple("measurementDatum", "obo:OBI_0000999",
 				new FormInputNode("categoricalLabel")));
 		return triple;
 	}
