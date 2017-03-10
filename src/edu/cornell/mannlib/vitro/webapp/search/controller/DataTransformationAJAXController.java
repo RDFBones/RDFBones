@@ -49,17 +49,9 @@ public class DataTransformationAJAXController extends VitroAjaxController {
   private static final Log log = LogFactory
       .getLog(DataTransformationAJAXController.class);
 
-  private DataPropertyStatementDao dataDao;
-  private ObjectPropertyStatementDao objectDao;
-  private PropertyInstanceDao propDao;
-
   NewURIMaker newUri;
-
-  private String[] objectTriplesAdd;
-  private String[] dataTriplesAdd;
-  private String[] objectTriplesRemove;
-  private String[] dataTriplesRemove;
-
+  JSONObject requestData;
+  
   String subjectUri;
   String dataTransformation;
   String dataTransformationType;
@@ -75,31 +67,25 @@ public class DataTransformationAJAXController extends VitroAjaxController {
   protected void doRequest(VitroRequest vreq, HttpServletResponse response)
     throws IOException, ServletException {
 
-    this.dataDao = vreq.getWebappDaoFactory().getDataPropertyStatementDao();
-    this.objectDao = vreq.getWebappDaoFactory().getObjectPropertyStatementDao();
-    this.propDao = vreq.getWebappDaoFactory().getPropertyInstanceDao();
-
     WebappConnector connector = new VIVOWebappConnector(vreq);
     Graph connectorGraph = new Graph();
     connectorGraph.setWebapp(connector);
-
     this.newUri = new NewURIMakerVitro(vreq.getWebappDaoFactory());
-    List<Triple> triples = getDataTriples();
-  
-    editKey = vreq.getParameter("editKey");
-    JSONObject requestData = JSON.getObject(vreq.getParameter("requestData"));
+
+    this.requestData = JSON.getObject(vreq.getParameter("requestData"));
+    editKey = getParameter("editKey");
     
-    // Data
     JSONObject resp = new JSONObject();
-    switch (vreq.getParameter("task")) {
+    
+    switch (getParameter("task")) {
 
     case "createNew":
       
       inputs = JSON.array(requestData, "inputs");
-      subjectUri = JSON.string(requestData, "subjectUri");
-      dataTransformationType = JSON.string(requestData, "DTType");
-      measurementDatumType = JSON.string(requestData, "measurementDatumType");
-      measurementValue = JSON.string(requestData, "measValue");
+      subjectUri = getParameter("subjectUri");
+      dataTransformationType = getParameter("DTType");
+      measurementDatumType = getParameter("measurementDatumType");
+      measurementValue = getParameter("measValue");
       dataTransformation = this.getUnusedURI();
       measurementDatum = this.getUnusedURI();
       
@@ -115,6 +101,20 @@ public class DataTransformationAJAXController extends VitroAjaxController {
       log.info("Ende");
       break;
 
+    case "addInput":
+
+      String dt1 = "<" + getParameter("dataTransformation") + ">";
+      String inputUri1 = "<" + getParameter("inputUri") + ">";
+      connector.addTriples(dt1 + " obo:OBI_0000299" , inputUri1);
+      break;
+
+    case "removeInput": 
+
+      String dt2 = "<" + getParameter("dataTransformation") + ">";
+      String inputUri2 = "<" + getParameter("inputUri") + ">";
+      connector.removeTriples(dt2 + " obo:OBI_0000299" , inputUri2);
+      break;
+      
     case "delete":
 
       inputs = JSON.array(requestData, "inputs");
@@ -127,9 +127,9 @@ public class DataTransformationAJAXController extends VitroAjaxController {
 
     case "edit":
 
-      String oldValue = JSON.string(requestData, "newMeasurementValue");
-      String newValue = JSON.string(requestData, "oldMeasurementValue");
-      measurementDatum = JSON.string(requestData, "meausurementDatum");
+      String oldValue = getParameter("newMeasurementValue");
+      String newValue = getParameter("oldMeasurementValue");
+      measurementDatum = getParameter("meausurementDatum");
       String toRemove = "<" + measurementDatum + "> "  + 
           "obo:IAO_0000004" +  "\"" + oldValue + "\" . " ;
       String toAdd = "<" + measurementDatum + "> "  + 
@@ -146,7 +146,8 @@ public class DataTransformationAJAXController extends VitroAjaxController {
       JSON.put(resp,"dataTransformations", dataTransDataGetter.getJSON(ArrayLib.getList(subjectUri)));
 
       StringSPARQLDataGetter existingDataGetter = new StringSPARQLDataGetter(connectorGraph, SPARQL_existingData(), 
-          ArrayLib.getList("DT","?DTType", "measurementDatum"), ArrayLib.getList("DTTypeLabel", "measurementValue"), 1);
+          ArrayLib.getList("dataTransformation","dataTransformationType", "measurementDatum"), 
+          ArrayLib.getList("dataTransformationTypeLabel", "measurementValue"), 1);
       JSON.put(resp,"existingData", existingDataGetter.getJSON(ArrayLib.getList(subjectUri)));
       break;
     
@@ -228,21 +229,23 @@ public class DataTransformationAJAXController extends VitroAjaxController {
         + "  OPTIONAL { ?uri    rdfs:label     ?label . } "
         + "  FILTER ( ?subjectUri = <input1> ) "
         + "}"; 
+    return query;
   }
   
   public String SPARQL_existingData(){
     
     String query = ""
-        + "SELECT ?DT ?DTType ?DTTypeLabel ?measurementDatum ?measurementValue "
+        + "SELECT ?dataTransformation ?dataTransformationType ?dataTransformationTypeLabel ?measurementDatum ?measurementValue "
         + "WHERE { "
-        + "  ?subjectUri         obo:BFO_0000051               ?DT . "
-        + "  ?DT                 rdf:type                      obo:OBI_0200000 . "
-        + "  ?DT                 vitro:mostSpecificType        ?DTType . "
-        + "  OPTIONAL { ?dataTransformationType   rdfs:label   ?DTTypeLabel . }"
-        + "  ?DT                 obo:OBI_0000299               ?measurementDatum . }"
-        + "  ?measurementDatum   obo:IAO_0000004               ?measurementValue . }" 
+        + "  ?subjectUri           obo:BFO_0000051               ?dataTransformation . "
+        + "  ?dataTransformation   rdf:type                      obo:OBI_0200000 . "
+        + "  ?dataTransformation   vitro:mostSpecificType        ?dataTransformationType . "
+        + "  OPTIONAL { ?dataTransformationType   rdfs:label     ?dataTransformationTypeLabel . }"
+        + "  ?dataTransformation                   obo:OBI_0000299               ?measurementDatum . "
+        + "  ?measurementDatum     obo:IAO_0000004               ?measurementValue . " 
         + "  FILTER ( ?subjectUri = <input1> ) "
         + "}";
+    return query;
   }
   
   public String SPARQL_inputs(){
@@ -265,6 +268,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
         + "  }"
         + "  FILTER ( ?subjectUri = <input1> ) "
         + "}";
+    return query;
   }
   
 
@@ -296,6 +300,12 @@ public class DataTransformationAJAXController extends VitroAjaxController {
         + " }"
         + " FILTER ( ?DTType = <input1> )"
         + "}"; 
+    return query;
+  }
+  
+  String getParameter(String key){
+    
+    return JSON.string(requestData, key); 
   }
   
   private Map<String, String> getDataMap(){
@@ -305,21 +315,20 @@ public class DataTransformationAJAXController extends VitroAjaxController {
     map.put("dataTransformation", dataTransformation);
     map.put("measurementDatum", measurementDatum);
     map.put("measurementDatumType", measurementDatumType);
-    map.put("measurementValue", measurementValue);
     return map;
   }
   
   private Map<String, String> getLiteralMap(){
   
     Map<String, String> map = new HashMap<String, String>();
-    map.put("literalValue", literalValue);
+    map.put("measurementValue", measurementValue);
     return map;
   }
 
   private String getInputs(){
     String triple = new String("");
     for (int i = 0; i < this.inputs.length(); i++) {
-      JSONObject jsonObject = JSON.stringArr(this.inputs, i);  
+      String input = JSON.stringArr(this.inputs, i);  
       triple += "<" + input + ">   obo:OBI_0000293 <" + this.dataTransformation + "> .\n"; 
     }
     return triple;
