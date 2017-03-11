@@ -156,15 +156,17 @@ public class DataTransformationAJAXController extends VitroAjaxController {
       StringSPARQLDataGetter inputsDataGetter = new StringSPARQLDataGetter(connectorGraph, SPARQL_inputs(), 
           ArrayLib.getList("measDatum"), ArrayLib.getList("typeLabel", "cardinality", "catLabel", "literalValue"), 1);
       subjectUri = JSON.string(requestData, "subjectUri");
-      JSON.put(resp, "inputs", inputsDataGetter.getData(subjectUri));
+      JSON.put(resp, "inputs", inputsDataGetter.getJSON(subjectUri));
        break;
       
     case "outputType":
       
       StringSPARQLDataGetter outputTypeDataGetter = new StringSPARQLDataGetter(connectorGraph, SPARQL_OutputTypes(), 
-          ArrayLib.getList("measDatumType"), ArrayLib.getList("label", "literalType"), 1);
+          ArrayLib.getList("measDatumType","literalType"), ArrayLib.getList("label"), 1);
+      log.info(SPARQL_OutputTypes());
       dataTransformationType = JSON.string(requestData, "dataTransformationType");
-      JSON.put(resp, "inputs", outputTypeDataGetter.getData(dataTransformationType));
+      log.info(dataTransformationType);
+      JSON.put(resp, "inputs", outputTypeDataGetter.getJSON(dataTransformationType));
       break;
      
     default:
@@ -271,7 +273,27 @@ public class DataTransformationAJAXController extends VitroAjaxController {
     return query;
   }
   
+  //In this case the subjectUri
+  public String SPARQL_OutputTypes(){
 
+    String query = ""
+        + "SELECT ?measDatumType ?label ?literalType "
+        + "WHERE { "
+        + "     ?DTType              rdfs:subClassOf              ?restriction1 ." 
+        + "     ?restriction1        owl:onProperty               obo:OBI_0000299 . "
+        + "     ?restriction1        owl:qualifiedCardinality     ?cardinality . "
+        + "     ?restriction1        owl:onClass                  ?measDatumType . "
+        + "     ?measDatumType       rdfs:subClassOf              ?superMeasDatumType ."    
+        + "     ?superMeasDatumType       rdfs:subClassOf              ?restriction2 . "
+        + "     ?restriction2        owl:onProperty               <http://vivoweb.org/ontology/core#hasValue> . "
+        + "     ?restriction2        owl:onDataRange              ?literalType . "
+        + "     OPTIONAL { ?measDatumType      rdfs:label     ?label . } "
+        + "     FILTER ( ?DTType = <input1> )"
+        + "}"; 
+    return query;
+  }
+
+  /*
   public String SPARQL_OutputTypes(){
   
     //In this case the subjectUri
@@ -283,7 +305,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
         + "     ?restriction1        owl:onProperty               obo:OBI_0000293 . "
         + "     ?restriction1        owl:qualifiedCardinality     ?cardinality . "
         + "     ?restriction1        owl:onClass                  ?measDatumType . "
-        + "     ?measDatumType       rdfs:subClassOf              ?restriction . "
+        + "     ?measDatumType       rdfs:subClassOf              ?restriction2 . "
         + "     ?restriction2        owl:onProperty               <http://vivoweb.org/ontology/core#hasValue> . "
         + "     ?restriction2        owl:someValuesFrom           ?literalType . "
         + "     OPTIONAL { ?measDatumType      rdfs:label     ?label . } "
@@ -302,7 +324,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
         + "}"; 
     return query;
   }
-  
+  */
   String getParameter(String key){
     
     return JSON.string(requestData, key); 
