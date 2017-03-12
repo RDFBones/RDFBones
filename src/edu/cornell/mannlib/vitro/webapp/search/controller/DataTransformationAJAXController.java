@@ -119,7 +119,6 @@ public class DataTransformationAJAXController extends VitroAjaxController {
       
     case "delete":
 
-      log.info("delete");
       inputs = JSON.array(requestData, "inputs");
       subjectUri = getParameter("subjectUri");
       dataTransformation = getParameter("dataTransformation");
@@ -127,9 +126,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
       measurementDatum = getParameter("measurementDatum");
       measurementDatumType = getParameter("measurementDatumType");
       measurementValue = getParameter("measurementValue");
-      log.info("params are initialized");
       String triples = getTripleString();
-      log.info(triples);
       JSON.put(resp, "triplesToRemove", triples);
       connector.removeTriples(triples, editKey);
       break;
@@ -190,9 +187,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
       
       StringSPARQLDataGetter outputTypeDataGetter = new StringSPARQLDataGetter(connectorGraph, SPARQL_OutputTypes(), 
           ArrayLib.getList("measDatumType","literalType"), ArrayLib.getList("label"), 1);
-      log.info(SPARQL_OutputTypes());
       dataTransformationType = JSON.string(requestData, "dataTransformationType");
-      log.info(dataTransformationType);
       JSON.put(resp, "inputs", outputTypeDataGetter.getJSON(dataTransformationType));
       break;
      
@@ -348,9 +343,6 @@ public class DataTransformationAJAXController extends VitroAjaxController {
     return map;
   }
   
-  
-  
-  
   private Map<String, String> getLiteralMap(){
   
     Map<String, String> map = new HashMap<String, String>();
@@ -373,13 +365,9 @@ public class DataTransformationAJAXController extends VitroAjaxController {
     
     String triplesString = SPARQLUtils.assembleTriples(getDataTriples());
     triplesString += " ?dataTransformation  rdf:type obo:OBI_0200000  . ";
-    log.info(triplesString);
     triplesString = QueryUtils.subUrisForQueryLiterals(triplesString, getLiteralMap());
-    log.info("literals substitutied");
     triplesString = QueryUtils.subUrisForQueryVars(triplesString, getDataMap());
-    log.info("uris substitutied");
     triplesString += getInputs();
-    log.info(triplesString);
     return triplesString;
   }
   
