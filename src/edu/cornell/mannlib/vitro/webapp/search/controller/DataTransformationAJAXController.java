@@ -83,18 +83,20 @@ public class DataTransformationAJAXController extends VitroAjaxController {
       
       inputs = JSON.array(requestData, "inputs");
       subjectUri = getParameter("subjectUri");
-      dataTransformationType = getParameter("DTType");
+      dataTransformationType = getParameter("dataTransformationType");
       measurementDatumType = getParameter("measurementDatumType");
-      measurementValue = getParameter("measValue");
+      measurementValue = getParameter("measurementValue");
       dataTransformation = this.getUnusedURI();
       measurementDatum = this.getUnusedURI();
       
-      if(connector.addTriples(getTripleString(), editKey)){
+      String triplesToStore = getTripleString();
+      if(connector.addTriples(triplesToStore, editKey)){
         log.info("succesfully");
       } else {
         log.info("unSuccesfully");
       }
       JSONObject dataObject = JSON.obj();
+      JSON.put(dataObject, "createdTriples", triplesToStore);
       JSON.put(dataObject, "dataTransformation", dataTransformation);
       JSON.put(dataObject, "measurementDatum", measurementDatum);
       JSON.put(resp, "dataObject", dataObject);
@@ -303,38 +305,6 @@ public class DataTransformationAJAXController extends VitroAjaxController {
     return query;
   }
 
-  /*
-  public String SPARQL_OutputTypes(){
-  
-    //In this case the subjectUri
-    String query = ""
-        + "SELECT ?measDatumType ?label ?literalType "
-        + "WHERE { "
-        + "  {"
-        + "     ?DTType              rdfs:subClassOf              ?restriction1 ."    
-        + "     ?restriction1        owl:onProperty               obo:OBI_0000293 . "
-        + "     ?restriction1        owl:qualifiedCardinality     ?cardinality . "
-        + "     ?restriction1        owl:onClass                  ?measDatumType . "
-        + "     ?measDatumType       rdfs:subClassOf              ?restriction2 . "
-        + "     ?restriction2        owl:onProperty               <http://vivoweb.org/ontology/core#hasValue> . "
-        + "     ?restriction2        owl:someValuesFrom           ?literalType . "
-        + "     OPTIONAL { ?measDatumType      rdfs:label     ?label . } "
-        + " } UNION { "
-        + "     ?DTType              rdfs:subClassOf              ?restriction1 . "    
-        + "     ?restriction1        owl:onProperty               obo:OBI_0000293 . "
-        + "     ?restriction1        owl:qualifiedCardinality     ?cardinality . "
-        + "     ?restriction1        owl:onClass                  ?measDatumType . "
-        + "     ?measDatumType       rdfs:subClassOf              ?superMeasDatumType . "
-        + "     ?superMeasDatumType  rdfs:subClassOf              ?restriction2 . "
-        + "     ?restriction2        owl:onProperty               <http://vivoweb.org/ontology/core#hasValue> . "
-        + "     ?restriction2        owl:someValuesFrom           ?literalType . "
-        + "     OPTIONAL { ?measDatumType    rdfs:label     ?label . } "   
-        + " }"
-        + " FILTER ( ?DTType = <input1> )"
-        + "}"; 
-    return query;
-  }
-  */
   String getParameter(String key){
     
     return JSON.string(requestData, key); 
@@ -345,6 +315,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
     Map<String, String> map = new HashMap<String, String>();
     map.put("subjectUri", subjectUri);
     map.put("dataTransformation", dataTransformation);
+    map.put("dataTransformationType", dataTransformationType);
     map.put("measurementDatum", measurementDatum);
     map.put("measurementDatumType", measurementDatumType);
     return map;
@@ -369,6 +340,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
   private String getTripleString(){
     
     String triplesString = SPARQLUtils.assembleTriples(getDataTriples());
+    triplesString += " ?dataTransformation  rdf:type obo:OBI_0200000  . ";
     triplesString = QueryUtils.subUrisForQueryLiterals(triplesString, getLiteralMap());
     triplesString = QueryUtils.subUrisForQueryVars(triplesString, getDataMap());
     triplesString += getInputs();
