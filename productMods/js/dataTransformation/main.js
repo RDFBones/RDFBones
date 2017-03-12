@@ -17,10 +17,12 @@ class Main {
 		
 		this.selector = new SelectorElement(msg.dataTransformations)
 		this.items = []
-		$.each(msg.existingData, (function(key, value){
+		this.initUI()
+		this.existingData = this.filter(msg.existingData)
+		$.each(this.existingData, (function(key, value){
+			console.log(value)
 			this.items.push(new ExistingDataTransformation(this, value).container)
 		}).bind(this))
-		this.initUI()
 	}
 	
 	initUI(){
@@ -38,14 +40,34 @@ class Main {
 	
 	addElement(){
 		
-		new DataTransformationItem(this, this.selector.val(), 
-					this.selector.text())
+		if(this.unsaved){
+			alert("Please finish editing current data transformation")
+		} else {
+			this.unsaved = true
+			var object = {
+				dataTransformationType : this.selector.val(),
+				dataTransformationTypeLabel : this.selector.text()
+			}
+			new DataTransformationItem(this, object)
+		}
 	}
 	
 	remove (data){
 		this.selector.append(this.optionMap[data.sexScore])
 		this.cnt++
 		this.refreshSelector()
+	}
+	
+	filter(existingData){
+		var output = []
+		var object = new Object()
+		$.each(existingData, function(key, value){
+			if(object[value.dataTransformation] === undefined){
+				output.push(value)
+				object[value.dataTransformation] = true
+			}
+		})
+		return output
 	}
 }
 

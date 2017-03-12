@@ -1,28 +1,30 @@
 
 class DataTransformationItem {
 
-	constructor(mainForm, dataTransformationType, dataTransformationTypeLabel){
-	
+	constructor(mainForm, dataObject){
 		this.mainForm = mainForm
-		this.dataObject = {
-				dataTransformationType : dataTransformationType,
-				dataTransformationTypeLabel : dataTransformationTypeLabel,
-		}
+		this.dataObject = dataObject
+		this.init()
+	}
+	
+	init(dataObject){
+		
+		this.value = null
 		this.saved = null
 		DTAJAX.call({
-			dataTransformationType : dataTransformationType,
+			dataTransformationType : this.dataObject.dataTransformationType,
 			task : "outputType",
 		}, (function(msg){
 			this.dataObject = $.extend(this.dataObject, msg)
 			this.dataObject.literalType = msg.inputs[0].literalType
-			this.dataObject.measDatumType = msg.inputs[0].measDatumType
-			this.dataObject.measDatumTypeLabel = 
-				this.dataObject.measDatumType.split("#")[1]
+			this.dataObject.measurementDatumType = msg.inputs[0].measDatumType
+			this.dataObject.measurementDatumTypeLabel = 
+				this.dataObject.measurementDatumType.split("#")[1]
 			this.dataObject.inputs = []
 			this.initUI()
 		}).bind(this))
 	}
-
+	
 	initUI(){
 
 		this.container = html.div("dT_elementContainer")
@@ -30,7 +32,7 @@ class DataTransformationItem {
 		this.contentContainer = html.div("")
 		this.title = html.div("dt_title").text(
 				this.dataObject.dataTransformationTypeLabel)
-		
+
 		//Input
 		this.inputCont = html.div("margin10H")
 		this.inputTitle = html.div("dt_inlineTitle").text("Input data")
@@ -41,36 +43,39 @@ class DataTransformationItem {
 		this.outputCont = html.div("flexInlineContainer margin10H")
 		this.outputTitle = html.div("dt_title").text("Output data")
 		
+		//Output data container
 		this.outputDataContainer = html.div("inline margin10H")
-		
-		this.measDatumDiv = html.div("inline")
-		this.measDatumLabelDiv = html.div("dt_title").text((this.dataObject.measDatumTypeLabel))
-		
-		this.fieldContainer = html.div("dT_elementContainer")	
-		this.dataField = UI.floatInput(0.1).change((this.change).bind(this)).addClass("margin15H")
-		this.saveButton = new Button("done", (this.saveHandler).bind(this)).disable()
-		this.fieldContainer.append([this.dataField, this.saveButton.container])
-		
-		this.outputDataContainer.append([this.measDatumLabelDiv, this.fieldContainer])
+		this.measDatumLabelDiv = html.div("dt_title").text((this.dataObject.measurementDatumTypeLabel))
+		this.precision = this.dataObject.literalType == "http://www.w3.org/2001/XMLSchema#float" ? 0.01 : 1 
+		this.dataField = UI.floatInput(this.precision).change((this.change).bind(this)).addClass("margin15H")
+		this.outputDataContainer.append([this.measDatumLabelDiv, this.dataField])
 		
 		this.outputCont.append([this.outputTitle, this.outputDataContainer])
-		
 		this.contentContainer.append([this.title, this.inputCont, this.outputCont])
-		
+
 		// Delete button
+		this.buttonContainer = html.div()
+		this.saveButton = new Button("done", (this.saveHandler).bind(this))
 		this.deleteButton = new Button("del", (this.del).bind(this))
+		this.buttonContainer.append([this.saveButton.container, this.deleteButton.container])
 		
 		//Assemble
-		this.container.append([this.contentContainer, this.deleteButton.container])	
+		this.container.append([this.contentContainer, this.buttonContainer])	
 		this.mainForm.elementContainer.append(this.container)
 	}
 	
 	saveHandler (){
 		
-		if(this.saved == null){
-			this.save()
+		if(this.value == null){
+			//Data were not initialized
+			alert("Please set the output value")
 		} else {
-			this.edit()
+			if(this.saved == null){
+				this.save()
+			} else {
+				this.edit()
+			}
+			this.saveButton.hide()
 		}
 	}
 	
@@ -86,38 +91,25 @@ class DataTransformationItem {
 		}
 	}
 	
-	save (){
-		DTAJAX.send({
-			task : "createNew",
-			dataTransformationType : this.dataObject.dataTransformationType,
-			measurementValue : this.unsaved,
-			measurementValueType : this.dataObject.measurementValueType,
-		}, (function(msg) {
-			//Here the new URIs will be added to the dataObject
-			$.extend(this.dataObject, msg.dataObject)
-			this.saved = this.unsaved
-			this.unsaved = null
-			this.saveButton.disable()
-		}).bind(this))
-	}
-	
 	edit (){
-		
 		DTAJAX.send({
 			task : "edit",
 			measurementDatum : this.dataObject.measurementDatum,
-			oldMeasurementValue : this.savedValue,
-			newMeasurementValue : this.unsaved,
+			oldMeasurementValue : this.saved,
+			newMeasurementValue : this.value,
 		})
-		this.savedValue = this.unsaved
+		this.saved = this.value
+		this.saveButton.hide()
 	}
 	
 	change (){
 		
-		if(this.unsaved == null){
-			this.saveButton.enable()
+		this.value = this.dataField.val()
+		if(this.saved == this.value){
+			this.saveButton.hide()
+		} else {
+			this.saveButton.show()
 		}
-		this.unsaved = this.sexScoreField.val()
 	}
 
 	del (){
@@ -140,16 +132,37 @@ class DataTransformationItem {
 			this.parentForm.remove(this.dataObject)
 		}
 	}
+	
+	save (){
+		DTAJAX.call({
+			task : "createNew",
+			dataTransformationType : this.dataObject.dataTransformationType,
+			measurementValue : this.value,
+			measurementValueType : this.dataObject.measurementValueType,
+			measurementDatumType : this.dataObject.measurementDatumType
+		}, (function(msg) {
+			//Here the new URIs will be added to the dataObject
+			$.extend(this.dataObject, msg.dataObject)
+			this.saved = this.unsaved
+			this.unsaved = null
+			this.mainForm.unsaved = false
+		}).bind(this))
+	}
 }
 
 class ExistingDataTransformation extends DataTransformationItem {
 	
 	constructor(mainForm, dataObject){
 		super(mainForm, dataObject)
-		this.saved = true
-		this.savedValue = dataObject.degree
-		this.sexScoreField.val(dataObject.degree)
+		this.saved = dataObject.measurementValue
+		this.value = dataObject.measurementValue
+		this.dataField.val(dataObject.measurementValue)
+	}
+
+	init(dataObject){
+		this.dataObject.measurementDatumTypeLabel = this.dataObject.measurementDatumType.split("#")[1]
+		this.dataObject.dataTransformationTypeLabel = this.dataObject.dataTransformationType.split("#")[1]
+		this.initUI()
 	}
 }
-
 

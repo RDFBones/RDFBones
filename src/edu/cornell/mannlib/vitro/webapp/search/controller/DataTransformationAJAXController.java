@@ -148,7 +148,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
       JSON.put(resp,"dataTransformations", dataTransDataGetter.getJSON(ArrayLib.getList(subjectUri)));
 
       StringSPARQLDataGetter existingDataGetter = new StringSPARQLDataGetter(connectorGraph, SPARQL_existingData(), 
-          ArrayLib.getList("dataTransformation","dataTransformationType", "measurementDatum"), 
+          ArrayLib.getList("dataTransformation","dataTransformationType", "measurementDatum", "measurementDatumType"), 
           ArrayLib.getList("dataTransformationTypeLabel", "measurementValue"), 1);
       JSON.put(resp,"existingData", existingDataGetter.getJSON(ArrayLib.getList(subjectUri)));
       break;
@@ -197,9 +197,9 @@ public class DataTransformationAJAXController extends VitroAjaxController {
     dataTriples.add(new LiteralTriple("measurementDatum", "obo:IAO_0000004",
         "measurementValue"));
     // Type triples
-    dataTriples.add(new Triple("dataTransformation", "rdf:type",
+    dataTriples.add(new Triple("dataTransformation", "vitro:mostSpecificType",
         "dataTransformationType"));
-    dataTriples.add(new Triple("measurementDatum", "rdf:type",
+    dataTriples.add(new Triple("measurementDatum", "vitro:mostSpecificType",
         "measurementDatumType"));
     return dataTriples;
   }
@@ -239,7 +239,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
   public String SPARQL_existingData(){
     
     String query = ""
-        + "SELECT ?dataTransformation ?dataTransformationType ?dataTransformationTypeLabel ?measurementDatum ?measurementValue "
+        + "SELECT ?dataTransformation ?dataTransformationType ?dataTransformationTypeLabel ?measurementDatum ?measurementDatumType ?measurementValue "
         + "WHERE { "
         + "  ?subjectUri           obo:BFO_0000051               ?dataTransformation . "
         + "  ?dataTransformation   rdf:type                      obo:OBI_0200000 . "
@@ -247,6 +247,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
         + "  OPTIONAL { ?dataTransformationType   rdfs:label     ?dataTransformationTypeLabel . }"
         + "  ?dataTransformation                   obo:OBI_0000299               ?measurementDatum . "
         + "  ?measurementDatum     obo:IAO_0000004               ?measurementValue . " 
+        + "  ?measurementDatum     vitro:mostSpecificType        ?measurementDatumType ."    
         + "  FILTER ( ?subjectUri = <input1> ) "
         + "}";
     return query;
