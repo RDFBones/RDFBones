@@ -95,7 +95,7 @@ class DataTransformationItem {
 	}
 	
 	edit (){
-		DTAJAX.send({
+		DTAJAX.call({
 			task : "edit",
 			measurementDatum : this.dataObject.measurementDatum,
 			oldMeasurementValue : this.saved,
@@ -147,8 +147,7 @@ class DataTransformationItem {
 		}, (function(msg) {
 			//Here the new URIs will be added to the dataObject
 			$.extend(this.dataObject, msg.dataObject)
-			this.saved = this.unsaved
-			this.unsaved = null
+			this.saved = this.value
 			this.mainForm.unsaved = false
 			this.saveButton.hide()
 		}).bind(this))

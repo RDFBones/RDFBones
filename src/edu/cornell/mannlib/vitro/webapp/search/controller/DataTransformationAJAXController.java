@@ -60,6 +60,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
   String measurementValue;
   JSONArray inputs;
   String editKey;
+  JSONObject resp = new JSONObject();
   
   private static Map<String, String> prefixDef = new HashMap<String, String>();
 
@@ -75,7 +76,6 @@ public class DataTransformationAJAXController extends VitroAjaxController {
     this.requestData = JSON.getObject(vreq.getParameter("requestData"));
     editKey = getParameter("editKey");
     
-    JSONObject resp = new JSONObject();
     
     switch (getParameter("task")) {
 
@@ -133,13 +133,15 @@ public class DataTransformationAJAXController extends VitroAjaxController {
 
     case "edit":
 
-      String oldValue = getParameter("newMeasurementValue");
-      String newValue = getParameter("oldMeasurementValue");
-      measurementDatum = getParameter("meausurementDatum");
+      String oldValue = getParameter("oldMeasurementValue");
+      String newValue = getParameter("newMeasurementValue");
+      measurementDatum = getParameter("measurementDatum");
       String toRemove = "<" + measurementDatum + "> "  + 
-          "obo:IAO_0000004" +  "\"" + oldValue + "\" . " ;
+          "obo:IAO_0000004" +  " '" + oldValue + "' . " ;
       String toAdd = "<" + measurementDatum + "> "  + 
-          "obo:IAO_0000004" +  "\"" + newValue + "\" . " ;
+          "obo:IAO_0000004" +  " '" + newValue + "' . " ;
+      resp("toRemove", toRemove);
+      resp("toAdd", toAdd);
       connector.removeTriples(toRemove, editKey);
       connector.addTriples(toAdd, editKey);
       break;
@@ -330,6 +332,11 @@ public class DataTransformationAJAXController extends VitroAjaxController {
   String getParameter(String key){
     
     return JSON.string(requestData, key); 
+  }
+  
+  void resp(String key, String value){
+    
+    JSON.put(resp, key, value);
   }
   
   private Map<String, String> getDataMap(){
