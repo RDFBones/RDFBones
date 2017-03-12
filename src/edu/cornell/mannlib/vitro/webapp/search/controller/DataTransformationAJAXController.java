@@ -194,6 +194,8 @@ public class DataTransformationAJAXController extends VitroAjaxController {
     dataTriples.add(new Triple("subjectUri", "obo:BFO_0000051", "dataTransformation"));
     dataTriples.add(new Triple("dataTransformation", "obo:OBI_0000299",
         "measurementDatum"));
+    dataTriples.add(new LiteralTriple("dataTransformation", "rdfs:label",
+        "dataTransformationLabel"));
     dataTriples.add(new LiteralTriple("measurementDatum", "obo:IAO_0000004",
         "measurementValue"));
     // Type triples
@@ -201,6 +203,8 @@ public class DataTransformationAJAXController extends VitroAjaxController {
         "dataTransformationType"));
     dataTriples.add(new Triple("measurementDatum", "vitro:mostSpecificType",
         "measurementDatumType"));
+    dataTriples.add(new LiteralTriple("measurementDatum", "rdfs:label",
+        "measurementDatumLabel"));
     return dataTriples;
   }
   
@@ -311,9 +315,11 @@ public class DataTransformationAJAXController extends VitroAjaxController {
   
     Map<String, String> map = new HashMap<String, String>();
     map.put("measurementValue", measurementValue);
+    map.put("dataTransformationLabel", dataTransformationType.split("#")[1]);
+    map.put("measurementDatumLabel", measurementDatumType.split("#")[1]);
     return map;
   }
-
+  
   private String getInputs(){
     String triple = new String("");
     for (int i = 0; i < this.inputs.length(); i++) {
