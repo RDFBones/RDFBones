@@ -15,12 +15,14 @@ class Main {
 	
 	init (msg){
 		
+		this.addedDTs = new Object()
 		this.selector = new SelectorElement(msg.dataTransformations)
 		this.items = []
 		this.initUI()
 		this.existingData = this.filter(msg.existingData)
 		$.each(this.existingData, (function(key, value){
 			console.log(value)
+			this.addedDTs[value.dataTransformationType] = true
 			this.items.push(new ExistingDataTransformation(this, value).container)
 		}).bind(this))
 	}
@@ -48,14 +50,14 @@ class Main {
 				dataTransformationType : this.selector.val(),
 				dataTransformationTypeLabel : this.selector.text()
 			}
+			this.addedDTs[this.selector.val()] = true
 			new DataTransformationItem(this, object)
 		}
 	}
 	
-	remove (data){
-		this.selector.append(this.optionMap[data.sexScore])
-		this.cnt++
-		this.refreshSelector()
+	remove (dataTransformationType){
+		//Remove the key
+		delete this.addedDTs[dataTransformationType]
 	}
 	
 	filter(existingData){
@@ -70,29 +72,3 @@ class Main {
 		return output
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	

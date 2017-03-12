@@ -119,12 +119,19 @@ public class DataTransformationAJAXController extends VitroAjaxController {
       
     case "delete":
 
+      log.info("delete");
       inputs = JSON.array(requestData, "inputs");
-      subjectUri = JSON.string(requestData, "subjectUri");
-      dataTransformationType = JSON.string(requestData, "DTType");
-      measurementDatumType = JSON.string(requestData, "measurementDatumType");
-      measurementValue = JSON.string(requestData, "measValue");
-      connector.removeTriples(getTripleString(), editKey);
+      subjectUri = getParameter("subjectUri");
+      dataTransformation = getParameter("dataTransformation");
+      dataTransformationType = getParameter("dataTransformationType");
+      measurementDatum = getParameter("measurementDatum");
+      measurementDatumType = getParameter("measurementDatumType");
+      measurementValue = getParameter("measurementValue");
+      log.info("params are initialized");
+      String triples = getTripleString();
+      log.info(triples);
+      JSON.put(resp, "triplesToRemove", triples);
+      connector.removeTriples(triples, editKey);
       break;
 
     case "edit":
@@ -153,13 +160,31 @@ public class DataTransformationAJAXController extends VitroAjaxController {
       JSON.put(resp,"existingData", existingDataGetter.getJSON(ArrayLib.getList(subjectUri)));
       break;
     
-    case "inputs":
+    case "inputsInitial":
       
-      StringSPARQLDataGetter inputsDataGetter = new StringSPARQLDataGetter(connectorGraph, SPARQL_inputs(), 
+      //Possible inputs
+      StringSPARQLDataGetter inputsDataGetter1 = new StringSPARQLDataGetter(connectorGraph, SPARQL_inputs(), 
           ArrayLib.getList("measDatum"), ArrayLib.getList("typeLabel", "cardinality", "catLabel", "literalValue"), 1);
-      subjectUri = JSON.string(requestData, "subjectUri");
-      JSON.put(resp, "inputs", inputsDataGetter.getJSON(subjectUri));
+      subjectUri = getParameter("subjectUri");
+      dataTransformationType = getParameter("dataTransformationType");
+      JSON.put(resp, "inputs", inputsDataGetter1.getJSON(ArrayLib.getList(subjectUri, dataTransformationType)));
        break;
+      
+    case "inputsExisting":
+      
+      //Possible inputs
+      StringSPARQLDataGetter inputsDataGetter2 = new StringSPARQLDataGetter(connectorGraph, SPARQL_inputs(), 
+          ArrayLib.getList("measDatum"), ArrayLib.getList("typeLabel", "cardinality", "catLabel", "literalValue"), 1);
+      subjectUri = getParameter("subjectUri");
+      dataTransformationType = getParameter("dataTransformationType");
+      JSON.put(resp, "inputs", inputsDataGetter2.getJSON(ArrayLib.getList(subjectUri, dataTransformationType)));
+
+      //Existing inputs
+      StringSPARQLDataGetter existingInputsDataGetter = new StringSPARQLDataGetter(connectorGraph, SPARQL_exsistingInput(), 
+          ArrayLib.getList("input"), null, 1);
+      subjectUri = getParameter("dataTransformation");
+      JSON.put(resp, "exsistingInputs", existingInputsDataGetter.getJSON(subjectUri)); 
+      break;
       
     case "outputType":
       
@@ -245,22 +270,34 @@ public class DataTransformationAJAXController extends VitroAjaxController {
   public String SPARQL_inputs(){
   
     String query = ""
-        + "SELECT ?measDatum ?typeLabel ?cardinality ?catLabel ?literalValue"
+        + "SELECT ?measurementDatum ?measurementDatumLabel ?typeLabel ?cardinality ?catLabel ?literalValue"
         + "WHERE { "
-        + "  ?subjectUri     obo:BFO_0000051            ?assayOrDT . "
-        + "  ?assayOrDT      obo:OBI_0000299            ?measDatum . "
-        + "  ?measDatum      rdf:type                   ?measDatumType . " 
-        + "  ?DTType         rdfs:subClassOf            ?restriction . "
-        + "  ?restriction    owl:onProperty             obo:OBI_0000293 . "
-        + "  ?restriction    owl:qualifiedCardinality   ?cardinality . "
-        + "  ?restriction    owl:onClass                ?measDatumType . "
-        + "  OPTIONAL { ?measDatumType  rdfs:label       ?typeLabel . } "
-        + "  OPTIONAL { ?measDatum      obo:IAO_0000004  ?literalValue . } "
+        + "  ?subjectUri                 obo:BFO_0000051               ?assayOrDT . "
+        + "  ?assayOrDT                  obo:OBI_0000299               ?measurementDatum . "
+        + "  ?measurementDatum           rdfs:label                    ?measurementDatumLabel . " 
+        + "  ?measurementDatum           rdf:type                      ?measurementDatumType ." 
+        + "  ?dataTransformationType     rdfs:subClassOf               ?restriction . "
+        + "  ?restriction                owl:onProperty                obo:OBI_0000293 . "
+        + "  ?restriction                owl:qualifiedCardinality      ?cardinality . "
+        + "  ?restriction                owl:onClass                   ?measurementDatumType . "
+        + "  OPTIONAL { ?measurementDatum       obo:IAO_0000004               ?literalValue . } "
         + "  OPTIONAL {  "
-        + "     ?measDatum          obo:OBI_0000999   ?categoricalLabel . "
-        + "     ?categoricalLabel   rdfs:label        ?catLabel . "
+        + "     ?measurementDatum               obo:OBI_0000999          ?categoricalLabel . "
+        + "     ?categoricalLabel               rdfs:label               ?catLabel . "
         + "  }"
         + "  FILTER ( ?subjectUri = <input1> ) "
+        + "  FILTER ( ?dataTransformationType = <input2> ) "
+        + "}";
+    return query;
+  }
+  
+  public String SPARQL_exsistingInput(){
+    
+    String query = ""
+        + "SELECT ?input "
+        + "WHERE { "
+        + "  ?dataTransformation     obo:OBI_0000293          ?input . "
+        + "  FILTER ( ?dataTransformation = <input1> ) "
         + "}";
     return query;
   }
@@ -311,6 +348,9 @@ public class DataTransformationAJAXController extends VitroAjaxController {
     return map;
   }
   
+  
+  
+  
   private Map<String, String> getLiteralMap(){
   
     Map<String, String> map = new HashMap<String, String>();
@@ -333,9 +373,13 @@ public class DataTransformationAJAXController extends VitroAjaxController {
     
     String triplesString = SPARQLUtils.assembleTriples(getDataTriples());
     triplesString += " ?dataTransformation  rdf:type obo:OBI_0200000  . ";
+    log.info(triplesString);
     triplesString = QueryUtils.subUrisForQueryLiterals(triplesString, getLiteralMap());
+    log.info("literals substitutied");
     triplesString = QueryUtils.subUrisForQueryVars(triplesString, getDataMap());
+    log.info("uris substitutied");
     triplesString += getInputs();
+    log.info(triplesString);
     return triplesString;
   }
   

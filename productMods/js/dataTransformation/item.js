@@ -18,8 +18,7 @@ class DataTransformationItem {
 			this.dataObject = $.extend(this.dataObject, msg)
 			this.dataObject.literalType = msg.inputs[0].literalType
 			this.dataObject.measurementDatumType = msg.inputs[0].measDatumType
-			this.dataObject.measurementDatumTypeLabel = 
-				this.dataObject.measurementDatumType.split("#")[1]
+			this.dataObject.measurementDatumTypeLabel = this.process(this.dataObject.measurementDatumType)
 			this.dataObject.inputs = []
 			this.initUI()
 		}).bind(this))
@@ -36,7 +35,7 @@ class DataTransformationItem {
 		//Input
 		this.inputCont = html.div("margin10H")
 		this.inputTitle = html.div("dt_inlineTitle").text("Input data")
-		this.button = new TextButton("Select", null, null, "inline")
+		this.button = new TextButton("Select",  (this.addInput).bind(this), null, "inline")
 		this.inputCont.append([this.inputTitle, this.button.container])
 		
 		//Output
@@ -80,9 +79,13 @@ class DataTransformationItem {
 	}
 	
 	addInput(uri){
-		if(this.saved){
-			dataController.addInput(uri, this.dataObject.dataTransformation)	
-		}
+		
+		DTAJAX.call({
+			task : "inputsExisting",
+			subjectUri : subjectUri,
+			dataTransformation : this.dataObject.dataTransformation,
+			dataTransformationType : this.dataObject.dataTransformationType
+		})
 	}
 	
 	removeInput(uri){
@@ -115,16 +118,17 @@ class DataTransformationItem {
 	del (){
 		
 		if(this.saved){
-			DTAJAX.send({
+			DTAJAX.call({
 				task : "delete",
 				subjectUri : subjectUri,
 				dataTransformation : this.dataObject.dataTransformation,
-				degreeOfSexualisation : this.dataObject.degreeOfSexualisation,
-				degree : this.savedValue,
-				editKey : editKey,
+				dataTransformationType : this.dataObject.dataTransformationType,
+				measurementDatum : this.dataObject.measurementDatum,
+				measurementDatumType : this.dataObject.measurementDatumType,
+				measurementValue : this.saved,
 			},(function(msg) {
 					this.container.remove()
-					this.mainForm.remove(this.dataObject)
+					this.mainForm.remove(this.dataObject.dataTransformationType)
 					PopUpController.doneMsg("Data has been deleted")
 				}).bind(this))
 		} else {
@@ -146,7 +150,20 @@ class DataTransformationItem {
 			this.saved = this.unsaved
 			this.unsaved = null
 			this.mainForm.unsaved = false
+			this.saveButton.hide()
 		}).bind(this))
+	}
+	
+	process(input){
+		
+		if(input === undefined){
+			return "undefined"
+		} else{
+			var str = input.split("#")[1]
+			if(str == undefined) str = "undefined"
+			str = str.replace(".", " ")
+			return str.replace("_", " ")
+		}
 	}
 }
 
@@ -160,9 +177,21 @@ class ExistingDataTransformation extends DataTransformationItem {
 	}
 
 	init(dataObject){
-		this.dataObject.measurementDatumTypeLabel = this.dataObject.measurementDatumType.split("#")[1]
-		this.dataObject.dataTransformationTypeLabel = this.dataObject.dataTransformationType.split("#")[1]
+		this.dataObject.measurementDatumTypeLabel = this.process(this.dataObject.measurementDatumType)
+		this.dataObject.dataTransformationTypeLabel = this.process(this.dataObject.dataTransformationType)
 		this.initUI()
+		this.saveButton.hide()
+	}
+	
+	addInput(){
+
+		//Here we call the existing ones as well
+		DTAJAX.call({
+			task : "inputsExisting",
+			subjectUri : subjectUri,
+			dataTransformation : this.dataObject.dataTransformation,
+			dataTransformationType : this.dataObject.dataTransformationType
+		})
 	}
 }
 
