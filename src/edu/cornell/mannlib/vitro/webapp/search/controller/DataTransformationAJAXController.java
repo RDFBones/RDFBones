@@ -204,21 +204,6 @@ public class DataTransformationAJAXController extends VitroAjaxController {
     return dataTriples;
   }
   
-  private static List<Triple> dataTransformationTriples() {
-
-    List<Triple> triples = new ArrayList<Triple>();
-    triples.add(new Triple("subjectUri", "obo:BFO_0000051", "dataTransformation"));
-    triples.add(new Triple("dataTransformation", "obo:OBI_0000293", "sexScore"));
-    triples.add(new Triple("sexScore", "obo:IAO_0000299", "categoricalLabel"));
-    triples.add(new LiteralTriple("sexScore", "rdfs:label", "sexScoreLabel"));
-    triples.add(new LiteralTriple("categoricalLabel", "rdfs:label", "categoricalLabelLabel"));
-    triples.add(new Triple("dataTransformation", "obo:OBI_0000299",
-        "degreeOfSexualisation"));
-    triples.add(new LiteralTriple("degreeOfSexualisation", "obo:IAO_0000004",
-        "degree"));
-    return triples;
-  }
-  
   public String SPARQL_DTs(){
   
     //In this case the subjectUri
