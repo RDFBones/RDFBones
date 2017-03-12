@@ -8,7 +8,7 @@ class DataTransformationItem {
 	}
 	
 	init(dataObject){
-		
+	
 		this.value = null
 		this.saved = null
 		DTAJAX.call({
@@ -35,7 +35,7 @@ class DataTransformationItem {
 		//Input
 		this.inputCont = html.div("margin10H")
 		this.inputTitle = html.div("dt_inlineTitle").text("Input data")
-		this.button = new TextButton("Select",  (this.addInput).bind(this), null, "inline")
+		this.button = new TextButton("Select",  (this.showInputs).bind(this), null, "inline")
 		this.inputCont.append([this.inputTitle, this.button.container])
 		
 		//Output
@@ -78,19 +78,35 @@ class DataTransformationItem {
 		}
 	}
 	
-	addInput(uri){
+	showInputs(uri){
 		
-		DTAJAX.call({
-			task : "inputsExisting",
-			subjectUri : subjectUri,
-			dataTransformation : this.dataObject.dataTransformation,
-			dataTransformationType : this.dataObject.dataTransformationType
-		})
+		//Here we call the existing ones as well
+		if(this.inputSelector === undefined){
+			DTAJAX.call({
+				task : "possibleInputs",
+				subjectUri : subjectUri,
+				dataTransformationType : this.dataObject.dataTransformationType
+			}, (function(msg){
+				this.inputSelector = new InputSelector(this, msg.possibleInputs)
+			}).bind(this), false)
+		} else {
+			this.inputSelector.display()
+		}
+	}	
+
+	addInput(uri){
+		if(this.saved){
+			DTAJAX.addInput(this.dataObject.dataTransformation, uri)	
+		} else {
+			this.dataObject.inputs.push(uri)
+		}
 	}
 	
 	removeInput(uri){
 		if(this.saved){
-			dataController.removeInput(uri, this.dataObject.dataTransformation)	
+			DTAJAX.removeInput(this.dataObject.dataTransformation, uri)	
+		} else {
+			this.dataObject.inputs.removeElement(uri)
 		}
 	}
 	
@@ -116,7 +132,6 @@ class DataTransformationItem {
 	}
 
 	del (){
-		
 		if(this.saved){
 			DTAJAX.call({
 				task : "delete",
@@ -143,7 +158,8 @@ class DataTransformationItem {
 			dataTransformationType : this.dataObject.dataTransformationType,
 			measurementValue : this.value,
 			measurementValueType : this.dataObject.measurementValueType,
-			measurementDatumType : this.dataObject.measurementDatumType
+			measurementDatumType : this.dataObject.measurementDatumType,
+			inputs : this.dataObject.inputs
 		}, (function(msg) {
 			//Here the new URIs will be added to the dataObject
 			$.extend(this.dataObject, msg.dataObject)
@@ -182,15 +198,21 @@ class ExistingDataTransformation extends DataTransformationItem {
 		this.saveButton.hide()
 	}
 	
-	addInput(){
+	showInputs(){
 
 		//Here we call the existing ones as well
-		DTAJAX.call({
-			task : "inputsExisting",
-			subjectUri : subjectUri,
-			dataTransformation : this.dataObject.dataTransformation,
-			dataTransformationType : this.dataObject.dataTransformationType
-		})
+		if(this.inputSelector === undefined){
+			DTAJAX.call({
+				task : "possibleInputs_existing",
+				subjectUri : subjectUri,
+				dataTransformation : this.dataObject.dataTransformation,
+				dataTransformationType : this.dataObject.dataTransformationType
+			},(function(msg){
+				PopUpController.done()
+				this.inputSelector = new ExistingInputSelector(this, msg.possibleInputs, msg.exsistingInputs)
+			}).bind(this), false)
+		} else {
+			this.inputSelector.display()
+		}
 	}
 }
-

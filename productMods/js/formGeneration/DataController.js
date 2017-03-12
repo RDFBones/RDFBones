@@ -178,7 +178,7 @@ var DataController = {
 			return options
 		}
 	},
-
+	
 	getLabel : function(object, key) {
 
 		if (object[key] === undefined) {

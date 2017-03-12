@@ -76,6 +76,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
     this.requestData = JSON.getObject(vreq.getParameter("requestData"));
     editKey = getParameter("editKey");
     
+    resp = new JSONObject();
     
     switch (getParameter("task")) {
 
@@ -103,20 +104,6 @@ public class DataTransformationAJAXController extends VitroAjaxController {
       log.info("Ende");
       break;
 
-    case "addInput":
-
-      String dt1 = "<" + getParameter("dataTransformation") + ">";
-      String inputUri1 = "<" + getParameter("inputUri") + ">";
-      connector.addTriples(dt1 + " obo:OBI_0000299" , inputUri1);
-      break;
-
-    case "removeInput": 
-
-      String dt2 = "<" + getParameter("dataTransformation") + ">";
-      String inputUri2 = "<" + getParameter("inputUri") + ">";
-      connector.removeTriples(dt2 + " obo:OBI_0000299" , inputUri2);
-      break;
-      
     case "delete":
 
       inputs = JSON.array(requestData, "inputs");
@@ -131,6 +118,18 @@ public class DataTransformationAJAXController extends VitroAjaxController {
       connector.removeTriples(triples, editKey);
       break;
 
+    case "addInput":
+      
+      connector.addTriples("<" + getParameter("dataTransformation") + "> obo:OBI_0000293 <" +
+          getParameter("input") + "> .", editKey);
+      break;
+      
+    case "removeInput" :
+      
+      connector.removeTriples("<" + getParameter("dataTransformation") + "> obo:OBI_0000293 <" +
+          getParameter("input") + "> .", editKey);
+      break;
+      
     case "edit":
 
       String oldValue = getParameter("oldMeasurementValue");
@@ -159,30 +158,30 @@ public class DataTransformationAJAXController extends VitroAjaxController {
       JSON.put(resp,"existingData", existingDataGetter.getJSON(ArrayLib.getList(subjectUri)));
       break;
     
-    case "inputsInitial":
+    case "possibleInputs":
       
       //Possible inputs
       StringSPARQLDataGetter inputsDataGetter1 = new StringSPARQLDataGetter(connectorGraph, SPARQL_inputs(), 
-          ArrayLib.getList("measDatum"), ArrayLib.getList("typeLabel", "cardinality", "catLabel", "literalValue"), 1);
+          ArrayLib.getList("measurementDatum"), ArrayLib.getList("measurementDatumLabel", "cardinality", "catLabel", "literalValue"), 1);
       subjectUri = getParameter("subjectUri");
       dataTransformationType = getParameter("dataTransformationType");
-      JSON.put(resp, "inputs", inputsDataGetter1.getJSON(ArrayLib.getList(subjectUri, dataTransformationType)));
+      JSON.put(resp, "possibleInputs", inputsDataGetter1.getJSON(ArrayLib.getList(subjectUri, dataTransformationType)));
        break;
       
-    case "inputsExisting":
+    case "possibleInputs_existing":
       
       //Possible inputs
       StringSPARQLDataGetter inputsDataGetter2 = new StringSPARQLDataGetter(connectorGraph, SPARQL_inputs(), 
-          ArrayLib.getList("measDatum"), ArrayLib.getList("typeLabel", "cardinality", "catLabel", "literalValue"), 1);
+          ArrayLib.getList("measurementDatum"), ArrayLib.getList("measurementDatumLabel", "cardinality", "catLabel", "literalValue"), 1);
       subjectUri = getParameter("subjectUri");
       dataTransformationType = getParameter("dataTransformationType");
-      JSON.put(resp, "inputs", inputsDataGetter2.getJSON(ArrayLib.getList(subjectUri, dataTransformationType)));
+      JSON.put(resp, "possibleInputs", inputsDataGetter2.getJSON(ArrayLib.getList(subjectUri, dataTransformationType)));
 
       //Existing inputs
       StringSPARQLDataGetter existingInputsDataGetter = new StringSPARQLDataGetter(connectorGraph, SPARQL_exsistingInput(), 
           ArrayLib.getList("input"), null, 1);
-      subjectUri = getParameter("dataTransformation");
-      JSON.put(resp, "exsistingInputs", existingInputsDataGetter.getJSON(subjectUri)); 
+      dataTransformation = getParameter("dataTransformation");
+      JSON.put(resp, "exsistingInputs", existingInputsDataGetter.getJSON(dataTransformation)); 
       break;
       
     case "outputType":
@@ -267,7 +266,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
   public String SPARQL_inputs(){
   
     String query = ""
-        + "SELECT ?measurementDatum ?measurementDatumLabel ?typeLabel ?cardinality ?catLabel ?literalValue"
+        + "SELECT ?measurementDatum ?measurementDatumLabel ?cardinality ?catLabel ?literalValue"
         + "WHERE { "
         + "  ?subjectUri                 obo:BFO_0000051               ?assayOrDT . "
         + "  ?assayOrDT                  obo:OBI_0000299               ?measurementDatum . "
