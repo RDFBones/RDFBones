@@ -29,7 +29,7 @@ class DTTableRow {
 		if(dataSet.catLabel != undefined ){
 			this.measurementValue = html.div("dataItem").text(dataSet.catLabel)
 		} else if(dataSet.literalValue != undefined) {
-			this.measurementValue = html.div("dataItem").text(dataSet.catLabel)
+			this.measurementValue = html.div("dataItem").text(dataSet.literalValue)
 		} else {
 			this.measurementValue = html.div("dataItem").text("undefined")
 		}

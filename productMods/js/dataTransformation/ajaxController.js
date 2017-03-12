@@ -6,23 +6,34 @@ class DTAJAX {
 		
 		var object = {
 			dataTransformation : dt,
-			inputUri : inputUri,
+			input : inputUri,
 			task : "addInput",
 		}
-		this.call(object)
+		this.callWithout(object)
 	}
 
 	static removeInput(dt, inputUri){
 		
 		var object = {
 			dataTransformation : dt,
-			inputUri : inputUri,
+			input : inputUri,
 			task : "removeInput",
 		}
-		this.call(object)
+		this.callWithout(object)
 	}
 	
-	static call(object, returnFunction){
+	static callWithout(object){
+		$.ajax({
+			type : 'POST',
+			context : this,
+			dataType : 'json',
+			url : baseUrl + "dataTransformationAJAX",
+			data : "requestData=" + JSON.stringify(
+					$.extend(object, {editKey : editKey, subjectUri : subjectUri}))
+		})
+	}
+	
+	static call(object, returnFunction, flag){
 		
 		PopUpController.init("Please wait")
 		$.ajax({
@@ -36,7 +47,9 @@ class DTAJAX {
 			if(returnFunction != undefined){
 				returnFunction(msg)
 			}
-			PopUpController.done()
+			if(flag === undefined){
+				PopUpController.done()	
+			}
 		}).bind(this))
 	}
 	

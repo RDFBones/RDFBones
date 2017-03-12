@@ -266,15 +266,14 @@ public class DataTransformationAJAXController extends VitroAjaxController {
   public String SPARQL_inputs(){
   
     String query = ""
-        + "SELECT ?measurementDatum ?measurementDatumLabel ?cardinality ?catLabel ?literalValue"
+        + "SELECT ?measurementDatum ?measurementDatumLabel ?cardinality ?catLabel ?literalValue "
         + "WHERE { "
         + "  ?subjectUri                 obo:BFO_0000051               ?assayOrDT . "
         + "  ?assayOrDT                  obo:OBI_0000299               ?measurementDatum . "
         + "  ?measurementDatum           rdfs:label                    ?measurementDatumLabel . " 
-        + "  ?measurementDatum           rdf:type                      ?measurementDatumType ." 
+        + "  ?measurementDatum           vitro:mostSpecificType        ?measurementDatumType ." 
         + "  ?dataTransformationType     rdfs:subClassOf               ?restriction . "
         + "  ?restriction                owl:onProperty                obo:OBI_0000293 . "
-        + "  ?restriction                owl:qualifiedCardinality      ?cardinality . "
         + "  ?restriction                owl:onClass                   ?measurementDatumType . "
         + "  OPTIONAL { ?measurementDatum       obo:IAO_0000004               ?literalValue . } "
         + "  OPTIONAL {  "
