@@ -51,17 +51,18 @@ public class DataTransformationAJAXController extends VitroAjaxController {
 
   NewURIMaker newUri;
   JSONObject requestData;
-  
+
   String subjectUri;
   String dataTransformation;
   String dataTransformationType;
   String measurementDatum;
   String measurementDatumType;
   String measurementValue;
+  String measurementValueType;
   JSONArray inputs;
   String editKey;
   JSONObject resp = new JSONObject();
-  
+
   private static Map<String, String> prefixDef = new HashMap<String, String>();
 
   @Override
@@ -75,23 +76,24 @@ public class DataTransformationAJAXController extends VitroAjaxController {
 
     this.requestData = JSON.getObject(vreq.getParameter("requestData"));
     editKey = getParameter("editKey");
-    
+
     resp = new JSONObject();
-    
+
     switch (getParameter("task")) {
 
     case "createNew":
-      
+
       inputs = JSON.array(requestData, "inputs");
       subjectUri = getParameter("subjectUri");
       dataTransformationType = getParameter("dataTransformationType");
       measurementDatumType = getParameter("measurementDatumType");
+      measurementValueType = getParameter("measurementValueType");
       measurementValue = getParameter("measurementValue");
       dataTransformation = this.getUnusedURI();
       measurementDatum = this.getUnusedURI();
-      
+
       String triplesToStore = getTripleString();
-      if(connector.addTriples(triplesToStore, editKey)){
+      if (connector.addTriples(triplesToStore, editKey)) {
         log.info("succesfully");
       } else {
         log.info("unSuccesfully");
@@ -119,26 +121,29 @@ public class DataTransformationAJAXController extends VitroAjaxController {
       break;
 
     case "addInput":
-      
-      connector.addTriples("<" + getParameter("dataTransformation") + "> obo:OBI_0000293 <" +
-          getParameter("input") + "> .", editKey);
+
+      connector.addTriples("<" + getParameter("dataTransformation")
+          + "> obo:OBI_0000293 <" + getParameter("input") + "> .", editKey);
       break;
-      
-    case "removeInput" :
-      
-      connector.removeTriples("<" + getParameter("dataTransformation") + "> obo:OBI_0000293 <" +
-          getParameter("input") + "> .", editKey);
+
+    case "removeInput":
+
+      connector.removeTriples("<" + getParameter("dataTransformation")
+          + "> obo:OBI_0000293 <" + getParameter("input") + "> .", editKey);
       break;
-      
+
     case "edit":
 
       String oldValue = getParameter("oldMeasurementValue");
       String newValue = getParameter("newMeasurementValue");
+      measurementValueType = getParameter("measurementValueType");
       measurementDatum = getParameter("measurementDatum");
-      String toRemove = "<" + measurementDatum + "> "  + 
-          "obo:IAO_0000004" +  " '" + oldValue + "' . " ;
-      String toAdd = "<" + measurementDatum + "> "  + 
-          "obo:IAO_0000004" +  " '" + newValue + "' . " ;
+      String toRemove =
+          "<" + measurementDatum + "> " + "obo:IAO_0000004" + " '" + oldValue + "'^^<"
+              + measurementValueType + "> ";
+      String toAdd =
+          "<" + measurementDatum + "> " + "obo:IAO_0000004" + " '" + newValue + "'^^<"
+              + measurementValueType + "> . ";
       resp("toRemove", toRemove);
       resp("toAdd", toAdd);
       connector.removeTriples(toRemove, editKey);
@@ -148,56 +153,73 @@ public class DataTransformationAJAXController extends VitroAjaxController {
     case "initial":
 
       subjectUri = JSON.string(requestData, "subjectUri");
-      StringSPARQLDataGetter dataTransDataGetter = new StringSPARQLDataGetter(connectorGraph, SPARQL_DTs(), 
-          ArrayLib.getList("uri"), ArrayLib.getList("label"), 1);
-      JSON.put(resp,"dataTransformations", dataTransDataGetter.getJSON(ArrayLib.getList(subjectUri)));
+      StringSPARQLDataGetter dataTransDataGetter =
+          new StringSPARQLDataGetter(connectorGraph, SPARQL_DTs(),
+              ArrayLib.getList("uri"), ArrayLib.getList("label"), 1);
+      JSON.put(resp, "dataTransformations",
+          dataTransDataGetter.getJSON(ArrayLib.getList(subjectUri)));
 
-      StringSPARQLDataGetter existingDataGetter = new StringSPARQLDataGetter(connectorGraph, SPARQL_existingData(), 
-          ArrayLib.getList("dataTransformation","dataTransformationType", "measurementDatum", "measurementDatumType"), 
-          ArrayLib.getList("dataTransformationTypeLabel", "measurementValue"), 1);
-      JSON.put(resp,"existingData", existingDataGetter.getJSON(ArrayLib.getList(subjectUri)));
+      StringSPARQLDataGetter existingDataGetter =
+          new StringSPARQLDataGetter(connectorGraph, SPARQL_existingData(),
+              ArrayLib.getList("dataTransformation", "dataTransformationType",
+                  "measurementDatum", "measurementDatumType", "measurementValueType"), ArrayLib.getList(
+                  "dataTransformationTypeLabel", "measurementValue"), 1);
+      JSON.put(resp, "existingData",
+          existingDataGetter.getJSON(ArrayLib.getList(subjectUri)));
       break;
-    
+
     case "possibleInputs":
-      
-      //Possible inputs
-      StringSPARQLDataGetter inputsDataGetter1 = new StringSPARQLDataGetter(connectorGraph, SPARQL_inputs(), 
-          ArrayLib.getList("measurementDatum"), ArrayLib.getList("measurementDatumLabel", "cardinality", "catLabel", "literalValue"), 1);
-      subjectUri = getParameter("subjectUri");
-      dataTransformationType = getParameter("dataTransformationType");
-      JSON.put(resp, "possibleInputs", inputsDataGetter1.getJSON(ArrayLib.getList(subjectUri, dataTransformationType)));
-       break;
-      
-    case "possibleInputs_existing":
-      
-      //Possible inputs
-      StringSPARQLDataGetter inputsDataGetter2 = new StringSPARQLDataGetter(connectorGraph, SPARQL_inputs(), 
-          ArrayLib.getList("measurementDatum"), ArrayLib.getList("measurementDatumLabel", "cardinality", "catLabel", "literalValue"), 1);
-      subjectUri = getParameter("subjectUri");
-      dataTransformationType = getParameter("dataTransformationType");
-      JSON.put(resp, "possibleInputs", inputsDataGetter2.getJSON(ArrayLib.getList(subjectUri, dataTransformationType)));
 
-      //Existing inputs
-      StringSPARQLDataGetter existingInputsDataGetter = new StringSPARQLDataGetter(connectorGraph, SPARQL_exsistingInput(), 
-          ArrayLib.getList("input"), null, 1);
-      dataTransformation = getParameter("dataTransformation");
-      JSON.put(resp, "exsistingInputs", existingInputsDataGetter.getJSON(dataTransformation)); 
+      // Possible inputs
+      StringSPARQLDataGetter inputsDataGetter1 =
+          new StringSPARQLDataGetter(connectorGraph, SPARQL_inputs(),
+              ArrayLib.getList("measurementDatum", "measurementValueType"),
+              ArrayLib.getList("measurementDatumLabel", "cardinality", "catLabel",
+                  "measurementValue"), 1);
+      subjectUri = getParameter("subjectUri");
+      dataTransformationType = getParameter("dataTransformationType");
+      JSON.put(resp, "possibleInputs", inputsDataGetter1.getJSON(ArrayLib.getList(
+          subjectUri, dataTransformationType)));
       break;
-      
+
+    case "possibleInputs_existing":
+
+      // Possible inputs
+      StringSPARQLDataGetter inputsDataGetter2 =
+          new StringSPARQLDataGetter(connectorGraph, SPARQL_inputs(),
+              ArrayLib.getList("measurementDatum"),
+              ArrayLib.getList("measurementDatumLabel", "cardinality", "catLabel",
+                  "measurementValue"), 1);
+      subjectUri = getParameter("subjectUri");
+      dataTransformationType = getParameter("dataTransformationType");
+      JSON.put(resp, "possibleInputs", inputsDataGetter2.getJSON(ArrayLib.getList(
+          subjectUri, dataTransformationType)));
+
+      // Existing inputs
+      StringSPARQLDataGetter existingInputsDataGetter =
+          new StringSPARQLDataGetter(connectorGraph, SPARQL_exsistingInput(),
+              ArrayLib.getList("input"), null, 1);
+      dataTransformation = getParameter("dataTransformation");
+      JSON.put(resp, "exsistingInputs",
+          existingInputsDataGetter.getJSON(dataTransformation));
+      break;
+
     case "outputType":
-      
-      StringSPARQLDataGetter outputTypeDataGetter = new StringSPARQLDataGetter(connectorGraph, SPARQL_OutputTypes(), 
-          ArrayLib.getList("measDatumType","literalType"), ArrayLib.getList("label"), 1);
+
+      StringSPARQLDataGetter outputTypeDataGetter =
+          new StringSPARQLDataGetter(connectorGraph, SPARQL_OutputTypes(),
+              ArrayLib.getList("measurementDatumType", "measurementValueType"),
+              ArrayLib.getList("label"), 1);
       dataTransformationType = JSON.string(requestData, "dataTransformationType");
       JSON.put(resp, "inputs", outputTypeDataGetter.getJSON(dataTransformationType));
       break;
-     
+
     default:
       break;
     }
-    
+
     JSON.put(resp, "queries", connector.getQueries());
-    response.getWriter().write(resp.toString());  
+    response.getWriter().write(resp.toString());
   }
 
   public String getUnusedURI() {
@@ -209,171 +231,163 @@ public class DataTransformationAJAXController extends VitroAjaxController {
     return new String("");
   }
 
-  private static List<Triple> getDataTriples() {
+  private static String getDataTriples() {
 
-    List<Triple> dataTriples = new ArrayList<Triple>();
-    dataTriples.add(new Triple("subjectUri", "obo:BFO_0000051", "dataTransformation"));
-    dataTriples.add(new Triple("dataTransformation", "obo:OBI_0000299",
-        "measurementDatum"));
-    dataTriples.add(new LiteralTriple("dataTransformation", "rdfs:label",
-        "dataTransformationLabel"));
-    dataTriples.add(new LiteralTriple("measurementDatum", "obo:IAO_0000004",
-        "measurementValue"));
-    // Type triples
-    dataTriples.add(new Triple("dataTransformation", "vitro:mostSpecificType",
-        "dataTransformationType"));
-    dataTriples.add(new Triple("measurementDatum", "vitro:mostSpecificType",
-        "measurementDatumType"));
-    dataTriples.add(new LiteralTriple("measurementDatum", "rdfs:label",
-        "measurementDatumLabel"));
-    return dataTriples;
-  }
-  
-  public String SPARQL_DTs(){
-  
-    //In this case the subjectUri
-    String query = ""
-        + "SELECT ?uri ?label"
-        + "WHERE { "
-        + "  ?subjectUri     vitro:mostSpecificType      ?SDEType ."
-        + "  ?SDEType        rdfs:subClassOf             ?restriction ."
-        + "  ?restriction    owl:onProperty              obo:BFO_0000051 . "
-        + "  ?restriction    owl:someValuesFrom          ?uri . "
-        + "  ?uri            rdfs:subClassOf             obo:OBI_0200000 . "  
-        + "  OPTIONAL { ?uri    rdfs:label     ?label . } "
-        + "  FILTER ( ?subjectUri = <input1> ) "
-        + "}"; 
-    return query;
-  }
-  
-  public String SPARQL_existingData(){
+    String triples =
+        ""
+            + " ?subjectUri           obo:BFO_0000051     ?dataTransformation . \n"
+            + " ?dataTransformation   obo:OBI_0000299     ?measurementDatum . \n"
+            + " ?measurementDatum     obo:IAO_0000004     ?measurementValue^^?measurementValueType . \n"
+            + " ?dataTransformation   rdf:type            ?dataTransformationType . \n"
+           // + " ?dataTransformation   rdf:type            obo:OBI_0200000 . \n"
+            + " ?dataTransformation   rdfs:label          ?dataTransformationLabel . \n"
+            + " ?measurementDatum     rdf:type            ?measurementDatumType . \n"
+            + " ?measurementDatum     vitro:mostSpecificType ?measurementDatumType . \n"
+            + " ?measurementDatum     rdfs:label          ?measurementDatumLabel . ";
     
-    String query = ""
-        + "SELECT ?dataTransformation ?dataTransformationType ?dataTransformationTypeLabel ?measurementDatum ?measurementDatumType ?measurementValue "
-        + "WHERE { "
-        + "  ?subjectUri           obo:BFO_0000051               ?dataTransformation . "
-        + "  ?dataTransformation   rdf:type                      obo:OBI_0200000 . "
-        + "  ?dataTransformation   vitro:mostSpecificType        ?dataTransformationType . "
-        + "  OPTIONAL { ?dataTransformationType   rdfs:label     ?dataTransformationTypeLabel . }"
-        + "  ?dataTransformation                   obo:OBI_0000299               ?measurementDatum . "
-        + "  ?measurementDatum     obo:IAO_0000004               ?measurementValue . " 
-        + "  ?measurementDatum     vitro:mostSpecificType        ?measurementDatumType ."    
-        + "  FILTER ( ?subjectUri = <input1> ) "
-        + "}";
-    return query;
+    return triples;
   }
-  
-  public String SPARQL_inputs(){
-  
-    String query = ""
-        + "SELECT ?measurementDatum ?measurementDatumLabel ?cardinality ?catLabel ?literalValue "
-        + "WHERE { "
-        + "  ?subjectUri                 obo:BFO_0000051               ?assayOrDT . "
-        + "  ?assayOrDT                  obo:OBI_0000299               ?measurementDatum . "
-        + "  ?measurementDatum           rdfs:label                    ?measurementDatumLabel . " 
-        + "  ?measurementDatum           vitro:mostSpecificType        ?measurementDatumType ." 
-        + "  ?dataTransformationType     rdfs:subClassOf               ?restriction . "
-        + "  ?restriction                owl:onProperty                obo:OBI_0000293 . "
-        + "  ?restriction                owl:onClass                   ?measurementDatumType . "
-        + "  OPTIONAL { ?measurementDatum       obo:IAO_0000004               ?literalValue . } "
-        + "  OPTIONAL {  "
-        + "     ?measurementDatum               obo:OBI_0000999          ?categoricalLabel . "
-        + "     ?categoricalLabel               rdfs:label               ?catLabel . "
-        + "  }"
-        + "  FILTER ( ?subjectUri = <input1> ) "
-        + "  FILTER ( ?dataTransformationType = <input2> ) "
-        + "}";
-    return query;
-  }
-  
-  public String SPARQL_exsistingInput(){
-    
-    String query = ""
-        + "SELECT ?input "
-        + "WHERE { "
-        + "  ?dataTransformation     obo:OBI_0000293          ?input . "
-        + "  FILTER ( ?dataTransformation = <input1> ) "
-        + "}";
-    return query;
-  }
-  
-  //In this case the subjectUri
-  public String SPARQL_OutputTypes(){
 
-    String query = ""
-        + "SELECT ?measDatumType ?label ?literalType "
-        + "WHERE {{ "
-        + "     ?DTType              rdfs:subClassOf              ?restriction1 ." 
-        + "     ?restriction1        owl:onProperty               obo:OBI_0000299 . "
-        + "     ?restriction1        owl:qualifiedCardinality     ?cardinality . "
-        + "     ?restriction1        owl:onClass                  ?measDatumType . "
-        + "     ?measDatumType       rdfs:subClassOf              ?superMeasDatumType ."    
-        + "     ?superMeasDatumType  rdfs:subClassOf              ?restriction2 . "
-        + "     ?restriction2        owl:onProperty               <http://vivoweb.org/ontology/core#hasValue> . "
-        + "     ?restriction2        owl:onDataRange              ?literalType . "
-        + "     OPTIONAL { ?measDatumType      rdfs:label     ?label . } "
-        + " } UNION {"
-        + "     ?DTType              rdfs:subClassOf              ?restriction1 . "
-        + "     ?restriction1        owl:onProperty               obo:OBI_0000299 . "   
-        + "     ?restriction1        owl:qualifiedCardinality     ?cardinality . "
-        + "     ?restriction1        owl:onClass                  ?measDatumType . "
-        + "     ?measDatumType       rdfs:subClassOf              ?restriction2 . "
-        + "     ?restriction2        owl:onProperty               <http://vivoweb.org/ontology/core#hasValue> . "
-        + "     ?restriction2        owl:someValuesFrom           ?literalType . "
-        + "     OPTIONAL { ?measDatumType      rdfs:label         ?label . }  "
-        + " } "
-        + " FILTER ( ?DTType = <input1> )"
-        + "}"; 
+  public String SPARQL_DTs() {
+
+    // In this case the subjectUri
+    String query =
+        "" + "SELECT ?uri ?label " + "WHERE { "
+            + "  ?subjectUri     vitro:mostSpecificType      ?SDEType ."
+            + "  ?SDEType        rdfs:subClassOf             ?restriction ."
+            + "  ?restriction    owl:onProperty              obo:BFO_0000051 . "
+            + "  ?restriction    owl:someValuesFrom          ?uri . "
+            + "  ?uri            rdfs:subClassOf             obo:OBI_0200000 . "
+            + "  OPTIONAL { ?uri    rdfs:label     ?label . } "
+            + "  FILTER ( ?subjectUri = <input1> ) " + "}";
     return query;
   }
 
-  String getParameter(String key){
-    
-    return JSON.string(requestData, key); 
+  public String SPARQL_existingData() {
+
+    String query =
+        ""
+            + "SELECT ?dataTransformation ?dataTransformationType ?dataTransformationTypeLabel ?measurementDatum ?measurementDatumType ?measurementValue (datatype(?measurementValue) as ?measurementValueType)  "
+            + "WHERE { "
+            + "  ?subjectUri                     obo:BFO_0000051           ?dataTransformation . "
+            + "  ?dataTransformation             rdf:type                  ?dataTransformationType . "
+            + "  ?dataTransformationType         rdfs:subClassOf           obo:OBI_0200000 . "
+            + "  OPTIONAL { ?dataTransformationType   rdfs:label           ?dataTransformationTypeLabel . }"
+            + "  ?dataTransformation             obo:OBI_0000299           ?measurementDatum . "
+            + "  ?measurementDatum               obo:IAO_0000004           ?measurementValue . "
+            + "  ?measurementDatum               vitro:mostSpecificType    ?measurementDatumType ."
+            + "  FILTER ( ?subjectUri = <input1> ) " + "}";
+    return query;
   }
-  
-  void resp(String key, String value){
-    
+
+  public String SPARQL_inputs() {
+
+    String query =
+        ""
+            + "SELECT ?measurementDatum ?measurementDatumLabel ?cardinality ?catLabel ?measurementValue (datatype(?measurementValue) as ?measurementValueType) "
+            + "WHERE { "
+            + "  ?subjectUri                 obo:BFO_0000051               ?assayOrDT . "
+            + "  ?assayOrDT                  obo:OBI_0000299               ?measurementDatum . "
+            + "  ?measurementDatum           rdfs:label                    ?measurementDatumLabel . "
+            + "  ?measurementDatum           rdf:type                      ?measurementDatumType ."
+            + "  ?dataTransformationType     rdfs:subClassOf               ?restriction . "
+            + "  ?restriction                owl:onProperty                obo:OBI_0000293 . "
+            + "  ?restriction                owl:onClass                   ?measurementDatumType . "
+            + "  OPTIONAL { ?measurementDatum       obo:IAO_0000004               ?measurementValue . } "
+            + "  OPTIONAL {  "
+            + "     ?measurementDatum               obo:OBI_0000999          ?categoricalLabel . "
+            + "     ?categoricalLabel               rdfs:label               ?catLabel . "
+            + "  }" + "  FILTER ( ?subjectUri = <input1> ) "
+            + "  FILTER ( ?dataTransformationType = <input2> ) " + "}";
+    return query;
+  }
+
+  public String SPARQL_exsistingInput() {
+
+    String query =
+        "" + "SELECT ?input " + "WHERE { "
+            + "  ?dataTransformation     obo:OBI_0000293          ?input . "
+            + "  FILTER ( ?dataTransformation = <input1> ) " + "}";
+    return query;
+  }
+
+  // In this case the subjectUri
+  public String SPARQL_OutputTypes() {
+
+    String query =
+        ""
+            + "SELECT ?measurementDatumType ?label ?measurementValueType "
+            + "WHERE {{ "
+            + "     ?DTType              rdfs:subClassOf              ?restriction1 ."
+            + "     ?restriction1        owl:onProperty               obo:OBI_0000299 . "
+            + "     ?restriction1        owl:qualifiedCardinality     ?cardinality . "
+            + "     ?restriction1        owl:onClass                  ?measurementDatumType . "
+            + "     ?measurementDatumType   rdfs:subClassOf           ?superMeasDatumType ."
+            + "     ?superMeasDatumType  rdfs:subClassOf              ?restriction2 . "
+            + "     ?restriction2        owl:onProperty               <http://vivoweb.org/ontology/core#hasValue> . "
+            + "     ?restriction2        owl:onDataRange              ?measurementValueType . "
+            + "     OPTIONAL { ?measurementDatumType      rdfs:label     ?label . } "
+            + " } UNION {"
+            + "     ?DTType              rdfs:subClassOf              ?restriction1 . "
+            + "     ?restriction1        owl:onProperty               obo:OBI_0000299 . "
+            + "     ?restriction1        owl:qualifiedCardinality     ?cardinality . "
+            + "     ?restriction1        owl:onClass                  ?measDatumType . "
+            + "     ?measurementDatumType    rdfs:subClassOf              ?restriction2 . "
+            + "     ?restriction2        owl:onProperty               <http://vivoweb.org/ontology/core#hasValue> . "
+            + "     ?restriction2        owl:someValuesFrom           ?measurementValueType . "
+            + "     OPTIONAL { ?measurementDatumType      rdfs:label         ?label . }  "
+            + " } " + " FILTER ( ?DTType = <input1> )" + "}";
+    return query;
+  }
+
+  String getParameter(String key) {
+
+    return JSON.string(requestData, key);
+  }
+
+  void resp(String key, String value) {
+
     JSON.put(resp, key, value);
   }
-  
-  private Map<String, String> getDataMap(){
-    
+
+  private Map<String, String> getDataMap() {
+
     Map<String, String> map = new HashMap<String, String>();
     map.put("subjectUri", subjectUri);
     map.put("dataTransformation", dataTransformation);
     map.put("dataTransformationType", dataTransformationType);
     map.put("measurementDatum", measurementDatum);
     map.put("measurementDatumType", measurementDatumType);
+    map.put("measurementValueType", measurementValueType);
     return map;
   }
-  
-  private Map<String, String> getLiteralMap(){
-  
+
+  private Map<String, String> getLiteralMap() {
+
     Map<String, String> map = new HashMap<String, String>();
     map.put("measurementValue", measurementValue);
     map.put("dataTransformationLabel", dataTransformationType.split("#")[1]);
     map.put("measurementDatumLabel", measurementDatumType.split("#")[1]);
     return map;
   }
-  
-  private String getInputs(){
+
+  private String getInputs() {
     String triple = new String("");
     for (int i = 0; i < this.inputs.length(); i++) {
-      String input = JSON.stringArr(this.inputs, i);  
-      triple += "<" + input + ">   obo:OBI_0000293 <" + this.dataTransformation + "> .\n"; 
+      String input = JSON.stringArr(this.inputs, i);
+      triple +=
+          "<" + dataTransformation + ">   obo:OBI_0000293 <" + input + "> .\n";
     }
     return triple;
   }
-  
-  private String getTripleString(){
-    
-    String triplesString = SPARQLUtils.assembleTriples(getDataTriples());
-    triplesString += " ?dataTransformation  rdf:type obo:OBI_0200000  . ";
+
+  private String getTripleString() {
+
+    String triplesString = getDataTriples();
     triplesString = QueryUtils.subUrisForQueryLiterals(triplesString, getLiteralMap());
     triplesString = QueryUtils.subUrisForQueryVars(triplesString, getDataMap());
     triplesString += getInputs();
     return triplesString;
   }
-  
+
 }
