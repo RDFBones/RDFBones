@@ -16,10 +16,11 @@ class DataTransformationItem {
 			task : "outputType",
 		}, (function(msg){
 			this.dataObject = $.extend(this.dataObject, msg)
-			this.dataObject.literalType = msg.inputs[0].literalType
-			this.dataObject.measurementDatumType = msg.inputs[0].measDatumType
+			this.dataObject.measurementValueType = msg.inputs[0].measurementValueType
+			this.dataObject.measurementDatumType = msg.inputs[0].measurementDatumType
 			this.dataObject.measurementDatumTypeLabel = this.process(this.dataObject.measurementDatumType)
 			this.dataObject.inputs = []
+			this.type = this.dataObject.measurementValueType 
 			this.initUI()
 		}).bind(this))
 	}
@@ -45,10 +46,10 @@ class DataTransformationItem {
 		//Output data container
 		this.outputDataContainer = html.div("inline margin10H")
 		this.measDatumLabelDiv = html.div("dt_title").text((this.dataObject.measurementDatumTypeLabel))
-		this.precision = this.dataObject.literalType == "http://www.w3.org/2001/XMLSchema#float" ? 0.01 : 1 
+		this.precision = this.dataObject.measurementValueType == "http://www.w3.org/2001/XMLSchema#float" ? 0.01 : 1 
 		this.dataField = UI.floatInput(this.precision).change((this.change).bind(this)).addClass("margin15H")
 		this.outputDataContainer.append([this.measDatumLabelDiv, this.dataField])
-		
+
 		this.outputCont.append([this.outputTitle, this.outputDataContainer])
 		this.contentContainer.append([this.title, this.inputCont, this.outputCont])
 
@@ -114,6 +115,7 @@ class DataTransformationItem {
 		DTAJAX.call({
 			task : "edit",
 			measurementDatum : this.dataObject.measurementDatum,
+			measurementValueType : this.dataObject.measurementValueType,
 			oldMeasurementValue : this.saved,
 			newMeasurementValue : this.value,
 		})
@@ -156,9 +158,9 @@ class DataTransformationItem {
 		DTAJAX.call({
 			task : "createNew",
 			dataTransformationType : this.dataObject.dataTransformationType,
+			measurementDatumType : this.dataObject.measurementDatumType,
 			measurementValue : this.value,
 			measurementValueType : this.dataObject.measurementValueType,
-			measurementDatumType : this.dataObject.measurementDatumType,
 			inputs : this.dataObject.inputs
 		}, (function(msg) {
 			//Here the new URIs will be added to the dataObject
@@ -187,8 +189,8 @@ class ExistingDataTransformation extends DataTransformationItem {
 	constructor(mainForm, dataObject){
 		super(mainForm, dataObject)
 		this.saved = dataObject.measurementValue
-		this.value = dataObject.measurementValue
-		this.dataField.val(dataObject.measurementValue)
+		this.value = this.saved
+		this.dataField.val(this.saved)
 	}
 
 	init(dataObject){
