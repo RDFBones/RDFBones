@@ -72,12 +72,11 @@ DataSetterSelectorFieldMap.prototype = $.extend(Object
 	}
 })
 
-
 class SelectorElement {
 	
 	constructor(data, customValueKey, customTextKey){
 		
-		this.data = data;
+		this.data = data
 		this.options = DataController.prepareOptions(data)
 		this.container = html.selectorMap(this.options, customValueKey, customTextKey)
 	}
