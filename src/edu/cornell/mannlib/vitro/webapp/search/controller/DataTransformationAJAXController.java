@@ -92,18 +92,17 @@ public class DataTransformationAJAXController extends VitroAjaxController {
       dataTransformation = this.getUnusedURI();
       measurementDatum = this.getUnusedURI();
 
+      JSONObject dataObject = JSON.obj();
       String triplesToStore = getTripleString();
       if (connector.addTriples(triplesToStore, editKey)) {
-        log.info("succesfully");
+        JSON.put(dataObject, "successful", Boolean.TRUE.toString());
       } else {
-        log.info("unSuccesfully");
+        JSON.put(dataObject, "successful", Boolean.FALSE.toString());
       }
-      JSONObject dataObject = JSON.obj();
       JSON.put(dataObject, "createdTriples", triplesToStore);
       JSON.put(dataObject, "dataTransformation", dataTransformation);
       JSON.put(dataObject, "measurementDatum", measurementDatum);
       JSON.put(resp, "dataObject", dataObject);
-      log.info("Ende");
       break;
 
     case "delete":
