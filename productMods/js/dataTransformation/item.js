@@ -152,6 +152,7 @@ class DataTransformationItem {
 			this.container.remove()
 			this.parentForm.remove(this.dataObject)
 		}
+		this.mainForm.unsaved = false
 	}
 	
 	save (){
