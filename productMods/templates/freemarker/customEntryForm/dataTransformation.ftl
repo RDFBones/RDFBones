@@ -12,7 +12,7 @@
 <@imp.css url="dataTransformation/dataTransformation" />
 
 <div class = "mainFormTitle margin10">
-	Data transformation
+	Data transformations
 </div>
 <div id="form"  class="margin10H">
 </div>
