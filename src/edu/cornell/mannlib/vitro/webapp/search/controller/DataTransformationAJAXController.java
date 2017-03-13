@@ -329,7 +329,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
             + "     ?DTType              rdfs:subClassOf              ?restriction1 . "
             + "     ?restriction1        owl:onProperty               obo:OBI_0000299 . "
             + "     ?restriction1        owl:qualifiedCardinality     ?cardinality . "
-            + "     ?restriction1        owl:onClass                  ?measDatumType . "
+            + "     ?restriction1        owl:onClass                  ?measurementDatumType . "
             + "     ?measurementDatumType    rdfs:subClassOf              ?restriction2 . "
             + "     ?restriction2        owl:onProperty               <http://vivoweb.org/ontology/core#hasValue> . "
             + "     ?restriction2        owl:someValuesFrom           ?measurementValueType . "
