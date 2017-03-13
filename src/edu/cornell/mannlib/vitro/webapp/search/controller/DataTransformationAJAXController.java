@@ -239,10 +239,8 @@ public class DataTransformationAJAXController extends VitroAjaxController {
             + " ?dataTransformation   obo:OBI_0000299     ?measurementDatum . \n"
             + " ?measurementDatum     obo:IAO_0000004     ?measurementValue^^?measurementValueType . \n"
             + " ?dataTransformation   rdf:type            ?dataTransformationType . \n"
-           // + " ?dataTransformation   rdf:type            obo:OBI_0200000 . \n"
             + " ?dataTransformation   rdfs:label          ?dataTransformationLabel . \n"
             + " ?measurementDatum     rdf:type            ?measurementDatumType . \n"
-            + " ?measurementDatum     vitro:mostSpecificType ?measurementDatumType . \n"
             + " ?measurementDatum     rdfs:label          ?measurementDatumLabel . ";
     
     return triples;
