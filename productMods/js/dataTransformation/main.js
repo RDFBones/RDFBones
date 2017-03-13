@@ -19,8 +19,8 @@ class Main {
 		this.selector = new SelectorElement(msg.dataTransformations)
 		this.items = []
 		this.initUI()
-		this.existingData = this.filter(msg.existingData)
-		$.each(this.existingData, (function(key, value){
+		//this.existingData = //this.filter(msg.existingData)
+		$.each(msg.existingData, (function(key, value){
 			console.log(value)
 			this.addedDTs[value.dataTransformationType] = true
 			this.items.push(new ExistingDataTransformation(this, value).container)
@@ -64,7 +64,8 @@ class Main {
 		var output = []
 		var object = new Object()
 		$.each(existingData, function(key, value){
-			if(object[value.dataTransformation] === undefined){
+			if(value.dataTransformationType != 
+				"http://purl.obolibrary.org/obo/OBI_0200000"){
 				output.push(value)
 				object[value.dataTransformation] = true
 			}
