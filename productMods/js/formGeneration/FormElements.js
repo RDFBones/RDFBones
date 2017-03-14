@@ -154,12 +154,14 @@ class Adder extends FormElement{
 		this.addedForms = []
 		$.each(data, (function(key, value) {
 			// The key is the uri
-			this.cnt++
-			var object = new Object()
-			object[this.dataKey] = key
-			object[this.dataKey + "Label"] = this.options[key].label
-			this.dataArray.push(object)
-			this.subForms.push(new SubFormAll(this, this.descriptor, object))
+			if(key != "queries"){
+				this.cnt++
+				var object = new Object()
+				object[this.dataKey] = key
+				object[this.dataKey + "Label"] = this.options[key].label
+				this.dataArray.push(object)
+				this.subForms.push(new SubFormAll(this, this.descriptor, object))
+			}
 		}).bind(this))
 	}
 
