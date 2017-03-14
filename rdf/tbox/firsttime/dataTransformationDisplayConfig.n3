@@ -10,21 +10,16 @@
 @prefix local: <http://vitro.mannlib.cornell.edu/ns/vitro/siteConfig/> .
 @prefix vivo: <http://vivoweb.org/ontology/core#> . 
 @prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix rdfbones: <http://w3id.org/rdfbones/core#> .
 
-local:dataTransformationContext a :ConfigContext ;
-    :hasConfiguration local:dataTransformationConfig ;
-    :configContextFor obo:BFO_0000051 ;  #has part
-    :qualifiedByDomain obo:OBI_0000471 ;  #study design execution
-    :qualifiedBy obo:OBI_0200000 .   #data transformation
-
-local:dataTransformationConfig a :ObjectPropertyDisplayConfig ;
+rdfbones:dataTransformation
     rdfs:label "data transformation"@en-US ;
     :displayName "data transformation" ;
     :listViewConfigFile "listViewConfig-fauxPropertyDefault.xml"^^xsd:string ;
-    vitro:displayRankAnnot 40;
+    vitro:displayRankAnnot 1;
     vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
     vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
     vitro:selectFromExistingAnnot   "true"^^xsd:boolean ;
     vitro:offerCreateNewOptionAnnot "true"^^xsd:boolean ;
     vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.DataTransformationGenerator"^^xsd:string ;
-    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview> .
+    vitro:inPropertyGroupAnnot <http://vivoweb.org/ontology#vitroPropertyGroupoverview> .
