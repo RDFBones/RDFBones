@@ -72,8 +72,8 @@ public class GraphLib {
 		for (String labelClass : graph.labelClasses) {
 			String classUri = graph.graphDataMap.get(labelClass);
 			String value = dataGetter.getLabel(classUri);
-			if (graph.mainGraph.inputLabel) {
-				value = graph.mainGraph.inputLabelValue + "." + value;
+			if (graph.mainGraph.globalLabelKey != null) {
+				value = graph.mainGraph.globalLabelValue + "." + value;
 			}
 			map.put(labelClass + "Label", value);
 		}

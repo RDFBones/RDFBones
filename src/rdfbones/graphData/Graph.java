@@ -33,8 +33,8 @@ public class Graph {
 	public Triple triple = null;
 	public String inputPredicate = null;
 	public String firstNode = null;
-	public boolean inputLabel = false;
-	public String inputLabelValue;
+	public String globalLabelKey = null;
+	public String globalLabelValue;
 
 	// Triples
 	public List<Triple> dataTriples = new ArrayList<Triple>();
@@ -288,8 +288,8 @@ public class Graph {
 
 	public String saveInitialData(JSONObject inputObject) {
 		Map<String, String> variableMap = new HashMap<String, String>();
-		if(this.inputLabel){
-			this.inputLabelValue = JSON.string(inputObject, "label");
+		if(this.globalLabelKey != null){
+			this.globalLabelValue = JSON.string(inputObject, this.globalLabelKey);
 		}
 		return this.getData(inputObject, variableMap);
 	}
