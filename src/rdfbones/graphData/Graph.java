@@ -35,6 +35,7 @@ public class Graph {
 	public String firstNode = null;
 	public String globalLabelKey = null;
 	public String globalLabelValue;
+  public String objectUriType = null;
 
 	// Triples
 	public List<Triple> dataTriples = new ArrayList<Triple>();
@@ -63,6 +64,7 @@ public class Graph {
 	// Data Input - type query
 	public List<String> classesToSelect;
 	public List<Triple> typeQueryTriples;
+  public List<Triple> subClassTriples;
 
 	// Data Retrival
 	public List<Triple> dataRetreivalQuery;

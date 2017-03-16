@@ -398,6 +398,8 @@ public class GraphLib {
 			List<Triple> restrictionTriples) {
 
 		List<Triple> restTriples = new ArrayList<Triple>();
+    graph.subClassTriples = new ArrayList<Triple>();
+
 		GraphLib.setNodes(graph);
 		restTriples.addAll(GraphLib.getAndRemoveTypeTriples(restrictionTriples,
 				graph.nodes));
@@ -405,8 +407,10 @@ public class GraphLib {
 		graph.typeNodes.addAll(GraphLib.typeInstances(restrictionTriples));
 		restTriples.addAll(GraphLib.getAndRemoveRestrictionTriples(graph.typeNodes,
 				restrictionTriples));
-		restTriples.addAll(GraphLib.getAndRemoveSubClassTriples(restrictionTriples,
-				graph.typeNodes));
+		
+		graph.subClassTriples.addAll(GraphLib.getAndRemoveSubClassTriples(restrictionTriples,
+        graph.typeNodes));
+		restTriples.addAll(graph.subClassTriples);
 		graph.nodes.addAll(graph.typeNodes);
 		graph.schemeTriples = restTriples;
 	}
@@ -518,6 +522,7 @@ public class GraphLib {
 		graph.urisToSelect = new ArrayList<String>();
 		graph.literalsToSelect = new ArrayList<String>();
 		graph.dataRetreivalQuery.addAll(graph.dataTriples);
+		graph.dataRetreivalQuery.addAll(graph.subClassTriples);
 
 		for (String var : graph.newInstances) {
 			graph.urisToSelect.add(var);

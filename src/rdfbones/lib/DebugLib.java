@@ -16,6 +16,7 @@ public class DebugLib {
     DebugLib.logString("inputNode", tab, graph, graph.varName);
     DebugLib.logString("firstNode", tab, graph, graph.firstNode);
     DebugLib.logTripleList("dataTriples", tab, graph, graph.dataTriples);
+    DebugLib.logTripleList("subclassTriples", tab, graph, graph.subClassTriples);
     DebugLib.logTripleList("schemeTriples", tab, graph, graph.schemeTriples);
     DebugLib.logTripleList("triplesToStore", tab, graph, graph.triplesToStore);
     DebugLib.logTripleList("labelTriples", tab, graph, graph.labelTriples);
