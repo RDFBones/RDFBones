@@ -4,12 +4,15 @@
 
 <#import "lib-import.ftl" as imp> 
 
+<@imp.js url="dataTransformation/inputSelectorTable" />
+<@imp.js url="dataTransformation/input" />
+<@imp.js url="dataTransformation/ajaxController" />
 <@imp.js url="dataTransformation/item" />
 <@imp.js url="dataTransformation/main" />
 <@imp.css url="dataTransformation/dataTransformation" />
 
 <div class = "mainFormTitle margin10">
-	Data transformation
+	Data transformations
 </div>
 <div id="form"  class="margin10H">
 </div>
