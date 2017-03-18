@@ -40,7 +40,7 @@ public class DependencyCalculator {
       String node = element.node.varName;
       
       GraphPath graphPath =
-          getGraphPath(new GraphPath(), copy, inputVariables, node);
+          getGraphPath(copy, inputVariables, node);
       graphPath.validate(inputVariables, copy);
       graph.variableDependencies.put(node, new VariableDependency(graph,
           graphPath, node)); 
@@ -54,6 +54,12 @@ public class DependencyCalculator {
     }
   }
 
+  public static GraphPath getGraphPath(List<Triple> triples,
+      List<String> inputVars, String node) {
+
+  		return getGraphPath(new GraphPath(), triples, inputVars, node);
+  }
+  
   static GraphPath getGraphPath(GraphPath path, List<Triple> triples,
     List<String> inputVars, String node) {
 
