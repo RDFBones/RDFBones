@@ -17,11 +17,7 @@ public class InstanceSelector extends FormElement {
   @Override
   public JSONObject getDescriptor(FormConfiguration formConfig){
 
-    JSONObject object = JSON.obj();
-    JSON.put(object, "title", this.title);
-    JSON.put(object, "type", this.type);
-    JSON.put(object, "style", this.style);
-    JSON.put(object, "dataKey", this.dataKey);
+    JSONObject object = super.getDescriptor(formConfig);
     if(formConfig.formGraphs.containsKey(this.dataKey)){
     	FormGraph formGraph = formConfig.formGraphs.get(this.dataKey);
     	if(formGraph.table != null){
