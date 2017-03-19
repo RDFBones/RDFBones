@@ -13,7 +13,6 @@ import rdfbones.form.Selector;
 import rdfbones.form.SubformAdder;
 import rdfbones.graphData.FormGraph;
 import rdfbones.graphData.Graph;
-import rdfbones.graphData.Navigator;
 import rdfbones.rdfdataset.Constant;
 import rdfbones.rdfdataset.ExistingInstance;
 import rdfbones.rdfdataset.ExistingRestrictionTriple;
@@ -157,42 +156,9 @@ public class TripleLib {
 	public static Map<String, FormGraph> sdeFormGraph() {
 
 		Map<String, FormGraph> formGraphs = new HashMap<String, FormGraph>();
-		FormGraph formGraph = new FormGraph(boneOrganTriples(), "boneSegment",
-				sdeNavigatorSimplified(), boneOrganTable());
+		FormGraph formGraph = new FormGraph("boneSegment", boneOrganTriples(), boneOrganTable());
 		formGraphs.put("boneSegment", formGraph);
 		return formGraphs;
-	}
-
-	public static Navigator sdeNavigatorSimplified() {
-
-		MultiTriple skiMultiTriple = new MultiTriple("skeletalInventory",
-				"obo:BFO_0000051", "measurementDatum");
-		Navigator skiNavigator = new Navigator("skeletalInventory", skiMultiTriple);
-		skiNavigator.settings("rdfbones:SkeletalInventory",
-				"skeletal inventory");
-		return skiNavigator;
-	}
-
-	public static Navigator sdeNavigator() {
-
-		MultiTriple skiMultiTriple = new MultiTriple("skeletalInventory",
-				"obo:BFO_0000051", "measurementDatum");
-		Navigator skiNavigator = new Navigator("skeletalInventory", skiMultiTriple);
-		skiNavigator.settings("rdfbones:SkeletalInventory",
-				"skeletal inventory");
-
-		MultiTriple cridMultiTriple = new MultiTriple("crid", "obo:IAO_0000136",
-				"skeletalInventory");
-		Navigator cridNavigator = new Navigator("crid", cridMultiTriple,
-				skiNavigator);
-		cridNavigator.settings("obo:IAO_0000578", "CRID");
-
-		MultiTriple cridRegMultiTriple = new MultiTriple("crid", "obo:IAO_0000219",
-				"cridReg");
-		Navigator cridRegNavigator = new Navigator("cridReg", cridRegMultiTriple,
-				cridNavigator);
-		cridRegNavigator.settings("obo:IAO_0000579", "CRID registry");
-		return cridRegNavigator;
 	}
 
 	public static Table boneOrganTable() {
