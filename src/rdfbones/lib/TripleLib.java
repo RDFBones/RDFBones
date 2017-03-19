@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import rdfbones.form.ExistingInstanceSelector;
+import rdfbones.form.InstanceSelector;
 import rdfbones.form.Form;
 import rdfbones.form.FormElement;
 import rdfbones.form.LiteralField;
@@ -45,7 +45,7 @@ public class TripleLib {
 				"Measurement Type");
 		measurementDatum.subForm = measDatumSubForm;
 
-		FormElement boneOrgan = new ExistingInstanceSelector("boneSegment",
+		FormElement boneOrgan = new InstanceSelector("boneSegment",
 				"Bone Segment");
 
 		Form assySubForm = new Form("Assays");
@@ -140,6 +140,20 @@ public class TripleLib {
 		return triple;
 	}
 
+	public static List<Triple> sdeInstanceRestrictionTriples(){
+		
+		FormInputNode si = new FormInputNode("skeletalInventory");
+		Constant siType = new Constant("http://w3id.org/rdfbones/core#SkeletalInventory");
+		RDFNode measDatum = new RDFNode("measurementDatum");
+		RDFNode boneSegment = new RDFNode("boneSegment");
+
+		List<Triple> triple = new ArrayList<Triple>();
+		triple.add(new Triple(si, "rdf:type", siType));
+		triple.add(new Triple(si, "obo:BFO_0000051", measDatum));
+		triple.add(new Triple(measDatum, "obo:IAO_0000136", boneSegment));
+		return triple;
+	}
+	
 	public static Map<String, FormGraph> sdeFormGraph() {
 
 		Map<String, FormGraph> formGraphs = new HashMap<String, FormGraph>();
@@ -486,7 +500,7 @@ public class TripleLib {
 
 	public static Form skeletalInvForm() {
 
-		FormElement skeletalInventory = new ExistingInstanceSelector(
+		FormElement skeletalInventory = new InstanceSelector(
 				"skeletalInventory", "Select skeletal inventory");
 		Form mainForm = new Form("SkeletalInventory");
 		mainForm.formElements.add(skeletalInventory);

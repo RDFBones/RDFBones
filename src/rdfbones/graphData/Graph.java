@@ -22,7 +22,7 @@ import rdfbones.rdfdataset.LabelTriple;
 import rdfbones.rdfdataset.MultiTriple;
 import rdfbones.rdfdataset.RDFNode;
 import rdfbones.rdfdataset.Triple;
-import rdfbones.form.ExistingInstanceSelector;
+import rdfbones.form.InstanceSelector;
 import rdfbones.form.FormConfiguration;
 import rdfbones.formProcessing.WebappConnector;
 
@@ -244,7 +244,7 @@ public class Graph {
 		
 		if( this.mainGraph.formConfiguration.formElements.containsKey(this.firstNode)) {
 			if(this.mainGraph.formConfiguration.formElements.get(this.firstNode)
-					instanceof ExistingInstanceSelector){
+					instanceof InstanceSelector){
 				return false;
 			}
 		}
@@ -289,6 +289,7 @@ public class Graph {
 	 */
 
 	public String saveInitialData(JSONObject inputObject) {
+		
 		Map<String, String> variableMap = new HashMap<String, String>();
 		if(this.globalLabelKey != null){
 			this.globalLabelValue = JSON.string(inputObject, this.globalLabelKey);

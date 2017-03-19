@@ -7,9 +7,9 @@ import rdfbones.lib.JSON;
 import rdfbones.table.DefaultTable;
 import rdfbones.table.Table;
 
-public class ExistingInstanceSelector extends FormElement {
+public class InstanceSelector extends FormElement {
 
-  public ExistingInstanceSelector(String varName, String title){
+  public InstanceSelector(String varName, String title){
     super(varName, title);
     this.type = new String("existingInstanceSelector");
   }
