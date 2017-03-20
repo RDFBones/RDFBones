@@ -11,7 +11,7 @@ public class InstanceSelector extends FormElement {
 
   public InstanceSelector(String varName, String title){
     super(varName, title);
-    this.type = new String("existingInstanceSelector");
+    this.type = new String("instanceSelector");
   }
   
   @Override
