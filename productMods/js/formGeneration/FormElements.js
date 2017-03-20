@@ -202,7 +202,7 @@ class StringInput {
 	}
 }
 
-class ExistingInstanceSelector extends FormElement {
+class InstanceSelector extends FormElement {
 	
 	initUI () {
 		this.container = html.div("elementContainer")
@@ -227,10 +227,10 @@ class ExistingInstanceSelector extends FormElement {
 			 this.instanceSelector.display()
 		} else {
 			if (this.descriptor.table != undefined) {
-				if(objectUri !== undefined){
-					this.instanceSelector = new EditInstanceSelector(this)
+				if(objectUri !== null){
+					this.instanceSelector = new EditInstanceSelectorWindow(this)
 				} else {
-					this.instanceSelector = new InstanceSelector(this)
+					this.instanceSelector = new InstanceSelectorWindow(this)
 				}
 			} else {
 				alert("Table is not defined")

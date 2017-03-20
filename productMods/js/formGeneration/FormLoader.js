@@ -93,7 +93,7 @@ FormLoader.prototype = {
 var ElementMap = {
 	adder : Adder,
 	selector : Selector,
-	existingInstanceSelector : ExistingInstanceSelector,
+	existingInstanceSelector : InstanceSelector,
 	stringInput : StringInput,
 	literalCell : LiteralCell,
 	imagesCell : ImagesCell,
