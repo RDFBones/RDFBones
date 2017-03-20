@@ -1,5 +1,5 @@
 
-class InstanceSelector{
+class InstanceSelectorWindow{
 	
 	constructor(formElement){
 		this.formElement = formElement
@@ -46,12 +46,10 @@ class InstanceSelector{
 		this.dataArray.push(dataItem.data)
 	}
 	
-	remove(key, dataObject){
+	remove(dataItem){
 		
-		console.log(key)
-		console.log(dataObject)
-		console.log(this.dataArray)
-		DataLib.removeObjectFromArray(this.dataArray, key,  dataObject)
+		var uri = dataItem.data[this.dataKey]
+		DataLib.removeObjectFromArrayByKey(this.dataArray, this.dataKey, uri)
 	}
 
 	done (){
@@ -60,60 +58,39 @@ class InstanceSelector{
 
 }
 
-class EditInstanceSelector extends InstanceSelector {
+class EditInstanceSelectorWindow extends InstanceSelectorWindow {
 	
 	init (){
 		this.dataItemCache = new Object()
+		this.addedUris = new Object()
 		this.addedKeys = []
 		$.each(this.dataArray, (function(key, value){
+			this.addedUris[value[this.dataKey]] = true
 			this.addedKeys.push(value[this.dataKey])
 		}).bind(this))
 		this.loadExisting()
 		super.init()
-	}	
+	}
 	
 	loadExisting (){
 		
-		this.setTableDescriptor()
+		this.tableDescriptor = {table : this.descriptor}
 		var selectedTable = new SelectedTable(this, this.getDataArray(), 
 				this.tableDescriptor)
 		this.selectedModule.addObject(selectedTable)
 		this.initUI()
 	}
-
-	setTableDescriptor (){
-		
-		this.predicates = []
-		var desc = this.descriptor
-		while(true){
-			if(desc.type == "selector" || desc.subForm === undefined){
-				break
-			} else {
-				this.predicates.push(desc.predicate)
-				desc = desc.subForm	
-			}
-		}
-		this.tableDescriptor = desc
-	}
 	
 	getDataArray(){
-		var leafData = []
-		this.setLeafData(0, this.predicates, this.tableData, leafData)
-		console.log(this.addedArray)
-		console.log(DataLib.getType(leafData))
-		return leafData.selectObjects(this.dataKey, this.addedKeys)
-	}
-	
-	setLeafData(n, predicates, dataArray, arrayToSet){
 		
-		if(n < predicates.length){
-			$.each(dataArray, (function(index, value){
-				this.setLeafData(n + 1, predicates, value[predicates[n]], arrayToSet)
-			}).bind(this))
-		} else {
-			arrayToSet.push(...dataArray)
-		}
-	}
+		arr = []
+		$.each(this.tableData, (function(key, value){
+			if(value[this.dataKey] in this.addedUris){
+				arr.push(value)
+			}
+		}).bind(this))
+		return arr
+	}	
 	
 	select (dataItem){
 		
@@ -151,7 +128,6 @@ class EditInstanceSelector extends InstanceSelector {
 		} else {
 			return true
 		}
-		
 	}
 	
 }

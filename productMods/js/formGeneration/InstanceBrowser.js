@@ -10,14 +10,21 @@ class InstanceBrowser {
 		this.tableCache = new Object()
 		//UI
 		this.navigator = new NavigatorView((this.showTable).bind(this)) 
-		this.titleField = new TextField(this.descriptor.table.title, "browserTitle")
-		this.tableContainer = html.div()
-		
-		this.mainTable = this.getSelectorTable()
-		var homeParam = [this.mainTable, this.descriptor.table.title]
-		this.navigator.home(homeParam)
-		this.showTable(homeParam, (this.dataArray.length > 0))
-		this.initUI()
+		if("table" in this.descriptor){
+			this.titleField = new TextField(this.descriptor.table.title, "browserTitle")
+			this.tableContainer = html.div()
+			this.mainTable = this.getSelectorTable()
+			var homeParam = [this.mainTable, this.descriptor.table.title]
+			this.navigator.home(homeParam)
+			this.showTable(homeParam, (this.dataArray.length > 0))
+			this.initUI()
+		} else {
+			var buf = this.descriptor
+			buf.type = ""
+			this.descriptor.table = buf
+			this.container.append(
+					new SelectorTable(this, this.dataArray, this.descriptor).container)
+		}
 	}
 
 	initUI (){

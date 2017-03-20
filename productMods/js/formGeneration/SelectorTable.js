@@ -6,7 +6,7 @@ class SelectorTable {
 		this.instanceSelector = instanceBrowser.instanceSelector
 		this.dataKey = instanceBrowser.instanceSelector.descriptor.dataKey
 		this.descriptor = descriptor
-		if(this.instanceSelector instanceof EditInstanceSelector){
+		if(this.instanceSelector instanceof EditInstanceSelectorWindow){
 			this.check = true
 		}
 		this.initElements()
@@ -44,7 +44,7 @@ class SelectorTable {
 		}).bind(this))
 	}
 	
-	addDataItems(){
+	addDataItems(arr){
 		arr.push(new TableTitle(this.descriptor.table.cells).container)
 		$.each(this.array, (function(index, value){
 			arr.push(new DataItem(this, value, this.descriptor.table.cells).container)	
