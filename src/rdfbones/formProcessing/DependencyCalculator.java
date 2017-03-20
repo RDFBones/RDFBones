@@ -14,8 +14,9 @@ import rdfbones.graphData.VariableDependency;
 import rdfbones.lib.ArrayLib;
 import rdfbones.lib.GraphLib;
 import rdfbones.lib.TripleLib;
-import rdfbones.rdfdataset.ExistingRestrictionTriple;
 import rdfbones.rdfdataset.GreedyRestrictionTriple;
+import rdfbones.rdfdataset.InputNode;
+import rdfbones.rdfdataset.MainInputNode;
 import rdfbones.rdfdataset.RestrictionTriple;
 import rdfbones.rdfdataset.Triple;
 
@@ -40,7 +41,7 @@ public class DependencyCalculator {
       String node = element.node.varName;
       
       GraphPath graphPath =
-          getGraphPath(new GraphPath(), copy, inputVariables, node);
+          getGraphPath(copy, inputVariables, node);
       graphPath.validate(inputVariables, copy);
       graph.variableDependencies.put(node, new VariableDependency(graph,
           graphPath, node)); 
@@ -54,6 +55,12 @@ public class DependencyCalculator {
     }
   }
 
+  public static GraphPath getGraphPath(List<Triple> triples,
+      List<String> inputVars, String node) {
+
+  		return getGraphPath(new GraphPath(), triples, inputVars, node);
+  }
+  
   static GraphPath getGraphPath(GraphPath path, List<Triple> triples,
     List<String> inputVars, String node) {
 
@@ -77,7 +84,7 @@ public class DependencyCalculator {
     Integer i = new Integer(0);
     for (Triple triple : triples) {
       if (triple.subject.varName.equals(node) || triple.object.varName.equals(node)) {
-        if ((triple instanceof RestrictionTriple) || (triple instanceof ExistingRestrictionTriple)) {
+        if ((triple instanceof RestrictionTriple) || isTypeRestrictionTriple(triple)) {
           nums.add(i);
           toReturn.add(triple);
         } 
@@ -86,5 +93,14 @@ public class DependencyCalculator {
     }
     ArrayLib.remove(triples, nums);
     return toReturn;
+  }
+  
+  static boolean isTypeRestrictionTriple(Triple triple){
+  
+  	if((triple.subject instanceof InputNode) && triple.predicate.equals("rdf:type")){
+  		return true;
+  	} else {
+  		return false;
+  	}
   }
 }
