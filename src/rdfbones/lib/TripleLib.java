@@ -12,10 +12,7 @@ import rdfbones.form.LiteralField;
 import rdfbones.form.Selector;
 import rdfbones.form.SubformAdder;
 import rdfbones.graphData.FormGraph;
-import rdfbones.graphData.Graph;
 import rdfbones.rdfdataset.Constant;
-import rdfbones.rdfdataset.ExistingInstance;
-import rdfbones.rdfdataset.ExistingRestrictionTriple;
 import rdfbones.rdfdataset.FormInputNode;
 import rdfbones.rdfdataset.GreedyRestrictionTriple;
 import rdfbones.rdfdataset.HasValueRestrictionTriple;
@@ -27,7 +24,6 @@ import rdfbones.rdfdataset.QualifiedRestrictionTriple;
 import rdfbones.rdfdataset.RDFNode;
 import rdfbones.rdfdataset.RestrictionTriple;
 import rdfbones.rdfdataset.Triple;
-import rdfbones.table.ImagesCell;
 import rdfbones.table.Table;
 import rdfbones.table.TableCell;
 
@@ -63,6 +59,13 @@ public class TripleLib {
 		return mainForm;
 	}
 
+	public static List<Triple> sdeTriples(){
+		
+		List<Triple> triples = TripleLib.sdeDataTiples();
+		triples.addAll(TripleLib.sdeSchemeTriples());
+		return triples;
+	}
+	
 	public static List<Triple> sdeDataTiples() {
 
 		List<Triple> triple = new ArrayList<Triple>();
@@ -72,13 +75,13 @@ public class TripleLib {
 		triple.add(new MultiTriple("objectUri", "obo:BFO_0000051",
 				"assay"));
 		triple.add(new MultiTriple("specimenCollectionProcess", "obo:OBI_0000293",
-				new ExistingInstance("boneSegment")));
+				new InputNode("boneSegment")));
 		triple.add(new Triple("specimenCollectionProcess", "obo:OBI_0000299",
 				"specimen"));
 		triple.add(new Triple("assay", "obo:OBI_0000293", "specimen"));
 		triple.add(new MultiTriple("assay", "obo:OBI_0000299", "measurementDatum"));
 		triple.add(new Triple("measurementDatum", "obo:OBI_0000999",
-				new FormInputNode("categoricalLabel")));
+				new InputNode("categoricalLabel")));
 		return triple;
 	}
 
@@ -115,8 +118,8 @@ public class TripleLib {
 				new Constant("obo:OBI_0000659")));
 		triple.add(new Triple("assayType", "rdfs:subClassOf", new Constant(
 				"obo:OBI_0000070")));
-		// triple.add(new Triple("measurementDatumType", "rdfs:subClassOf",
-		// new Constant("obo:OBI_0000070MDType")));
+		//triple.add(new Triple("measurementDatumType", "rdfs:subClassOf",
+		//			new Constant("obo:OBI_0000070MDType")));
 		return triple;
 	}
 
@@ -132,9 +135,9 @@ public class TripleLib {
 		triple.add(new Triple("measurementDatum", "rdf:type", new FormInputNode(
 				"measurementDatumType")));
 		triple.add(new Triple("objectUri", "rdf:type", "studyDesignExecutionType"));
-		triple.add(new ExistingRestrictionTriple(new InputNode("boneSegment"),
+		triple.add(new Triple(new InputNode("boneSegment"),
 				"rdf:type", "boneSegmentType"));
-		triple.add(new ExistingRestrictionTriple(new InputNode("categoricalLabel"),
+		triple.add(new Triple(new InputNode("categoricalLabel"),
 				"rdf:type", "categoricalLabelType"));
 		return triple;
 	}
@@ -284,7 +287,7 @@ public class TripleLib {
 				"measurementDatumType"));
 		triples.add(new Triple(new MainInputNode("subjectUri"), "rdf:type",
 				"skeletalInventoryType"));
-		triples.add(new ExistingRestrictionTriple(
+		triples.add(new Triple(
 				new InputNode("categoricalLabel"), "rdf:type", "categoricalLabelType"));
 		return triples;
 	}
