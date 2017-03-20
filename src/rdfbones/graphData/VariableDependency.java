@@ -36,7 +36,11 @@ public class VariableDependency {
 
   	List<String> inputData = new ArrayList<String>();
     for (String input : this.inputs) {
-      inputData.add(JSON.string(inputs, input));
+    	if(this.graph.mainInputValues.containsKey(input)){
+    		inputData.add(this.graph.mainInputValues.get(input));
+    	} else {
+    		inputData.add(JSON.string(inputs, input));	
+    	}
     }
     if(this.formGraph != null){
     	System.out.println("FormGraph is not null");
@@ -55,13 +59,15 @@ public class VariableDependency {
   
   public void initDataGetter(FormGraph formGraph){
   	
+  	System.out.println("InitDataGetter");
   	this.formGraph = formGraph;
   	QueryInfo queryInfo = formGraph.queryInfo;
-  	//DebugLib.logTripleList(queryInfo.triples, "QueryInfo Triples");
-  	queryInfo.triples.addAll(this.path.triples);
-  	queryInfo.uris.add(this.varToGet);
-  	this.dataGetter = new SPARQLDataGetter(this.graph, queryInfo.triples, queryInfo.uris, 
+	  //queryInfo.triples.addAll(this.path.triples);
+	  this.path.triples.addAll(queryInfo.triples);
+	  queryInfo.uris.add(this.varToGet);
+  	this.dataGetter = new SPARQLDataGetter(this.graph, this.path.triples, queryInfo.uris, 
   			queryInfo.literals, this.inputs);
+	  DebugLib.logTripleList(queryInfo.triples, "QueryInfo Triples");
   }
   
   public String queryDebug() {
@@ -69,6 +75,6 @@ public class VariableDependency {
   }
   
   public void debug(){
-  	DebugLib.logTripleList("", this.dataGetter.connector, this.path.triples);
+  	DebugLib.logTripleList("", this.dataGetter.mainGraph.webapp, this.path.triples);
   }
 }
