@@ -71,6 +71,7 @@ public class GraphLib {
 		Map<String, String> map = new HashMap<String, String>();
 		for (String labelClass : graph.labelClasses) {
 			String classUri = graph.graphDataMap.get(labelClass);
+			System.out.println("LabelClass : " + labelClass + " =  " + classUri);
 			String value = dataGetter.getLabel(classUri);
 			if (graph.mainGraph.globalLabelKey != null) {
 				value = graph.mainGraph.globalLabelValue + "." + value;
@@ -119,7 +120,7 @@ public class GraphLib {
 				all.add(labelTriple);
 			}
 			if (triple.predicate.equals("rdfs:label")) {
-
+				
 			}
 		}
 		all.addAll(triples);
@@ -363,37 +364,6 @@ public class GraphLib {
 		return toReturn;
 	}
 
-	public static List<String> getNewInstances(List<Triple> triples) {
-
-		List<String> newInstances = new ArrayList<String>();
-		for (Triple triple : triples) {
-			if (!(triple.subject instanceof ExistingInstance)
-					&& !(triple.subject instanceof InputNode)) {
-				ArrayLib.addDistinct(newInstances, triple.subject.varName);
-			}
-			if (!(triple.object instanceof ExistingInstance)
-					&& !(triple.object instanceof InputNode)
-					&& !(triple.object instanceof LiteralVariable)) {
-				ArrayLib.addDistinct(newInstances, triple.object.varName);
-			}
-		}
-		return newInstances;
-	}
-
-	public static List<String> getExistingInstances(List<Triple> triples) {
-
-		List<String> newInstances = new ArrayList<String>();
-		for (Triple triple : triples) {
-			if ((triple.subject instanceof ExistingInstance)) {
-				ArrayLib.addDistinct(newInstances, triple.subject.varName);
-			}
-			if (triple.object instanceof ExistingInstance) {
-				ArrayLib.addDistinct(newInstances, triple.object.varName);
-			}
-		}
-		return newInstances;
-	}
-
 	public static void setSchemeTriples(Graph graph,
 			List<Triple> restrictionTriples) {
 
@@ -451,21 +421,34 @@ public class GraphLib {
 			if (!triple.predicate.equals("rdf:type")) {
 				graph.typeQueryTriples.add(triple);
 			}
-			if (triple.subject instanceof InputNode
-					&& !(triple instanceof ExistingRestrictionTriple)) {
+			if((triple.subject instanceof MainInputNode) && triple.predicate.equals("rdf:type")){
+				graph.typeQueryTriples.add(triple);
+			}
+			
+			if (triple.subject instanceof InputNode && !triple.predicate.equals("rdf:type")) {
 				ArrayLib.addDistinct(graph.inputClasses, triple.subject.varName);
-				GraphLib.setMainInputNode(triple.subject, graph);
 			}
 			if (triple.object instanceof InputNode) {
 				ArrayLib.addDistinct(graph.inputClasses, triple.object.varName);
-				GraphLib.setMainInputNode(triple.object, graph);
+			}
+			
+			if(triple.subject instanceof MainInputNode){
+				ArrayLib.addDistinct(graph.mainGraph.mainInputNodes,triple.subject.varName);
+			}
+			if(triple.object instanceof MainInputNode){
+				ArrayLib.addDistinct(graph.mainGraph.mainInputNodes,triple.object.varName);
 			}
 		}
 
+		if(graph.inputClasses.size() == 0){
+			graph.inputClasses.add("subjectUri");
+		}
+		
 		for (Triple triple : graph.dataTriples) {
-			if (triple.subject instanceof InputNode) {
-				ArrayLib.addDistinct(graph.inputInstances, triple.subject.varName);
-				GraphLib.setMainInputNode(triple.subject, graph);
+			if ((triple.subject instanceof InputNode)) {
+				if(!(triple.subject instanceof MainInputNode)){
+					ArrayLib.addDistinct(graph.inputInstances, triple.subject.varName);
+				}
 			} else {
 				ArrayLib.addDistinct(graph.newInstances, triple.subject.varName);
 			}
@@ -473,7 +456,6 @@ public class GraphLib {
 			if (triple.object instanceof InputNode) {
 				if (triple instanceof LiteralTriple) {
 					ArrayLib.addDistinct(graph.inputLiterals, triple.object.varName);
-					GraphLib.setMainInputNode(triple.object, graph);
 				} else {
 					ArrayLib.addDistinct(graph.inputInstances, triple.object.varName);
 				}
@@ -484,8 +466,15 @@ public class GraphLib {
 					ArrayLib.addDistinct(graph.newInstances, triple.object.varName);
 				}
 			}
+			
+			if(triple.subject instanceof MainInputNode){
+				ArrayLib.addDistinct(graph.mainGraph.mainInputNodes,triple.subject.varName);
+			}
+			if(triple.object instanceof MainInputNode){
+				ArrayLib.addDistinct(graph.mainGraph.mainInputNodes,triple.object.varName);
+			}
 		}
-
+		
 		// triplesToStore, typeQueryTriples, classesToSelect
 		for (Triple triple : graph.schemeTriples) {
 			if (triple instanceof RestrictionTriple) {
