@@ -168,7 +168,7 @@ public class Graph {
 					this.dataRetreivalQuery, this.urisToSelect, this.literalsToSelect,
 					this.varName);
 		}
-		if (this.typeQueryTriples.size() > 0 && this.inputClasses.size() > 0
+		if (this.typeQueryTriples.size() > 0 //&& this.inputClasses.size() > 0
 				&& this.classesToSelect.size() > 0) {
 			this.typeQueryTriples.addAll(GraphLib
 					.optionalClassLabelTripels(this.classesToSelect));
@@ -260,15 +260,20 @@ public class Graph {
 			VariableDependency varDep = this.mainGraph.variableDependencies
 					.get(formNode);
 			JSONObject inputData = JSON.obj();
+			System.out.println("VariableDependency inputs : \n");
 			for (String input : varDep.inputs) {
 				if (object.has(input)) {
+					System.out.println("1 \n");
 					JSON.copyValue(inputData, object, input);
-				} else if (parentData.has(input)) {
-					JSON.copyValue(inputData, parentData, input);
+				//} else if (parentData.has(input)) {
+				//	System.out.println("2 \n");
+				//	JSON.copyValue(inputData, parentData, input);
 				} else if(this.mainGraph.mainInputValues.containsKey(input)){
+					System.out.println("3 \n");
 					String value = this.mainGraph.mainInputValues.get(input);
 					JSON.put(inputData, input, value);
 				}
+				System.out.println("inputVar :" + input  + "---  value :" + JSON.string(inputData, input));
 			}
 			JSON.put(formData, formNode, varDep.getData(inputData));
 		}
@@ -328,6 +333,8 @@ public class Graph {
 			Map<String, String> variableMap) {
 
 		if (this.typeRetriever != null) {
+			System.out.println("TypeRetriever not null");
+			
 			String inputValue = JSON.string(inputObject, this.inputClasses.get(0));
 			List<Map<String, String>> data = this.typeRetriever.getData(inputValue);
 			if (data.size() > 0) {
@@ -348,7 +355,7 @@ public class Graph {
 			}
 		}
 
-		for (String mainInputNode : this.mainInputNodes) {
+		for (String mainInputNode : this.mainGraph.mainInputNodes) {
 			instanceMap.put(mainInputNode,
 					this.mainGraph.mainInputValues.get(mainInputNode));
 		}
@@ -371,6 +378,8 @@ public class Graph {
 
 		// Creating string to create
 		this.graphDataMap = variableMap;
+		System.out.println("\n\n");
+		DebugLib.mapLog(this.graphDataMap, this);
 		//List<Triple> triplesToStore = GraphLib.addLabelTriples(this.triplesToStore);
 		Map<String, String> labelMap = GraphLib.getLabelMap(this);
 		
