@@ -222,6 +222,7 @@ public class Graph {
 				System.out.println("FirstNode : " + this.firstNode);
 				for (int i = 0; i < this.existingData.length(); i++) {
 					JSONObject object = JSON.object(this.existingData, i);
+					N3.extendObject(object, this);
 					JSON.put(object, "formData", this.getFormData(object, parentData));
 				}
 			}
@@ -230,6 +231,7 @@ public class Graph {
 				for (String key : this.subGraphs.keySet()) {
 					Graph subGraph = this.subGraphs.get(key);
 					JSONObject object = JSON.object(this.existingData, i);
+					N3.extendObject(object, this);
 					JSON.put(object, "formData", this.getFormData(object, parentData));
 					String initialValue = JSON.string(object, subGraph.varName);
 					JSONArray data = subGraph.getGraphData(initialValue,

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import rdfbones.graphData.Graph;
 import rdfbones.rdfdataset.LiteralTriple;
 import rdfbones.rdfdataset.Triple;
 
@@ -24,4 +25,12 @@ public class N3 {
 		System.out.println("");
 		return sb.toString();
 	}
+	
+	public static void extendObject(JSONObject object, Graph graph){
+		
+		for(String mainInputNode : graph.mainInputNodes){
+			JSON.put(object, mainInputNode, graph.mainGraph.mainInputValues.get(mainInputNode));
+		}
+	}
+	
 }
