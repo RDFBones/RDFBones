@@ -12,17 +12,16 @@ public class TripleCollector {
 	public TripleCollector(List<Triple> triples) {
 
 		for (Triple triple : triples) {
-			if ((triple instanceof RestrictionTriple && !(triple instanceof InstanceRestrictionTriple))
+			if (triple instanceof InstanceRestrictionTriple){
+				this.instanceRestTriples.add(triple);
+			} else if ((triple instanceof RestrictionTriple && !(triple instanceof InstanceRestrictionTriple))
 					|| triple.predicate.equals("rdfs:subClassOf")) {
 				this.schemeTriples.add(triple);
 			} else if (triple.predicate.equals("rdf:type")) {
 				this.schemeTriples.add(triple);
-			} else if (triple instanceof InstanceRestrictionTriple) {
-				this.instanceRestTriples.add(triple);
 			} else {
 				this.dataTriples.add(triple);
 			}
 		}
 	}
-
 }
