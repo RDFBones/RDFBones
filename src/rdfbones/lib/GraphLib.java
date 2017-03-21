@@ -12,6 +12,8 @@ import rdfbones.formProcessing.DependencyCalculator;
 import rdfbones.formProcessing.WebappConnector;
 import rdfbones.graphData.FormGraph;
 import rdfbones.graphData.Graph;
+import rdfbones.graphData.GraphPath;
+import rdfbones.graphData.Path;
 import rdfbones.graphData.SubGraphInfo;
 import rdfbones.graphData.UnionForm;
 import rdfbones.rdfdataset.*;
@@ -26,6 +28,12 @@ public class GraphLib {
 				new PlainJavaWebappConnector(true));
 	}
 
+	public static FormConfiguration getFormConfig(TripleCollector triples,
+			Form form) {
+		
+		return getFormConfig(triples, form, new PlainJavaWebappConnector(true));
+	}
+	
 	public static FormConfiguration getFormConfig(List<Triple> dataTriples,
 			List<Triple> schemeTriples, Form form, WebappConnector webapp) {
 
@@ -44,7 +52,7 @@ public class GraphLib {
 		Graph graph = new Graph(triples.dataTriples, schemeCopy1, webapp);
 		form.setGraph(graph);
 		List<Triple> schemeCopy2 = ArrayLib.copyList(triples.schemeTriples);
-		DependencyCalculator.calculate(graph, schemeCopy2, form);
+		DependencyCalculator.calculate(graph, triples, form);
 		return new FormConfiguration(graph, form);
 	}
 	
@@ -729,4 +737,38 @@ public class GraphLib {
 			}
 		}
 	}
+	
+	public static Map<String, RDFNode> processTriples(List<Triple> triples){
+		
+		Map<String, RDFNode> map = getNodeMap(triples);
+		for(Triple triple : triples){
+			map.get(triple.subject.varName).addTriple(triple);
+			map.get(triple.object.varName).addTriple(triple);
+		}	
+		return map;
+	}
+	
+	public static Map<String, RDFNode> getNodeMap(List<Triple> triples){
+		
+		Map<String, RDFNode> map = new HashMap<String, RDFNode>();
+		for(Triple triple : triples){
+			if(!map.containsKey(triple.subject.varName)){
+				map.put(triple.subject.varName, triple.subject);
+			}
+			if(!map.containsKey(triple.object.varName)){
+				map.put(triple.object.varName, triple.object);
+			}
+		}
+		return map;
+	}
+	
+	public static List<Path> getPaths(RDFNode inputNode){
+		
+		List<Path> paths = new ArrayList<Path>(); 
+		for (Triple triple : inputNode.triples) {
+			paths.add(new Path(inputNode, triple));
+		}
+		return paths;
+	}
 }
+
