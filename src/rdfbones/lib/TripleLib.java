@@ -89,8 +89,8 @@ public class TripleLib {
 
 		List<Triple> triple = new ArrayList<Triple>();
 		triple.add(new RestrictionTriple("subjectType", "obo:BFO_0000051",
-				"studyDesignExecutionType", "owl:someValuesFrom"));
-		triple.add(new RestrictionTriple("studyDesignExecutionType",
+				"objectUriType", "owl:someValuesFrom"));
+		triple.add(new RestrictionTriple("objectUriType",
 				"obo:BFO_0000051", new InputNode("assayType"), "owl:someValuesFrom"));
 		triple.add(new QualifiedRestrictionTriple(new FormInputNode("assayType"),
 				"obo:OBI_0000293", "specimenType"));
@@ -112,7 +112,7 @@ public class TripleLib {
 	public static List<Triple> sdeschemeTriplesSubClasses() {
 
 		List<Triple> triple = new ArrayList<Triple>();
-		triple.add(new Triple("studyDesignExecutionType", "rdfs:subClassOf",
+		triple.add(new Triple("objectUriType", "rdfs:subClassOf",
 				new Constant("obo:OBI_0000471")));
 		triple.add(new Triple("specimenCollectionProcessType", "rdfs:subClassOf",
 				new Constant("obo:OBI_0000659")));
@@ -134,7 +134,7 @@ public class TripleLib {
 				"specimenCollectionProcessType"));
 		triple.add(new Triple("measurementDatum", "rdf:type", new FormInputNode(
 				"measurementDatumType")));
-		triple.add(new Triple("objectUri", "rdf:type", "studyDesignExecutionType"));
+		triple.add(new Triple("objectUri", "rdf:type", "objectUriType"));
 		triple.add(new Triple(new InputNode("boneSegment"),
 				"rdf:type", "boneSegmentType"));
 		triple.add(new Triple(new InputNode("categoricalLabel"),
