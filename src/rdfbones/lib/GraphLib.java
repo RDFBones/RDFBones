@@ -434,9 +434,12 @@ public class GraphLib {
 			
 			if(triple.subject instanceof MainInputNode){
 				ArrayLib.addDistinct(graph.mainGraph.mainInputNodes,triple.subject.varName);
+				ArrayLib.addDistinct(graph.mainInputNodes,triple.subject.varName);
+
 			}
 			if(triple.object instanceof MainInputNode){
 				ArrayLib.addDistinct(graph.mainGraph.mainInputNodes,triple.object.varName);
+				ArrayLib.addDistinct(graph.mainInputNodes,triple.object.varName);
 			}
 		}
 
@@ -468,10 +471,12 @@ public class GraphLib {
 			}
 			
 			if(triple.subject instanceof MainInputNode){
-				ArrayLib.addDistinct(graph.mainGraph.mainInputNodes,triple.subject.varName);
+				ArrayLib.addDistinct(graph.mainGraph.mainInputNodes, triple.subject.varName);
+				ArrayLib.addDistinct(graph.mainInputNodes, triple.subject.varName);
 			}
 			if(triple.object instanceof MainInputNode){
-				ArrayLib.addDistinct(graph.mainGraph.mainInputNodes,triple.object.varName);
+				ArrayLib.addDistinct(graph.mainGraph.mainInputNodes, triple.object.varName);
+				ArrayLib.addDistinct(graph.mainInputNodes, triple.object.varName);
 			}
 		}
 		
