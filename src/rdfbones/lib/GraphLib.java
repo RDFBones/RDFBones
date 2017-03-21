@@ -36,7 +36,18 @@ public class GraphLib {
 		DependencyCalculator.calculate(graph, schemeCopy2, form);
 		return new FormConfiguration(graph, form);
 	}
+	
+	public static FormConfiguration getFormConfig(TripleCollector triples, 
+			Form form, WebappConnector webapp) {
 
+		List<Triple> schemeCopy1 = ArrayLib.copyList(triples.schemeTriples);
+		Graph graph = new Graph(triples.dataTriples, schemeCopy1, webapp);
+		form.setGraph(graph);
+		List<Triple> schemeCopy2 = ArrayLib.copyList(triples.schemeTriples);
+		DependencyCalculator.calculate(graph, schemeCopy2, form);
+		return new FormConfiguration(graph, form);
+	}
+	
 	public static FormConfiguration getFormConfig(List<Triple> dataTriples,
 			List<Triple> schemeTriples, Form form, Map<String, FormGraph> formGraphs) {
 
