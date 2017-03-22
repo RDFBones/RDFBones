@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import rdfbones.form.AuxNodeSelector;
 import rdfbones.form.InstanceSelector;
 import rdfbones.form.Form;
 import rdfbones.form.FormElement;
@@ -17,6 +18,7 @@ import rdfbones.rdfdataset.FormInputNode;
 import rdfbones.rdfdataset.GreedyRestrictionTriple;
 import rdfbones.rdfdataset.HasValueRestrictionTriple;
 import rdfbones.rdfdataset.InputNode;
+import rdfbones.rdfdataset.InstanceRestrictionTriple;
 import rdfbones.rdfdataset.LiteralTriple;
 import rdfbones.rdfdataset.MainInputNode;
 import rdfbones.rdfdataset.MultiTriple;
@@ -24,6 +26,7 @@ import rdfbones.rdfdataset.QualifiedRestrictionTriple;
 import rdfbones.rdfdataset.RDFNode;
 import rdfbones.rdfdataset.RestrictionTriple;
 import rdfbones.rdfdataset.Triple;
+import rdfbones.rdfdataset.TripleCollector;
 import rdfbones.table.Table;
 import rdfbones.table.TableCell;
 
@@ -51,18 +54,29 @@ public class TripleLib {
 		assayType.subForm = assySubForm;
 
 		LiteralField labelField = new LiteralField("objectUriLabel", "Label");
-
+		AuxNodeSelector auxNodeSelector = new AuxNodeSelector("skeletalInventory", "Skeletal Inventory");
+		
 		Form mainForm = new Form("Study Design Execution");
 		mainForm.formElements.add(labelField);
+		mainForm.formElements.add(auxNodeSelector);
 		mainForm.formElements.add(assayType);
 
 		return mainForm;
 	}
 
+	public static TripleCollector sde(){
+		
+		List<Triple> triples = TripleLib.sdeDataTiples();
+		triples.addAll(TripleLib.sdeSchemeTriples());
+		triples.addAll(TripleLib.sdeInstanceRestrictionTriples());
+		return new TripleCollector(TripleLib.sdeTriples());
+	}
+	
 	public static List<Triple> sdeTriples(){
 		
 		List<Triple> triples = TripleLib.sdeDataTiples();
 		triples.addAll(TripleLib.sdeSchemeTriples());
+		triples.addAll(TripleLib.sdeInstanceRestrictionTriples());
 		return triples;
 	}
 	
@@ -146,13 +160,13 @@ public class TripleLib {
 		
 		FormInputNode si = new FormInputNode("skeletalInventory");
 		Constant siType = new Constant("http://w3id.org/rdfbones/core#SkeletalInventory");
-		RDFNode measDatum = new RDFNode("measurementDatum");
-		RDFNode boneSegment = new RDFNode("boneSegment");
+		RDFNode measDatum = new InputNode("measurementDatum");
+		RDFNode boneSegment = new InputNode("boneSegment");
 
 		List<Triple> triple = new ArrayList<Triple>();
-		triple.add(new Triple(si, "rdf:type", siType));
-		triple.add(new Triple(si, "obo:BFO_0000051", measDatum));
-		triple.add(new Triple(measDatum, "obo:IAO_0000136", boneSegment));
+		triple.add(new InstanceRestrictionTriple(si, "rdf:type", siType));
+		triple.add(new InstanceRestrictionTriple(si, "obo:BFO_0000051", measDatum));
+		triple.add(new InstanceRestrictionTriple(measDatum, "obo:IAO_0000136", boneSegment));
 		return triple;
 	}
 	
