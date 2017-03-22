@@ -7,15 +7,15 @@ import java.util.Map;
 
 import rdfbones.form.Form;
 import rdfbones.form.FormElement;
+import rdfbones.form.LiteralField;
 import rdfbones.form.SubformAdder;
 import rdfbones.graphData.Graph;
 import rdfbones.graphData.GraphPath;
-import rdfbones.graphData.Path;
-import rdfbones.graphData.WholePath;
 import rdfbones.graphData.VariableDependency;
 import rdfbones.lib.ArrayLib;
 import rdfbones.lib.GraphLib;
 import rdfbones.lib.TripleLib;
+import rdfbones.rdfdataset.Constant;
 import rdfbones.rdfdataset.GreedyRestrictionTriple;
 import rdfbones.rdfdataset.InputNode;
 import rdfbones.rdfdataset.MainInputNode;
@@ -53,7 +53,11 @@ public class DependencyCalculator {
   			inputNodes.add(element.dataKey);
   			if(graph.variableDependencies.containsKey(element.dataKey)){
   				GraphPath path = paths.get(0);
-  				graph.variableDependencies.get(element.dataKey).extend(path.triples, path.finalNode.varName);
+  				if(path.finalNode instanceof Constant){
+  					graph.variableDependencies.get(element.dataKey).extend(path.triples);
+  				} else {
+  					graph.variableDependencies.get(element.dataKey).extend(path.triples, path.finalNode.varName);
+  				}
   			} else {
   				VariableDependency varDep = new VariableDependency(graph, paths.get(0), element.dataKey);
   				graph.variableDependencies.put(element.dataKey, varDep);
@@ -73,17 +77,17 @@ public class DependencyCalculator {
       return;
     }
     for (FormElement element : form.formElements) {
-      List<Triple> copy = new ArrayList<Triple>(triples.size());
-      copy.addAll(triples);
-      
-      String node = element.node.varName;
-      
-      GraphPath graphPath =
-          getGraphPath(copy, inputVariables, node);
-      graphPath.validate(inputVariables, copy);
-      graph.variableDependencies.put(node, new VariableDependency(graph,
-          graphPath, node)); 
-      inputVariables.add(node);
+      if(!(element instanceof LiteralField)){
+      	List<Triple> copy = new ArrayList<Triple>(triples.size());
+        copy.addAll(triples);
+        String node = element.node.varName;
+        GraphPath graphPath =
+            getGraphPath(copy, inputVariables, node);
+        graphPath.validate(inputVariables, copy);
+        graph.variableDependencies.put(node, new VariableDependency(graph,
+            graphPath, node)); 
+        inputVariables.add(node);	
+      }
     }
     // Do the iteration for the subforms
     for (FormElement element : form.formElements) {
