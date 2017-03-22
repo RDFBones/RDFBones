@@ -159,7 +159,7 @@ public class TripleLib {
 	public static List<Triple> sdeInstanceRestrictionTriples(){
 		
 		FormInputNode si = new FormInputNode("skeletalInventory");
-		Constant siType = new Constant("http://w3id.org/rdfbones/core#SkeletalInventory");
+		Constant siType = new Constant("rdfbones:SkeletalInventory");
 		RDFNode measDatum = new InputNode("measurementDatum");
 		RDFNode boneSegment = new InputNode("boneSegment");
 

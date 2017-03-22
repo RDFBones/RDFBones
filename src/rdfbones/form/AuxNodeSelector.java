@@ -5,7 +5,7 @@ public class AuxNodeSelector extends FormElement{
   public Form subForm;
   
   public AuxNodeSelector(String name){
-    super(name, new String());
+    super(name, new String(""));
     this.type = new String("auxNodeSelector");
   }
   

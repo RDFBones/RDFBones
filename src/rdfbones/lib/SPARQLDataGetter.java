@@ -16,7 +16,7 @@ import rdfbones.rdfdataset.Triple;
 
 public class SPARQLDataGetter {
 
-	String queryTriples;
+	public String queryTriples;
 	String selectVars;
 	String query;
 	List<String> urisToSelect;

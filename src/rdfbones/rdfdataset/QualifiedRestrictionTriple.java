@@ -1,14 +1,12 @@
 package rdfbones.rdfdataset;
 
-public class QualifiedRestrictionTriple extends Triple{
+public class QualifiedRestrictionTriple extends RestrictionTriple{
 
   public QualifiedRestrictionTriple(Object subject, String predicate, Object object){
     
     super(subject, predicate, object);
   }
  
-  public int i;
-  
   @Override
   public String getTriple(){
 
@@ -21,7 +19,4 @@ public class QualifiedRestrictionTriple extends Triple{
     return triples;
   }
   
-  public void increment(){
-    this.i++;
-  }
 }

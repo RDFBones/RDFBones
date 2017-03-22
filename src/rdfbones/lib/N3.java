@@ -12,7 +12,6 @@ public class N3 {
 
 	public static String getTriples(List<Triple> triples, JSONObject jsonObject){
 	
-		//System.out.println("Length : " + triples.size()); 
 		StringBuilder sb = new StringBuilder();
 		for(Triple triple : triples){
 			String subject = "<" + JSON.string(jsonObject, triple.subject.varName) + ">"; 
@@ -32,5 +31,4 @@ public class N3 {
 			JSON.put(object, mainInputNode, graph.mainGraph.mainInputValues.get(mainInputNode));
 		}
 	}
-	
 }
