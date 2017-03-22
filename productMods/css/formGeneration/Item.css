@@ -7,6 +7,10 @@
 	margin-top: 3px;
 }
 
+.foreignItem {
+    background-color: #b3aaaa;
+}
+
 .itemContainer:hover {
 	cursor : pointer;
 }
