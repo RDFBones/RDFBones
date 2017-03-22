@@ -10,6 +10,8 @@ import rdfbones.form.FormElement;
 import rdfbones.form.SubformAdder;
 import rdfbones.graphData.Graph;
 import rdfbones.graphData.GraphPath;
+import rdfbones.graphData.Path;
+import rdfbones.graphData.WholePath;
 import rdfbones.graphData.VariableDependency;
 import rdfbones.lib.ArrayLib;
 import rdfbones.lib.GraphLib;
@@ -17,8 +19,11 @@ import rdfbones.lib.TripleLib;
 import rdfbones.rdfdataset.GreedyRestrictionTriple;
 import rdfbones.rdfdataset.InputNode;
 import rdfbones.rdfdataset.MainInputNode;
+import rdfbones.rdfdataset.RDFNode;
 import rdfbones.rdfdataset.RestrictionTriple;
 import rdfbones.rdfdataset.Triple;
+import rdfbones.rdfdataset.TripleCollector;
+import rdfbones.test.PathTest;
 
 public class DependencyCalculator {
 
@@ -28,6 +33,39 @@ public class DependencyCalculator {
     calculate(graph, triples, form, inputVariables);
   }
   
+  public static void calculate(Graph graph, TripleCollector coll, Form form){
+    
+    List<String> inputVariables = GraphLib.getMainInputVars(coll.schemeTriples);
+    calculate(graph, coll.schemeTriples, form, inputVariables);
+    
+    Map<String, RDFNode> map = GraphLib.processTriples(coll.instanceRestTriples);
+  	List<String> inputNodes = ArrayLib.copyStrList(graph.mainInputNodes);
+    calculateInstanceRestrictionTriples(graph, form, map, inputNodes);
+  }
+  
+  public static void calculateInstanceRestrictionTriples(Graph graph, Form form, Map<String, RDFNode> map,
+  		List<String> inputNodes){
+  	
+  	for(FormElement element : form.formElements){
+  		if(map.containsKey(element.dataKey)){
+  			List<GraphPath> paths = GraphLib.getPaths(map.get(element.dataKey), inputNodes);
+  			//PathTest.debugPaths(paths);
+  			inputNodes.add(element.dataKey);
+  			if(graph.variableDependencies.containsKey(element.dataKey)){
+  				GraphPath path = paths.get(0);
+  				graph.variableDependencies.get(element.dataKey).extend(path.triples, path.finalNode.varName);
+  			} else {
+  				VariableDependency varDep = new VariableDependency(graph, paths.get(0), element.dataKey);
+  				graph.variableDependencies.put(element.dataKey, varDep);
+  			}
+  		}
+  		if(element instanceof SubformAdder){
+  			List<String> copyInputNodes = ArrayLib.copyStrList(inputNodes);
+  			calculateInstanceRestrictionTriples(graph, ((SubformAdder) element).subForm, map, copyInputNodes);
+  		}
+  	}
+  }
+
   public static void calculate(Graph graph, List<Triple> triples, Form form,
     List<String> inputVariables) {
 
@@ -54,7 +92,7 @@ public class DependencyCalculator {
       }
     }
   }
-
+  
   public static GraphPath getGraphPath(List<Triple> triples,
       List<String> inputVars, String node) {
 
