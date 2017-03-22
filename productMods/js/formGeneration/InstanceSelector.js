@@ -5,7 +5,7 @@ class InstanceSelectorWindow{
 		this.formElement = formElement
 		this.descriptor = formElement.descriptor.table
 		this.dataKey = formElement.descriptor.dataKey
-		this.dataArray = formElement.existingData
+		this.existingData = formElement.existingData
 		this.formObject = dataUtil.getStrings(formElement.dataObject)
 		this.selectedModule = new Module("Selected Instances")
 		this.toSelectModule = new Module("Instances to select")
@@ -43,13 +43,13 @@ class InstanceSelectorWindow{
 	select (dataItem){
 		
 		this.selectedModule.add(dataItem.container)
-		this.dataArray.push(dataItem.data)
+		this.existingData.push(dataItem.data)
 	}
 	
 	remove(dataItem){
 		
 		var uri = dataItem.data[this.dataKey]
-		DataLib.removeObjectFromArrayByKey(this.dataArray, this.dataKey, uri)
+		DataLib.removeObjectFromArrayByKey(this.existingData, this.dataKey, uri)
 	}
 
 	done (){
@@ -64,7 +64,7 @@ class EditInstanceSelectorWindow extends InstanceSelectorWindow {
 		this.dataItemCache = new Object()
 		this.addedUris = new Object()
 		this.addedKeys = []
-		$.each(this.dataArray, (function(key, value){
+		$.each(this.existingData, (function(key, value){
 			this.addedUris[value[this.dataKey]] = true
 			this.addedKeys.push(value[this.dataKey])
 		}).bind(this))
