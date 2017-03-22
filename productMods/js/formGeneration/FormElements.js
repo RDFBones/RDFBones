@@ -236,18 +236,18 @@ class InstanceSelector extends FormElement {
 
 	loadTableData () {
 
-		if(this.instanceSelector != undefined){
-			 this.instanceSelector.display()
-		} else {
-			if (this.descriptor.table != undefined) {
-				if(objectUri !== null){
-					this.instanceSelector = new EditInstanceSelectorWindow(this)
-				} else {
-					this.instanceSelector = new InstanceSelectorWindow(this)
-				}
+		//if(this.instanceBrowser != undefined){
+		//	 this.instanceBrowser.display()
+		//} else {
+		if (this.descriptor.table != undefined) {
+			if(objectUri !== null){
+				this.instanceBrowser = new EditInstanceBrowser(this)
 			} else {
-				alert("Table is not defined")
-			}	
-		}
+				this.instanceBrowser = new InstanceBrowser(this)
+			}
+		} else {
+			alert("Table is not defined")
+		}	
+		//}
 	}	
 }
