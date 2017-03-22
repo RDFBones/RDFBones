@@ -65,6 +65,9 @@ public class Form {
       if(element instanceof SubformAdder){
         ((SubformAdder) element).subForm.setFormConfig(formConfig);
       }
+      if(element instanceof AuxNodeSelector){
+      	formConfig.dataGraph.formNodes.add(element.dataKey);
+      }
     }
   }
 
