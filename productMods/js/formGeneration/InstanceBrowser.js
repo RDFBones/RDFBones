@@ -36,7 +36,7 @@ class InstanceBrowser{
 	initAdded(){
 		this.foreign = array.substract(this.existingData, this.tableData, this.dataKey, 1)
 		var selectedTable = new SelectedTable(this, this.foreign, this.descriptor)
-		this.selectedModule.add(selectedTable.container)
+		//this.selectedModule.add(selectedTable.container)
 		this.added = array.intersection(this.existingData, this.tableData, this.dataKey, 1)
 		$.each(this.added, (function(i, value){
 			var dataItem = this.elementCache[value[this.dataKey]]
@@ -72,40 +72,8 @@ class InstanceBrowser{
 
 class EditInstanceBrowser extends InstanceBrowser {
 	
-	init (){
-		this.dataItemCache = new Object()
-		this.addedUris = new Object()
-		this.addedKeys = []
-		$.each(this.existingData, (function(key, value){
-			this.addedUris[value[this.dataKey]] = true
-			this.addedKeys.push(value[this.dataKey])
-		}).bind(this))
-		this.loadExisting()
-		super.init()
-	}
 	
-	loadExisting (){
-		
-		this.tableDescriptor = {table : this.descriptor}
-		var selectedTable = new SelectedTable(this, this.getDataArray(), 
-				this.tableDescriptor)
-		this.selectedModule.addObject(selectedTable)
-		this.initUI()
-	}
-	
-	getDataArray(){
-		
-		arr = []
-		$.each(this.tableData, (function(key, value){
-			if(value[this.dataKey] in this.addedUris){
-				arr.push(value)
-			}
-		}).bind(this))
-		return arr
-	}	
-	
-	select (dataItem){s
-		
+	select (dataItem){	
 		PopUpController.init("Please wait")
 		this.formObject[this.dataKey] = dataItem.data[this.dataKey]
 		this.dataItem = dataItem
@@ -115,9 +83,10 @@ class EditInstanceBrowser extends InstanceBrowser {
 	
 	remove (dataItem){
 		var uri = dataItem.data[this.dataKey]
-		this.addedKeys.removeElement(uri)
-		if(this.dataItemCache[uri] !== undefined){
-			this.dataItemCache[uri].addToTable()
+		if(this.elementCache[uri] !== undefined){
+			this.elementCache[uri].addToTable()
+		} else {
+			dataItem.container.remove()
 		}
 		PopUpController.init("Please wait")
 		this.formObject[this.dataKey] = dataItem.data[this.dataKey]
