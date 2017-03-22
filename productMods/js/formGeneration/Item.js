@@ -21,6 +21,10 @@ class DataItem {
 		this.container.append(cells)
 	}
 
+	addToTable(){
+		this.table.container.append(this.container)
+	}
+	
 	select (){
 		
 		if(this.selected){
