@@ -13,7 +13,6 @@ import rdfbones.formProcessing.WebappConnector;
 import rdfbones.graphData.FormGraph;
 import rdfbones.graphData.Graph;
 import rdfbones.graphData.GraphPath;
-import rdfbones.graphData.Path;
 import rdfbones.graphData.SubGraphInfo;
 import rdfbones.graphData.UnionForm;
 import rdfbones.rdfdataset.*;
@@ -29,9 +28,9 @@ public class GraphLib {
 	}
 
 	public static FormConfiguration getFormConfig(TripleCollector triples,
-			Form form) {
+			Form form, Map<String, FormGraph> formGraphs) {
 		
-		return getFormConfig(triples, form, new PlainJavaWebappConnector(true));
+		return getFormConfig(triples, form, formGraphs, new PlainJavaWebappConnector(true));
 	}
 	
 	public static FormConfiguration getFormConfig(List<Triple> dataTriples,
@@ -46,14 +45,14 @@ public class GraphLib {
 	}
 	
 	public static FormConfiguration getFormConfig(TripleCollector triples, 
-			Form form, WebappConnector webapp) {
+			Form form, Map<String, FormGraph> formGraphs, WebappConnector webapp) {
 
 		List<Triple> schemeCopy1 = ArrayLib.copyList(triples.schemeTriples);
 		Graph graph = new Graph(triples.dataTriples, schemeCopy1, webapp);
 		form.setGraph(graph);
 		List<Triple> schemeCopy2 = ArrayLib.copyList(triples.schemeTriples);
 		DependencyCalculator.calculate(graph, triples, form);
-		return new FormConfiguration(graph, form);
+		return new FormConfiguration(graph, form, formGraphs);
 	}
 	
 	public static FormConfiguration getFormConfig(List<Triple> dataTriples,
@@ -762,11 +761,11 @@ public class GraphLib {
 		return map;
 	}
 	
-	public static List<Path> getPaths(RDFNode inputNode){
+	public static List<GraphPath> getPaths(RDFNode inputNode, List<String> inputVars){
 		
-		List<Path> paths = new ArrayList<Path>(); 
+		List<GraphPath> paths = new ArrayList<GraphPath>(); 
 		for (Triple triple : inputNode.triples) {
-			paths.add(new Path(inputNode, triple));
+			paths.add(new GraphPath(inputNode, triple, inputVars));
 		}
 		return paths;
 	}
