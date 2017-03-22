@@ -44,8 +44,12 @@ class Selector extends FormElement{
 		this.selector = new DataSetterSelectorFieldMap(this.options,
 				(this.changeData).bind(this))
 	
-		//this.title = html.div("inline").text(this.descriptor.name)
-		this.container.append(this.selector.container)
+		if(this.descriptor.title.length > 1){
+			this.title = html.div("inline").text(this.descriptor.title)
+			this.container.append([this.title, this.selector.container])
+		} else {
+			this.container.append(this.selector.container)	
+		}
 	}
 
 	initData () {
@@ -68,6 +72,15 @@ class Selector extends FormElement{
 		this.dataObject[this.dataKey] = selectedValue
 	}	
 }
+
+
+class AuxNodeSelector extends Selector{
+	
+	changeData (selectedValue) {
+		this.dataObject[this.dataKey] = selectedValue
+	}
+}
+
 
 class Adder extends FormElement{
 	
