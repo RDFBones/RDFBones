@@ -234,13 +234,14 @@ public class DataTransformationAJAXController extends VitroAjaxController {
 
     String triples =
         ""
-            + " ?subjectUri           obo:BFO_0000051     ?dataTransformation . \n"
-            + " ?dataTransformation   obo:OBI_0000299     ?measurementDatum . \n"
-            + " ?measurementDatum     obo:IAO_0000004     ?measurementValue^^?measurementValueType . \n"
-            + " ?dataTransformation   rdf:type            ?dataTransformationType . \n"
-            + " ?dataTransformation   rdfs:label          ?dataTransformationLabel . \n"
-            + " ?measurementDatum     rdf:type            ?measurementDatumType . \n"
-            + " ?measurementDatum     rdfs:label          ?measurementDatumLabel . ";
+            + " ?subjectUri           rdfbones:dataTransformation     ?dataTransformation . \n"
+            + " ?subjectUri           obo:BFO_0000051                 ?dataTransformation . \n"
+            + " ?dataTransformation   obo:OBI_0000299                 ?measurementDatum . \n"
+            + " ?measurementDatum     obo:IAO_0000004                 ?measurementValue^^?measurementValueType . \n"
+            + " ?dataTransformation   rdf:type                        ?dataTransformationType . \n"
+            + " ?dataTransformation   rdfs:label                      ?dataTransformationLabel . \n"
+            + " ?measurementDatum     rdf:type                        ?measurementDatumType . \n"
+            + " ?measurementDatum     rdfs:label                      ?measurementDatumLabel . ";
     
     return triples;
   }
