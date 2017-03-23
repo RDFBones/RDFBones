@@ -20,20 +20,18 @@ class FormElement {
 class LiteralField extends FormElement {
 	
 	initUI(){
-		
+	
 		this.container = html.div()
 		this.titleField = html.div("inline").text(this.descriptor.title);
 		this.inputField = html.textBox("inline margin10H").on('input', (function() {
 		   this.dataObject[this.dataKey] = this.inputField.val()
-		   this.dataObject.label = this.inputField.val()
-
 		}).bind(this))
 		this.container.append(this.titleField, this.inputField)
 	}
 
 	initData(){
 		if (this.dataObject[this.dataKey] !== undefined) {
-			this.inputField.val(this.dataObject[this.dataKey])
+			this.inputField.val(this.dataObject[this.dataKey].split(".")[0])
 		}
 	}
 }
@@ -46,8 +44,12 @@ class Selector extends FormElement{
 		this.selector = new DataSetterSelectorFieldMap(this.options,
 				(this.changeData).bind(this))
 	
-		//this.title = html.div("inline").text(this.descriptor.name)
-		this.container.append(this.selector.container)
+		if(this.descriptor.title.length > 1){
+			this.title = html.div("inline").text(this.descriptor.title)
+			this.container.append([this.title, this.selector.container])
+		} else {
+			this.container.append(this.selector.container)	
+		}
 	}
 
 	initData () {
@@ -70,6 +72,15 @@ class Selector extends FormElement{
 		this.dataObject[this.dataKey] = selectedValue
 	}	
 }
+
+
+class AuxNodeSelector extends Selector{
+	
+	changeData (selectedValue) {
+		this.dataObject[this.dataKey] = selectedValue
+	}
+}
+
 
 class Adder extends FormElement{
 	
@@ -154,12 +165,14 @@ class Adder extends FormElement{
 		this.addedForms = []
 		$.each(data, (function(key, value) {
 			// The key is the uri
-			this.cnt++
-			var object = new Object()
-			object[this.dataKey] = key
-			object[this.dataKey + "Label"] = this.options[key].label
-			this.dataArray.push(object)
-			this.subForms.push(new SubFormAll(this, this.descriptor, object))
+			if(key != "queries"){
+				this.cnt++
+				var object = new Object()
+				object[this.dataKey] = key
+				object[this.dataKey + "Label"] = this.options[key].label
+				this.dataArray.push(object)
+				this.subForms.push(new SubFormAll(this, this.descriptor, object))
+			}
 		}).bind(this))
 	}
 
@@ -202,7 +215,7 @@ class StringInput {
 	}
 }
 
-class ExistingInstanceSelector extends FormElement {
+class InstanceSelector extends FormElement {
 	
 	initUI () {
 		this.container = html.div("elementContainer")
@@ -223,18 +236,18 @@ class ExistingInstanceSelector extends FormElement {
 
 	loadTableData () {
 
-		if(this.instanceSelector != undefined){
-			 this.instanceSelector.display()
-		} else {
-			if (this.descriptor.table != undefined) {
-				if(objectUri !== undefined){
-					this.instanceSelector = new EditInstanceSelector(this)
-				} else {
-					this.instanceSelector = new InstanceSelector(this)
-				}
+		//if(this.instanceBrowser != undefined){
+		//	 this.instanceBrowser.display()
+		//} else {
+		if (this.descriptor.table != undefined) {
+			if(objectUri !== null){
+				this.instanceBrowser = new EditInstanceBrowser(this)
 			} else {
-				alert("Table is not defined")
-			}	
-		}
+				this.instanceBrowser = new InstanceBrowser(this)
+			}
+		} else {
+			alert("Table is not defined")
+		}	
+		//}
 	}	
 }

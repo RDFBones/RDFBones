@@ -40,6 +40,15 @@ public class Triple {
     }
   }
 
+  public RDFNode getObject(RDFNode subject){
+  
+  	if(this.subject.varName.equals(subject.varName)){
+  		return this.object;
+  	} else {
+  		return this.subject;
+  	}
+  }
+  
   public String getTriple() {
 
     String t = new String();
@@ -64,7 +73,6 @@ public class Triple {
     } else {
       t += "?" + object + ".";
     }
-
     return t += "\n";
   }
 }

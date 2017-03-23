@@ -12,6 +12,7 @@ import rdfbones.formProcessing.DependencyCalculator;
 import rdfbones.formProcessing.WebappConnector;
 import rdfbones.graphData.FormGraph;
 import rdfbones.graphData.Graph;
+import rdfbones.graphData.GraphPath;
 import rdfbones.graphData.SubGraphInfo;
 import rdfbones.graphData.UnionForm;
 import rdfbones.rdfdataset.*;
@@ -26,6 +27,12 @@ public class GraphLib {
 				new PlainJavaWebappConnector(true));
 	}
 
+	public static FormConfiguration getFormConfig(TripleCollector triples,
+			Form form, Map<String, FormGraph> formGraphs) {
+		
+		return getFormConfig(triples, form, formGraphs, new PlainJavaWebappConnector(true));
+	}
+	
 	public static FormConfiguration getFormConfig(List<Triple> dataTriples,
 			List<Triple> schemeTriples, Form form, WebappConnector webapp) {
 
@@ -36,7 +43,18 @@ public class GraphLib {
 		DependencyCalculator.calculate(graph, schemeCopy2, form);
 		return new FormConfiguration(graph, form);
 	}
+	
+	public static FormConfiguration getFormConfig(TripleCollector triples, 
+			Form form, Map<String, FormGraph> formGraphs, WebappConnector webapp) {
 
+		List<Triple> schemeCopy1 = ArrayLib.copyList(triples.schemeTriples);
+		Graph graph = new Graph(triples.dataTriples, schemeCopy1, webapp);
+		form.setGraph(graph);
+		List<Triple> schemeCopy2 = ArrayLib.copyList(triples.schemeTriples);
+		DependencyCalculator.calculate(graph, triples, form);
+		return new FormConfiguration(graph, form, formGraphs);
+	}
+	
 	public static FormConfiguration getFormConfig(List<Triple> dataTriples,
 			List<Triple> schemeTriples, Form form, Map<String, FormGraph> formGraphs) {
 
@@ -71,9 +89,10 @@ public class GraphLib {
 		Map<String, String> map = new HashMap<String, String>();
 		for (String labelClass : graph.labelClasses) {
 			String classUri = graph.graphDataMap.get(labelClass);
+			System.out.println("LabelClass : " + labelClass + " =  " + classUri);
 			String value = dataGetter.getLabel(classUri);
-			if (graph.mainGraph.inputLabel) {
-				value = graph.mainGraph.inputLabelValue + "." + value;
+			if (graph.mainGraph.globalLabelKey != null) {
+				value = graph.mainGraph.globalLabelValue + "." + value;
 			}
 			map.put(labelClass + "Label", value);
 		}
@@ -119,7 +138,7 @@ public class GraphLib {
 				all.add(labelTriple);
 			}
 			if (triple.predicate.equals("rdfs:label")) {
-
+				
 			}
 		}
 		all.addAll(triples);
@@ -363,41 +382,12 @@ public class GraphLib {
 		return toReturn;
 	}
 
-	public static List<String> getNewInstances(List<Triple> triples) {
-
-		List<String> newInstances = new ArrayList<String>();
-		for (Triple triple : triples) {
-			if (!(triple.subject instanceof ExistingInstance)
-					&& !(triple.subject instanceof InputNode)) {
-				ArrayLib.addDistinct(newInstances, triple.subject.varName);
-			}
-			if (!(triple.object instanceof ExistingInstance)
-					&& !(triple.object instanceof InputNode)
-					&& !(triple.object instanceof LiteralVariable)) {
-				ArrayLib.addDistinct(newInstances, triple.object.varName);
-			}
-		}
-		return newInstances;
-	}
-
-	public static List<String> getExistingInstances(List<Triple> triples) {
-
-		List<String> newInstances = new ArrayList<String>();
-		for (Triple triple : triples) {
-			if ((triple.subject instanceof ExistingInstance)) {
-				ArrayLib.addDistinct(newInstances, triple.subject.varName);
-			}
-			if (triple.object instanceof ExistingInstance) {
-				ArrayLib.addDistinct(newInstances, triple.object.varName);
-			}
-		}
-		return newInstances;
-	}
-
 	public static void setSchemeTriples(Graph graph,
 			List<Triple> restrictionTriples) {
 
 		List<Triple> restTriples = new ArrayList<Triple>();
+    graph.subClassTriples = new ArrayList<Triple>();
+
 		GraphLib.setNodes(graph);
 		restTriples.addAll(GraphLib.getAndRemoveTypeTriples(restrictionTriples,
 				graph.nodes));
@@ -405,8 +395,10 @@ public class GraphLib {
 		graph.typeNodes.addAll(GraphLib.typeInstances(restrictionTriples));
 		restTriples.addAll(GraphLib.getAndRemoveRestrictionTriples(graph.typeNodes,
 				restrictionTriples));
-		restTriples.addAll(GraphLib.getAndRemoveSubClassTriples(restrictionTriples,
-				graph.typeNodes));
+		
+		graph.subClassTriples.addAll(GraphLib.getAndRemoveSubClassTriples(restrictionTriples,
+        graph.typeNodes));
+		restTriples.addAll(graph.subClassTriples);
 		graph.nodes.addAll(graph.typeNodes);
 		graph.schemeTriples = restTriples;
 	}
@@ -447,21 +439,37 @@ public class GraphLib {
 			if (!triple.predicate.equals("rdf:type")) {
 				graph.typeQueryTriples.add(triple);
 			}
-			if (triple.subject instanceof InputNode
-					&& !(triple instanceof ExistingRestrictionTriple)) {
+			if((triple.subject instanceof MainInputNode) && triple.predicate.equals("rdf:type")){
+				graph.typeQueryTriples.add(triple);
+			}
+			
+			if (triple.subject instanceof InputNode && !triple.predicate.equals("rdf:type")) {
 				ArrayLib.addDistinct(graph.inputClasses, triple.subject.varName);
-				GraphLib.setMainInputNode(triple.subject, graph);
 			}
 			if (triple.object instanceof InputNode) {
 				ArrayLib.addDistinct(graph.inputClasses, triple.object.varName);
-				GraphLib.setMainInputNode(triple.object, graph);
+			}
+			
+			if(triple.subject instanceof MainInputNode){
+				ArrayLib.addDistinct(graph.mainGraph.mainInputNodes,triple.subject.varName);
+				ArrayLib.addDistinct(graph.mainInputNodes,triple.subject.varName);
+
+			}
+			if(triple.object instanceof MainInputNode){
+				ArrayLib.addDistinct(graph.mainGraph.mainInputNodes,triple.object.varName);
+				ArrayLib.addDistinct(graph.mainInputNodes,triple.object.varName);
 			}
 		}
 
+		if(graph.inputClasses.size() == 0){
+			graph.inputClasses.add("subjectUri");
+		}
+		
 		for (Triple triple : graph.dataTriples) {
-			if (triple.subject instanceof InputNode) {
-				ArrayLib.addDistinct(graph.inputInstances, triple.subject.varName);
-				GraphLib.setMainInputNode(triple.subject, graph);
+			if ((triple.subject instanceof InputNode)) {
+				if(!(triple.subject instanceof MainInputNode)){
+					ArrayLib.addDistinct(graph.inputInstances, triple.subject.varName);
+				}
 			} else {
 				ArrayLib.addDistinct(graph.newInstances, triple.subject.varName);
 			}
@@ -469,7 +477,6 @@ public class GraphLib {
 			if (triple.object instanceof InputNode) {
 				if (triple instanceof LiteralTriple) {
 					ArrayLib.addDistinct(graph.inputLiterals, triple.object.varName);
-					GraphLib.setMainInputNode(triple.object, graph);
 				} else {
 					ArrayLib.addDistinct(graph.inputInstances, triple.object.varName);
 				}
@@ -480,8 +487,17 @@ public class GraphLib {
 					ArrayLib.addDistinct(graph.newInstances, triple.object.varName);
 				}
 			}
+			
+			if(triple.subject instanceof MainInputNode){
+				ArrayLib.addDistinct(graph.mainGraph.mainInputNodes, triple.subject.varName);
+				ArrayLib.addDistinct(graph.mainInputNodes, triple.subject.varName);
+			}
+			if(triple.object instanceof MainInputNode){
+				ArrayLib.addDistinct(graph.mainGraph.mainInputNodes, triple.object.varName);
+				ArrayLib.addDistinct(graph.mainInputNodes, triple.object.varName);
+			}
 		}
-
+		
 		// triplesToStore, typeQueryTriples, classesToSelect
 		for (Triple triple : graph.schemeTriples) {
 			if (triple instanceof RestrictionTriple) {
@@ -518,6 +534,7 @@ public class GraphLib {
 		graph.urisToSelect = new ArrayList<String>();
 		graph.literalsToSelect = new ArrayList<String>();
 		graph.dataRetreivalQuery.addAll(graph.dataTriples);
+		graph.dataRetreivalQuery.addAll(graph.subClassTriples);
 
 		for (String var : graph.newInstances) {
 			graph.urisToSelect.add(var);
@@ -719,4 +736,38 @@ public class GraphLib {
 			}
 		}
 	}
+	
+	public static Map<String, RDFNode> processTriples(List<Triple> triples){
+		
+		Map<String, RDFNode> map = getNodeMap(triples);
+		for(Triple triple : triples){
+			map.get(triple.subject.varName).addTriple(triple);
+			map.get(triple.object.varName).addTriple(triple);
+		}	
+		return map;
+	}
+	
+	public static Map<String, RDFNode> getNodeMap(List<Triple> triples){
+		
+		Map<String, RDFNode> map = new HashMap<String, RDFNode>();
+		for(Triple triple : triples){
+			if(!map.containsKey(triple.subject.varName)){
+				map.put(triple.subject.varName, triple.subject);
+			}
+			if(!map.containsKey(triple.object.varName)){
+				map.put(triple.object.varName, triple.object);
+			}
+		}
+		return map;
+	}
+	
+	public static List<GraphPath> getPaths(RDFNode inputNode, List<String> inputVars){
+		
+		List<GraphPath> paths = new ArrayList<GraphPath>(); 
+		for (Triple triple : inputNode.triples) {
+			paths.add(new GraphPath(inputNode, triple, inputVars));
+		}
+		return paths;
+	}
 }
+

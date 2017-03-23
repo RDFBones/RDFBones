@@ -173,15 +173,6 @@ class EditSubForm extends SubForm {
 	
 	loadUI (){
 		
-		// Pre UI
-		/*
-		this.container = html.div("fade")
-		this.titleCont = html.div(this.titleStyle).text(this.title)
-		this.formContainer = html.div("inline")
-		UI.appendToDiv(this.formContainer, this.formElements)
-		this.setButtons()
-		this.container.append([this.titleCont, this.formContainer, this.buttonCont])
-		*/
 		super.loadUI()
 		// Here the ready is removed
 		AJAX.call("addFormData", (function(msg){

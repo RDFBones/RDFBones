@@ -73,7 +73,11 @@ public class AJAXController {
 				}
 				break;
 			case "existingFormGraphData":
-				response(graph.getExistingData(get(SUBJECTURI), get(OBJECTURI)));
+				JSONObject exsistingData = graph.getExistingData(get(SUBJECTURI), get(OBJECTURI));
+				if(graph.globalLabelKey != null){
+					graph.globalLabelValue = JSON.string(exsistingData, graph.globalLabelKey).split("\\.")[0];
+				}
+				response(exsistingData);
 				break;
 
 			case "dependentData":

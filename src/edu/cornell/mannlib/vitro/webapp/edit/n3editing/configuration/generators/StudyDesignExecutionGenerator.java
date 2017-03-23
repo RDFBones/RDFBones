@@ -29,16 +29,15 @@ public class StudyDesignExecutionGenerator implements EditConfigurationGenerator
   public EditConfigurationVTwo getEditConfiguration(VitroRequest vreq,
     HttpSession session) throws Exception {
 
-    
       EditConfigurationVTwo editConfig = new EditConfigurationVTwo();
       editConfig.setTemplate("genericForm.ftl");
       editConfig.setSubjectUri(EditConfigurationUtils.getSubjectUri(vreq));
       editConfig.setObject(EditConfigurationUtils.getObjectUri(vreq));
       
-      FormConfiguration formConfig = GraphLib.getFormConfig(TripleLib.sdeDataTiples(), 
-          TripleLib.sdeSchemeTriples(), TripleLib.sdeForm(), 
-          TripleLib.sdeFormGraph(), new VIVOWebappConnector(vreq));
-      formConfig.dataGraph.inputLabel = true;
+      FormConfiguration formConfig = GraphLib.getFormConfig(TripleLib.sde(),
+          TripleLib.sdeForm(), TripleLib.sdeFormGraph(), new VIVOWebappConnector(vreq));
+      
+      formConfig.dataGraph.globalLabelKey = new String("objectUriLabel");
 
       editConfig.setFormConfig(formConfig);
       return editConfig;

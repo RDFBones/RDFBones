@@ -8,6 +8,7 @@
 <@js url="pageInit/SWMAP" />
 
 <@js url="lib/utils" />
+<@js url="lib/arrayutils" />
 <@js url="lib/JSONDummy" />
 <@js url="lib/dataOperation/DataLibrary" />
 
@@ -43,10 +44,8 @@
 <@js url="formGeneration/Item" />
 <@js url="formGeneration/SelectorTable" />
 <@js url="formGeneration/Cells" />
-<@js url="formGeneration/Navigator" />
 <@js url="formGeneration/TableRow" />
 <@js url="formGeneration/InstanceBrowser" />
-<@js url="formGeneration/InstanceSelector" />
 <@js url="formGeneration/DataController" />
 <@js url="formGeneration/FormElements" />
 <@js url="formGeneration/Form" />
