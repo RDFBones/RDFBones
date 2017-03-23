@@ -95,3 +95,22 @@ InstanceRow.prototype = {
 		this.dataTable.select(this)
 	}
 }
+
+
+class ForeignField {
+	
+	constructor(instanceSelector, descritor, dataObjet){
+		
+		this.container = html.div()
+		cells = []
+		$.each(this.descriptor, (function(i, cell) {
+			cells.push(new ElementMap[cell.type](dataObject, cell).container)
+		}).bind(this))
+		this.container.append(cells)
+	}
+	
+	select (){
+		this.instanceSelector(dataObject)
+	}
+	
+}

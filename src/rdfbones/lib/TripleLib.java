@@ -5,22 +5,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import rdfbones.form.ExistingInstanceSelector;
+import rdfbones.form.AuxNodeSelector;
+import rdfbones.form.InstanceSelector;
 import rdfbones.form.Form;
 import rdfbones.form.FormElement;
 import rdfbones.form.LiteralField;
 import rdfbones.form.Selector;
 import rdfbones.form.SubformAdder;
 import rdfbones.graphData.FormGraph;
-import rdfbones.graphData.Graph;
-import rdfbones.graphData.Navigator;
 import rdfbones.rdfdataset.Constant;
-import rdfbones.rdfdataset.ExistingInstance;
-import rdfbones.rdfdataset.ExistingRestrictionTriple;
 import rdfbones.rdfdataset.FormInputNode;
 import rdfbones.rdfdataset.GreedyRestrictionTriple;
 import rdfbones.rdfdataset.HasValueRestrictionTriple;
 import rdfbones.rdfdataset.InputNode;
+import rdfbones.rdfdataset.InstanceRestrictionTriple;
 import rdfbones.rdfdataset.LiteralTriple;
 import rdfbones.rdfdataset.MainInputNode;
 import rdfbones.rdfdataset.MultiTriple;
@@ -28,7 +26,7 @@ import rdfbones.rdfdataset.QualifiedRestrictionTriple;
 import rdfbones.rdfdataset.RDFNode;
 import rdfbones.rdfdataset.RestrictionTriple;
 import rdfbones.rdfdataset.Triple;
-import rdfbones.table.ImagesCell;
+import rdfbones.rdfdataset.TripleCollector;
 import rdfbones.table.Table;
 import rdfbones.table.TableCell;
 
@@ -45,7 +43,7 @@ public class TripleLib {
 				"Measurement Type");
 		measurementDatum.subForm = measDatumSubForm;
 
-		FormElement boneOrgan = new ExistingInstanceSelector("boneSegment",
+		FormElement boneOrgan = new InstanceSelector("boneSegment",
 				"Bone Segment");
 
 		Form assySubForm = new Form("Assays");
@@ -56,14 +54,32 @@ public class TripleLib {
 		assayType.subForm = assySubForm;
 
 		LiteralField labelField = new LiteralField("objectUriLabel", "Label");
-
+		AuxNodeSelector auxNodeSelector = new AuxNodeSelector("skeletalInventory", "Skeletal Inventory");
+		
 		Form mainForm = new Form("Study Design Execution");
 		mainForm.formElements.add(labelField);
+		mainForm.formElements.add(auxNodeSelector);
 		mainForm.formElements.add(assayType);
 
 		return mainForm;
 	}
 
+	public static TripleCollector sde(){
+		
+		List<Triple> triples = TripleLib.sdeDataTiples();
+		triples.addAll(TripleLib.sdeSchemeTriples());
+		triples.addAll(TripleLib.sdeInstanceRestrictionTriples());
+		return new TripleCollector(TripleLib.sdeTriples());
+	}
+	
+	public static List<Triple> sdeTriples(){
+		
+		List<Triple> triples = TripleLib.sdeDataTiples();
+		triples.addAll(TripleLib.sdeSchemeTriples());
+		triples.addAll(TripleLib.sdeInstanceRestrictionTriples());
+		return triples;
+	}
+	
 	public static List<Triple> sdeDataTiples() {
 
 		List<Triple> triple = new ArrayList<Triple>();
@@ -73,13 +89,13 @@ public class TripleLib {
 		triple.add(new MultiTriple("objectUri", "obo:BFO_0000051",
 				"assay"));
 		triple.add(new MultiTriple("specimenCollectionProcess", "obo:OBI_0000293",
-				new ExistingInstance("boneSegment")));
+				new InputNode("boneSegment")));
 		triple.add(new Triple("specimenCollectionProcess", "obo:OBI_0000299",
 				"specimen"));
 		triple.add(new Triple("assay", "obo:OBI_0000293", "specimen"));
 		triple.add(new MultiTriple("assay", "obo:OBI_0000299", "measurementDatum"));
 		triple.add(new Triple("measurementDatum", "obo:OBI_0000999",
-				new FormInputNode("categoricalLabel")));
+				new InputNode("categoricalLabel")));
 		return triple;
 	}
 
@@ -87,8 +103,8 @@ public class TripleLib {
 
 		List<Triple> triple = new ArrayList<Triple>();
 		triple.add(new RestrictionTriple("subjectType", "obo:BFO_0000051",
-				"studyDesignExecutionType", "owl:someValuesFrom"));
-		triple.add(new RestrictionTriple("studyDesignExecutionType",
+				"objectUriType", "owl:someValuesFrom"));
+		triple.add(new RestrictionTriple("objectUriType",
 				"obo:BFO_0000051", new InputNode("assayType"), "owl:someValuesFrom"));
 		triple.add(new QualifiedRestrictionTriple(new FormInputNode("assayType"),
 				"obo:OBI_0000293", "specimenType"));
@@ -110,14 +126,14 @@ public class TripleLib {
 	public static List<Triple> sdeschemeTriplesSubClasses() {
 
 		List<Triple> triple = new ArrayList<Triple>();
-		triple.add(new Triple("studyDesignExecutionType", "rdfs:subClassOf",
+		triple.add(new Triple("objectUriType", "rdfs:subClassOf",
 				new Constant("obo:OBI_0000471")));
 		triple.add(new Triple("specimenCollectionProcessType", "rdfs:subClassOf",
 				new Constant("obo:OBI_0000659")));
 		triple.add(new Triple("assayType", "rdfs:subClassOf", new Constant(
 				"obo:OBI_0000070")));
-		// triple.add(new Triple("measurementDatumType", "rdfs:subClassOf",
-		// new Constant("obo:OBI_0000070MDType")));
+		//triple.add(new Triple("measurementDatumType", "rdfs:subClassOf",
+		//			new Constant("obo:OBI_0000070MDType")));
 		return triple;
 	}
 
@@ -132,53 +148,34 @@ public class TripleLib {
 				"specimenCollectionProcessType"));
 		triple.add(new Triple("measurementDatum", "rdf:type", new FormInputNode(
 				"measurementDatumType")));
-		triple.add(new Triple("objectUri", "rdf:type", "studyDesignExecutionType"));
-		triple.add(new ExistingRestrictionTriple(new InputNode("boneSegment"),
+		triple.add(new Triple("objectUri", "rdf:type", "objectUriType"));
+		triple.add(new Triple(new InputNode("boneSegment"),
 				"rdf:type", "boneSegmentType"));
-		triple.add(new ExistingRestrictionTriple(new InputNode("categoricalLabel"),
+		triple.add(new Triple(new InputNode("categoricalLabel"),
 				"rdf:type", "categoricalLabelType"));
 		return triple;
 	}
 
+	public static List<Triple> sdeInstanceRestrictionTriples(){
+		
+		FormInputNode si = new FormInputNode("skeletalInventory");
+		Constant siType = new Constant("rdfbones:SkeletalInventory");
+		RDFNode measDatum = new InputNode("measurementDatum");
+		RDFNode boneSegment = new InputNode("boneSegment");
+
+		List<Triple> triple = new ArrayList<Triple>();
+		triple.add(new InstanceRestrictionTriple(si, "rdf:type", siType));
+		triple.add(new InstanceRestrictionTriple(si, "obo:BFO_0000051", measDatum));
+		triple.add(new InstanceRestrictionTriple(measDatum, "obo:IAO_0000136", boneSegment));
+		return triple;
+	}
+	
 	public static Map<String, FormGraph> sdeFormGraph() {
 
 		Map<String, FormGraph> formGraphs = new HashMap<String, FormGraph>();
-		FormGraph formGraph = new FormGraph(boneOrganTriples(), "boneSegment",
-				sdeNavigatorSimplified(), boneOrganTable());
+		FormGraph formGraph = new FormGraph("boneSegment", boneOrganTriples(), boneOrganTable());
 		formGraphs.put("boneSegment", formGraph);
 		return formGraphs;
-	}
-
-	public static Navigator sdeNavigatorSimplified() {
-
-		MultiTriple skiMultiTriple = new MultiTriple("skeletalInventory",
-				"obo:BFO_0000051", "measurementDatum");
-		Navigator skiNavigator = new Navigator("skeletalInventory", skiMultiTriple);
-		skiNavigator.settings("rdfbones:SkeletalInventory",
-				"skeletal inventory");
-		return skiNavigator;
-	}
-
-	public static Navigator sdeNavigator() {
-
-		MultiTriple skiMultiTriple = new MultiTriple("skeletalInventory",
-				"obo:BFO_0000051", "measurementDatum");
-		Navigator skiNavigator = new Navigator("skeletalInventory", skiMultiTriple);
-		skiNavigator.settings("rdfbones:SkeletalInventory",
-				"skeletal inventory");
-
-		MultiTriple cridMultiTriple = new MultiTriple("crid", "obo:IAO_0000136",
-				"skeletalInventory");
-		Navigator cridNavigator = new Navigator("crid", cridMultiTriple,
-				skiNavigator);
-		cridNavigator.settings("obo:IAO_0000578", "CRID");
-
-		MultiTriple cridRegMultiTriple = new MultiTriple("crid", "obo:IAO_0000219",
-				"cridReg");
-		Navigator cridRegNavigator = new Navigator("cridReg", cridRegMultiTriple,
-				cridNavigator);
-		cridRegNavigator.settings("obo:IAO_0000579", "CRID registry");
-		return cridRegNavigator;
 	}
 
 	public static Table boneOrganTable() {
@@ -304,7 +301,7 @@ public class TripleLib {
 				"measurementDatumType"));
 		triples.add(new Triple(new MainInputNode("subjectUri"), "rdf:type",
 				"skeletalInventoryType"));
-		triples.add(new ExistingRestrictionTriple(
+		triples.add(new Triple(
 				new InputNode("categoricalLabel"), "rdf:type", "categoricalLabelType"));
 		return triples;
 	}
@@ -486,7 +483,7 @@ public class TripleLib {
 
 	public static Form skeletalInvForm() {
 
-		FormElement skeletalInventory = new ExistingInstanceSelector(
+		FormElement skeletalInventory = new InstanceSelector(
 				"skeletalInventory", "Select skeletal inventory");
 		Form mainForm = new Form("SkeletalInventory");
 		mainForm.formElements.add(skeletalInventory);

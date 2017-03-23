@@ -7,21 +7,17 @@ import rdfbones.lib.JSON;
 import rdfbones.table.DefaultTable;
 import rdfbones.table.Table;
 
-public class ExistingInstanceSelector extends FormElement {
+public class InstanceSelector extends FormElement {
 
-  public ExistingInstanceSelector(String varName, String title){
+  public InstanceSelector(String varName, String title){
     super(varName, title);
-    this.type = new String("existingInstanceSelector");
+    this.type = new String("instanceSelector");
   }
   
   @Override
   public JSONObject getDescriptor(FormConfiguration formConfig){
 
-    JSONObject object = JSON.obj();
-    JSON.put(object, "title", this.title);
-    JSON.put(object, "type", this.type);
-    JSON.put(object, "style", this.style);
-    JSON.put(object, "dataKey", this.dataKey);
+    JSONObject object = super.getDescriptor(formConfig);
     if(formConfig.formGraphs.containsKey(this.dataKey)){
     	FormGraph formGraph = formConfig.formGraphs.get(this.dataKey);
     	if(formGraph.table != null){
