@@ -30,57 +30,25 @@ import rdfbones.formProcessing.WebappConnector;
 public class FormGraph extends Graph {
 
 	public Table table = null;
-	public Navigator navigator;
 	List<Triple> triples;
 	SPARQLDataGetter formDataRetriever = null;
 	public QueryInfo queryInfo;
 
-	public FormGraph() {
+	public FormGraph(String varName, List<Triple> triples, Table table) {
 		
-	}
-	
-	public FormGraph(List<Triple> triples, String startNode, Navigator navigator,
-		Table table) {
-
-		this.varName = startNode;
+		this.varName = varName;
 		this.triples = triples;
-		this.navigator = navigator;
 		this.table = table;
-		this.init();
-	}
-
-	public JSONArray getData(List<Map<String, String>> data){
-		
-		if(this.navigator != null){
-			return this.navigator.group(data);
-		} else {
-			return QueryUtils.getJSON(data);
-		}
-	}
-	
-	public FormGraph(Triple triple, String varName, List<Triple> triples) {
-	
-		super(triple, varName, triples);
-	}
-	
-	public void init(){
 		this.nodes = GraphLib.getNodes(this.triples);
-		System.out.println("MainGraphNodes : " + this.nodes.toString());
-		this.setFormGraph(this);
 		this.setQueryInfo();
 	}
 	
-	public void setFormGraph(FormGraph graph){
-		
-		if(this.navigator != null){
-			this.navigator.formGraph = graph;
-			this.navigator.setFormGraph(graph);
-		}
+	public JSONArray getData(List<Map<String, String>> data){
+		return QueryUtils.getJSON(data);
 	}
 	
 	public void setQueryInfo(){
 		
-  	this.triples.addAll(this.navigator.getTriples());
 		List<String> uris = new ArrayList<String>();
 		List<String> literals = new ArrayList<String>();
 		this.setUrisLiterals(uris, literals);
@@ -94,31 +62,9 @@ public class FormGraph extends Graph {
 			literals.add(cell.varName);
 		}
 		uris.add(this.varName);
-		if(this.navigator != null){
-			this.navigator.setUrisLiterals(uris, literals);
-		}
 	}
 	
 	public JSONObject getDescriptor(){
-		
-		if(this.navigator != null){
-			System.out.println("Here 1");
-			return this.navigator.getDescriptor(this.table.getDescriptor());
-		} else {
-			System.out.println("Here 2");
-			return this.table.getDescriptor();
-		}
+		return this.table.getDescriptor();
 	}
-	
-	public JSONArray group(List<Map<String, String>> list){
-		
-		JSONArray array = JSON.arr();
-		Map<String, List<Map<String, String>>> map = QueryLib.groupBy(list, this.varName);
-		for(String key : map.keySet()){
-			JSONObject object = QueryLib.getObject(map, key, this.nodes);
-			array.put(object);
-		}
-		return array;
-	}
-	
 }

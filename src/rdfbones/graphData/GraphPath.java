@@ -5,15 +5,21 @@ import java.util.List;
 
 import rdfbones.lib.ArrayLib;
 import rdfbones.lib.GraphLib;
+import rdfbones.lib.StringUtil;
 import rdfbones.rdfdataset.Constant;
+import rdfbones.rdfdataset.RDFNode;
 import rdfbones.rdfdataset.Triple;
 
 public class GraphPath {
 
   public List<Triple> triples = new ArrayList<Triple>();
   public List<String> inputs = new ArrayList<String>();
+  public List<String> inputNodes = new ArrayList<String>();
+
   public boolean valid = false;
+	public RDFNode finalNode;
   public String input;
+  public String output;
   public List<GraphPath> subPaths = new ArrayList<GraphPath>();
   public GraphPath(){
    
@@ -22,6 +28,48 @@ public class GraphPath {
   public GraphPath(String input){
     this.input = input;
   }
+  
+  public GraphPath(RDFNode inputNode, Triple triple, List<String> inputNodes){
+		this.inputNodes = inputNodes;
+		process(inputNode, triple);  
+	}
+  
+  private void process(RDFNode inputNode, Triple triple){
+		
+  	RDFNode previous = inputNode;
+		RDFNode next = null;
+		Triple nextTriple = triple;
+		while(true){
+			triples.add(nextTriple);
+			next = nextTriple.getObject(previous);
+			nextTriple = next.nextTriple(previous);
+			if(terminates(nextTriple, next)){
+				finalNode = next;
+				this.inputs.add(finalNode.varName);
+				break;
+			}
+			previous = next;
+		}
+	}
+
+		public void validate(RDFNode next){
+			
+			if(this.inputNodes.contains(next.varName) || next instanceof Constant){
+				System.out.println(StringUtil.debugList(inputNodes));
+				System.out.println("Validate : " + next.varName);
+				this.valid = true;
+			}
+		}
+
+	private boolean terminates(Triple nextTriple, RDFNode next){
+		if(nextTriple == null || this.inputNodes.contains(next.varName)){
+			validate(next);
+			return true;
+		} else {
+			return false;
+		}
+	}	
+  
   
   public GraphPath(Triple triple){
     triples.add(triple);

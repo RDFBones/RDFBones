@@ -34,9 +34,9 @@ public class StudyDesignExecutionGenerator implements EditConfigurationGenerator
       editConfig.setSubjectUri(EditConfigurationUtils.getSubjectUri(vreq));
       editConfig.setObject(EditConfigurationUtils.getObjectUri(vreq));
       
-      FormConfiguration formConfig = GraphLib.getFormConfig(TripleLib.sdeDataTiples(), 
-          TripleLib.sdeSchemeTriples(), TripleLib.sdeForm(), 
-          TripleLib.sdeFormGraph(), new VIVOWebappConnector(vreq));
+      FormConfiguration formConfig = GraphLib.getFormConfig(TripleLib.sde(),
+          TripleLib.sdeForm(), TripleLib.sdeFormGraph(), new VIVOWebappConnector(vreq));
+      
       formConfig.dataGraph.globalLabelKey = new String("objectUriLabel");
 
       editConfig.setFormConfig(formConfig);

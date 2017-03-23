@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import rdfbones.graphData.VariableDependency;
+import rdfbones.rdfdataset.RDFNode;
 import rdfbones.rdfdataset.Triple;
 
 public class ArrayLib {
@@ -65,6 +66,24 @@ public class ArrayLib {
 		return arr;
 	}
 
+	public static String log(List<String> list) {
+
+		String arr = new String("");
+		for (String str : list) {
+			arr += str + "\t";
+		}
+		return arr;
+	}
+	
+	public static String logNodes(List<RDFNode> list) {
+
+		String arr = new String("");
+		for (RDFNode node : list) {
+			arr += node.varName + "\t";
+		}
+		return arr;
+	}
+	
 	public static String debugInteger(List<Integer> list) {
 
 		String arr = new String("");

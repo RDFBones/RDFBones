@@ -26,6 +26,10 @@ public class StringUtil {
     return arr.substring(0, arr.length() - 2);
   }
   
+  public static String debugTriples(List<Triple> list){
+  	return debugTriples("", list);
+  }  
+  
   public static String debugTriples(String tab, List<Triple> list){
     
     String arr = new String("\n");

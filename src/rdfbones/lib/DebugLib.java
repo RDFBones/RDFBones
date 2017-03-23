@@ -15,6 +15,7 @@ public class DebugLib {
     String tab = new String(new char[n]).replace("\0", "\t");
     DebugLib.logString("inputNode", tab, graph, graph.varName);
     DebugLib.logString("firstNode", tab, graph, graph.firstNode);
+    DebugLib.logTripleList("typeQueryTriples", tab, graph, graph.typeQueryTriples);
     DebugLib.logTripleList("dataTriples", tab, graph, graph.dataTriples);
     DebugLib.logTripleList("subclassTriples", tab, graph, graph.subClassTriples);
     DebugLib.logTripleList("schemeTriples", tab, graph, graph.schemeTriples);
@@ -86,6 +87,12 @@ public class DebugLib {
       graph.log(tab + msg + StringUtil.debugTriples(tab, logList));
     }
   }
+  
+  public static void logTripleList(List<Triple> logList) {
+      if(logList != null && logList.size() > 0){
+        System.out.println(StringUtil.debugTriples("", logList));
+      }
+    }
   
   public static void logTripleList(String msg, String tab, WebappConnector webapp,
     List<Triple> logList) {

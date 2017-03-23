@@ -1,67 +1,115 @@
 
-class InstanceBrowser {
+class InstanceBrowser{
 	
-	constructor(instanceSelector, dataArray){
+	constructor(formElement){
+		this.formElement = formElement
+		this.descriptor = formElement.descriptor.table
+		this.dataKey = formElement.descriptor.dataKey
+		this.existingData = formElement.existingData
+		this.formObject = dataUtil.getStrings(formElement.dataObject)
 		
-		this.instanceSelector = instanceSelector
-		this.container = instanceSelector.toSelectModule.table
-		this.descriptor = instanceSelector.descriptor
-		this.dataArray = dataArray
-		this.tableCache = new Object()
-		//UI
-		this.navigator = new NavigatorView((this.showTable).bind(this)) 
-		this.titleField = new TextField(this.descriptor.table.title, "browserTitle")
-		this.tableContainer = html.div()
-		
-		this.mainTable = this.getSelectorTable()
-		var homeParam = [this.mainTable, this.descriptor.table.title]
-		this.navigator.home(homeParam)
-		this.showTable(homeParam, (this.dataArray.length > 0))
-		this.initUI()
+		this.elementCache = new Object()
+	
+		PopUpController.init("Loading data ")
+		this.loadBrowserData()
 	}
 
-	initUI (){
+	loadBrowserData(){
+		AJAX.call("formGraphData", (function(msg){
+			this.tableData = msg.tableData
+			this.init()
+		}).bind(this),  DataController.getGraphDataParams(this))
+	}
+
+	init (){
 		
-		UI.append(this, [this.navigator, this.titleField])
-		this.container.append(this.tableContainer)
+		this.selectedModule = new Module("Selected Instances")
+		this.toSelectModule = new Module("Instances to select")
+		this.doneButton = new TextButton("Done", (this.done).bind(this), "margin10")
+		this.selectorTable = new SelectorTable(this, this.tableData, this.descriptor)
+		this.toSelectModule.add(this.selectorTable.container)
+		this.initAdded()
+		UI.append(this, [this.selectedModule, this.toSelectModule, this.doneButton])
+		this.display()
 	}
 	
-	getSelectorTable (){
-		return new SelectorTable(this, this.dataArray, this.descriptor)
+	initAdded(){
+		this.foreign = array.substract(this.existingData, this.tableData, this.dataKey, 1)
+		var selectedTable = new SelectedTable(this, this.foreign, this.descriptor)
+		//this.selectedModule.add(selectedTable.container)
+		this.added = array.intersection(this.existingData, this.tableData, this.dataKey, 1)
+		$.each(this.added, (function(i, value){
+			var dataItem = this.elementCache[value[this.dataKey]]
+			dataItem.selected = true
+			this.selectedModule.add(dataItem.container)
+		}).bind(this))
 	}
-	
-	navigate (dataObject, descriptor){
 
-		var subForm = descriptor.subForm
-		var array = dataObject[descriptor.predicate]
-		var key = dataObject[descriptor.dataKey]
-		var navigatorLabel = dataObject[descriptor.table.cells[0].dataKey]
-		var table = null
-		if(this.tableCache[key] !== undefined){
-			table = this.tableCache[key]
-		} else {
-			table = new SelectorTable(this, array, subForm)
-			this.tableCache[key] = table
-		}
-		this.navigator.newElement(navigatorLabel, [table, subForm.table.title])
-		this.showTable([table, subForm.table.title], array.length > 0)
+	select (dataItem){
+		this.selectedModule.add(dataItem.container)
+		this.existingData.push(dataItem.data)
 	}
 	
-	showTable (param, notEmpty){
+	//Routines for selected instance from other skeletal inventories that is currently selected
 	
-		this.tableContainer.empty()
-		this.tableContainer.append(param[0].container)
-		if(notEmpty || notEmpty === undefined){
-			this.titleField.set("Select " + param[1])
-		} else {
-			this.titleField.set("There is no " + param[1] + " to select")
-		}
+	removeForeign(dataObject){
+		DataLib.removeObjectFromArray(this.existingData, this.dataKey, dataObject)
 	}
-} 
+	
+	remove(dataItem){
+		var uri = dataItem.data[this.dataKey]
+		DataLib.removeObjectFromArrayByKey(this.existingData, this.dataKey, uri)
+	}
 
-class EditInstanceBrowser extends InstanceBrowser{
-	
-	getSelectorTable(){
-		return new EditSelectorTable(this, dataArray, this.descriptor)
+	done (){
+		PopUpController.done()
+	}
+
+	display (){
+		PopUpController.set(this.container)
 	}
 }
+
+class EditInstanceBrowser extends InstanceBrowser {
+	
+	
+	select (dataItem){	
+		PopUpController.init("Please wait")
+		this.formObject[this.dataKey] = dataItem.data[this.dataKey]
+		this.dataItem = dataItem
+		AJAX.call("addTriple", (this.selectSucces).bind(this), 
+				[this.dataKey, this.formObject])
+	}
+	
+	remove (dataItem){
+		var uri = dataItem.data[this.dataKey]
+		if(this.elementCache[uri] !== undefined){
+			this.elementCache[uri].addToTable()
+		} else {
+			dataItem.container.remove()
+		}
+		PopUpController.init("Please wait")
+		this.formObject[this.dataKey] = dataItem.data[this.dataKey]
+		this.dataItem = dataItem
+		AJAX.call("removeTriple", (this.display).bind(this), 
+				[this.dataKey, this.formObject])
+	}
+	
+	selectSucces (dataItem){
+		super.select(this.dataItem)
+		this.display()
+	}
+	
+	notSelected(dataItem){
+		
+		var uri = dataItem.data[this.dataKey]
+		if(this.addedKeys.indexOf(uri) > -1){
+			this.dataItemCache[uri] = dataItem
+			return false
+		} else {
+			return true
+		}
+	}
+	
+}
+

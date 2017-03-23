@@ -67,7 +67,7 @@ FormLoader.prototype = {
 
 	responseHandler : function(msg) {
 		if (msg.failed !== undefined) {
-			PopUpController.defaultDoneMsg("Triple creation failed!")
+			PopUpController.doneMsg("Triple creation failed!")
 			console.log(msg)
 			var ajaxmsg = msg
 		} else {
@@ -93,7 +93,8 @@ FormLoader.prototype = {
 var ElementMap = {
 	adder : Adder,
 	selector : Selector,
-	existingInstanceSelector : ExistingInstanceSelector,
+	auxNodeSelector : AuxNodeSelector,
+	instanceSelector : InstanceSelector,
 	stringInput : StringInput,
 	literalCell : LiteralCell,
 	imagesCell : ImagesCell,

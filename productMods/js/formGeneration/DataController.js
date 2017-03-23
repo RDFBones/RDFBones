@@ -16,7 +16,7 @@ var DataController = {
 		// Only one AJAX call comes
 		dependentVars = new Object()
 		$.each(form.descriptor.formElements, function(key, formElement) {
-			if (formElement.type != "existingInstanceSelector") {
+			if (formElement.type != "instanceSelector") {
 				// Check if dependent or independent the data is
 				var dataKey = formElement.dataKey
 				if (Global.dataDependencies[dataKey] !== undefined) {
