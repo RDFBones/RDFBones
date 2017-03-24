@@ -16,7 +16,7 @@ class DataTransformationItem {
 			task : "outputType",
 		}, (function(msg){
 			this.dataObject = $.extend(this.dataObject, msg)
-			this.dataObject.measurementValueType = msg.inputs[0].measurementValueType
+			this.dataObject.measurementValueType = "http://www.w3.org/2001/XMLSchema#float"
 			this.dataObject.measurementDatumType = msg.inputs[0].measurementDatumType
 			this.dataObject.measurementDatumTypeLabel = this.process(this.dataObject.measurementDatumType)
 			this.dataObject.inputs = []
