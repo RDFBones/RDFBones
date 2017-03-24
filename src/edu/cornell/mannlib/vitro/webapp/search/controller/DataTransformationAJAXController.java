@@ -314,30 +314,18 @@ public class DataTransformationAJAXController extends VitroAjaxController {
 
     String query =
         ""
-            + "SELECT ?measurementDatumType ?label ?measurementValueType "
-            + "WHERE {{ "
-            + "     ?DTType              rdfs:subClassOf              ?restriction1 ."
-            + "     ?restriction1        owl:onProperty               obo:OBI_0000299 . "
-            + "     ?restriction1        owl:qualifiedCardinality     ?cardinality . "
-            + "     ?restriction1        owl:onClass                  ?measurementDatumType . "
-            + "     ?measurementDatumType   rdfs:subClassOf           ?superMeasDatumType ."
-            + "     ?superMeasDatumType  rdfs:subClassOf              ?restriction2 . "
-            + "     ?restriction2        owl:onProperty               <http://vivoweb.org/ontology/core#hasValue> . "
-            + "     ?restriction2        owl:onDataRange              ?measurementValueType . "
-            + "     OPTIONAL { ?measurementDatumType      rdfs:label     ?label . } "
-            + " } UNION {"
-            + "     ?DTType              rdfs:subClassOf              ?restriction1 . "
-            + "     ?restriction1        owl:onProperty               obo:OBI_0000299 . "
-            + "     ?restriction1        owl:qualifiedCardinality     ?cardinality . "
-            + "     ?restriction1        owl:onClass                  ?measurementDatumType . "
-            + "     ?measurementDatumType    rdfs:subClassOf              ?restriction2 . "
-            + "     ?restriction2        owl:onProperty               <http://vivoweb.org/ontology/core#hasValue> . "
-            + "     ?restriction2        owl:someValuesFrom           ?measurementValueType . "
-            + "     OPTIONAL { ?measurementDatumType      rdfs:label         ?label . }  "
-            + " } " + " FILTER ( ?DTType = <input1> )" + "}";
+            + "SELECT ?measurementDatumType ?label "
+            + "WHERE { "
+            + "     ?DTType              rdfs:subClassOf              ?restriction1 . \n"
+            + "     ?restriction1        owl:onProperty               obo:OBI_0000299 . \n "
+            + "     ?restriction1        owl:qualifiedCardinality     ?cardinality . \n "
+            + "     ?restriction1        owl:onClass                  ?measurementDatumType . \n "
+            + "     OPTIONAL { ?measurementDatumType      rdfs:label         ?label . }  \n"
+            + "     FILTER ( ?DTType = <input1> )" 
+            + "}";
     return query;
   }
-
+ 
   String getParameter(String key) {
 
     return JSON.string(requestData, key);
