@@ -71,3 +71,21 @@ DataSetterSelectorFieldMap.prototype = $.extend(Object
 		}).bind(this))
 	}
 })
+
+class SelectorElement {
+	
+	constructor(data, customValueKey, customTextKey){
+		
+		this.data = data
+		this.options = DataController.prepareOptions(data)
+		this.container = html.selectorMap(this.options, customValueKey, customTextKey)
+	}
+
+	val(){
+		return this.container.val()	
+	}
+
+	text(){
+		return this.container.find('option:selected').text()
+	}
+}

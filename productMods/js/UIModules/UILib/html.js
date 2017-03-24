@@ -33,6 +33,33 @@ var html = {
 		return $("<div/>").addClass("fullScreenContainer")
 	},
 
+	selectorMap : function(object, customTextKey){
+		
+		var selector = html.selector()
+		var textKey = util.setUndefined(customTextKey, "label")
+		$.each(object, function(key, data) {
+			$("<option/>", {
+				value : key,
+				text : data[textKey],
+			}).appendTo(selector)
+		})
+		return selector
+	},
+	
+	selectorArray : function(array, customValueKey, customTextKey){
+		
+		var selector = html.selector()
+		var valueKey = utils.setUndefined(customValueKey, "uri")
+		var textKey = utils.setUndefined(customTextKey, "label")
+		$.each(array, function(i, data) {
+			$("<option/>", {
+				value : data[valueKey],
+				text : data[textKey],
+			}).appendTo(selector)
+		})
+		return selector
+	},
+	
 	getSelectorField : function(id, name) {
 		return selector = $("<select/>", {
 			id : id,

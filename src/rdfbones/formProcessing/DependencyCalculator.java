@@ -96,10 +96,10 @@ public class DependencyCalculator {
       }
     }
   }
-  
+
   public static GraphPath getGraphPath(List<Triple> triples,
       List<String> inputVars, String node) {
-
+    
   		return getGraphPath(new GraphPath(), triples, inputVars, node);
   }
   
