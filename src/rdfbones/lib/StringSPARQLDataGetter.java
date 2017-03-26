@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import edu.cornell.mannlib.vitro.webapp.dao.jena.N3Utils;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
@@ -48,11 +49,15 @@ public class StringSPARQLDataGetter extends SPARQLDataGetter{
 			this.queryString = this.queryString.replace("input" + Integer.toString(n), str);
 			n++;
 		}
-		log.info(queryString);
 		return QueryUtils.getJSON(this.mainGraph.getWebapp().sparqlResult(queryString, this.urisToSelect,
 				this.literalsToSelect));
 	}
 
+  public JSONObject getSingleResult(List<String> inputValues) {
+
+    return  JSON.object(this.getJSON(inputValues), 0);
+  }
+	
 	public List<Map<String, String>> getData(List<String> inputValues) {
 
 		this.inputValues = inputValues;
