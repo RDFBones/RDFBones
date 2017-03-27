@@ -1129,6 +1129,15 @@
     <url-pattern>/dataTransformationAJAX</url-pattern>
   </servlet-mapping>  
   
+  <servlet>
+    <servlet-name>DrawingConclusionServlet</servlet-name>
+    <servlet-class>edu.cornell.mannlib.vitro.webapp.search.controller.DrawingConclusionAJAXController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DrawingConclusionServlet</servlet-name>
+    <url-pattern>/drawingConclusionAJAX</url-pattern>
+  </servlet-mapping>  
+  
    <!--
    END - just to know where to place the additional servlets
    -->
