@@ -14,3 +14,10 @@
     		<http://vivoweb.org/ontology#vitroPropertyGroupoverview> ;
     	  vitro:customEntryFormAnnot 
 	"edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.DataTransformationGenerator"^^<http://www.w3.org/2001/XMLSchema#string> .
+	
+		
+<http://w3id.org/rdfbones/core#drawingConclusion>
+    	vitro:inPropertyGroupAnnot
+    		<http://vivoweb.org/ontology#vitroPropertyGroupoverview> ;
+    	  vitro:customEntryFormAnnot 
+	"edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.DrawingConclusionGenerator"^^<http://www.w3.org/2001/XMLSchema#string> .
