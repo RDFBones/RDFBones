@@ -15,10 +15,12 @@ class Main {
 	
 	init (msg){
 		
+		this.allAdded = false
 		this.addedDTs = new Object()
 		this.selector = new SelectorElement(msg.dataTransformations)
 		this.items = []
 		this.initUI()
+		this.prefix = msg.prefix
 		//this.existingData = //this.filter(msg.existingData)
 		$.each(msg.existingData, (function(key, value){
 			console.log(value)
@@ -41,17 +43,43 @@ class Main {
 	}
 	
 	addElement(){
-		
-		if(this.unsaved){
-			alert("Please finish editing current data transformation")
-		} else {
-			this.unsaved = true
-			var object = {
-				dataTransformationType : this.selector.val(),
-				dataTransformationTypeLabel : this.selector.text()
+	
+		if(!this.allAdded){
+			if(this.unsaved){
+				alert("Please finish editing current data transformation")
+			} else {
+				this.unsaved = true
+				var object = {
+					dataTransformationType : this.selector.val(),
+					dataTransformationTypeLabel : this.selector.text(),
+					prefix : this.prefix
+				}
+				this.addedDTs[this.selector.val()] = true
+				new DataTransformationItem(this, object)
 			}
-			this.addedDTs[this.selector.val()] = true
-			new DataTransformationItem(this, object)
+		} else {
+			alert("All possible data transformations have been added")
+		}
+	}
+
+	refresh(){
+	
+		DTAJAX.call({
+			task : "refresh"
+		}, (this.refreshSelector).bind(this))
+	}
+	
+	refreshSelector(msg){
+		if(msg.dataTransformations.length == 0){
+			this.allAdded = true
+			this.selector = new SelectorElement({
+				uri : "",
+				label : "All possible data transformations have been added"
+			})
+		} else {
+			this.selector.container.remove()
+			this.selector = new SelectorElement(msg.dataTransformations)
+			this.selectorCont.prepend(this.selector.container)
 		}
 	}
 	
