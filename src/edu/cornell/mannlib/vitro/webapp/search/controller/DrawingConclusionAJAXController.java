@@ -213,6 +213,7 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
 
     String triples =  ""
             + " ?subjectUri                       obo:BFO_0000051     ?drawingConclusionInstance . \n"
+            + " ?subjectUri                       rdfbones:drawingConclusion     ?drawingConclusionInstance . \n"
             + " ?drawingConclusionInstance        rdf:type            ?drawingConclusionType . \n "
             + " ?drawingConclusionInstance        rdfs:label          ?drawingConclusionLabel . \n "
             + " ?drawingConclusionInstance        obo:OBI_0000293     ?inputInstance . \n"
