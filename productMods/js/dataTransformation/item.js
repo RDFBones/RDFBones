@@ -162,13 +162,15 @@ class DataTransformationItem {
 			measurementDatumType : this.dataObject.measurementDatumType,
 			measurementValue : this.value,
 			measurementValueType : this.dataObject.measurementValueType,
-			inputs : this.dataObject.inputs
+			inputs : this.dataObject.inputs,
+			prefix : this.dataObject.prefix
 		}, (function(msg) {
 			//Here the new URIs will be added to the dataObject
 			$.extend(this.dataObject, msg.dataObject)
 			this.saved = this.value
 			this.mainForm.unsaved = false
 			this.saveButton.hide()
+			this.mainForm.refresh()
 		}).bind(this))
 	}
 	
