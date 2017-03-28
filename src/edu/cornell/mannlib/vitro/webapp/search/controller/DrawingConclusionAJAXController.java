@@ -94,14 +94,17 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
       subjectUri = getParameter("subjectUri");
       StringSPARQLDataGetter typeDataGetter =
           new StringSPARQLDataGetter(connectorGraph, SPARQL_types(),
-              ArrayLib.getList("drawingConclusionType", "conclusionType", "inputType"), null, 1);
-            
+              ArrayLib.getList("drawingConclusionType", "conclusionType", "inputType"), ArrayLib.getList("label"), 1);
+      
       JSONObject types = (JSONObject) typeDataGetter.getSingleResult((ArrayLib.getList(subjectUri)));
-     
+
+      String prefix = JSON.string(types, "label").split("\\.")[0];
+      JSON.put(data, "prefix", prefix);
+      
       JSON.copyValue(data, types, "drawingConclusionType");
       JSON.copyValue(data, types, "conclusionType");
       JSON.copyValue(data, types, "inputType");
-
+      
       if(!getParameter("existing").equals("true")){
 
         StringSPARQLDataGetter inputDataGetter =
@@ -141,8 +144,8 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
       objectMap.put("conclusionInstance", this.getUnusedURI());
 
       literalMap.put("conclusionValue", getParameter("conclusionValue"));
-      literalMap.put("drawingConclusionLabel", getParameter("drawingConclusionLabel"));
-      literalMap.put("conclusionLabel", getParameter("conclusionLabel"));
+      literalMap.put("drawingConclusionLabel", getParameter("prefix") + "." + getParameter("drawingConclusionLabel"));
+      literalMap.put("conclusionLabel", getParameter("prefix") + "." + getParameter("conclusionLabel"));
 
       String toAdd1 = this.getTripleString(objectMap, literalMap);
       resp("triplesToAdd", toAdd1);
@@ -163,8 +166,8 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
       objectMap.put("conclusionInstance", getParameter("conclusionInstance"));
 
       literalMap.put("conclusionValue", getParameter("conclusionValue"));
-      literalMap.put("drawingConclusionLabel", getParameter("drawingConclusionLabel"));
-      literalMap.put("conclusionLabel", getParameter("conclusionLabel"));
+      literalMap.put("drawingConclusionLabel", getParameter("prefix") + "." + getParameter("drawingConclusionLabel"));
+      literalMap.put("conclusionLabel", getParameter("prefix") + "." + getParameter("conclusionLabel"));
       
       String toRemove2 = this.getTripleString(objectMap, literalMap);
       resp("triplesToAdd", toRemove2);
@@ -174,7 +177,6 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
         resp("success", "false");
       }
       break;
-     
       
     case "edit":
       
@@ -228,8 +230,11 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
 
     // In this case the subjectUri
     String query = ""
-       +  "  SELECT ?drawingConclusionType ?conclusionType ?inputType  \n"
+       +  "  SELECT ?drawingConclusionType ?conclusionType ?inputType ?label  \n"
        +  "     WHERE { \n"
+       +   "      ?subjectUri       obo:BFO_0000051              ?sde . "
+       +  "       ?sde              rdf:type                     obo:OBI_0000471 . "
+       +  "       ?sde              rdfs:label                    ?label ."
        +  "       ?subjectUri       vitro:mostSpecificType       ?investigationType .  \n"
        +  "       ?investigationType      rdfs:subClassOf   ?restrictionDC .  \n"
        +  "       ?restrictionDC        owl:onProperty      obo:BFO_0000051 . \n"
