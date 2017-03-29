@@ -81,6 +81,10 @@ class SelectorElement {
 		this.container = html.selectorMap(this.options, customValueKey, customTextKey)
 	}
 
+	refresh (data){
+		this.container = html.selectorMap(DataController.prepareOptions(data))
+	}
+	
 	val(){
 		return this.container.val()	
 	}

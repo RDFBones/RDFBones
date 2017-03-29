@@ -53,6 +53,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
   JSONObject requestData;
 
   String subjectUri;
+  String prefix;
   String dataTransformation;
   String dataTransformationType;
   String measurementDatum;
@@ -85,6 +86,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
 
       inputs = JSON.array(requestData, "inputs");
       subjectUri = getParameter("subjectUri");
+      prefix = getParameter("prefix");
       dataTransformationType = getParameter("dataTransformationType");
       measurementDatumType = getParameter("measurementDatumType");
       measurementValueType = getParameter("measurementValueType");
@@ -142,7 +144,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
               + measurementValueType + "> ";
       String toAdd =
           "<" + measurementDatum + "> " + "obo:IAO_0000004" + " '" + newValue + "'^^<"
-              + measurementValueType + "> . ";
+              + measurementValueType + "> . \n";
       resp("toRemove", toRemove);
       resp("toAdd", toAdd);
       connector.removeTriples(toRemove, editKey);
@@ -154,10 +156,14 @@ public class DataTransformationAJAXController extends VitroAjaxController {
       subjectUri = JSON.string(requestData, "subjectUri");
       StringSPARQLDataGetter dataTransDataGetter =
           new StringSPARQLDataGetter(connectorGraph, SPARQL_DTs(),
-              ArrayLib.getList("uri"), ArrayLib.getList("label"), 1);
-      JSON.put(resp, "dataTransformations",
-          dataTransDataGetter.getJSON(ArrayLib.getList(subjectUri)));
-
+              ArrayLib.getList("uri"), ArrayLib.getList("label", "sdeLabel"), 1);
+      
+      JSONArray array = dataTransDataGetter.getJSON(ArrayLib.getList(subjectUri));
+      JSON.put(resp, "dataTransformations", array);
+      
+      JSONObject object = (JSONObject) JSON.get(array, 0);
+      JSON.put(resp, "prefix", JSON.string(object, "sdeLabel").split("\\.")[0]);
+     
       StringSPARQLDataGetter existingDataGetter =
           new StringSPARQLDataGetter(connectorGraph, SPARQL_existingData(),
               ArrayLib.getList("dataTransformation", "dataTransformationType",
@@ -167,6 +173,16 @@ public class DataTransformationAJAXController extends VitroAjaxController {
           existingDataGetter.getJSON(ArrayLib.getList(subjectUri)));
       break;
 
+    case "refresh":
+
+      subjectUri = JSON.string(requestData, "subjectUri");
+      StringSPARQLDataGetter dataTransDataGetter2 =
+          new StringSPARQLDataGetter(connectorGraph, SPARQL_Refresh(),
+              ArrayLib.getList("uri"), ArrayLib.getList("label"), 1);
+      JSON.put(resp, "dataTransformations",
+          dataTransDataGetter2.getJSON(ArrayLib.getList(subjectUri)));
+      break;
+      
     case "possibleInputs":
 
       // Possible inputs
@@ -241,7 +257,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
             + " ?dataTransformation   rdf:type                        ?dataTransformationType . \n"
             + " ?dataTransformation   rdfs:label                      ?dataTransformationLabel . \n"
             + " ?measurementDatum     rdf:type                        ?measurementDatumType . \n"
-            + " ?measurementDatum     rdfs:label                      ?measurementDatumLabel . ";
+            + " ?measurementDatum     rdfs:label                      ?measurementDatumLabel . \n";
     
     return triples;
   }
@@ -250,30 +266,60 @@ public class DataTransformationAJAXController extends VitroAjaxController {
 
     // In this case the subjectUri
     String query =
-        "" + "SELECT ?uri ?label " + "WHERE { "
+        "" + "SELECT ?uri ?label ?sdeLabel " + "WHERE { "
+            + "  ?subjectUri     rdfs:label        ?sdeLabel .  "
             + "  ?subjectUri     vitro:mostSpecificType      ?SDEType ."
             + "  ?SDEType        rdfs:subClassOf             ?restriction ."
-            + "  ?restriction    owl:onProperty              obo:BFO_0000051 . "
-            + "  ?restriction    owl:someValuesFrom          ?uri . "
-            + "  ?uri            rdfs:subClassOf             obo:OBI_0200000 . "
+            + "  ?restriction    owl:onProperty              obo:BFO_0000051 . \n"
+            + "  ?restriction    owl:someValuesFrom          ?uri . \n"
+            + "  ?uri            rdfs:subClassOf             obo:OBI_0200000 . \n"
+            + "  ?subjectUri                 obo:BFO_0000051               ?assayOrDT . \n"
+            + "  ?assayOrDT                  obo:OBI_0000299               ?measurementDatum . \n"
+            + "  NOT EXISTS {    ?assayOrDT                  obo:OBI_0000293               ?measurementDatum . } \n"
+            + "  ?measurementDatum           rdf:type                      ?measurementDatumType ."
+            + "  ?uri                        rdfs:subClassOf               ?restriction1 . \n"
+            + "  ?restriction1               owl:onProperty                obo:OBI_0000293 . \n"
+            + "  ?restriction1                owl:onClass                   ?measurementDatumType . \n"
             + "  OPTIONAL { ?uri    rdfs:label     ?label . } "
             + "  FILTER ( ?subjectUri = <input1> ) " + "}";
     return query;
   }
 
+  public String SPARQL_Refresh() {
+
+    // In this case the subjectUri
+    String query =
+        "" + "SELECT ?uri ?label \n" 
+            + "WHERE { \n"
+            + "  ?subjectUri     vitro:mostSpecificType      ?SDEType . \n "
+            + "  ?SDEType        rdfs:subClassOf             ?restriction ."
+            + "  ?restriction    owl:onProperty              obo:BFO_0000051 . \n"
+            + "  ?restriction    owl:someValuesFrom          ?uri . \n"
+            + "  ?uri            rdfs:subClassOf             obo:OBI_0200000 . \n"
+            + "  ?subjectUri                 obo:BFO_0000051               ?DT . \n"
+            + "  ?DT                  obo:OBI_0000299               ?measurementDatum . \n"
+            + "  ?measurementDatum           rdf:type                      ?measurementDatumType ."
+            + "  ?uri                        rdfs:subClassOf               ?restriction1 . \n"
+            + "  ?restriction1               owl:onProperty                obo:OBI_0000293 . \n"
+            + "  ?restriction1                owl:onClass                   ?measurementDatumType . \n"
+            + "  OPTIONAL { ?uri    rdfs:label     ?label . } "
+            + "  FILTER ( ?subjectUri = <input1> ) " + "}";
+    return query;
+  }
+  
   public String SPARQL_existingData() {
 
     String query =
         ""
             + "SELECT ?dataTransformation ?dataTransformationType ?dataTransformationTypeLabel ?measurementDatum ?measurementDatumType ?measurementValue (datatype(?measurementValue) as ?measurementValueType)  "
             + "WHERE { "
-            + "  ?subjectUri                     obo:BFO_0000051           ?dataTransformation . "
-            + "  ?dataTransformation             rdf:type                  ?dataTransformationType . "
-            + "  ?dataTransformationType         rdfs:subClassOf           obo:OBI_0200000 . "
-            + "  OPTIONAL { ?dataTransformationType   rdfs:label           ?dataTransformationTypeLabel . }"
-            + "  ?dataTransformation             obo:OBI_0000299           ?measurementDatum . "
-            + "  ?measurementDatum               obo:IAO_0000004           ?measurementValue . "
-            + "  ?measurementDatum               vitro:mostSpecificType    ?measurementDatumType ."
+            + "  ?subjectUri                     obo:BFO_0000051           ?dataTransformation . \n"
+            + "  ?dataTransformation             rdf:type                  ?dataTransformationType . \n"
+            + "  ?dataTransformationType         rdfs:subClassOf           obo:OBI_0200000 . \n"
+            + "  OPTIONAL { ?dataTransformationType   rdfs:label           ?dataTransformationTypeLabel . } \n"
+            + "  ?dataTransformation             obo:OBI_0000299           ?measurementDatum . \n"
+            + "  ?measurementDatum               obo:IAO_0000004           ?measurementValue . \n"
+            + "  ?measurementDatum               vitro:mostSpecificType    ?measurementDatumType . \n"
             + "  FILTER ( ?subjectUri = <input1> ) " + "}";
     return query;
   }
@@ -284,17 +330,17 @@ public class DataTransformationAJAXController extends VitroAjaxController {
         ""
             + "SELECT ?measurementDatum ?measurementDatumLabel ?cardinality ?catLabel ?measurementValue (datatype(?measurementValue) as ?measurementValueType) "
             + "WHERE { "
-            + "  ?subjectUri                 obo:BFO_0000051               ?assayOrDT . "
-            + "  ?assayOrDT                  obo:OBI_0000299               ?measurementDatum . "
-            + "  ?measurementDatum           rdfs:label                    ?measurementDatumLabel . "
+            + "  ?subjectUri                 obo:BFO_0000051               ?assayOrDT . \n"
+            + "  ?assayOrDT                  obo:OBI_0000299               ?measurementDatum . \n"
+            + "  ?measurementDatum           rdfs:label                    ?measurementDatumLabel . \n"
             + "  ?measurementDatum           rdf:type                      ?measurementDatumType ."
-            + "  ?dataTransformationType     rdfs:subClassOf               ?restriction . "
-            + "  ?restriction                owl:onProperty                obo:OBI_0000293 . "
-            + "  ?restriction                owl:onClass                   ?measurementDatumType . "
+            + "  ?dataTransformationType     rdfs:subClassOf               ?restriction . \n"
+            + "  ?restriction                owl:onProperty                obo:OBI_0000293 . \n"
+            + "  ?restriction                owl:onClass                   ?measurementDatumType . \n"
             + "  OPTIONAL { ?measurementDatum       obo:IAO_0000004               ?measurementValue . } "
             + "  OPTIONAL {  "
-            + "     ?measurementDatum               obo:OBI_0000999          ?categoricalLabel . "
-            + "     ?categoricalLabel               rdfs:label               ?catLabel . "
+            + "     ?measurementDatum               obo:OBI_0000999          ?categoricalLabel . \n"
+            + "     ?categoricalLabel               rdfs:label               ?catLabel . \n"
             + "  }" + "  FILTER ( ?subjectUri = <input1> ) "
             + "  FILTER ( ?dataTransformationType = <input2> ) " + "}";
     return query;
@@ -304,7 +350,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
 
     String query =
         "" + "SELECT ?input " + "WHERE { "
-            + "  ?dataTransformation     obo:OBI_0000293          ?input . "
+            + "  ?dataTransformation     obo:OBI_0000293          ?input . \n"
             + "  FILTER ( ?dataTransformation = <input1> ) " + "}";
     return query;
   }
@@ -352,8 +398,8 @@ public class DataTransformationAJAXController extends VitroAjaxController {
 
     Map<String, String> map = new HashMap<String, String>();
     map.put("measurementValue", measurementValue);
-    map.put("dataTransformationLabel", dataTransformationType.split("#")[1]);
-    map.put("measurementDatumLabel", measurementDatumType.split("#")[1]);
+    map.put("dataTransformationLabel", prefix + "." + dataTransformationType.split("#")[1]);
+    map.put("measurementDatumLabel", prefix + "." + measurementDatumType.split("#")[1]);
     return map;
   }
 
