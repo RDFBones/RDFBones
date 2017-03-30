@@ -281,7 +281,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
             + "  ?restriction1               owl:onProperty                obo:OBI_0000293 . \n"
             + "  ?restriction1                owl:onClass                   ?measurementDatumType . \n"
             + "  OPTIONAL { ?uri    rdfs:label     ?label . } "
-            + "  FILTER ( ?subjectUri = <input1> ) " + "}";
+            + "  FILTER ( ?subjectUri = <input1> ) " + "}  ORDER BY ?uri";
     return query;
   }
 
@@ -303,7 +303,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
             + "  ?restriction1               owl:onProperty                obo:OBI_0000293 . \n"
             + "  ?restriction1                owl:onClass                   ?measurementDatumType . \n"
             + "  OPTIONAL { ?uri    rdfs:label     ?label . } "
-            + "  FILTER ( ?subjectUri = <input1> ) " + "}";
+            + "  FILTER ( ?subjectUri = <input1> ) " + "} ORDER BY ?uri";
     return query;
   }
   
@@ -320,7 +320,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
             + "  ?dataTransformation             obo:OBI_0000299           ?measurementDatum . \n"
             + "  ?measurementDatum               obo:IAO_0000004           ?measurementValue . \n"
             + "  ?measurementDatum               vitro:mostSpecificType    ?measurementDatumType . \n"
-            + "  FILTER ( ?subjectUri = <input1> ) " + "}";
+            + "  FILTER ( ?subjectUri = <input1> ) " + "} ORDER BY ?dataTransformationType ";
     return query;
   }
 
