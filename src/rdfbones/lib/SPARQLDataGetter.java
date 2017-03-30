@@ -155,7 +155,7 @@ public class SPARQLDataGetter {
 		query += this.selectVars;
 		query += "\nWHERE { \n ";
 		query += this.getQueryTriples();
-		query += "\n } ";
+		query += "\n } ORDER BY ?uri ";
 		return query;
 	}
 
