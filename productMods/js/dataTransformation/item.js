@@ -125,14 +125,14 @@ class DataTransformationItem {
 	
 	change (){
 		
-		this.value = this.dataField.val()
+		this.value = parseFloat(this.dataField.val()).toFixed(2)
 		if(this.saved == this.value){
 			this.saveButton.hide()
 		} else {
 			this.saveButton.show()
 		}
 	}
-
+	
 	del (){
 		if(this.saved){
 			DTAJAX.call({
