@@ -11,17 +11,14 @@ ${scripts.add('<script type="text/javascript" src="${urls.base}/js/UIModules/UIL
 
 ${scripts.add('<script type="text/javascript" src="${urls.base}/js/imageUpload/imageUploadUtils.js"></script>',
         	  '<script type="text/javascript" src="${urls.base}/js/lib/AJAXController.js"></script>',
-        	  '<script type="text/javascript" src="${urls.base}/js/lib/DataLibrary.js"></script>',
         	  '<script type="text/javascript" src="${urls.base}/js/lib/InstanceOffer.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/lib/ImageInstanceOffer.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/lib/InstanceOfferLibrary.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/lib/jquery.js"></script>',
-              '<script type="text/javascript" src="${urls.base}/js/lib/library.js"></script>',
               '<script type="text/javascript" src="${urls.base}/js/previewJS/js/lightbox.js"></script>')}
 
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/lib.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/table.css" />')}
-${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/font.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/css/image.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/js/previewJS/css/lightbox.css" />')}
 
@@ -46,14 +43,14 @@ ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/js/previewJS/css/li
     </section>
 </#if>
 
-<#assign fileDescription = lvf.getFormFieldValue(editSubmission, editConfiguration, "fileDescription") />
+<#assign labelValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "label") />
 
 <#assign i18n = i18n() >
 <#assign typesList = editConfiguration.offerTypesCreateNew />
 
 	<h3> Please upload an image </h3>
 	<form id="form"	action="${submitUrl}" enctype="multipart/form-data" method="post" >
-		Label <input type="text" name = "label" value  required /> <br>
+		Label <input type="text" name = "label" value="${labelValue}"  required /> <br>
 		<input id="datafile" type="file" name="datafile" size="30" />    
 		<input type="hidden" name = "editKey" value="${editKey}"/>
 		<input type="hidden" name = "dataUpload" value />
