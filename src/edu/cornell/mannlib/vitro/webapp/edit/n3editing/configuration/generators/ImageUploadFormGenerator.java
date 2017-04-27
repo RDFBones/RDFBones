@@ -191,7 +191,7 @@ public class ImageUploadFormGenerator extends BaseEditConfigurationGenerator imp
     			+ "}");
     			
       literalQueries.put("label", ""
-          + "PREFIX rdfs:     <http://www.w3.org/2000/01/rdf-schema#> . "
+          + "PREFIX rdfs:     <http://www.w3.org/2000/01/rdf-schema#> "
           + "SELECT ?label "
           + "WHERE {"
           + "   ?image rdfs:label ?label . "
@@ -438,7 +438,6 @@ public class ImageUploadFormGenerator extends BaseEditConfigurationGenerator imp
     		return;
     	}
     }    
-
     
 	private void initObjectParameters(VitroRequest vreq) {
 		//in case of object property
@@ -446,31 +445,13 @@ public class ImageUploadFormGenerator extends BaseEditConfigurationGenerator imp
 	}
 
 	private void processObjectPropForm(VitroRequest vreq, EditConfigurationVTwo editConfiguration) {
-    	editConfiguration.setVarNameForObject("objectVar");    	
+    	editConfiguration.setVarNameForObject("image");    	
     	editConfiguration.setObject(objectUri);
     	//this needs to be set for the editing to be triggered properly, otherwise the 'prepare' method
     	//pretends this is a data property editing statement and throws an error
     	//TODO: Check if null in case no object uri exists but this is still an object property
     }
-       
-    //Get N3 required 
-    //Handles both object and data property    
-    private List<String> generateN3Required(VitroRequest vreq) {
-    	List<String> n3ForEdit = new ArrayList<String>();
-    	String editString = "?subject ?predicate ";    	
-    	editString += "?objectVar";    	
-    	editString += " .";
-    	n3ForEdit.add(editString);
-    	return n3ForEdit;
-    }
-    
-    private List<String> generateN3Optional() {
-    	List<String> n3Inverse = new ArrayList<String>();    	
-    	n3Inverse.add("?objectVar ?inverseProp ?subject .");    	
-    	return n3Inverse;
-    	
-    }
-    
+  
     //Set queries
     private String retrieveQueryForInverse () {
     	String queryForInverse =  "PREFIX owl:  <http://www.w3.org/2002/07/owl#>"
@@ -504,7 +485,7 @@ public class ImageUploadFormGenerator extends BaseEditConfigurationGenerator imp
     	List<String> literalsOnForm = new ArrayList<String>();
     	
     	//uris on form should be empty if data property
-    	urisOnForm.add("objectVar");
+    	urisOnForm.add("image");
     	
     	editConfiguration.setUrisOnform(urisOnForm);
     	editConfiguration.setLiteralsOnForm(literalsOnForm);
@@ -541,7 +522,7 @@ public class ImageUploadFormGenerator extends BaseEditConfigurationGenerator imp
     
     protected void setFields(EditConfigurationVTwo editConfiguration, VitroRequest vreq, String predicateUri, List<VClass> rangeTypes) throws Exception {
 		FieldVTwo field = new FieldVTwo();
-    	field.setName("objectVar");    	
+    	field.setName("image");    	
     	
     	List<String> validators = new ArrayList<String>();
     	validators.add("nonempty");
@@ -624,46 +605,6 @@ public class ImageUploadFormGenerator extends BaseEditConfigurationGenerator imp
 		
 		editConfiguration.setFormSpecificData(formSpecificData);
 	}
-        			
-	public void addFormSpecificDataForAC(EditConfigurationVTwo editConfiguration, VitroRequest vreq, HttpSession session) throws SearchEngineException {
-		HashMap<String, Object> formSpecificData = new HashMap<String, Object>();
-		//Get the edit mode
-		formSpecificData.put("editMode", getEditMode(vreq).toString().toLowerCase());
-		
-		//We also need the type of the object itself
-		List<VClass> types = getRangeTypes(vreq);
-        //if types array contains only owl:Thing, the search will not return any results
-        //In this case, set an empty array
-        if(types.size() == 1 && types.get(0).getURI().equals(VitroVocabulary.OWL_THING) ){
-        	types = new ArrayList<VClass>();
-        }
-		
-        StringBuffer typesBuff = new StringBuffer();
-        for (VClass type : types) {
-            if (type.getURI() != null) {
-                typesBuff.append(type.getURI()).append(",");
-            }
-        }
-        
-		formSpecificData.put("objectTypes", typesBuff.toString());
-		log.debug("autocomplete object types : "  + formSpecificData.get("objectTypes"));
-		
-		//Get label for individual if it exists
-		if(EditConfigurationUtils.getObjectIndividual(vreq) != null) {
-			String objectLabel = EditConfigurationUtils.getObjectIndividual(vreq).getName();
-			formSpecificData.put("objectLabel", objectLabel);
-		}
-		
-		//TODO: find out if there are any individuals in the classes of objectTypes
-		formSpecificData.put("rangeIndividualsExist", rangeIndividualsExist(types) );
-		
-		formSpecificData.put("sparqlForAcFilter", getSparqlForAcFilter(vreq));
-		if(customErrorMessages != null && !customErrorMessages.isEmpty()) {
-			formSpecificData.put("customErrorMessages", customErrorMessages);
-		}
-		editConfiguration.setTemplate(acObjectPropertyTemplate);
-		editConfiguration.setFormSpecificData(formSpecificData);
-	}
 	
 	private Object rangeIndividualsExist(List<VClass> types) throws SearchEngineException {		
 		SearchEngine searchEngine = ApplicationUtils.instance().getSearchEngine();
@@ -698,28 +639,4 @@ public class ImageUploadFormGenerator extends BaseEditConfigurationGenerator imp
 		return objectUri;
 	}
 	
-
-	/** get the auto complete edit mode */
-	public EditMode getEditMode(VitroRequest vreq) {
-		//In this case, the original jsp didn't rely on FrontEndEditingUtils
-		//but instead relied on whether or not the object Uri existed
-		String objectUri = EditConfigurationUtils.getObjectUri(vreq);
-		EditMode editMode = FrontEndEditingUtils.EditMode.ADD;
-		if(objectUri != null && !objectUri.isEmpty()) {
-			editMode = FrontEndEditingUtils.EditMode.EDIT;
-			
-		}
-		return editMode;
-	}
-    
-	public String getSparqlForAcFilter(VitroRequest vreq) {
-		String subject = EditConfigurationUtils.getSubjectUri(vreq);			
-		String predicate = EditConfigurationUtils.getPredicateUri(vreq);
-		//Get all objects for existing predicate, filters out results from addition and edit
-		String query =  "SELECT ?objectVar WHERE { " + 
-			"<" + subject + "> <" + predicate + "> ?objectVar .} ";
-		return query;
-	}
-		
-
 }
