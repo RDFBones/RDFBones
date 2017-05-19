@@ -115,20 +115,21 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
       JSON.put(data,"inputData", inputInstances);
       
       JSON.put(resp, "data", data);
+    
+      if(getParameter("existing").equals("true")){
+        objectUri = getParameter("objectUri");
+        StringSPARQLDataGetter existingDataGetter =
+            new StringSPARQLDataGetter(connectorGraph, SPARQ_existingData(),
+                ArrayLib.getList("inputInstance", "conclusionInstance"), ArrayLib.getList("inputValue", "conclusionValue"), 1);
+         JSONObject existingData = existingDataGetter.getSingleResult(ArrayLib.getList(objectUri, JSON.string(types, "property")));
+         
+         JSON.copyValue(data, existingData, "inputInstance");
+         JSON.copyValue(data, existingData, "conclusionInstance");
+         JSON.copyValue(data, existingData, "inputValue");
+         JSON.copyValue(data, existingData, "conclusionValue");
+      }
     }
     
-    if(getParameter("existing").equals("true")){
-      objectUri = getParameter("objectUri");
-      StringSPARQLDataGetter existingDataGetter =
-          new StringSPARQLDataGetter(connectorGraph, SPARQ_existingData(),
-              ArrayLib.getList("inputInstance", "conclusionInstance"), ArrayLib.getList("inputValue", "conclusionValue"), 1);
-       JSONObject existingData = existingDataGetter.getSingleResult(ArrayLib.getList(objectUri));
-       
-       JSON.copyValue(data, existingData, "inputInstance");
-       JSON.copyValue(data, existingData, "conclusionInstance");
-       JSON.copyValue(data, existingData, "inputValue");
-       JSON.copyValue(data, existingData, "conclusionValue");
-    }
     
     switch(getParameter("task")){
 
@@ -196,13 +197,16 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
       
     case "edit":
       
-      String toRemove =
-          "<" + getParameter("conclusionInstance") + "> " + "<http://w3id.org/rdfbones/extensions/FrSexEst#HasText> " 
-                + " '" + getParameter("conclusionValue") + "'";
+      String concInstanceEdit = getParameter("conclusionInstance");
+      String conclusionValue = getParameter("conclusionValue");
+      String newConclusionValue = getParameter("newConclusionValue");
+      String property = getParameter("property");
+
+      String toRemove = "<" + concInstanceEdit + "> " + "<" + property + "> " 
+                + " '" + conclusionValue + "' .";
       
-      String toAdd2 =
-          "<" + getParameter("conclusionInstance") + "> " + "<http://w3id.org/rdfbones/extensions/FrSexEst#HasText> " 
-              + " '" + getParameter("newConclusionValue") + "'";
+      String toAdd2 = "<" + concInstanceEdit + "> " + "<" + property + "> " 
+          + " '" + newConclusionValue + "' .";
       
       resp("toRemove", toRemove);
       resp("toAdd", toAdd2);
@@ -293,8 +297,9 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
         "  ?objectUri            obo:OBI_0000293   ?inputInstance . \n" + 
         "  ?inputInstance        obo:IAO_0000004   ?inputValue .  \n" + 
         "  ?objectUri            obo:OBI_0000299   ?conclusionInstance . \n" + 
-        "  ?conclusionInstance      <http://w3id.org/rdfbones/extensions/FrSexEst#HasText>   ?conclusionValue .  \n" + 
+        "  ?conclusionInstance   ?property   ?conclusionValue .  \n" + 
         "  FILTER ( ?objectUri = <input1> ) .   \n   " + 
+        "  FILTER ( ?property = <input2> ) .   \n   " + 
         "}";
     return query;
   }
