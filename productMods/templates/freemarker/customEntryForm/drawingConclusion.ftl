@@ -15,8 +15,9 @@
 <div id = "validContainer">
 	<div>
 		<div class = "inlineTitle"> Input </div>
-		<div class = "inlineTitle" id = "inputTypeLabel"> </div>
-		<div class = "inlineTitle" id = "inputValue"> </div>
+		<div class = "inlineTitle" id = "inputTypeLabel"></div>
+		<div class = "inlineTitle" id = "inputValues">
+		</div>
 	</div>
 	<div class = "title">
 		Conclusion
