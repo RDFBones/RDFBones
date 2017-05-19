@@ -94,7 +94,7 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
       subjectUri = getParameter("subjectUri");
       StringSPARQLDataGetter typeDataGetter =
           new StringSPARQLDataGetter(connectorGraph, SPARQL_types(),
-              ArrayLib.getList("drawingConclusionType", "conclusionType", "inputType"), ArrayLib.getList("label"), 1);
+              ArrayLib.getList("drawingConclusionType", "conclusionType", "inputType", "property"), ArrayLib.getList("label"), 1);
       
       JSONObject types = (JSONObject) typeDataGetter.getSingleResult((ArrayLib.getList(subjectUri)));
 
@@ -104,18 +104,16 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
       JSON.copyValue(data, types, "drawingConclusionType");
       JSON.copyValue(data, types, "conclusionType");
       JSON.copyValue(data, types, "inputType");
+      JSON.copyValue(data, types, "property");
+
+      StringSPARQLDataGetter inputDataGetter =
+          new StringSPARQLDataGetter(connectorGraph, SPARQL_existingInput(),
+              ArrayLib.getList("inputInstance"), ArrayLib.getList("inputValue"), 1);
+      inputType = JSON.string(types, "inputType");
+      JSONObject inputData = inputDataGetter.getSingleResult(ArrayLib.getList(subjectUri, inputType));
+      JSONArray inputInstances = inputDataGetter.getJSON(ArrayLib.getList(subjectUri, inputType));
+      JSON.put(data,"inputData", inputInstances);
       
-      if(!getParameter("existing").equals("true")){
-
-        StringSPARQLDataGetter inputDataGetter =
-            new StringSPARQLDataGetter(connectorGraph, SPARQL_existingInput(),
-                ArrayLib.getList("inputInstance"), ArrayLib.getList("inputValue"), 1);
-        inputType = JSON.string(types, "inputType");
-        JSONObject inputData = inputDataGetter.getSingleResult(ArrayLib.getList(subjectUri, inputType));
-
-        JSON.copyValue(data, inputData, "inputInstance");
-        JSON.copyValue(data, inputData, "inputValue");
-      }
       JSON.put(resp, "data", data);
     }
     
@@ -133,14 +131,31 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
     }
     
     switch(getParameter("task")){
-    
-    case "save" :
+
+    case "editInputInstance" : 
       
+      String concInstance = getParameter("drawingConclusionInstance");
+      String inputPred = new String("obo:OBI_0000293");
+      String oldInput = getParameter("inputInstance");
+      String newInput = getParameter("newInputInstance");
+   
+      String toRemoveInpInst = "<" + concInstance + "> " + inputPred + " <" + oldInput + "> . ";
+      String toAdd = "<" + concInstance + "> " + inputPred + " <" + newInput + "> . ";
+      
+      resp("toRemove", toRemoveInpInst);
+      resp("toAdd", toAdd);
+      resp("deleteSuccess", Boolean.toString(connector.removeTriples(toRemoveInpInst, editKey)));
+      resp("addSuccess", Boolean.toString(connector.addTriples(toAdd, editKey)));
+      break;
+      
+    case "save" :
+   
       objectMap.put("subjectUri",getParameter("subjectUri"));
       objectMap.put("drawingConclusionInstance", this.getUnusedURI());
       objectMap.put("drawingConclusionType", getParameter("drawingConclusionType"));
       objectMap.put("inputInstance", getParameter("inputInstance"));
       objectMap.put("conclusionType", getParameter("conclusionType"));
+      objectMap.put("property", getParameter("property"));
       objectMap.put("conclusionInstance", this.getUnusedURI());
 
       literalMap.put("conclusionValue", getParameter("conclusionValue"));
@@ -164,6 +179,7 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
       objectMap.put("inputInstance", getParameter("inputInstance"));
       objectMap.put("conclusionType", getParameter("conclusionType"));
       objectMap.put("conclusionInstance", getParameter("conclusionInstance"));
+      objectMap.put("property", getParameter("property"));
 
       literalMap.put("conclusionValue", getParameter("conclusionValue"));
       literalMap.put("drawingConclusionLabel", getParameter("prefix") + "." + getParameter("drawingConclusionLabel"));
@@ -222,7 +238,7 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
             + " ?drawingConclusionInstance        obo:OBI_0000299     ?conclusionInstance . \n"
             + " ?conclusionInstance               rdf:type            ?conclusionType . \n "
             + " ?conclusionInstance               rdfs:label          ?conclusionLabel . \n "
-            + " ?conclusionInstance   <http://w3id.org/rdfbones/extensions/FrSexEst#HasText> ?conclusionValue . \n";
+            + " ?conclusionInstance               ?property ?conclusionValue . \n";
     return triples;
   }
 
@@ -230,7 +246,7 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
 
     // In this case the subjectUri
     String query = ""
-       +  "  SELECT ?drawingConclusionType ?conclusionType ?inputType ?label  \n"
+       +  "  SELECT ?drawingConclusionType ?conclusionType ?inputType ?label ?property \n"
        +  "     WHERE { \n"
        +   "      ?subjectUri       obo:BFO_0000051              ?sde . "
        +  "       ?sde              rdf:type                     obo:OBI_0000471 . "
@@ -246,6 +262,8 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
        +  "       ?drawingConclusionType      rdfs:subClassOf                 ?restrictionOutput . \n"
        +  "       ?restrictionOutput                  owl:onProperty                  obo:OBI_0000299 . \n"
        +  "       ?restrictionOutput                owl:someValuesFrom                    ?conclusionType . \n"
+       +  "       ?conclusionType                rdfs:subClassOf                    ?propRestriction . \n"
+       +  "       ?propRestriction               owl:onProperty                     ?property . \n "
        +  "       FILTER ( ?subjectUri = <input1> ) \n"
        +  "     } \n" ;
     return query;
