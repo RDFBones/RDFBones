@@ -59,7 +59,6 @@ class Main {
 		this.dataObject.inputTypeLabel = this.process(this.dataObject.inputType)
 		this.dataObject.conclusionLabel = this.process(this.dataObject.conclusionType)
 
-		
 		if(this.dataObject.conclusionValue != null){
 			this.textArea.text(this.dataObject.conclusionValue)
 		} else {
@@ -71,22 +70,41 @@ class Main {
 			this.submit.hide()
 			this.validContainer.hide()
 		}
-		this.initValues();
-		
+
 		if(objectUri != null){
 			this.dataObject.drawingConclusionInstance = objectUri
 			this.dataObject.newConlusionValue = null	
+			this.dataObject.newInputInstance = null
+		} else {
+			this.dataObject.inputInstance = this.dataObject.inputData[0].inputInstance
 		}
+		this.initValues();
 	}
-
 
 	initValues(){
 	
 		$("#drawingConclusionLabel").text(this.dataObject.drawingConclusionLabel)
 		$("#inputTypeLabel").text(this.dataObject.inputTypeLabel)
-		$("#inputValue").text(this.dataObject.inputValue)
+		//InputSelector
+		var selector = new SelectorField(this.dataObject.inputData, (this.changeInput).bind(this),
+				{ value : "inputInstance", text : "inputValue"});
+		$("#inputValues").append(selector.container)
+		if(objectUri != null){
+			selector.set(this.dataObject.inputInstance)
+		}
 	}
 	
+	changeInput(val){
+		
+		if(objectUri != null){
+			if(this.dataObject.newInputInstance == null){
+				this.dataObject.newInputInstance = val
+				this.editInputInstance()
+			}
+		} else {
+			this.dataObject.inputInstance = val
+		}
+	}
 	
 	change(){
 		
@@ -98,6 +116,15 @@ class Main {
 		}
 	}
 	
+	editInputInstance(){
+	
+		this.dataObject.task = "editInputInstance"
+		DTAJAX.call(this.dataObject, (function(msg){
+			this.dataObject.inputInstance = this.dataObject.newInputInstance
+			this.dataObject.newInputInstance = null
+		}).bind(this))	
+	}
+
 	editRoutine(){
 	
 		if(this.dataObject.newConclusionValue == null){
