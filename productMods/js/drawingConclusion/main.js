@@ -76,7 +76,12 @@ class Main {
 			this.dataObject.newConlusionValue = null	
 			this.dataObject.newInputInstance = null
 		} else {
-			this.dataObject.inputInstance = this.dataObject.inputData[0].inputInstance
+			if(this.dataObject.inputData.length == 0){
+				this.noData = true
+			} else {
+				this.noData = false
+				this.dataObject.inputInstance = this.dataObject.inputData[0].inputInstance	
+			}
 		}
 		this.initValues();
 	}
@@ -86,9 +91,14 @@ class Main {
 		$("#drawingConclusionLabel").text(this.dataObject.drawingConclusionLabel)
 		$("#inputTypeLabel").text(this.dataObject.inputTypeLabel)
 		//InputSelector
-		var selector = new SelectorField(this.dataObject.inputData, (this.changeInput).bind(this),
-				{ value : "inputInstance", text : "inputValue"});
-		$("#inputValues").append(selector.container)
+		if(!this.noData){
+			var selector = new SelectorField(this.dataObject.inputData, (this.changeInput).bind(this),
+					{ value : "inputInstance", text : "inputValue"});
+			$("#inputValues").append(selector.container)
+		} else {
+			$("#inputValues").append(html.div().text("There is no input data to select"))
+		}
+	
 		if(objectUri != null){
 			selector.set(this.dataObject.inputInstance)
 		}
@@ -147,14 +157,18 @@ class Main {
 	}
 	
 	submitRoutine(){
-		
-		if(this.dataObject.conclusionValue == null){
-			alert("Please set conclusion text")
+
+		if(this.noData){
+			alert("Without input data the submission is not allowed!")
 		} else {
-			this.dataObject.task = "save"
-			DTAJAX.call(this.dataObject,(function(msg){
-				util.redirect()
-			}).bind(this))
+			if(this.dataObject.conclusionValue == null){
+				alert("Please set conclusion text")
+			} else {
+				this.dataObject.task = "save"
+				DTAJAX.call(this.dataObject,(function(msg){
+					util.redirect()
+				}).bind(this))
+			}	
 		}
 	}
 	
