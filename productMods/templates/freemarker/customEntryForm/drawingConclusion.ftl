@@ -4,21 +4,18 @@
 
 <#import "lib-import.ftl" as imp> 
 
+<@imp.js url="drawingConclusion/TableRow" />
+<@imp.js url="drawingConclusion/input" />
 <@imp.js url="drawingConclusion/ajaxController" />
 <@imp.js url="drawingConclusion/main" />
-
 
 <div class = "mainFormTitle margin10"  id = "drawingConclusionLabel">
 	Drawing conclusion
 </div>
 
 <div id = "validContainer">
-	<div>
-		<div class = "inlineTitle"> Input </div>
-		<div class = "inlineTitle" id = "inputTypeLabel"></div>
-		<div class = "inlineTitle" id = "inputValues">
-		</div>
-	</div>
+	<div class="inlineTitle">Input</div>
+	<div id="inputButtonCont" class = "inline"></div>
 	<div class = "title">
 		Conclusion
 	</div>
@@ -47,8 +44,10 @@
 	var dataSaveUri = baseUrl + "dataGenerator"
 	var Global = new Object()
 	Global.buttonID = 0
+	Global.editMode = false
 	var debug = false
 	<#if editConfiguration.objectUri?has_content>
+		Global.editMode = true
     	var	objectUri = '${editConfiguration.objectUri}'
     <#else>
    		 var objectUri = null
