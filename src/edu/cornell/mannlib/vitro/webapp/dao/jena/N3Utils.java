@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import rdfbones.lib.JSON;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 
 public class N3Utils {
@@ -94,7 +95,7 @@ public class N3Utils {
         } 
        }
       log.info("Predicate:" + predicate);
-       return predicate;
+      return predicate;
     }
     
     public static String getOnlyPredicate(String predicate){
@@ -192,5 +193,39 @@ public class N3Utils {
           }
           arr.put(jsonObj);
        }
+   }
+   
+   public static String getLiteralTriple(String subject, String predicate, String object, String type, JSONObject json){
+     
+     return getLiteralTriple(JSON.string(json, subject), predicate, JSON.string(json, object),
+         JSON.string(json, type));
+   }
+   
+   public static String getDataTriple(String subject, String predicate, String object, JSONObject json){
+   
+     return getDataTriple(JSON.string(json, subject), predicate, JSON.string(json, object));
+   }
+   
+   public static String getLiteralTriple(String subject, String predicate, String value, String type){
+     
+     if(type == null){
+       return "<" + subject + "> " + predicate(predicate) + " \"" + value + "\" .";
+     } else {
+       return "<" + subject + "> " + predicate(predicate) + " \"" + value + "\"^^<" + type + "> .";
+     }
+   }
+   
+   public static String getDataTriple(String subject, String predicate, String object){
+     
+     return "<" + subject + "> " + predicate(predicate) + " <" + object + "> . ";
+   }
+   
+   public static String predicate(String predicate){
+     
+     if(!predicate.contains(":")){
+       return "<" + predicate + ">";
+     } else {
+       return predicate;
+     }
    }
 }
