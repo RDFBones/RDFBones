@@ -7,7 +7,7 @@ class DataTransformationItem {
 		this.init()
 	}
 	
-	init(dataObject){
+	init(){
 	
 		this.value = null
 		this.saved = null
@@ -16,15 +16,11 @@ class DataTransformationItem {
 			task : "outputType",
 		}, (function(msg){
 			this.dataObject = $.extend(this.dataObject, msg)
-			this.dataObject.measurementValueType = "http://www.w3.org/2001/XMLSchema#float"
-			this.dataObject.measurementDatumType = msg.inputs[0].measurementDatumType
-			this.dataObject.measurementDatumTypeLabel = this.process(this.dataObject.measurementDatumType)
 			this.dataObject.inputs = []
-			this.type = this.dataObject.measurementValueType 
 			this.initUI()
 		}).bind(this))
 	}
-	
+
 	initUI(){
 
 		this.container = html.div("dT_elementContainer")
@@ -42,30 +38,42 @@ class DataTransformationItem {
 		//Output
 		this.outputCont = html.div("flexInlineContainer margin10H")
 		this.outputTitle = html.div("dt_title").text("Output data")
+		this.outputMD = new MeasurementDatum(this, "measurementDatum", this.dataObject.measurementDatum)
 		
-		//Output data container
-		this.outputDataContainer = html.div("inline margin10H")
-		this.measDatumLabelDiv = html.div("dt_title").text((this.dataObject.measurementDatumTypeLabel))
-		this.precision = this.dataObject.measurementValueType == "http://www.w3.org/2001/XMLSchema#float" ? 0.01 : 1 
-		this.dataField = UI.floatInput(this.precision).change((this.change).bind(this)).addClass("margin15H")
-		this.outputDataContainer.append([this.measDatumLabelDiv, this.dataField])
-
-		this.outputCont.append([this.outputTitle, this.outputDataContainer])
+		this.outputCont.append([this.outputTitle, this.outputMD.container])
 		this.contentContainer.append([this.title, this.inputCont, this.outputCont])
 
 		// Delete button
-		this.buttonContainer = html.div()
-		this.saveButton = new Button("done", (this.saveHandler).bind(this))
 		this.deleteButton = new Button("del", (this.del).bind(this))
-		this.buttonContainer.append([this.saveButton.container, this.deleteButton.container])
-		
+	
 		//Assemble
-		this.container.append([this.contentContainer, this.buttonContainer])	
+		this.container.append([this.contentContainer, this.deleteButton.container])	
 		this.mainForm.elementContainer.append(this.container)
+	}
+
+	/*
+	change (){
+		
+		this.value = parseFloat(this.dataField.val()).toFixed(2)
+		if(this.saved == this.value){
+			this.saveButton.hide()
+		} else {
+			this.saveButton.show()
+		}
+	}
+	*/
+	
+	change(element){
+		
+		DTAJAX.call({
+			task : "editData",
+			dataKey : element.dataKey,
+			dataObject : element.dataObject,
+		}, null)
 	}
 	
 	saveHandler (){
-		
+	
 		if(this.value == null){
 			//Data were not initialized
 			alert("Please set the output value")
@@ -123,16 +131,6 @@ class DataTransformationItem {
 		this.saveButton.hide()
 	}
 	
-	change (){
-		
-		this.value = parseFloat(this.dataField.val()).toFixed(2)
-		if(this.saved == this.value){
-			this.saveButton.hide()
-		} else {
-			this.saveButton.show()
-		}
-	}
-	
 	del (){
 		if(this.saved){
 			DTAJAX.call({
@@ -185,6 +183,8 @@ class DataTransformationItem {
 			return str.replace("_", " ")
 		}
 	}
+	
+	
 }
 
 class ExistingDataTransformation extends DataTransformationItem {
@@ -221,3 +221,15 @@ class ExistingDataTransformation extends DataTransformationItem {
 		}
 	}
 }
+
+var dTItemDescriptor = [
+	{
+		title : "Input data",
+		dataKey : "inputData",
+		type : "instanceSelector"
+	},{
+		title : "Output data",
+		dataKey : "measurementDatum",
+		type : "measurementDatum",
+	}	
+]
