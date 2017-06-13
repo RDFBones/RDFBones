@@ -20,8 +20,11 @@ public interface WebappConnector {
   
   public boolean removeTriples(String triples, String editKey);	
   
+  public boolean addTriples(String triples);
+  
+  public boolean removeTriples(String triples); 
+  
   public void addToQueries(String query);
 
   public JSONArray getQueries();
-
 }

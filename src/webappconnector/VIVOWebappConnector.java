@@ -37,12 +37,22 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.NewURIMaker;
   NewURIMaker newURIMaker;
   boolean logEnabled = true;
   JSONArray queries; 
+  String editKey;
   
   public VIVOWebappConnector(VitroRequest vreq){
     this.vreq = vreq;
     newURIMaker = new NewURIMakerVitro(vreq.getWebappDaoFactory());
     queries = JSON.arr();
   }
+  
+  public VIVOWebappConnector(VitroRequest vreq, String editKey){
+    
+    this.editKey = editKey;
+    this.vreq = vreq;
+    newURIMaker = new NewURIMakerVitro(vreq.getWebappDaoFactory());
+    queries = JSON.arr();
+  }
+  
   
   public VIVOWebappConnector(){
     
@@ -78,7 +88,16 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.NewURIMaker;
     return new String("");
   }
   
- 
+  public boolean addTriples(String triples){
+
+      return addTriples(triples, this.editKey);
+  }
+
+  public boolean removeTriples(String triples){
+
+    return removeTriples(triples, this.editKey);
+  }
+
   public boolean addTriples(String triples, String editKey){
     
     Model writeModel = getWriteModel(editKey);
