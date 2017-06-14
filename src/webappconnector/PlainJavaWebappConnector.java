@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import rdfbones.formProcessing.WebappConnector;
 import rdfbones.lib.ArrayLib;
@@ -64,6 +65,24 @@ public class PlainJavaWebappConnector implements WebappConnector{
 
   @Override
   public JSONArray getQueries() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public boolean addTriples(String triples) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
+  public boolean removeTriples(String triples) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
+  public JSONObject logJSON() {
     // TODO Auto-generated method stub
     return null;
   }

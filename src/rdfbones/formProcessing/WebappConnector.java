@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 public interface WebappConnector {
 
@@ -26,5 +27,7 @@ public interface WebappConnector {
   
   public void addToQueries(String query);
 
+  public JSONObject logJSON();
+  
   public JSONArray getQueries();
 }
