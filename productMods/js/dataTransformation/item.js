@@ -11,10 +11,8 @@ class DataTransformationItem {
 	
 		this.value = null
 		this.saved = null
-		DTAJAX.call({
-			dataTransformationType : this.dataObject.dataTransformationType,
-			task : "outputType",
-		}, (function(msg){
+		this.dataObject.task = "saveForm",
+		DTAJAX.call(this.dataObject, (function(msg){
 			this.dataObject = $.extend(this.dataObject, msg)
 			this.dataObject.inputs = []
 			this.initUI()
@@ -132,7 +130,6 @@ class DataTransformationItem {
 	}
 	
 	del (){
-		if(this.saved){
 			DTAJAX.call({
 				task : "delete",
 				subjectUri : subjectUri,
@@ -146,32 +143,8 @@ class DataTransformationItem {
 					this.mainForm.remove(this.dataObject.dataTransformationType)
 					PopUpController.doneMsg("Data has been deleted")
 				}).bind(this))
-		} else {
-			this.container.remove()
-			this.parentForm.remove(this.dataObject)
-		}
-		this.mainForm.unsaved = false
 	}
-	
-	save (){
-		DTAJAX.call({
-			task : "createNew",
-			dataTransformationType : this.dataObject.dataTransformationType,
-			measurementDatumType : this.dataObject.measurementDatumType,
-			measurementValue : this.value,
-			measurementValueType : this.dataObject.measurementValueType,
-			inputs : this.dataObject.inputs,
-			prefix : this.dataObject.prefix
-		}, (function(msg) {
-			//Here the new URIs will be added to the dataObject
-			$.extend(this.dataObject, msg.dataObject)
-			this.saved = this.value
-			this.mainForm.unsaved = false
-			this.saveButton.hide()
-			this.mainForm.refresh()
-		}).bind(this))
-	}
-	
+
 	process(input){
 		
 		if(input === undefined){
@@ -183,42 +156,16 @@ class DataTransformationItem {
 			return str.replace("_", " ")
 		}
 	}
-	
-	
 }
 
 class ExistingDataTransformation extends DataTransformationItem {
 	
 	constructor(mainForm, dataObject){
 		super(mainForm, dataObject)
-		this.saved = dataObject.measurementValue
-		this.value = this.saved
-		this.dataField.val(this.saved)
 	}
 
 	init(dataObject){
-		this.dataObject.measurementDatumTypeLabel = this.process(this.dataObject.measurementDatumType)
-		this.dataObject.dataTransformationTypeLabel = this.process(this.dataObject.dataTransformationType)
 		this.initUI()
-		this.saveButton.hide()
-	}
-	
-	showInputs(){
-
-		//Here we call the existing ones as well
-		if(this.inputSelector === undefined){
-			DTAJAX.call({
-				task : "possibleInputs_existing",
-				subjectUri : subjectUri,
-				dataTransformation : this.dataObject.dataTransformation,
-				dataTransformationType : this.dataObject.dataTransformationType
-			},(function(msg){
-				PopUpController.done()
-				this.inputSelector = new ExistingInputSelector(this, msg.possibleInputs, msg.exsistingInputs)
-			}).bind(this), false)
-		} else {
-			this.inputSelector.display()
-		}
 	}
 }
 
