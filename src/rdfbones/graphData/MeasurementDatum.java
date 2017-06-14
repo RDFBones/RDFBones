@@ -110,7 +110,7 @@ public class MeasurementDatum {
         new StringSPARQLDataGetter(connector, SPARQL_Existing_Scalar_MD(),
             ArrayLib.getList("uri", "type", "catLabType", "catLab"),
             ArrayLib.getList("value"));
-    
+   
     JSONObject output = outputTypeDataGetter.getSingleResult(ArrayLib.getArray(subject, property));
    
     if(JSON.string(output, "value").length() > 0){
@@ -118,8 +118,7 @@ public class MeasurementDatum {
       JSON.put(output, "value", JSON.string(output, "value").split("^^")[0]);
       if(data.length > 1){
         JSON.put(output, "type", JSON.string(output, "value").split("^^")[1]);
-      } 
-
+      }
     } else {
       JSON.put(output, "value", JSON.string(output, "catLab"));
       StringSPARQLDataGetter instanceDataGetter =
@@ -145,7 +144,7 @@ public class MeasurementDatum {
           N3Utils.getLiteralTriple("uri", "obo:IAO_0000004", "value", "dataType",
               this.formData);
       toAdd =
-          N3Utils.getLiteralTriple("uri", "obo:IAO_0000004", "value", "dataType",
+          N3Utils.getLiteralTriple("uri", "obo:IAO_0000004", "newValue", "dataType",
               this.formData);
     } else {
       toRemove = N3Utils.getDataTriple("uri", "obo:OBI_0000999", "value", this.formData);
@@ -219,7 +218,7 @@ public class MeasurementDatum {
             + "       ?r2                owl:onClass                  ?catLabType .   \n "
             + "     }  \n  " 
             + "     FILTER ( ?inputType  = <input1> )"
-            + "}";
+            + "} ";
     return query;
   }
   

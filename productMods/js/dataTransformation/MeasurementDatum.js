@@ -21,8 +21,8 @@ class MeasurementDatum {
 			this.precision = 0.01 
 			this.dataField = UI.floatInput(this.precision).change((this.changeFloat).bind(this)).addClass("inline margin15H")
 			this.dataField.val(0.00)
-			this.okButton = new Button("ok", (this.save).bind(this)).hide()
-			this.container.append([this.measDatumLabelDiv, this.dataField])
+			this.okButton = new Button("done", (this.save).bind(this)).hide()
+			this.container.append([this.measDatumLabelDiv, this.dataField, this.okButton.container])
 		} else {
 			this.floatMode = false
 			this.selector = new SelectorField(this.dataObject.instances, (this.changeInstance).bind(this))
@@ -33,6 +33,7 @@ class MeasurementDatum {
 	
 	changeFloat(){
 		this.dataObject.newValue = this.dataField.val()
+		this.okButton.show()
 	}
 
 	changeInstance(){
