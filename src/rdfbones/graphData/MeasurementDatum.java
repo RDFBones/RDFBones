@@ -80,13 +80,37 @@ public class MeasurementDatum {
       JSON.put(result, "value", "0.00");
       triples += N3Utils.getLiteralTriple("uri", "obo:IAO_0000004", "value", "dataType", result);
     }
+    triples += N3Utils.getDataTriple(JSON.string(formData, subjectVarName), this.property, measurementDatum.subject);
     JSON.put(formData, varName, result);
     return triples;
   }
 
+  public static JSONObject getMD(WebappConnector connector, String subject, String property){
+    
+    StringSPARQLDataGetter outputTypeDataGetter =
+        new StringSPARQLDataGetter(connector, SPARQL_Existing_Scalar_MD(),
+            ArrayLib.getList("uri", "type", "catLabType", "catLab"),
+            ArrayLib.getList("value"));
+    
+    JSONObject output = outputTypeDataGetter.getSingleResult(ArrayLib.getArray(subject, property));
+   
+    if(JSON.string(output, "value").length() > 0){
+      JSON.put(output, "value", JSON.string(output, "value").split("^^")[0]);
+      JSON.put(output, "type", JSON.string(output, "value").split("^^")[1]);
+    } else {
+      JSON.put(output, "value", JSON.string(output, "catLab"));
+      StringSPARQLDataGetter instanceDataGetter =
+          new StringSPARQLDataGetter(connector, SPARQL_Labels(),
+              ArrayLib.getList("uri"), ArrayLib.getList("label")); 
+      JSONArray instances = instanceDataGetter.getJSON(JSON.string(output, "catLabType"));
+      JSON.put(output, "instances", instances);
+    }
+    return output;
+  }
+
   public String getConnector(String subject, String property) {
 
-    return N3Utils.getDataTriple(subject, property, this.subject);
+    return N3Utils.getDataTriple(subject, this.property, this.subject);
   }
 
   public void edit() {
@@ -108,6 +132,26 @@ public class MeasurementDatum {
     this.connector.addTriples(toAdd);
   }
 
+  public static String SPARQL_Existing_Scalar_MD() {
+
+    String close =  " . \n ";
+    String query = "SELECT ?uri ?type ?catLab ?catLabType ?catLabLabel ?value " 
+    + " WHERE { \n "
+    + "  ?subject  ?property     ?uri  " + close 
+    + "  ?uri       vitro:mostSpecificType    ?type " + close 
+    + "  ?uri       rdfs:label                ?label " + close  
+    + "  OPTIONAL { ?uri    obo:IAO_0000004    ?value  } " + close
+    + "  OPTIONAL { "
+    + "     ?uri         obo:OBI_0000999    ?catLab "  + close
+    + "     ?catLab      vitro:mostSpecificType    ?catLabType "  + close
+    + "     ?catLab      rdfs:label         ?catLabLabel " + close  
+    + "   }"
+    + " FILTER ( ?subject = <input1> ) " + close
+    + " FILTER ( ?property = <input2> ) " + close 
+    + " } ";
+    return query;
+  }
+ 
   public static String SPARQL_OutputTypes() {
 
     String query =
@@ -133,7 +177,7 @@ public class MeasurementDatum {
     return query;
   }
 
-  public String SPARQL_Labels() {
+  public static String SPARQL_Labels() {
 
     String query =
         "" + "SELECT ?uri ?label "
