@@ -51,10 +51,10 @@ public class MeasurementDatum {
   public String getTriples(String subjectVarName, String varName, String prefix){
   
     String inputType = JSON.string(this.formData, subjectVarName + "Type");
-    JSONObject result = getResult(SPARQL_OutputTypes(), inputType);
+    JSONObject result = getResult1(inputType);
    
     if(JSON.string(result, "catLabType").length() == 0 && JSON.string(result, "dataType").length() == 0){
-      result = getResult(SPARQL_OutputTypes_2(), JSON.string(result, "type"));
+      result = getResult2(JSON.string(result, "type"));
     }
     
     Entity measurementDatum = new Entity(connector, result, prefix);
@@ -86,15 +86,24 @@ public class MeasurementDatum {
     return triples;
   }
 
-  public JSONObject getResult(String query, String inputType){
+  public JSONObject getResult1(String inputType){
     
     StringSPARQLDataGetter outputTypeDataGetter =
-        new StringSPARQLDataGetter(this.connector, query,
+        new StringSPARQLDataGetter(this.connector, SPARQL_OutputTypes(),
             ArrayLib.getList("type", "dataType", "catLabType"),
             ArrayLib.getList("label"));
-    return outputTypeDataGetter.getSingleResult(ArrayLib.getList(inputType,this.property));
+    return outputTypeDataGetter.getSingleResult(ArrayLib.getList(inputType, this.property));
   }
  
+  public JSONObject getResult2(String inputType){
+    
+    StringSPARQLDataGetter outputTypeDataGetter =
+        new StringSPARQLDataGetter(this.connector, SPARQL_OutputTypes_2(),
+            ArrayLib.getList("type", "dataType", "catLabType"),
+            ArrayLib.getList("label"));
+    return outputTypeDataGetter.getSingleResult(ArrayLib.getList(inputType));
+  }
+  
   public static JSONObject getMD(WebappConnector connector, String subject, String property){
     
     StringSPARQLDataGetter outputTypeDataGetter =
@@ -210,7 +219,7 @@ public class MeasurementDatum {
             + "       ?r2                owl:onClass                  ?catLabType .   \n "
             + "     }  \n  " 
             + "     FILTER ( ?inputType  = <input1> )"
-            + "     FILTER ( ?property = <input2> )" + "}";
+            + "}";
     return query;
   }
   
