@@ -36,7 +36,7 @@ public class MeasurementDatum {
 
     this.connector = connector;
     this.formData = formData;
-    if (JSON.string(formData, "dataType") != null) {
+    if (JSON.string(formData, "dataType").length() > 0) {
       this.literalField = true;
     }
   }
@@ -125,8 +125,8 @@ public class MeasurementDatum {
           N3Utils.getLiteralTriple("uri", "obo:IAO_0000004", "value", "dataType",
               this.formData);
     } else {
-      toRemove = N3Utils.getDataTriple("uri", "obo:IAO_0000004", "value", this.formData);
-      toAdd = N3Utils.getDataTriple("uri", "obo:IAO_0000004", "newValue", this.formData);
+      toRemove = N3Utils.getDataTriple("uri", "obo:OBI_0000999", "value", this.formData);
+      toAdd = N3Utils.getDataTriple("uri", "obo:OBI_0000999", "newValue", this.formData);
     }
     this.connector.removeTriples(toRemove);
     this.connector.addTriples(toAdd);
