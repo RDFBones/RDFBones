@@ -3,7 +3,7 @@ class MeasurementDatum {
 	
 	constructor(form, dataKey, dataObject){
 	
-		this.form
+		this.form = form
 		this.dataObject = dataObject
 		this.dataKey = dataKey
 		this.initUI()
@@ -26,6 +26,7 @@ class MeasurementDatum {
 		} else {
 			this.floatMode = false
 			this.selector = new SelectorField(this.dataObject.instances, (this.changeInstance).bind(this))
+			this.selector.set(this.dataObject.value)
 			this.container.append([this.measDatumLabelDiv, this.selector.container])
 		}
 	}
