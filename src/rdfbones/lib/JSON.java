@@ -298,6 +298,16 @@ public class JSON {
 	  return null;
   }
   
+  public static JSONArray getArray(JSONObject obj, String key){
+    
+    try {
+      return (JSONArray) obj.get(key);
+    } catch (JSONException e){
+      e.printStackTrace();
+    }
+    return JSON.arr();
+  }
+  
   public static JSONObject getObject(String string){
 	  
 	try {
@@ -365,4 +375,13 @@ public class JSON {
   	}
   	JSON.put(object, key, val);
   }
+  
+  public static void addToList(JSONObject obj, String key, String value){
+   
+    if(!obj.has(key)){
+      JSON.put(obj, key, JSON.arr());
+    }
+    JSON.putString(JSON.getArray(obj, key), value);
+  }
+  
 }
