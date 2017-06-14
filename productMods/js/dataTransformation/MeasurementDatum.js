@@ -20,7 +20,7 @@ class MeasurementDatum {
 			this.floatMode = true
 			this.precision = 0.01 
 			this.dataField = UI.floatInput(this.precision).change((this.changeFloat).bind(this)).addClass("inline margin15H")
-			this.dataField.val(0.00)
+			this.dataField.val(this.dataObject.value)
 			this.okButton = new Button("done", (this.save).bind(this)).hide()
 			this.container.append([this.measDatumLabelDiv, this.dataField, this.okButton.container])
 		} else {

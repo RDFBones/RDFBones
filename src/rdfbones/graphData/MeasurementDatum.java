@@ -108,8 +108,8 @@ public class MeasurementDatum {
     
     StringSPARQLDataGetter outputTypeDataGetter =
         new StringSPARQLDataGetter(connector, SPARQL_Existing_Scalar_MD(),
-            ArrayLib.getList("uri", "type", "catLabType", "catLab"),
-            ArrayLib.getList("value"));
+            ArrayLib.getList("uri", "type", "catLabType", "catLab", "dataType"),
+            ArrayLib.getList("value", "catLabLabel"));
    
     JSONObject output = outputTypeDataGetter.getSingleResult(ArrayLib.getArray(subject, property));
    
@@ -157,7 +157,7 @@ public class MeasurementDatum {
   public static String SPARQL_Existing_Scalar_MD() {
 
     String close =  " . \n ";
-    String query = "SELECT ?uri ?type ?catLab ?catLabType ?catLabLabel ?value " 
+    String query = "SELECT ?uri ?type ?catLab ?catLabType ?catLabLabel ?value  (datatype(?value) as ?dataType)" 
     + " WHERE { \n "
     + "  ?subject  ?property     ?uri  " + close 
     + "  ?uri       vitro:mostSpecificType    ?type " + close 
