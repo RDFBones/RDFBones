@@ -49,19 +49,17 @@ public class MeasurementDatum {
   }
 
   public String getTriples(String subjectVarName, String varName, String prefix){
+  
+    String inputType = JSON.string(this.formData, subjectVarName + "Type");
+    JSONObject result = getResult(SPARQL_OutputTypes(), inputType);
+   
+    if(JSON.string(result, "catLabType").length() == 0 && JSON.string(result, "dataType").length() == 0){
+      result = getResult(SPARQL_OutputTypes_2(), JSON.string(result, "type"));
+    }
     
-    StringSPARQLDataGetter outputTypeDataGetter =
-        new StringSPARQLDataGetter(this.connector, SPARQL_OutputTypes(),
-            ArrayLib.getList("type", "dataType", "catLabType"),
-            ArrayLib.getList("label"));
-    
-    JSONObject result = outputTypeDataGetter.getSingleResult(ArrayLib.getList(JSON.string(this.formData, subjectVarName + "Type"),
-        this.property));
-
     Entity measurementDatum = new Entity(connector, result, prefix);
     String triples = measurementDatum.getTriples();
-   
-    dataType = JSON.string(result, "dataType");
+    
     if(JSON.string(result, "catLabType").length() > 0){
       //Instance selector
       StringSPARQLDataGetter instanceDataGetter =
@@ -77,7 +75,10 @@ public class MeasurementDatum {
     } else {
       //Literal field
       literalField = true;
+      dataType = JSON.string(result, "dataType");
       JSON.put(result, "value", "0.00");
+      JSON.put(result, "dataType", dataType);
+
       triples += N3Utils.getLiteralTriple("uri", "obo:IAO_0000004", "value", "dataType", result);
     }
     triples += N3Utils.getDataTriple(JSON.string(formData, subjectVarName), this.property, measurementDatum.subject);
@@ -85,6 +86,15 @@ public class MeasurementDatum {
     return triples;
   }
 
+  public JSONObject getResult(String query, String inputType){
+    
+    StringSPARQLDataGetter outputTypeDataGetter =
+        new StringSPARQLDataGetter(this.connector, query,
+            ArrayLib.getList("type", "dataType", "catLabType"),
+            ArrayLib.getList("label"));
+    return outputTypeDataGetter.getSingleResult(ArrayLib.getList(inputType,this.property));
+  }
+ 
   public static JSONObject getMD(WebappConnector connector, String subject, String property){
     
     StringSPARQLDataGetter outputTypeDataGetter =
@@ -95,8 +105,12 @@ public class MeasurementDatum {
     JSONObject output = outputTypeDataGetter.getSingleResult(ArrayLib.getArray(subject, property));
    
     if(JSON.string(output, "value").length() > 0){
+      String[] data = JSON.string(output, "value").split("^^");
       JSON.put(output, "value", JSON.string(output, "value").split("^^")[0]);
-      JSON.put(output, "type", JSON.string(output, "value").split("^^")[1]);
+      if(data.length > 1){
+        JSON.put(output, "type", JSON.string(output, "value").split("^^")[1]);
+      } 
+
     } else {
       JSON.put(output, "value", JSON.string(output, "catLab"));
       StringSPARQLDataGetter instanceDataGetter =
@@ -163,9 +177,9 @@ public class MeasurementDatum {
             + "     ?r                  owl:onClass                  ?type . \n "
             + "     OPTIONAL { ?type    rdfs:label   ?label . } \n "
             + "     OPTIONAL {  \n "
-            + "       ?MDType            rdfs:subClassOf              ?r1 . \n "
+            + "       ?type              rdfs:subClassOf              ?r1 . \n "
             + "       ?r1                owl:onProperty               obo:IAO_0000004 . \n "
-            + "       ?r1                owl:dataRange                ?dataType .   \n "
+            + "       ?r1                owl:onDataRange                ?dataType .   \n "
             + "     } . \n "
             + "     OPTIONAL {  \n "
             + "       ?type              rdfs:subClassOf       ?r2 . \n "
@@ -177,6 +191,29 @@ public class MeasurementDatum {
     return query;
   }
 
+  public static String SPARQL_OutputTypes_2() {
+
+    String query =
+        ""
+            + "SELECT ?type ?label ?dataType ?catLabType "
+            + "WHERE { "
+            + "     ?inputType                 rdfs:subClassOf        ?type . \n "
+            + "     OPTIONAL { ?type    rdfs:label   ?label . } \n "
+            + "     OPTIONAL {  \n "
+            + "       ?type              rdfs:subClassOf              ?r1 . \n "
+            + "       ?r1                owl:onProperty               obo:IAO_0000004 . \n "
+            + "       ?r1                owl:onDataRange                ?dataType .   \n "
+            + "     } . \n "
+            + "     OPTIONAL {  \n "
+            + "       ?type              rdfs:subClassOf       ?r2 . \n "
+            + "       ?r2                owl:onProperty               obo:OBI_0000999 . \n "
+            + "       ?r2                owl:onClass                  ?catLabType .   \n "
+            + "     }  \n  " 
+            + "     FILTER ( ?inputType  = <input1> )"
+            + "     FILTER ( ?property = <input2> )" + "}";
+    return query;
+  }
+  
   public static String SPARQL_Labels() {
 
     String query =
