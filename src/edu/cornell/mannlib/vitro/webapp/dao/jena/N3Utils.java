@@ -15,8 +15,7 @@ import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 
 public class N3Utils {
 
-    private static final Log log = LogFactory.getLog(N3Utils.class);
-    private static Map<String, String> prefixDef = new HashMap<String, String>(){{
+    public static Map<String, String> prefixDef = new HashMap<String, String>(){{
       put("rdf","http://www.w3.org/1999/02/22-rdf-syntax-ns#");
       put("rdfs","http://www.w3.org/2000/01/rdf-schema#");
       put("obo","http://purl.obolibrary.org/obo/");
@@ -51,8 +50,6 @@ public class N3Utils {
     public static void setInputMap(Map<String, String> inputMap, 
       String[] inputParameters, VitroRequest vreq){
         for(String param : inputParameters){
-          log.info("SetInputMap");
-          log.info(param);
           inputMap.put(param, vreq.getParameter(param));
         }
     }
@@ -82,7 +79,6 @@ public class N3Utils {
     
     
     public static String getSubject(String triple){
-      log.info(triple.split("\\s+")[0]);
       return triple.split("\\s+")[0];
     }
     
@@ -94,7 +90,6 @@ public class N3Utils {
           break;
         } 
        }
-      log.info("Predicate:" + predicate);
       return predicate;
     }
     
@@ -116,7 +111,6 @@ public class N3Utils {
           break;
         } 
        }
-      log.info("Object:" + object);
        return object;
     }
 
@@ -130,9 +124,7 @@ public class N3Utils {
         }
         n++;
       }
-      log.info("Object: " + ret.substring(0, ret.length()-1));
       return ret.substring(0, ret.length()-1);
-      //return ret + "^^http://www.w3.org/2001/XMLSchema#string";
     }
     
     public static String setPrefixes(String[] prefixes, String query){
@@ -195,8 +187,14 @@ public class N3Utils {
        }
    }
    
+   public static String getLabelTriple(String subject, String predicate, String object, JSONObject json){
+      
+     String a = null;
+     return getLiteralTriple(JSON.string(json, subject), predicate, JSON.string(json, object), a);
+   }
+    
    public static String getLiteralTriple(String subject, String predicate, String object, String type, JSONObject json){
-     
+
      return getLiteralTriple(JSON.string(json, subject), predicate, JSON.string(json, object),
          JSON.string(json, type));
    }
