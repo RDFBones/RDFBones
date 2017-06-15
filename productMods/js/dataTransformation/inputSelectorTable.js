@@ -14,7 +14,6 @@ class InputSelectorTable {
 		}).bind(this))
 		this.container.append(this.rows)
 	}
-	
 }
 
 class DTTableRow {
@@ -42,12 +41,12 @@ class DTTableRow {
 		this.container.append([this.label, this.measurementValue])
 	}
 	
-	select(exsisting){
+	select(existing){
 		if(this.selected){
-			this.inputSelectorTable.inputSelector.remove(this, this.measurementDatum, exsisting)
+			this.inputSelectorTable.inputSelector.remove(this, this.measurementDatum, existing)
 			this.selected = false
 		} else {
-			this.inputSelectorTable.inputSelector.add(this, this.measurementDatum, exsisting)
+			this.inputSelectorTable.inputSelector.add(this, this.measurementDatum, existing)
 			this.selected = true
 		}
 	}

@@ -2,7 +2,6 @@
 class Main {
 	
 	constructor(){
-	
 		this.initUI()
 		this.loadExistingData()
 	}
@@ -16,6 +15,9 @@ class Main {
 		this.edit = $("#edit")
 		this.del = $("#delete")
 
+		this.inputButton = new TextButton("Select", (this.selectInput).bind(this), null, "inline")
+		$("#inputButtonCont").append(this.inputButton.container)
+
 		this.validContainer = $("#validContainer")
 		this.errorMsg = $("#errorMessage")
 
@@ -27,7 +29,7 @@ class Main {
 		this.cancel.click(util.redirect)
 		this.done.click(util.redirect)
 		
-		if(objectUri != null){
+		if(Global.editMode){
 			this.submit.hide()
 			this.cancel.hide()
 		} else {
@@ -56,7 +58,6 @@ class Main {
 		
 		this.dataObject = msg.data;
 		this.dataObject.drawingConclusionLabel = this.process(this.dataObject.drawingConclusionType)
-		this.dataObject.inputTypeLabel = this.process(this.dataObject.inputType)
 		this.dataObject.conclusionLabel = this.process(this.dataObject.conclusionType)
 
 		if(this.dataObject.conclusionValue != null){
@@ -64,26 +65,11 @@ class Main {
 		} else {
 			this.dataObject.conclusionValue = null
 		}
-		
-		if(this.dataObject.inputInstance == ""){
-			this.errorMsg.text("Please add " + this.dataObject.inputTypeLabel + " to the investigation")
-			this.submit.hide()
-			this.validContainer.hide()
-		}
-
-		if(objectUri != null){
+	
+		if(Global.editMode){
 			this.dataObject.drawingConclusionInstance = objectUri
 			this.dataObject.newConlusionValue = null	
-			this.dataObject.newInputInstance = null
-		} else {
-			if(this.dataObject.inputData.length == 0){
-				this.noData = true
-			} else {
-				this.noData = false
-				this.dataObject.inputInstance = this.dataObject.inputData[0].inputInstance	
-			}
 		}
-		this.initValues();
 	}
 
 	initValues(){
@@ -105,7 +91,7 @@ class Main {
 	}
 	
 	changeInput(val){
-		
+	
 		if(objectUri != null){
 			if(this.dataObject.newInputInstance == null){
 				this.dataObject.newInputInstance = val
@@ -135,6 +121,50 @@ class Main {
 		}).bind(this))	
 	}
 
+	/*
+	 * Opening the floating window
+	 */
+	selectInput(){
+		
+		if(this.inputSelector === undefined){
+			var addedInstances = []
+			if(Global.editMode){
+				addedInstances = this.dataObject.addedInstances
+			}
+			this.inputSelector = new InputSelector(this, this.dataObject.possibleInputs, 
+				addedInstances)
+		} else {
+			this.inputSelector.display()
+		}
+	}
+
+	/*
+	 * Input instance handlers
+	 */
+	
+	add(dataObject){
+		
+		if(Global.editMode){
+			this.dataObject.task = "addInput"
+			this.dataObject.inputInstance = dataObject.inputInstance
+			DTAJAX.call(this.dataObject);
+		} else {
+			this.dataObject.inputInstances.push(dataObject.inputInstance)
+		}
+	}
+	
+	remove(dataObject){
+		
+		if(this.editMode){
+			this.dataObject.task = "removeInput"
+			this.dataObject.inputInstance = dataObject.inputInstance
+			DTAJAX.call(this.dataObject);
+		} else {
+			
+			this.dataObject.inputInstances.push(dataObject.inputInstance)
+		}
+	}
+	
 	editRoutine(){
 	
 		if(this.dataObject.newConclusionValue == null){
@@ -173,6 +203,7 @@ class Main {
 	}
 	
 	process(input){
+		
 		if(input === undefined){
 			return "undefined"
 		} else{

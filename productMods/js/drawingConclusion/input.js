@@ -12,7 +12,6 @@ class InputSelector {
 		
 		this.doneButton = new TextButton("Done", (this.done).bind(this), "margin10")
 		
-		
 		this.rows = new Object()
 		//Adding possible instance
 		$.each(possibleInstances, (function(index, value){

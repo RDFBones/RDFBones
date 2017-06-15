@@ -59,7 +59,6 @@ class DTAJAX {
 			}).bind(this))
 		}
 	}
-	
 }
 
 var dt1 = {
@@ -94,4 +93,5 @@ var testData = {
 var testOn = {
 	outputType : false,
 	del : false,
+	inputs : false,
 }

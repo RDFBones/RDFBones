@@ -10,11 +10,10 @@ class MeasurementDatum {
 	}
 	
 	initUI(){
-	
 		//Output data container
 		this.container = html.div("inline margin10H")
-		util.setLabel(this.dataObject, "type", "label")
-		this.measDatumLabelDiv = html.div("inlineTitle").text((this.dataObject.label))
+		//util.setLabel(this.dataObject, "type", "label")
+		this.measDatumLabelDiv = html.div("inlineTitle").text(util.process(this.dataObject.type))
 	
 		if(this.dataObject.dataType !== undefined){
 			this.floatMode = true

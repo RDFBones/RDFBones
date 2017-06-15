@@ -3,7 +3,10 @@ class SelectorField {
 	
 	constructor(dataSet, changeFunction, config) {
 
-		this.container = html.div()
+		this.container = html.div("inline")
+		if(config == undefined){
+			config = { id : "id", name : "name"}
+		}
 		this.config = config
 		this.selectorField = html.getSelectorField(config.id, config.name).change(
 				function() {

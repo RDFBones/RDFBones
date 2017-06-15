@@ -4,6 +4,7 @@ class DataTransformationItem {
 	constructor(mainForm, dataObject){
 		this.mainForm = mainForm
 		this.dataObject = dataObject
+		this.dataObject.inputs = []
 		this.init()
 	}
 	
@@ -89,26 +90,28 @@ class DataTransformationItem {
 	showInputs(uri){
 
 		//Here we call the existing ones as well
-		if(this.inputSelector === undefined){
-			this.dataObject.task = "inputData"
-			DTAJAX.call(this.dataObject, (function(msg){
-				this.inputSelector = new InputSelector(this, msg.possibleInputs, msg.exsistingInputs)
-			}).bind(this), false)
-		} else {
-			this.inputSelector.display()
-		}
+		//if(this.inputSelector === undefined){
+		this.dataObject.task = "inputData"
+		DTAJAX.call(this.dataObject, (function(msg){
+			this.inputSelector = new InputSelector(this, msg.possibleInputs, msg.exsistingInputs)
+		}).bind(this), false)
+		//} else {
+		//this.inputSelector.display()
+		//}
 	}	
 
 	addInput(uri){
 		this.dataObject.task = "addInput",
 		this.dataObject.input = uri
-		DTAJAX.call(this.dataObject)
+		this.dataObject.inputs.push(uri)
+		DTAJAX.call(this.dataObject, null, false)
 	}
 	
 	removeInput(uri){	
 		this.dataObject.task = "removeInput",
 		this.dataObject.input = uri
-		DTAJAX.call(this.dataObject)
+		this.dataObject.inputs.removeElement(uri)
+		DTAJAX.call(this.dataObject, null, false)
 	}
 
 	edit (){

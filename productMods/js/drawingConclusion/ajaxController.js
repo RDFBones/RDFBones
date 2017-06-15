@@ -15,6 +15,9 @@ class DTAJAX {
 	
 	static call(object, returnFunction, flag){
 		
+		if(returnFunction === undefined){
+			returnFunction = function(){}
+		}
 		PopUpController.init("Please wait")
 		$.ajax({
 			type : 'POST',
