@@ -2,7 +2,7 @@
 
 class InputSelector {
 	
-	constructor(item, inputOptions){
+	constructor(item, inputOptions, existingData){
 		
 		this.item = item
 		this.saved = false
@@ -13,6 +13,10 @@ class InputSelector {
 		this.doneButton = new TextButton("Done", (this.done).bind(this), "margin10")
 		this.selectorTable = new InputSelectorTable(this, inputOptions)
 		this.toSelectModule.table.append(this.selectorTable.container)
+		
+		$.each(existingData, (function(i, value){
+			this.selectorTable.rowMap[value.input].select()
+		}).bind(this))
 		
 		UI.append(this, [this.selectedModule, this.toSelectModule, this.doneButton])
 		PopUpController.set(this.container)
@@ -35,17 +39,5 @@ class InputSelector {
 	
 	done (){
 		PopUpController.done()
-	}
-}
-
-class ExistingInputSelector extends InputSelector{
-	
-	constructor(item, inputOptions, existingData){
-		//The difference is that it adds the selected module 
-		super(item, inputOptions)
-		$.each(existingData, (function(i, value){
-			this.selectorTable.rowMap[value.input].select()
-		}).bind(this))
-		this.saved = true
 	}
 }

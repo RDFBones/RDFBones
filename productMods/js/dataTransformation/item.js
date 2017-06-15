@@ -89,13 +89,10 @@ class DataTransformationItem {
 	showInputs(uri){
 		
 		//Here we call the existing ones as well
+		this.dataObject.task = "inputData"
 		if(this.inputSelector === undefined){
-			DTAJAX.call({
-				task : "possibleInputs",
-				subjectUri : subjectUri,
-				dataTransformationType : this.dataObject.dataTransformationType
-			}, (function(msg){
-				this.inputSelector = new InputSelector(this, msg.possibleInputs)
+			DTAJAX.call(this.dataObject, (function(msg){
+				this.inputSelector = new InputSelector(this, msg.possibleInputs, msg.exsistingInputs)
 			}).bind(this), false)
 		} else {
 			this.inputSelector.display()
@@ -154,7 +151,7 @@ class DataTransformationItem {
 }
 
 class ExistingDataTransformation extends DataTransformationItem {
-	
+
 	constructor(mainForm, dataObject){
 		super(mainForm, dataObject)
 	}
