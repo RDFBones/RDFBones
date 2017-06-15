@@ -183,7 +183,6 @@ public class DataTransformationAJAXController extends VitroAjaxController {
       default:
         break;
       }
-
       break;
 
     case "refresh":
@@ -196,39 +195,8 @@ public class DataTransformationAJAXController extends VitroAjaxController {
           dataTransDataGetter2.getJSON(ArrayLib.getList(subjectUri)));
       break;
 
-    case "possibleInputs":
-
-      // Possible inputs
-      StringSPARQLDataGetter inputsDataGetter1 =
-          new StringSPARQLDataGetter(connectorGraph, SPARQL_inputs(), ArrayLib.getList(
-              "measurementDatum", "measurementValueType"), ArrayLib.getList(
-              "measurementDatumLabel", "cardinality", "catLabel", "measurementValue"), 1);
-      subjectUri = getParameter("subjectUri");
-      dataTransformationType = getParameter("dataTransformationType");
-      JSON.put(resp, "possibleInputs", inputsDataGetter1.getJSON(ArrayLib.getList(
-          subjectUri, dataTransformationType)));
-      break;
-
-    case "possibleInputs_existing":
-
-      // Possible inputs
-      StringSPARQLDataGetter inputsDataGetter2 =
-          new StringSPARQLDataGetter(connectorGraph, SPARQL_inputs(),
-              ArrayLib.getList("measurementDatum"),
-              ArrayLib.getList("measurementDatumLabel", "cardinality", "catLabel",
-                  "measurementValue"), 1);
-      subjectUri = getParameter("subjectUri");
-      dataTransformationType = getParameter("dataTransformationType");
-      JSON.put(resp, "possibleInputs", inputsDataGetter2.getJSON(ArrayLib.getList(
-          subjectUri, dataTransformationType)));
-
-      // Existing inputs
-      StringSPARQLDataGetter existingInputsDataGetter =
-          new StringSPARQLDataGetter(connectorGraph, SPARQL_exsistingInput(),
-              ArrayLib.getList("input"), null, 1);
-      dataTransformation = getParameter("dataTransformation");
-      JSON.put(resp, "exsistingInputs",
-          existingInputsDataGetter.getJSON(dataTransformation));
+    case "inputData" :
+      resp = DataTransformation.inputData(connector, requestData);
       break;
 
     default:
@@ -341,37 +309,6 @@ public class DataTransformationAJAXController extends VitroAjaxController {
             + "  ?measurementDatum               vitro:mostSpecificType    ?measurementDatumType . \n"
             + "  FILTER ( ?subjectUri = <input1> ) "
             + "} ORDER BY ?dataTransformationType ";
-    return query;
-  }
-
-  public String SPARQL_inputs() {
-
-    String query =
-        ""
-            + "SELECT ?measurementDatum ?measurementDatumLabel ?cardinality ?catLabel ?measurementValue (datatype(?measurementValue) as ?measurementValueType) "
-            + "WHERE { "
-            + "  ?subjectUri                 obo:BFO_0000051               ?assayOrDT . \n"
-            + "  ?assayOrDT                  obo:OBI_0000299               ?measurementDatum . \n"
-            + "  ?measurementDatum           rdfs:label                    ?measurementDatumLabel . \n"
-            + "  ?measurementDatum           rdf:type                      ?measurementDatumType ."
-            + "  ?dataTransformationType     rdfs:subClassOf               ?restriction . \n"
-            + "  ?restriction                owl:onProperty                obo:OBI_0000293 . \n"
-            + "  ?restriction                owl:onClass                   ?measurementDatumType . \n"
-            + "  OPTIONAL { ?measurementDatum       obo:IAO_0000004               ?measurementValue . } "
-            + "  OPTIONAL {  \n "
-            + "     ?measurementDatum               obo:OBI_0000999          ?categoricalLabel . \n"
-            + "     ?categoricalLabel               rdfs:label               ?catLabel . \n"
-            + "  } \n " + "  FILTER ( ?subjectUri = <input1> ) \n "
-            + "  FILTER ( ?dataTransformationType = <input2> ) \n " + "}";
-    return query;
-  }
-
-  public String SPARQL_exsistingInput() {
-
-    String query =
-        "" + "SELECT ?input " + "WHERE { "
-            + "  ?dataTransformation     obo:OBI_0000293          ?input . \n"
-            + "  FILTER ( ?dataTransformation = <input1> ) " + "}";
     return query;
   }
 
