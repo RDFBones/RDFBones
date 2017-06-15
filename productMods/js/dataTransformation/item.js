@@ -87,10 +87,10 @@ class DataTransformationItem {
 	}
 	
 	showInputs(uri){
-		
+
 		//Here we call the existing ones as well
-		this.dataObject.task = "inputData"
 		if(this.inputSelector === undefined){
+			this.dataObject.task = "inputData"
 			DTAJAX.call(this.dataObject, (function(msg){
 				this.inputSelector = new InputSelector(this, msg.possibleInputs, msg.exsistingInputs)
 			}).bind(this), false)
@@ -100,21 +100,17 @@ class DataTransformationItem {
 	}	
 
 	addInput(uri){
-		if(this.saved){
-			DTAJAX.addInput(this.dataObject.dataTransformation, uri)	
-		} else {
-			this.dataObject.inputs.push(uri)
-		}
+		this.dataObject.task = "addInput",
+		this.dataObject.input = uri
+		DTAJAX.call(this.dataObject)
 	}
 	
-	removeInput(uri){
-		if(this.saved){
-			DTAJAX.removeInput(this.dataObject.dataTransformation, uri)	
-		} else {
-			this.dataObject.inputs.removeElement(uri)
-		}
+	removeInput(uri){	
+		this.dataObject.task = "removeInput",
+		this.dataObject.input = uri
+		DTAJAX.call(this.dataObject)
 	}
-	
+
 	edit (){
 		DTAJAX.call({
 			task : "edit",

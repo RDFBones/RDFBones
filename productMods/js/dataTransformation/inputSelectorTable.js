@@ -14,11 +14,12 @@ class InputSelectorTable {
 		}).bind(this))
 		this.container.append(this.rows)
 	}
+	
 }
 
 class DTTableRow {
 	
-	constructor(inputSelectorTable, dataSet){
+	constructor(inputSelectorTable, dataSet, descritor){
 		
 		this.selected = false
 		this.inputSelectorTable = inputSelectorTable
@@ -26,6 +27,9 @@ class DTTableRow {
 
 		//?measurementDatum ?measurementDatumLabel ?typeLabel ?cardinality ?catLabel ?literalValue
 		this.label = html.div("dataItem").text(dataSet.measurementDatumLabel)
+
+		var rows = []
+		
 		if(dataSet.catLabel != undefined ){
 			this.measurementValue = html.div("dataItem").text(dataSet.catLabel)
 		} else if(dataSet.measurementValue != undefined) {
@@ -33,17 +37,17 @@ class DTTableRow {
 		} else {
 			this.measurementValue = html.div("dataItem").text("undefined")
 		}
-
+		
 		this.container = UI.getButton("itemContainer", (this.select).bind(this))
 		this.container.append([this.label, this.measurementValue])
 	}
 	
-	select(){
+	select(exsisting){
 		if(this.selected){
-			this.inputSelectorTable.inputSelector.remove(this, this.measurementDatum)
+			this.inputSelectorTable.inputSelector.remove(this, this.measurementDatum, exsisting)
 			this.selected = false
 		} else {
-			this.inputSelectorTable.inputSelector.add(this, this.measurementDatum)
+			this.inputSelectorTable.inputSelector.add(this, this.measurementDatum, exsisting)
 			this.selected = true
 		}
 	}
