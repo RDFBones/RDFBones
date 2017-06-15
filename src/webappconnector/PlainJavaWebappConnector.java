@@ -10,13 +10,15 @@ import org.json.JSONObject;
 
 import rdfbones.formProcessing.WebappConnector;
 import rdfbones.lib.ArrayLib;
+import rdfbones.lib.JSON;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.QueryUtils;
 
 public class PlainJavaWebappConnector implements WebappConnector{
 
   public Map<String, Object> requestMap = new HashMap<String, Object>();
   boolean logEnabled = true;
-  
+  JSONObject logJSON = JSON.obj();
+
   public PlainJavaWebappConnector(boolean var){
     
   }
@@ -40,7 +42,7 @@ public class PlainJavaWebappConnector implements WebappConnector{
   @Override
   public List<Map<String, String>> sparqlResult(String queryStr, List<String> uris,
     List<String> literals) {
-    // TODO Auto-generated method stub
+    JSON.addToList(this.logJSON, "queries", queryStr);
     return null;
   }
 
@@ -50,6 +52,7 @@ public class PlainJavaWebappConnector implements WebappConnector{
   }
   
   public boolean addTriples(String triples, String editKey){
+    JSON.addToList(this.logJSON, "addedTriples", triples);
     return false;    
   }
  
@@ -81,10 +84,8 @@ public class PlainJavaWebappConnector implements WebappConnector{
     return false;
   }
 
-  @Override
-  public JSONObject logJSON() {
-    // TODO Auto-generated method stub
-    return null;
+  public JSONObject logJSON(){
+    return this.logJSON;
   }
   
 }
