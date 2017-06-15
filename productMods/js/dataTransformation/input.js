@@ -24,12 +24,12 @@ class InputSelector {
 	
 	add(tableRow, measurementDatum, existing){
 		this.selectedModule.table.append(tableRow.container)
-		if(existing === undefined)	this.item.addInput(measurementDatum)
+		if(existing != true)	this.item.addInput(measurementDatum)
 	}
 	
 	remove(tableRow, measurementDatum, existing){
 		this.toSelectModule.table.append(tableRow.container)
-		if(existing === undefined)	this.item.removeInput(measurementDatum)
+		if(existing != true)	this.item.removeInput(measurementDatum)
 	}
 	
 	display (){
