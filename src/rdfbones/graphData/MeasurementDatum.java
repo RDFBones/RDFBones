@@ -129,7 +129,20 @@ public class MeasurementDatum {
     }
     return output;
   }
+  
+  public void delete(String subjectUri, String property){
 
+    String triples = new String("");
+    triples += N3Utils.getDataTriple(subjectUri, property, JSON.string(this.formData, "uri"));
+    triples += Entity.getTriples(this.formData);
+    if(this.literalField){
+      triples += N3Utils.getLiteralTriple("uri", "obo:IAO_0000004", "value", "dataType", this.formData);
+    } else {
+      triples += N3Utils.getDataTriple("uri", "obo:OBI_0000999", "value", this.formData);
+    }
+    this.connector.removeTriples(triples);
+  }
+  
   public String getConnector(String subject, String property) {
 
     return N3Utils.getDataTriple(subject, this.property, this.subject);

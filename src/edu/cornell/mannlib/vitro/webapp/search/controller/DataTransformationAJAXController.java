@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import rdfbones.customHandlers.DataTransformation;
 import rdfbones.formProcessing.WebappConnector;
 import rdfbones.graphData.Entity;
 import rdfbones.graphData.Graph;
@@ -136,23 +137,15 @@ public class DataTransformationAJAXController extends VitroAjaxController {
 
       switch (getParameter("dataKey")) {
 
-      case "inputData":
+        case "inputData":
 
         break;
       }
       break;
 
-    case "delete":
+    case "del":
 
-      inputs = JSON.array(requestData, "inputs");
-      subjectUri = getParameter("subjectUri");
-      dataTransformation = getParameter("dataTransformation");
-      dataTransformationType = getParameter("dataTransformationType");
-      measurementDatum = getParameter("measurementDatum");
-      measurementDatumType = getParameter("measurementDatumType");
-      measurementValue = getParameter("measurementValue");
-      triples = getTripleString();
-      connector.removeTriples(triples, editKey);
+      DataTransformation.delete(connector, requestData);
       break;
 
     case "addInput":
@@ -173,7 +166,7 @@ public class DataTransformationAJAXController extends VitroAjaxController {
 
       case "measurementDatum":
         MeasurementDatum mdEdit =
-            new MeasurementDatum(connector, JSON.get( this.requestData, "dataObject"));
+            new MeasurementDatum(connector, JSON.get(this.requestData, "dataObject"));
         mdEdit.edit();
         break;
 
@@ -421,6 +414,11 @@ public class DataTransformationAJAXController extends VitroAjaxController {
     return JSON.string(requestData, key);
   }
 
+  JSONObject getObjectParameter(String key) {
+
+    return JSON.get(requestData, key);
+  }
+  
   void resp(String key, String value) {
 
     JSON.put(resp, key, value);
