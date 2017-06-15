@@ -16,6 +16,7 @@ class DataTransformationItem {
 			this.dataObject = $.extend(this.dataObject, msg)
 			this.dataObject.inputs = []
 			this.initUI()
+			this.mainForm.refresh()
 		}).bind(this))
 	}
 
@@ -48,7 +49,7 @@ class DataTransformationItem {
 		this.container.append([this.contentContainer, this.deleteButton.container])	
 		this.mainForm.elementContainer.append(this.container)
 	}
-
+	
 	/*
 	change (){
 		
@@ -130,19 +131,13 @@ class DataTransformationItem {
 	}
 	
 	del (){
-			DTAJAX.call({
-				task : "delete",
-				subjectUri : subjectUri,
-				dataTransformation : this.dataObject.dataTransformation,
-				dataTransformationType : this.dataObject.dataTransformationType,
-				measurementDatum : this.dataObject.measurementDatum,
-				measurementDatumType : this.dataObject.measurementDatumType,
-				measurementValue : this.saved,
-			},(function(msg) {
-					this.container.remove()
-					this.mainForm.remove(this.dataObject.dataTransformationType)
-					PopUpController.doneMsg("Data has been deleted")
-				}).bind(this))
+	
+		this.dataObject.task = "del"
+		DTAJAX.call(this.dataObject, (function(msg) {
+			this.container.remove()
+			this.mainForm.remove(this.dataObject.dataTransformationType)
+			PopUpController.doneMsg("Data has been deleted")
+		}).bind(this))
 	}
 
 	process(input){
