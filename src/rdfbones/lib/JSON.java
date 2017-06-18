@@ -384,4 +384,12 @@ public class JSON {
     JSON.putString(JSON.getArray(obj, key), value);
   }
   
+  public static void extend(JSONObject object, JSONObject with){
+
+    Iterator<String> keys = with.keys();
+    while(keys.hasNext()){
+      String key = keys.next();
+      JSON.put(object, key, JSON.string(with, key));
+    }
+  }
 }

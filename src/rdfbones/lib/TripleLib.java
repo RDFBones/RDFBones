@@ -177,7 +177,7 @@ public class TripleLib {
 		formGraphs.put("boneSegment", formGraph);
 		return formGraphs;
 	}
-
+	
 	public static Table boneOrganTable() {
 
 		Table boneOrgan = new Table("bone organ");

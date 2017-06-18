@@ -51,6 +51,7 @@ public class StringUtil {
   public static String getClassLabel(String uri){
   
   	if(uri.contains("#")){
+  	  
   		return getLast(uri, "#");
   	} else if(uri.contains("\\.")){
   		return getLast(uri, "\\.");

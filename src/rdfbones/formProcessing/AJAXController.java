@@ -155,8 +155,7 @@ public class AJAXController {
 		} else {
 			AJAXError.noTask(response);
 		}
-	
-		JSON.put(response, "queries", graph.getWebapp().getQueries());
+		JSON.put(response, "log", graph.getWebapp().logJSON());
 	}
 
 	public boolean check(List<String> parameters){

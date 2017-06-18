@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import rdfbones.lib.JSON;
+import rdfbones.lib.StringUtil;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 
 public class N3Utils {
@@ -26,7 +27,6 @@ public class N3Utils {
       put("owl", "http://www.w3.org/2002/07/owl#");
       put("sw", "http://softwareOntology.com/");
       put("obo-fma", "http://purl.obolibrary.org/obo/fma#");
-      
     }};
     
     public static String getPrefixes(){
@@ -187,12 +187,23 @@ public class N3Utils {
        }
    }
    
-   public static String getLabelTriple(String subject, String predicate, String object, JSONObject json){
+  public static String getPrefixLabelTriple(String subject, String predicate, String object, JSONObject json){
+  
+    String label = JSON.string(json, "prefix") + "." + StringUtil.getClassLabel(JSON.string(json, subject + "Type"));
+    return getLiteralTriple(JSON.string(json, subject), predicate, label, (String) null);
+  }
+  
+  public static String getLabelTriple(String subject, String predicate, String object, JSONObject json){
       
-     String a = null;
-     return getLiteralTriple(JSON.string(json, subject), predicate, JSON.string(json, object), a);
-   }
+    return getLiteralTriple(JSON.string(json, subject), predicate, JSON.string(json, object), (String) null);
+  }
     
+   public static String getLiteralTriple(String subject, String predicate, String object, JSONObject json){
+
+     return getLiteralTriple(JSON.string(json, subject), predicate, JSON.string(json, object),
+         (String) null);
+   }
+   
    public static String getLiteralTriple(String subject, String predicate, String object, String type, JSONObject json){
 
      return getLiteralTriple(JSON.string(json, subject), predicate, JSON.string(json, object),
@@ -207,15 +218,15 @@ public class N3Utils {
    public static String getLiteralTriple(String subject, String predicate, String value, String type){
      
      if(type == null){
-       return "<" + subject + "> " + predicate(predicate) + " \"" + value + "\" .";
+       return "<" + subject + "> " + predicate(predicate) + " \"" + value + "\" . \n";
      } else {
-       return "<" + subject + "> " + predicate(predicate) + " \"" + value + "\"^^<" + type + "> .";
+       return "<" + subject + "> " + predicate(predicate) + " \"" + value + "\"^^<" + type + "> . \n";
      }
    }
    
    public static String getDataTriple(String subject, String predicate, String object){
      
-     return "<" + subject + "> " + predicate(predicate) + " <" + object + "> . ";
+     return "<" + subject + "> " + predicate(predicate) + " <" + object + "> . \n";
    }
    
    public static String predicate(String predicate){

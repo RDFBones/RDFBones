@@ -16,9 +16,7 @@ import rdfbones.lib.StringSPARQLDataGetter;
 public class MeasurementDatum {
 
   WebappConnector connector;
-
   JSONObject descriptor;
-
   public JSONObject formData;
 
   Boolean literalField = false;
@@ -75,10 +73,7 @@ public class MeasurementDatum {
     } else {
       //Literal field
       literalField = true;
-      dataType = JSON.string(result, "dataType");
       JSON.put(result, "value", "0.00");
-      JSON.put(result, "dataType", dataType);
-
       triples += N3Utils.getLiteralTriple("uri", "obo:IAO_0000004", "value", "dataType", result);
     }
     triples += N3Utils.getDataTriple(JSON.string(formData, subjectVarName), this.property, measurementDatum.subject);
@@ -99,8 +94,7 @@ public class MeasurementDatum {
     
     StringSPARQLDataGetter outputTypeDataGetter =
         new StringSPARQLDataGetter(this.connector, SPARQL_OutputTypes_2(),
-            ArrayLib.getList("type", "dataType", "catLabType"),
-            ArrayLib.getList("label"));
+            ArrayLib.getList("type", "dataType", "catLabType"), ArrayLib.getList("label"));
     return outputTypeDataGetter.getSingleResult(ArrayLib.getList(inputType));
   }
   
@@ -216,21 +210,21 @@ public class MeasurementDatum {
 
     String query =
         ""
-            + "SELECT ?type ?label ?dataType ?catLabType "
+            + "SELECT DISTINCT ?type ?label ?dataType ?catLabType "
             + "WHERE { "
-            + "     ?inputType                 rdfs:subClassOf        ?type . \n "
+            + "     ?type                 rdfs:subClassOf        ?superType . \n "
             + "     OPTIONAL { ?type    rdfs:label   ?label . } \n "
             + "     OPTIONAL {  \n "
-            + "       ?type              rdfs:subClassOf              ?r1 . \n "
+            + "       ?superType              rdfs:subClassOf              ?r1 . \n "
             + "       ?r1                owl:onProperty               obo:IAO_0000004 . \n "
             + "       ?r1                owl:onDataRange                ?dataType .   \n "
             + "     } . \n "
             + "     OPTIONAL {  \n "
-            + "       ?type              rdfs:subClassOf       ?r2 . \n "
+            + "       ?superType              rdfs:subClassOf       ?r2 . \n "
             + "       ?r2                owl:onProperty               obo:OBI_0000999 . \n "
             + "       ?r2                owl:onClass                  ?catLabType .   \n "
             + "     }  \n  " 
-            + "     FILTER ( ?inputType  = <input1> )"
+            + "     FILTER ( ?type  = <input1> )"
             + "} ";
     return query;
   }

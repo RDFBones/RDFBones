@@ -59,7 +59,7 @@ public class Entity {
 
     String triples = new String("");
     triples += N3Utils.getDataTriple(this.subject, "rdf:type", this.type);
-    triples += N3Utils.getLiteralTriple(this.subject, "rdfs:label", label, null);
+    triples += N3Utils.getLiteralTriple(this.subject, "rdfs:label", label, (String) null);
     return triples;
   }
   

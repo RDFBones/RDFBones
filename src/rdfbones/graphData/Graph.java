@@ -87,6 +87,7 @@ public class Graph {
 	public SPARQLDataGetter dataRetriever;
 	public SPARQLDataGetter typeRetriever;
 	WebappConnector webapp;
+	
 	public Graph mainGraph;
 	public FormConfiguration formConfiguration;
 	
