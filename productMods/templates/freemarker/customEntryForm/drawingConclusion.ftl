@@ -5,12 +5,13 @@
 <#import "lib-import.ftl" as imp> 
 
 <@imp.js url="drawingConclusion/TableRow" />
+<@imp.js url="drawingConclusion/inputSelectorTable" />
 <@imp.js url="drawingConclusion/input" />
 <@imp.js url="drawingConclusion/ajaxController" />
 <@imp.js url="drawingConclusion/main" />
 
 <div class = "mainFormTitle margin10"  id = "drawingConclusionLabel">
-	Drawing conclusion
+	Drawing a conclusion
 </div>
 
 <div id = "validContainer">
@@ -19,7 +20,9 @@
 	<div class = "title">
 		Conclusion
 	</div>
-	<textarea class="margin10H" id = "conclusionValue" rows="7" cols="80"></textArea>
+	<div id = "text">
+		<textarea class="margin10H" id = "conclusionValue" rows="7" cols="80"></textArea>
+	</div>
 </div>
 
 <div class = "margin10" id = "errorMessage">
@@ -29,7 +32,6 @@
 	<div class = "generalButton hoverClass" id = "submit"> Submit </div>
 	<div class = "generalButton hoverClass" id = "cancel"> Cancel </div>
 	<div class = "generalButton hoverClass" id = "done" >	Done </div>
-	<div class = "generalButton hoverClass" id = "edit" > Edit </div>
 	<div class = "generalButton hoverClass" id = "delete" > Delete </div>
 </div>
 <div id = "popUpContainer">
