@@ -12,9 +12,10 @@ class Main {
 		this.submit = $("#submit")
 		this.cancel = $("#cancel")
 		this.done = $("#done")
-		this.edit = $("#edit")
 		this.del = $("#delete")
-
+	
+		this.text = $("#text")
+				
 		this.inputButton = new TextButton("Select", (this.selectInput).bind(this), null, "inline")
 		$("#inputButtonCont").append(this.inputButton.container)
 
@@ -23,9 +24,10 @@ class Main {
 
 		this.textArea = $("#conclusionValue").bind('input propertychange', (this.change).bind(this))
 		this.submit.click((this.submitRoutine).bind(this))
-		this.edit.click((this.editRoutine).bind(this))
 		this.del.click((this.deleteRoutine).bind(this))
 
+		this.editButton = new Button("done", (this.edit).bind(this)).hide()
+		this.text.append(this.editButton.container)
 		this.cancel.click(util.redirect)
 		this.done.click(util.redirect)
 		
@@ -34,7 +36,6 @@ class Main {
 			this.cancel.hide()
 		} else {
 			this.done.hide()
-			this.edit.hide()
 			this.del.hide()
 		}
 	}
@@ -56,19 +57,16 @@ class Main {
 	
 	init (msg){
 		
-		this.dataObject = msg.data;
-		this.dataObject.drawingConclusionLabel = this.process(this.dataObject.drawingConclusionType)
-		this.dataObject.conclusionLabel = this.process(this.dataObject.conclusionType)
-
+		this.dataObject = msg;
+		this.dataObject.inputInstances = []
 		if(this.dataObject.conclusionValue != null){
 			this.textArea.text(this.dataObject.conclusionValue)
 		} else {
 			this.dataObject.conclusionValue = null
 		}
-	
+		
 		if(Global.editMode){
 			this.dataObject.drawingConclusionInstance = objectUri
-			this.dataObject.newConlusionValue = null	
 		}
 	}
 
@@ -90,35 +88,22 @@ class Main {
 		}
 	}
 	
-	changeInput(val){
-	
-		if(objectUri != null){
-			if(this.dataObject.newInputInstance == null){
-				this.dataObject.newInputInstance = val
-				this.editInputInstance()
-			}
-		} else {
-			this.dataObject.inputInstance = val
-		}
-	}
-	
 	change(){
 		
-		if(objectUri != null){
+		if(Global.editMode){
 			this.dataObject.newConclusionValue = this.textArea.val()	
+			this.editButton.show()
 		} else {
 			//Just set the value
 			this.dataObject.conclusionValue = this.textArea.val()
 		}
 	}
 	
-	editInputInstance(){
-	
-		this.dataObject.task = "editInputInstance"
-		DTAJAX.call(this.dataObject, (function(msg){
-			this.dataObject.inputInstance = this.dataObject.newInputInstance
-			this.dataObject.newInputInstance = null
-		}).bind(this))	
+	edit(){
+		this.dataObject.task = "edit"
+		DTAJAX.call(this.dataObject);
+		this.dataObject.conclusionValue = this.dataObject.newConclusionValue
+		this.editButton.hide()
 	}
 
 	/*
@@ -127,12 +112,11 @@ class Main {
 	selectInput(){
 		
 		if(this.inputSelector === undefined){
-			var addedInstances = []
+			var existing = []
 			if(Global.editMode){
-				addedInstances = this.dataObject.addedInstances
-			}
-			this.inputSelector = new InputSelector(this, this.dataObject.possibleInputs, 
-				addedInstances)
+				existing = this.dataObject.exsistingInputs
+			} 
+			this.inputSelector = new InputSelector(this, this.dataObject.possibleInputs, existing)	
 		} else {
 			this.inputSelector.display()
 		}
@@ -142,41 +126,28 @@ class Main {
 	 * Input instance handlers
 	 */
 	
-	add(dataObject){
+	addInput(uri){
 		
 		if(Global.editMode){
 			this.dataObject.task = "addInput"
-			this.dataObject.inputInstance = dataObject.inputInstance
+			this.dataObject.inputInstance = uri
 			DTAJAX.call(this.dataObject);
 		} else {
-			this.dataObject.inputInstances.push(dataObject.inputInstance)
+			this.dataObject.inputInstances.push(uri)
 		}
 	}
 	
-	remove(dataObject){
+	removeInput(uri){
 		
-		if(this.editMode){
+		if(Global.editMode){
 			this.dataObject.task = "removeInput"
-			this.dataObject.inputInstance = dataObject.inputInstance
+			this.dataObject.inputInstance = uri
 			DTAJAX.call(this.dataObject);
 		} else {
-			
-			this.dataObject.inputInstances.push(dataObject.inputInstance)
+			this.dataObject.inputInstances.removeElement(uri)
 		}
 	}
 	
-	editRoutine(){
-	
-		if(this.dataObject.newConclusionValue == null){
-			alert("Please change the conclusion text")
-		} else {
-			this.dataObject.task = "edit"
-			DTAJAX.call(this.dataObject, (function(msg){
-				//Do nothing
-			}).bind(this))	
-		}
-	}
-
 	deleteRoutine(){
 		
 		this.dataObject.task = "delete"
@@ -199,18 +170,6 @@ class Main {
 					util.redirect()
 				}).bind(this))
 			}	
-		}
-	}
-	
-	process(input){
-		
-		if(input === undefined){
-			return "undefined"
-		} else{
-			var str = input.split("#")[1]
-			if(str == undefined) str = "undefined"
-			str = str.replace(".", " ")
-			return str.replace("_", " ")
 		}
 	}
 }
