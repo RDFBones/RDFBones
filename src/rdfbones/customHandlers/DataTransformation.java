@@ -1,5 +1,6 @@
 package rdfbones.customHandlers;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import edu.cornell.mannlib.vitro.webapp.dao.jena.N3Utils;
@@ -27,6 +28,15 @@ public class DataTransformation {
     MeasurementDatum md1 = new MeasurementDatum(connector, md);
     String dtToDelete = JSON.string(requestData, "dataTransformation");
     md1.delete(dtToDelete, "obo:OBI_0000299");
+  
+    //Deleting inputs
+    JSONArray inputs = JSON.array(requestData, "inputs");
+    String dataTransformation = JSON.string(requestData, "dataTransformation");
+    for(int i = 0; i < inputs.length(); i++){
+      String input = JSON.stringArr(inputs, i);
+      String triple = N3Utils.getDataTriple(dataTransformation, "obo:OBI_0000293", input);
+      connector.removeTriples(triple);
+    }
   }
   
   public static JSONObject inputData(WebappConnector connector, JSONObject requestData){
@@ -67,12 +77,14 @@ public class DataTransformation {
             + "  ?measurementDatum           rdf:type                      ?measurementDatumType ."
             + "  ?dataTransformationType     rdfs:subClassOf               ?restriction . \n"
             + "  ?restriction                owl:onProperty                obo:OBI_0000293 . \n"
-            + "  ?restriction                owl:onClass                   ?measurementDatumType . \n"
+            + "  ?restriction                ?property                     ?measurementDatumType . \n"
             + "  OPTIONAL { ?measurementDatum       obo:IAO_0000004               ?measurementValue . } "
             + "  OPTIONAL {  \n "
             + "     ?measurementDatum               obo:OBI_0000999          ?categoricalLabel . \n"
             + "     ?categoricalLabel               rdfs:label               ?catLabel . \n"
-            + "  } \n " + "  FILTER ( ?subjectUri = <input1> ) \n "
+            + "  } \n " 
+            + "  FILTER ( ?property = owl:someValuesFrom || ?property = owl:onClass ) \n "  
+            + "  FILTER ( ?subjectUri = <input1> ) \n "
             + "  FILTER ( ?dataTransformationType = <input2> ) \n " + "}";
     return query;
   }
