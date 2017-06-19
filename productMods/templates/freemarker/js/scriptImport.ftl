@@ -22,9 +22,8 @@ ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/lib/AJAXController.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/lib/InstanceOffer.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/lib/ImageInstanceOffer.js"></script>',
+	'<script type="text/javascript" src="${urls.base}/js/lib/utils.js"></script>',
 	'<script type="text/javascript" src="${urls.base}/js/lib/InstanceOfferLibrary.js"></script>')}
-
-
 
 ${scripts.add(
 	'<script type="text/javascript" src="${urls.base}/js/lib/dataOperation/Arithmetic.js"></script>',

@@ -23,7 +23,6 @@ import rdfbones.rdfdataset.RDFNode;
 import rdfbones.rdfdataset.RestrictionTriple;
 import rdfbones.rdfdataset.Triple;
 import rdfbones.rdfdataset.TripleCollector;
-import rdfbones.test.PathTest;
 
 public class DependencyCalculator {
 

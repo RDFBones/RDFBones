@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import rdfbones.customHandlers.DrawingConclusion;
 import rdfbones.formProcessing.WebappConnector;
 import rdfbones.graphData.Graph;
 import rdfbones.lib.ArrayLib;
@@ -57,15 +58,16 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
 
   String drawingConclusionInstance;
   String drawingConclusionType;
-  
+
   String inputValue;
   String inputInstance;
   String inputType;
-  
+
   String conclusionType;
   String conclusionInstance;
   String conlusionValue;
-  
+  JSONArray inputs;
+
   String editKey;
   JSONObject resp = new JSONObject();
 
@@ -75,119 +77,95 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
   protected void doRequest(VitroRequest vreq, HttpServletResponse response)
     throws IOException, ServletException {
 
-    WebappConnector connector = new VIVOWebappConnector(vreq);
-    Graph connectorGraph = new Graph();
-    connectorGraph.setWebapp(connector);
-    this.newUri = new NewURIMakerVitro(vreq.getWebappDaoFactory());
-
     this.requestData = JSON.getObject(vreq.getParameter("requestData"));
     editKey = getParameter("editKey");
 
-    resp = new JSONObject();
-    JSONObject data = JSON.obj();
+    WebappConnector connector = new VIVOWebappConnector(vreq, editKey);
+    Graph connectorGraph = new Graph();
+    connectorGraph.setWebapp(connector);
+    this.newUri = new NewURIMakerVitro(vreq.getWebappDaoFactory());
+    
+    resp = requestData;
 
     Map<String, String> objectMap = new HashMap<String, String>();
     Map<String, String> literalMap = new HashMap<String, String>();
-    
-    if(getParameter("task").equals("initial")){
 
+    if (getParameter("task").equals("initial")) {
+
+      /*
+       * Drawing Conclusion and Conclusion type and property
+       */
       subjectUri = getParameter("subjectUri");
+      
       StringSPARQLDataGetter typeDataGetter =
-          new StringSPARQLDataGetter(connectorGraph, SPARQL_types(),
-              ArrayLib.getList("drawingConclusionType", "conclusionType", "inputType"), ArrayLib.getList("label"), 1);
+          new StringSPARQLDataGetter(connectorGraph, SPARQL_types(), ArrayLib.getList(
+              "drawingConclusionType", "conclusionType", "property"),
+              ArrayLib.getList("label"));
       
-      JSONObject types = (JSONObject) typeDataGetter.getSingleResult((ArrayLib.getList(subjectUri)));
+      JSON.extend(resp, typeDataGetter.getSingleResult(ArrayLib.getList(subjectUri)));
+      String prefix = JSON.string(resp, "label").split("\\.")[0];
+      JSON.put(resp, "prefix", prefix);
 
-      String prefix = JSON.string(types, "label").split("\\.")[0];
-      JSON.put(data, "prefix", prefix);
+      drawingConclusionType = JSON.string(resp, "drawingConclusionType");
       
-      JSON.copyValue(data, types, "drawingConclusionType");
-      JSON.copyValue(data, types, "conclusionType");
-      JSON.copyValue(data, types, "inputType");
+      /*
+       * Possible Inputs
+       */
       
-      if(!getParameter("existing").equals("true")){
+      StringSPARQLDataGetter inputsDataGetter =
+          new StringSPARQLDataGetter(connector, SPARQL_inputs(),
+              ArrayLib.getList("measurementDatum"),
+              ArrayLib.getList("measurementDatumLabel", "cardinality", "catLabel",
+                  "measurementValue"));
 
-        StringSPARQLDataGetter inputDataGetter =
-            new StringSPARQLDataGetter(connectorGraph, SPARQL_existingInput(),
-                ArrayLib.getList("inputInstance"), ArrayLib.getList("inputValue"), 1);
-        inputType = JSON.string(types, "inputType");
-        JSONObject inputData = inputDataGetter.getSingleResult(ArrayLib.getList(subjectUri, inputType));
+      JSONArray possibleInputs =
+          inputsDataGetter.getJSON(ArrayLib.getList(subjectUri, drawingConclusionType));
+      JSON.put(resp, "possibleInputs", possibleInputs);
 
-        JSON.copyValue(data, inputData, "inputInstance");
-        JSON.copyValue(data, inputData, "inputValue");
+      if (getParameter("existing").equals("true")) {
+        DrawingConclusion.existingData(connector, resp);
       }
-      JSON.put(resp, "data", data);
     }
-    
-    if(getParameter("existing").equals("true")){
-      objectUri = getParameter("objectUri");
-      StringSPARQLDataGetter existingDataGetter =
-          new StringSPARQLDataGetter(connectorGraph, SPARQ_existingData(),
-              ArrayLib.getList("inputInstance", "conclusionInstance"), ArrayLib.getList("inputValue", "conclusionValue"), 1);
-       JSONObject existingData = existingDataGetter.getSingleResult(ArrayLib.getList(objectUri));
-       
-       JSON.copyValue(data, existingData, "inputInstance");
-       JSON.copyValue(data, existingData, "conclusionInstance");
-       JSON.copyValue(data, existingData, "inputValue");
-       JSON.copyValue(data, existingData, "conclusionValue");
-    }
-    
-    switch(getParameter("task")){
-    
-    case "save" :
-      
-      objectMap.put("subjectUri",getParameter("subjectUri"));
-      objectMap.put("drawingConclusionInstance", this.getUnusedURI());
-      objectMap.put("drawingConclusionType", getParameter("drawingConclusionType"));
-      objectMap.put("inputInstance", getParameter("inputInstance"));
-      objectMap.put("conclusionType", getParameter("conclusionType"));
-      objectMap.put("conclusionInstance", this.getUnusedURI());
 
-      literalMap.put("conclusionValue", getParameter("conclusionValue"));
-      literalMap.put("drawingConclusionLabel", getParameter("prefix") + "." + getParameter("drawingConclusionLabel"));
-      literalMap.put("conclusionLabel", getParameter("prefix") + "." + getParameter("conclusionLabel"));
+    switch (getParameter("task")) {
 
-      String toAdd1 = this.getTripleString(objectMap, literalMap);
-      resp("triplesToAdd", toAdd1);
-      if(connector.addTriples(toAdd1, editKey)){
-        resp("success", "true");
-      } else {
-        resp("success", "false");
-      }
+      case "save":
+
+      DrawingConclusion.add(connector, requestData);
       break;
-     
+
     case "delete":
-      
-      objectMap.put("subjectUri",getParameter("subjectUri"));
-      objectMap.put("drawingConclusionInstance", getParameter("drawingConclusionInstance"));
-      objectMap.put("drawingConclusionType", getParameter("drawingConclusionType"));
-      objectMap.put("inputInstance", getParameter("inputInstance"));
-      objectMap.put("conclusionType", getParameter("conclusionType"));
-      objectMap.put("conclusionInstance", getParameter("conclusionInstance"));
 
-      literalMap.put("conclusionValue", getParameter("conclusionValue"));
-      literalMap.put("drawingConclusionLabel", getParameter("prefix") + "." + getParameter("drawingConclusionLabel"));
-      literalMap.put("conclusionLabel", getParameter("prefix") + "." + getParameter("conclusionLabel"));
-      
-      String toRemove2 = this.getTripleString(objectMap, literalMap);
-      resp("triplesToAdd", toRemove2);
-      if(connector.removeTriples(toRemove2, editKey)){
-        resp("success", "true");
-      } else {
-        resp("success", "false");
-      }
+      DrawingConclusion.delete(connector, requestData);
       break;
       
+    case "addInput":
+
+      connector.addTriples("<" + getParameter("drawingConclusionInstance")
+          + "> obo:OBI_0000293 <" + getParameter("inputInstance") + "> .");
+      break;
+
+      case "removeInput":
+
+      connector.removeTriples("<" + getParameter("drawingConclusionInstance")
+          + "> obo:OBI_0000293 <" + getParameter("inputInstance") + "> .");
+      break;
+
     case "edit":
-      
+
+      String concInstanceEdit = getParameter("conclusion");
+      String conclusionValue = getParameter("conclusionValue");
+      String newConclusionValue = getParameter("newConclusionValue");
+      String property = getParameter("property");
+
       String toRemove =
-          "<" + getParameter("conclusionInstance") + "> " + "<http://w3id.org/rdfbones/extensions/FrSexEst#HasText> " 
-                + " '" + getParameter("conclusionValue") + "'";
-      
+          "<" + concInstanceEdit + "> " + "<" + property + "> " + " '" + conclusionValue
+              + "' .";
+
       String toAdd2 =
-          "<" + getParameter("conclusionInstance") + "> " + "<http://w3id.org/rdfbones/extensions/FrSexEst#HasText> " 
-              + " '" + getParameter("newConclusionValue") + "'";
-      
+          "<" + concInstanceEdit + "> " + "<" + property + "> " + " '"
+              + newConclusionValue + "' .";
+
       resp("toRemove", toRemove);
       resp("toAdd", toAdd2);
       connector.removeTriples(toRemove, editKey);
@@ -197,8 +175,7 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
     default:
       break;
     }
-
-    JSON.put(resp, "queries", connector.getQueries());
+    JSON.put(resp, "log", connector.logJSON());
     response.getWriter().write(resp.toString());
   }
 
@@ -213,71 +190,42 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
 
   private static String getDataTriples() {
 
-    String triples =  ""
+    String triples =
+        ""
             + " ?subjectUri                       obo:BFO_0000051     ?drawingConclusionInstance . \n"
             + " ?subjectUri                       rdfbones:drawingConclusion     ?drawingConclusionInstance . \n"
             + " ?drawingConclusionInstance        rdf:type            ?drawingConclusionType . \n "
             + " ?drawingConclusionInstance        rdfs:label          ?drawingConclusionLabel . \n "
-            + " ?drawingConclusionInstance        obo:OBI_0000293     ?inputInstance . \n"
             + " ?drawingConclusionInstance        obo:OBI_0000299     ?conclusionInstance . \n"
             + " ?conclusionInstance               rdf:type            ?conclusionType . \n "
             + " ?conclusionInstance               rdfs:label          ?conclusionLabel . \n "
-            + " ?conclusionInstance   <http://w3id.org/rdfbones/extensions/FrSexEst#HasText> ?conclusionValue . \n";
+            + " ?conclusionInstance               ?property ?conclusionValue . \n";
     return triples;
   }
 
   public String SPARQL_types() {
 
     // In this case the subjectUri
-    String query = ""
-       +  "  SELECT ?drawingConclusionType ?conclusionType ?inputType ?label  \n"
-       +  "     WHERE { \n"
-       +   "      ?subjectUri       obo:BFO_0000051              ?sde . "
-       +  "       ?sde              rdf:type                     obo:OBI_0000471 . "
-       +  "       ?sde              rdfs:label                    ?label ."
-       +  "       ?subjectUri       vitro:mostSpecificType       ?investigationType .  \n"
-       +  "       ?investigationType      rdfs:subClassOf   ?restrictionDC .  \n"
-       +  "       ?restrictionDC        owl:onProperty      obo:BFO_0000051 . \n"
-       +  "       ?restrictionDC        owl:someValuesFrom  ?drawingConclusionType .  \n"
-       +  "       ?drawingConclusionType    rdfs:subClassOf   obo:OBI_0000338 . \n"
-       +  "       ?drawingConclusionType      rdfs:subClassOf                 ?restrictionInput . \n"
-       +  "       ?restrictionInput           owl:onProperty                  obo:OBI_0000293 . \n"
-       +  "       ?restrictionInput           owl:onClass                             ?inputType . \n"
-       +  "       ?drawingConclusionType      rdfs:subClassOf                 ?restrictionOutput . \n"
-       +  "       ?restrictionOutput                  owl:onProperty                  obo:OBI_0000299 . \n"
-       +  "       ?restrictionOutput                owl:someValuesFrom                    ?conclusionType . \n"
-       +  "       FILTER ( ?subjectUri = <input1> ) \n"
-       +  "     } \n" ;
-    return query;
-  }
-
-  public String SPARQL_existingInput() {
-
-    String query = "" +
-            "  SELECT ?inputInstance ?inputValue \n" + 
-            "  WHERE {\n" + 
-            "   ?subjectUri     obo:BFO_0000051   ?studyDesignExecution .\n" + 
-            "   ?studyDesignExecution obo:BFO_0000051   ?dataTransformation .\n" + 
-            "   ?dataTransformation   obo:OBI_0000299   ?inputInstance .\n" + 
-            "   ?inputInstance      obo:IAO_0000004   ?inputValue .\n" + 
-            "   ?inputInstance      rdf:type        ?inputType .\n" + 
-            "   FILTER ( ?subjectUri = <input1> ) .\n" + 
-            "   FILTER ( ?inputType = <input2> ) .\n" + 
-            "}";
-    
-    return query;
-  }
-
-  public String SPARQ_existingData(){
-    
-    String query = "SELECT ?inputInstance ?inputValue ?conclusionInstance ?conclusionValue\n" + 
-        "  WHERE {    \n"  + 
-        "  ?objectUri            obo:OBI_0000293   ?inputInstance . \n" + 
-        "  ?inputInstance        obo:IAO_0000004   ?inputValue .  \n" + 
-        "  ?objectUri            obo:OBI_0000299   ?conclusionInstance . \n" + 
-        "  ?conclusionInstance      <http://w3id.org/rdfbones/extensions/FrSexEst#HasText>   ?conclusionValue .  \n" + 
-        "  FILTER ( ?objectUri = <input1> ) .   \n   " + 
-        "}";
+    String query =
+        ""
+            + "  SELECT ?drawingConclusionType ?conclusionType ?label ?property \n"
+            + "     WHERE { \n"
+            + "      ?subjectUri             obo:BFO_0000051              ?sde . "
+            + "       ?sde                    rdf:type                     obo:OBI_0000471 . \n "
+            + "       ?sde                    rdfs:label                   ?label . \n "
+            + "       ?subjectUri             vitro:mostSpecificType       ?investigationType .  \n"
+            + "       ?investigationType      rdfs:subClassOf              ?restrictionDC .  \n"
+            + "       ?restrictionDC          owl:onProperty               obo:BFO_0000051 . \n"
+            + "       ?restrictionDC          owl:someValuesFrom           ?drawingConclusionType .  \n"
+            + "       ?drawingConclusionType  rdfs:subClassOf              obo:OBI_0000338 . \n"
+            + "       ?drawingConclusionType  rdfs:subClassOf              ?restrictionOutput . \n"
+            + "       ?restrictionOutput      owl:onProperty               obo:OBI_0000299 . \n"
+            + "       ?restrictionOutput      ?restrictionProp1            ?conclusionType . \n"
+            + "        ?conclusionType         rdfs:subClassOf              ?propRestriction . \n"
+            + "       ?propRestriction        owl:onProperty               ?property . \n "
+            + "       FILTER ( ?subjectUri = <input1> ) \n"
+            + "       FILTER ( ?restrictionProp1 = owl:someValuesFrom || ?restrictionProp1 = owl:onClass )  "
+            + "     } \n";
     return query;
   }
   
@@ -287,28 +235,23 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
         ""
             + "SELECT ?measurementDatum ?measurementDatumLabel ?cardinality ?catLabel ?measurementValue (datatype(?measurementValue) as ?measurementValueType) "
             + "WHERE { "
-            + "  ?subjectUri                 obo:BFO_0000051               ?assayOrDT . "
-            + "  ?assayOrDT                  obo:OBI_0000299               ?measurementDatum . "
+            + "  ?subjectUri                 obo:BFO_0000051               ?sde . \n "
+            + "  ?sde                 obo:BFO_0000051               ?assayOrDT . \n "
+            + "  ?assayOrDT                  obo:OBI_0000299               ?measurementDatum . \n"
             + "  ?measurementDatum           rdfs:label                    ?measurementDatumLabel . "
             + "  ?measurementDatum           rdf:type                      ?measurementDatumType ."
-            + "  ?dataTransformationType     rdfs:subClassOf               ?restriction . "
+            + "  ?drawingConclusionType      rdfs:subClassOf               ?restriction . "
             + "  ?restriction                owl:onProperty                obo:OBI_0000293 . "
-            + "  ?restriction                owl:onClass                   ?measurementDatumType . "
+            + "  ?restriction                ?property                   ?measurementDatumType . "
             + "  OPTIONAL { ?measurementDatum       obo:IAO_0000004               ?measurementValue . } "
             + "  OPTIONAL {  "
             + "     ?measurementDatum               obo:OBI_0000999          ?categoricalLabel . "
             + "     ?categoricalLabel               rdfs:label               ?catLabel . "
-            + "  }" + "  FILTER ( ?subjectUri = <input1> ) "
-            + "  FILTER ( ?dataTransformationType = <input2> ) " + "}";
-    return query;
-  }
+            + "  } \n " 
+            + "  FILTER ( ?property = owl:someValuesFrom || ?property = owl:onClass ) \n "
+            + "  FILTER ( ?subjectUri = <input1> ) "
+            + "  FILTER ( ?drawingConclusionType = <input2> ) . \n " + "}";
 
-  public String SPARQL_exsistingInput() {
-
-    String query =
-        "" + "SELECT ?input " + "WHERE { "
-            + "  ?dataTransformation     obo:OBI_0000293          ?input . "
-            + "  FILTER ( ?dataTransformation = <input1> ) " + "}";
     return query;
   }
 
@@ -326,13 +269,11 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
             + "     ?restriction1        owl:qualifiedCardinality     ?cardinality . \n "
             + "     ?restriction1        owl:onClass                  ?measurementDatumType . \n "
             + "     OPTIONAL { ?measurementDatumType      rdfs:label         ?label . }  \n"
-            + "     FILTER ( ?subjectUri = <input1> )" 
-            + "}";
+            + "     FILTER ( ?subjectUri = <input1> )" + "}";
     return query;
   }
- 
-  String getParameter(String key) {
 
+  String getParameter(String key) {
     return JSON.string(requestData, key);
   }
 
@@ -341,11 +282,22 @@ public class DrawingConclusionAJAXController extends VitroAjaxController {
     JSON.put(resp, key, value);
   }
 
-  private String getTripleString(Map<String, String> objectMap, Map<String, String>  literalMap) {
+  private String getInputs(String drawingConclusion) {
+    String triple = new String("");
+    for (int i = 0; i < this.inputs.length(); i++) {
+      String input = JSON.stringArr(this.inputs, i);
+      triple += "<" + drawingConclusion + ">   obo:OBI_0000293 <" + input + "> .\n";
+    }
+    return triple;
+  }
+
+  private String getTripleString(Map<String, String> objectMap,
+    Map<String, String> literalMap) {
 
     String triplesString = getDataTriples();
     triplesString = QueryUtils.subUrisForQueryLiterals(triplesString, literalMap);
     triplesString = QueryUtils.subUrisForQueryVars(triplesString, objectMap);
+    triplesString += getInputs(objectMap.get("drawingConclusionInstance"));
     return triplesString;
   }
 

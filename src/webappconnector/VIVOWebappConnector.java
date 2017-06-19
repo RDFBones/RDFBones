@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -37,8 +38,22 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.NewURIMaker;
   NewURIMaker newURIMaker;
   boolean logEnabled = true;
   JSONArray queries; 
+  JSONObject logJSON = JSON.obj();
+  public String editKey;
   
   public VIVOWebappConnector(VitroRequest vreq){
+    this.vreq = vreq;
+    newURIMaker = new NewURIMakerVitro(vreq.getWebappDaoFactory());
+    queries = JSON.arr();
+  }
+  
+  public JSONObject logJSON(){
+    return this.logJSON;
+  }
+  
+  public VIVOWebappConnector(VitroRequest vreq, String editKey){
+    
+    this.editKey = editKey;
     this.vreq = vreq;
     newURIMaker = new NewURIMakerVitro(vreq.getWebappDaoFactory());
     queries = JSON.arr();
@@ -58,7 +73,7 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.NewURIMaker;
    
    public List<Map<String, String>> sparqlResult(String queryStr, List<String> uris, List<String> literals){
    
-     this.queries.put(queryStr);
+     JSON.addToList(this.logJSON, "queries", queryStr);
      return QueryUtils.getResult(queryStr, uris, literals, this.vreq);
    }
    
@@ -78,9 +93,19 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.NewURIMaker;
     return new String("");
   }
   
- 
+  public boolean addTriples(String triples){
+
+      return addTriples(triples, this.editKey);
+  }
+
+  public boolean removeTriples(String triples){
+
+    return removeTriples(triples, this.editKey);
+  }
+
   public boolean addTriples(String triples, String editKey){
     
+    JSON.addToList(this.logJSON, "addedTriples", triples);
     Model writeModel = getWriteModel(editKey);
     Model dataModel = getDataModel(triples);
     if(dataModel == null){
@@ -91,6 +116,8 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.NewURIMaker;
   }
   
   public boolean removeTriples(String triples, String editKey){
+    
+    JSON.addToList(this.logJSON, "removedTriples", triples);
     Model writeModel = getWriteModel(editKey);
     Model dataModel = getDataModel(triples);
     if(dataModel == null){

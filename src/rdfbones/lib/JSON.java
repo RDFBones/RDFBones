@@ -298,6 +298,16 @@ public class JSON {
 	  return null;
   }
   
+  public static JSONArray getArray(JSONObject obj, String key){
+    
+    try {
+      return (JSONArray) obj.get(key);
+    } catch (JSONException e){
+      e.printStackTrace();
+    }
+    return JSON.arr();
+  }
+  
   public static JSONObject getObject(String string){
 	  
 	try {
@@ -364,5 +374,22 @@ public class JSON {
   		val = value;
   	}
   	JSON.put(object, key, val);
+  }
+  
+  public static void addToList(JSONObject obj, String key, String value){
+   
+    if(!obj.has(key)){
+      JSON.put(obj, key, JSON.arr());
+    }
+    JSON.putString(JSON.getArray(obj, key), value);
+  }
+  
+  public static void extend(JSONObject object, JSONObject with){
+
+    Iterator<String> keys = with.keys();
+    while(keys.hasNext()){
+      String key = keys.next();
+      JSON.put(object, key, JSON.string(with, key));
+    }
   }
 }

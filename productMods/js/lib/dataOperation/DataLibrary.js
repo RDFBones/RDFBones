@@ -65,10 +65,9 @@ var DataLib = {
 	},
 	
 	removeObjectFromArray : function(array, key, obj){
-
 		this.removeObjectFromArrayByKey(array, key, obj[key])
 	},
-	
+
 	debugObject : function(object){
 		console.log(this.debugObj(0, object))
 	},

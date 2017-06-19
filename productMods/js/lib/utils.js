@@ -21,6 +21,25 @@ var dataUtil = {
 
 var util = {
 		
+	setLabel(object, type, label){
+		
+		if(object[label] == "" || object[label] == undefined){
+			object[label] = this.process(object[type])
+		}
+	},
+	
+	process(input){
+		
+		if(input === undefined){
+			return "undefined"
+		} else{
+			var str = input.split("#")[1]
+			if(str == undefined) str = "undefined"
+			str = str.replace(".", " ")
+			return str.replace("_", " ")
+		}
+	},	
+		
 	setUndefined : function(variable, value){
 		if(variable !== undefined){
 			return variable

@@ -5,6 +5,7 @@
 <#import "lib-import.ftl" as imp> 
 
 <@imp.js url="dataTransformation/inputSelectorTable" />
+<@imp.js url="dataTransformation/MeasurementDatum" />
 <@imp.js url="dataTransformation/input" />
 <@imp.js url="dataTransformation/ajaxController" />
 <@imp.js url="dataTransformation/item" />

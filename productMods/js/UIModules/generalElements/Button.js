@@ -56,7 +56,6 @@ var CustomButton = function(type, returnFunction, customClass){
 
 CustomButton.prototype = Object.create(Button.prototype)
 
-
 var CheckBoxText = function(text, parent, selectFunction, deselectFunction){
 	
 	this.container = html.div("margin15H")

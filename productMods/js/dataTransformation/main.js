@@ -2,7 +2,6 @@
 class Main {
 	
 	constructor(){
-	
 		this.loadExistingData()
 	}
 	
@@ -22,8 +21,8 @@ class Main {
 		this.initUI()
 		this.prefix = msg.prefix
 		//this.existingData = //this.filter(msg.existingData)
-		$.each(msg.existingData, (function(key, value){
-			console.log(value)
+		
+		$.each(msg.exsistingData, (function(key, value){
 			this.addedDTs[value.dataTransformationType] = true
 			this.items.push(new ExistingDataTransformation(this, value).container)
 		}).bind(this))
@@ -45,18 +44,14 @@ class Main {
 	addElement(){
 	
 		if(!this.allAdded){
-			if(this.unsaved){
-				alert("Please finish editing current data transformation")
-			} else {
-				this.unsaved = true
-				var object = {
-					dataTransformationType : this.selector.val(),
-					dataTransformationTypeLabel : this.selector.text(),
-					prefix : this.prefix
-				}
-				this.addedDTs[this.selector.val()] = true
-				new DataTransformationItem(this, object)
+			var object = {
+				dataTransformationType : this.selector.val(),
+				dataTransformationTypeLabel : this.selector.text(),
+				prefix : this.prefix,
+				subjectUri : subjectUri
 			}
+			this.addedDTs[this.selector.val()] = true
+			new DataTransformationItem(this, object)
 		} else {
 			alert("All possible data transformations have been added")
 		}
@@ -66,7 +61,7 @@ class Main {
 	
 		DTAJAX.call({
 			task : "refresh"
-		}, (this.refreshSelector).bind(this))
+		}, (this.refreshSelector).bind(this), false)
 	}
 	
 	refreshSelector(msg){
@@ -101,3 +96,28 @@ class Main {
 		return output
 	}
 }
+
+/*
+ * Semi-declarative definition of the input instance selection 
+ * 
+ * --- Only the existing instance selector is defined through the 
+ * following config JSON object--- 
+ * 
+ * It should work independently from the other elements  
+ * 
+ */
+
+
+var inputSelector = {
+	
+	type : "instanceSelector",
+	variableName : "inputInstance",
+	
+}
+
+
+
+
+
+
+

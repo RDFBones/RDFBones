@@ -10,12 +10,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import rdfbones.lib.JSON;
+import rdfbones.lib.StringUtil;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 
 public class N3Utils {
 
-    private static final Log log = LogFactory.getLog(N3Utils.class);
-    private static Map<String, String> prefixDef = new HashMap<String, String>(){{
+    public static Map<String, String> prefixDef = new HashMap<String, String>(){{
       put("rdf","http://www.w3.org/1999/02/22-rdf-syntax-ns#");
       put("rdfs","http://www.w3.org/2000/01/rdf-schema#");
       put("obo","http://purl.obolibrary.org/obo/");
@@ -26,7 +27,6 @@ public class N3Utils {
       put("owl", "http://www.w3.org/2002/07/owl#");
       put("sw", "http://softwareOntology.com/");
       put("obo-fma", "http://purl.obolibrary.org/obo/fma#");
-      
     }};
     
     public static String getPrefixes(){
@@ -50,8 +50,6 @@ public class N3Utils {
     public static void setInputMap(Map<String, String> inputMap, 
       String[] inputParameters, VitroRequest vreq){
         for(String param : inputParameters){
-          log.info("SetInputMap");
-          log.info(param);
           inputMap.put(param, vreq.getParameter(param));
         }
     }
@@ -81,7 +79,6 @@ public class N3Utils {
     
     
     public static String getSubject(String triple){
-      log.info(triple.split("\\s+")[0]);
       return triple.split("\\s+")[0];
     }
     
@@ -93,8 +90,7 @@ public class N3Utils {
           break;
         } 
        }
-      log.info("Predicate:" + predicate);
-       return predicate;
+      return predicate;
     }
     
     public static String getOnlyPredicate(String predicate){
@@ -115,7 +111,6 @@ public class N3Utils {
           break;
         } 
        }
-      log.info("Object:" + object);
        return object;
     }
 
@@ -129,9 +124,7 @@ public class N3Utils {
         }
         n++;
       }
-      log.info("Object: " + ret.substring(0, ret.length()-1));
       return ret.substring(0, ret.length()-1);
-      //return ret + "^^http://www.w3.org/2001/XMLSchema#string";
     }
     
     public static String setPrefixes(String[] prefixes, String query){
@@ -192,5 +185,56 @@ public class N3Utils {
           }
           arr.put(jsonObj);
        }
+   }
+   
+  public static String getPrefixLabelTriple(String subject, String predicate, String object, JSONObject json){
+  
+    String label = JSON.string(json, "prefix") + "." + StringUtil.getClassLabel(JSON.string(json, subject + "Type"));
+    return getLiteralTriple(JSON.string(json, subject), predicate, label, (String) null);
+  }
+  
+  public static String getLabelTriple(String subject, String predicate, String object, JSONObject json){
+      
+    return getLiteralTriple(JSON.string(json, subject), predicate, JSON.string(json, object), (String) null);
+  }
+    
+   public static String getLiteralTriple(String subject, String predicate, String object, JSONObject json){
+
+     return getLiteralTriple(JSON.string(json, subject), predicate, JSON.string(json, object),
+         (String) null);
+   }
+   
+   public static String getLiteralTriple(String subject, String predicate, String object, String type, JSONObject json){
+
+     return getLiteralTriple(JSON.string(json, subject), predicate, JSON.string(json, object),
+         JSON.string(json, type));
+   }
+   
+   public static String getDataTriple(String subject, String predicate, String object, JSONObject json){
+   
+     return getDataTriple(JSON.string(json, subject), predicate, JSON.string(json, object));
+   }
+   
+   public static String getLiteralTriple(String subject, String predicate, String value, String type){
+     
+     if(type == null){
+       return "<" + subject + "> " + predicate(predicate) + " \"" + value + "\" . \n";
+     } else {
+       return "<" + subject + "> " + predicate(predicate) + " \"" + value + "\"^^<" + type + "> . \n";
+     }
+   }
+   
+   public static String getDataTriple(String subject, String predicate, String object){
+     
+     return "<" + subject + "> " + predicate(predicate) + " <" + object + "> . \n";
+   }
+   
+   public static String predicate(String predicate){
+     
+     if(!predicate.contains(":")){
+       return "<" + predicate + ">";
+     } else {
+       return predicate;
+     }
    }
 }

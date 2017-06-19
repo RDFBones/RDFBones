@@ -14,7 +14,6 @@ import rdfbones.rdfdataset.Triple;
 
 public class RDFBonesUtils {
 
-  
   public static EditConfigurationVTwo getEditConfiguration(VitroRequest vreq,
     List<Triple> dataTriples, List<Triple> schemeTriples, Form form, 
     Map<String, FormGraph> formGraphs, WebappConnector webapp){
