@@ -245,7 +245,7 @@ public class TripleLib {
 				"objectUri"));
 		triples.add(new Triple(subject, "obo:BFO_0000051", "measurementDatum",
 				false));
-		triples.add(new Triple("measurementDatum", "obo:IAO_0000299",
+		triples.add(new Triple("measurementDatum", "obo:OBI_0000999",
 				new FormInputNode("categoricalLabel")));
 		triples.add(new Triple("measurementDatum", "obo:IAO_0000136",
 				"bonyPartSegment"));
