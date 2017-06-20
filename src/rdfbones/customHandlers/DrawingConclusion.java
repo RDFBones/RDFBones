@@ -88,6 +88,9 @@ public class DrawingConclusion {
         N3Utils.getPrefixLabelTriple("conclusion", "rdfs:label", "conclusionLabel",
             requestData);
     triples +=
+        N3Utils.getDataTriple("conclusion", "rdf:type", "conclusionType",
+            requestData);
+    triples +=
         N3Utils.getLabelTriple("conclusion", property, "conclusionValue", requestData);
 
     JSONArray arr = JSON.array(requestData, "inputInstances");
