@@ -101,6 +101,7 @@ class Adder extends FormElement{
 
 	initData () {
 
+		this.subContainers = []
 		this.subForms = []
 		if (this.dataObject[this.predicate] !== undefined) {
 			this.dataArray = this.dataObject[this.predicate]
@@ -141,8 +142,9 @@ class Adder extends FormElement{
 			this.addedUris.push(this.selector.val())
 			this.dataArray.push(object)
 			if(this.edit){
-				//Adding new data
+				// Adding new data
 				PopUpController.addSubWaitGifText(this.subContainer, "Adding new form")
+				this.cnt = 1
 				this.subForms.push(new EditSubForm(this, this.descriptor, object))	
 			} else {		
 				PopUpController.addSubWaitGif(this.subContainer)
@@ -152,21 +154,28 @@ class Adder extends FormElement{
 	}
 	
 	ready (container){
-		this.subContainer.prepend(container)
-		PopUpController.remove()
+		this.subContainers.push(container)
+		if(--this.cnt == 0){
+			this.subContainer.prepend(this.subContainers)
+			this.subContainers = []
+			PopUpController.remove()
+		}
 	}
 	
 	addAll () {
 		var remainingKeys = array.substract1(Object.keys(this.options), this.addedUris)
 		this.addedUris = Object.keys(this.options)
 		if(remainingKeys.length > 0){
-			PopUpController.addSubWaitGif(this.subContainer)
-			DataController.loadSubFormDataAll(this, remainingKeys)
+				PopUpController.addSubWaitGif(this.subContainer, "Adding new subforms")
+				this.cnt = 0
+				this.numOfForms = remainingKeys.length
+				DataController.loadSubFormDataAll(this, remainingKeys)
 		} else {
 			PopUpController.note("All types have been already added!")
 		}
 	}
 
+	
 	initAll (data) {
 
 		this.cnt = 0
@@ -179,7 +188,11 @@ class Adder extends FormElement{
 				object[this.dataKey] = key
 				object[this.dataKey + "Label"] = this.options[key].label
 				this.dataArray.push(object)
-				this.subForms.push(new SubFormAll(this, this.descriptor, object))
+				if(this.edit){
+					this.subForms.push(new EditSubForm(this, this.descriptor, object))
+				} else {
+					this.subForms.push(new SubFormAll(this, this.descriptor, object))
+				}
 			}
 		}).bind(this))
 	}
@@ -194,16 +207,11 @@ class Adder extends FormElement{
 		}
 	}
 	
-	/*
-	ready () {
-
-		this.subContainer.append(this.subForms[this.subForms.length - 1].container)
-		PopUpController.remove()
-	}*/
-	
-	
-	removeDataObject (key, value){
-		DataLib.removeObjectFromArray(this.dataArray, key, value)
+	deleteElement(formElement){
+		formElement.container.remove()
+		var key = formElement.dataObject[formElement.descriptor.dataKey]
+		DataLib.removeObjectFromArrayByKey(this.dataArray, formElement.dataObject, key)
+		this.addedUris.removeElement(key)
 	}
 }
 
@@ -244,9 +252,9 @@ class InstanceSelector extends FormElement {
 
 	loadTableData () {
 
-		//if(this.instanceBrowser != undefined){
-		//	 this.instanceBrowser.display()
-		//} else {
+		// if(this.instanceBrowser != undefined){
+		// this.instanceBrowser.display()
+		// } else {
 		if (this.descriptor.table != undefined) {
 			if(objectUri !== null){
 				this.instanceBrowser = new EditInstanceBrowser(this)
@@ -256,6 +264,6 @@ class InstanceSelector extends FormElement {
 		} else {
 			alert("Table is not defined")
 		}	
-		//}
+		// }
 	}	
 }

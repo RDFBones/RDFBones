@@ -72,7 +72,7 @@ var DataController = {
 
 	loadSubFormDataAll : function(form, inputList) {
 		
-		var dependentVars =new Object()
+		var dependentVars = new Object()
 		$.each(form.descriptor.formElements, function(key, formElement) {
 			// Check if dependent or independent the data is
 			if (key != form.dataKey) {
