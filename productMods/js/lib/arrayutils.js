@@ -56,9 +56,9 @@ class array {
 	 */
 	static get(array, key){
 	
-		singleArray = []
+		var singleArray = []
 		$.each(array, function(index, value){
-			singleArray.push(value[singleArray.key])
+			singleArray.push(value[key])
 		})
 		return singleArray
 	}
