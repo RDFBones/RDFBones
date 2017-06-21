@@ -55,7 +55,6 @@ class Form {
 	}
 	
 	ready (){
-		console.log("Ready")
 		this.parentForm.ready(this.container)
 	}
 }
@@ -154,7 +153,7 @@ class ExistingForm extends Form {
 			alert("Deletion failed")
 		}	
 		this.container.remove()
-		this.parentForm.removeDataObject(this.descriptor.dataKey, this.dataObject)
+		this.parentForm.deleteElement(this)
 		PopUpController.done()
 	}
 }
@@ -184,6 +183,19 @@ class EditSubForm extends SubForm {
 			dataUtil.getStrings(this.dataObject)])	
 	}
 	
+	deleteData (){
+		
+		PopUpController.init("Delete is in progress")
+		AJAX.call("deleteFormData", (this.deleteSuccess).bind(this),
+				[this.descriptor.dataKey, this.dataObject])
+	}
 	
+	deleteSuccess (msg){
+		if(msg.failed){
+			alert("Deletion failed")
+		}	
+		this.parentForm.deleteElement(this)
+		PopUpController.done()
+	}
 }
 
