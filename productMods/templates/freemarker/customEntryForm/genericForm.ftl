@@ -25,8 +25,10 @@
 	var debug = false
 	<#if editConfiguration.objectUri?has_content>
     var	objectUri = '${editConfiguration.objectUri}'
+    Global.editMode = true
     <#else>
     var	objectUri = null
+    Global.editMode = false
     </#if>
     <#if editConfiguration.rangeUri?has_content>
     var	rangeUri = '${editConfiguration.rangeUri}'
