@@ -166,5 +166,6 @@ var DataLib = {
 			url += key + "=" + value + "&"
 		})
 		return url = url.substring(0, url.length - 1)
-	}
+	},
+	
 }

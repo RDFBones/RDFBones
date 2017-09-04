@@ -46,4 +46,39 @@ class array {
 		})
 		return toReturn
 	}
+	
+	
+	/*
+	 * array : [ { uri : "a" }, { uri : "b" } ]
+	 * key : "uri"
+	 * 
+	 * return : ["a", "b"] 
+	 */
+	static get(array, key){
+	
+		var singleArray = []
+		$.each(array, function(index, value){
+			singleArray.push(value[key])
+		})
+		return singleArray
+	}
+	
+	/*
+	 * from : ["a", "b", "c"]
+	 * array : ["a", "b"]
+	 * 
+	 * return : ["c"]
+	 */
+	static substract1(from, arr){
+		var result = from
+		$.each(arr, function(i, value){
+			array.remove(result, value)
+		})
+		return result
+	}
+	
+	static remove(array, element){
+		var index = array.indexOf(element)
+		array.splice(index, 1)
+	}
 }
